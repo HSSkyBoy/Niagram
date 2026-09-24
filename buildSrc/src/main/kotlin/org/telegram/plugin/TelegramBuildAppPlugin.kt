@@ -6,7 +6,6 @@ import com.android.build.api.variant.ApplicationVariant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.register
-import org.telegram.tasks.EmojiPackTask
 import org.telegram.tasks.GenerateLottieMetadataAssetFileTask
 
 class TelegramBuildAppPlugin : Plugin<Project> {
@@ -15,15 +14,6 @@ class TelegramBuildAppPlugin : Plugin<Project> {
         val androidComponents =
             project.extensions.findByType(AndroidComponentsExtension::class.java)
                 ?: error("Apply com.android.application/library before org.telegram.build-app-plugin")
-
-        androidComponents.onVariants { variant ->
-            val suffix = variant.name.replaceFirstChar { it.uppercase() }
-            val emojiTask = project.tasks.register<EmojiPackTask>("pack${suffix}Emoji") {
-                emojiDir.set(telegramModule.layout.projectDirectory.dir("emoji"))
-                outputDir.set(project.layout.buildDirectory.dir("generated/emojiAssets/${variant.name}"))
-            }
-            variant.sources.assets?.addGeneratedSourceDirectory(emojiTask, EmojiPackTask::outputDir)
-        }
 
         androidComponents.onVariants { variant ->
             val suffix = variant.name.replaceFirstChar { it.uppercase() }
