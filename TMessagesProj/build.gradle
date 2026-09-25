@@ -143,6 +143,9 @@ android {
         buildConfigField 'int', 'APP_ID', appId
         buildConfigField 'String', 'APP_HASH', '"' + appHash + '"'
         buildConfigField 'long', 'BUILD_TIMESTAMP', buildTimestamp + 'L'
+        // Used by official code; Niagram builds always behave like official release builds.
+        buildConfigField 'boolean', 'DEBUG_VERSION', 'false'
+        buildConfigField 'boolean', 'DEBUG_PRIVATE_VERSION', 'false'
 
         externalNativeBuild {
             cmake {
