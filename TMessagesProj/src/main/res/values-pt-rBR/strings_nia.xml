@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="N_Config">N-Configuração</string>
+    <string name="N_Config">Configurações Neo</string>
     <string name="CombineMessage">Combinar mensagens</string>
     <string name="TextStyle">Estilo de texto</string>
     <string name="NoiseSuppressAndVoiceEnhance">Supressão de ruído e melhoria de voz</string>
@@ -14,13 +14,19 @@
     <string name="PhotoCopied">Foto copiada para a área de transferência</string>
     <string name="ToTheBeginning">Ir para o início</string>
     <string name="DateOfForwardedMsg">Mostrar data nas mensagens encaminhadas</string>
+    <string name="ShowForwardCount">Mostrar contagem de encaminhamentos</string>
     <string name="ShowMessageID">Mostrar ID da mensagem</string>
-    <string name="HideReadReceiptsLocally">Ocultar confirmação de leitura localmente</string>
-    <string name="HideReadReceiptsLocallyNotice">Sempre exibe as mensagens enviadas com um único tique localmente, mesmo após serem lidas pelo destinatário.</string>
+    <string name="HideReadReceiptsLocally">Ocultar confirmações de leitura localmente</string>
+    <string name="HideReadReceiptsLocallyNotice">Exibe sempre as mensagens enviadas com um único tique localmente, mesmo após serem lidas pelo destinatário.</string>
     <string name="ShowRPCError">Erros de RPC em toast</string>
     <string name="AppIconNeko">Neko</string>
-    <string name="AppIconNekoDark">Neko Dark</string>
-    <string name="AppIconNekoColorful">Neko Colorful</string>
+    <string name="AppIconNekoDark">Neko Escuro</string>
+    <string name="AppIconNekoColorful">Neko Colorido</string>
+    <string name="AppIconMusheen">Musheen</string>
+    <string name="AppIconSpace">Espaço</string>
+    <string name="AppIconCloud">Nuvem</string>
+    <string name="AppIconNeon">Neon</string>
+    <string name="AppIconMaterial">Material</string>
     <string name="AppIconForkGram">ForkGram</string>
     <string name="InputMessageId">Inserir ID da mensagem</string>
     <string name="ToTheMessage">Ir para</string>
@@ -38,6 +44,9 @@
     <string name="ShowOnlineStatusNotice">Exibe o status online dos usuários ao lado da foto de perfil nos grupos.</string>
     <string name="DoActionsInCommonGroups">Aplicar em grupos comuns</string>
     <string name="ShowFullAbout">Sempre expandir descrição do chat</string>
+    <string name="ShowGroupMemberJoinDate">Mostrar data de entrada dos membros</string>
+    <string name="ShowGroupMemberJoinDateNotice">Exibe quando um membro entrou no grupo no menu de membros e no perfil.</string>
+    <string name="GroupMemberJoinDate">Entrou no grupo</string>
     <string name="TypeMessageHintUseGroupName">Usar o nome do grupo como dica de preenchimento</string>
     <string name="HideBotButtonInInputField">Ocultar botão do bot no campo de entrada</string>
     <string name="ShowSendAsUnderMessageHint">Mostrar o remetente abaixo da dica da mensagem</string>
@@ -60,6 +69,7 @@
     <string name="PushServiceType">Tipo de serviço push</string>
     <string name="PushServiceTypeInApp">No aplicativo</string>
     <string name="PushServiceTypeInAppDialog">Mostrar notificações residentes</string>
+    <string name="PushServiceTypeUnifiedGateway">Gateway do UnifiedPush</string>
     <string name="SendMp4DocumentAsVideo">Enviar documento MP4 como vídeo</string>
     <string name="StickersChooseShortNameForStickerPack">Escolha um nome curto para o seu pacote.</string>
     <string name="StickersCopyStickerSet">Copiar pacote de stickers</string>
@@ -98,16 +108,41 @@
     <string name="VideoPlayerDecoderPreferSW">Preferir SW</string>
     <string name="VideoPlayerDecoderHardware">Apenas HW</string>
     <string name="VideoPlayerDecoderPreferHW">Preferir HW</string>
-    <string name="DisableGooeyAvatarAnimation">Desativar animação fluida do avatar</string>
+    <string name="InputBar">Barra de digitação</string>
+    <string name="IosButtonPlacement">Posicionamento dos botões (iOS)</string>
+    <string name="IosInputAppearance">Aparência (iOS)</string>
+    <string name="CompactInputSize">Tamanho compacto</string>
+    <string name="ActionButtonStyle">Estilo do botão de ação</string>
+    <string name="ActionButtonStyleAccent">Destaque</string>
+    <string name="ActionButtonStyleNeutral">Neutro</string>
+    <string name="ActionButtonStyleWhite">Branco</string>
+    <string name="LiquidGlassAngle">Ângulo do Liquid Glass</string>
+    <string name="LiquidGlassIntensity">Intensidade do Liquid Glass</string>
+    <string name="DisableGooeyAvatarAnimation">Desativar animação elástica do avatar</string>
     <string name="ShowSquareAvatar">Avatares quadrados</string>
+    <string name="ClownAvatarForBlockedUsers">Avatar de palhaço para usuários bloqueados</string>
+    <string name="ClownAvatarForBlockedUsersDetail">Exibe um avatar de palhaço para usuários bloqueados em vez da foto de perfil ou de um avatar vazio.</string>
     <string name="ShowForwardTextEdit">Editar texto da mensagem ao encaminhar</string>
     <string name="AccDescrForwardTextEdit">Editar texto da mensagem</string>
     <string name="ForwardTextPlaceholder">Texto da mensagem</string>
-    <string name="ForwardTextCopyNotice">Será enviada como uma cópia sua, sem indicador de encaminhamento</string>
+    <string name="ForwardTextCopyNotice">Será enviada como uma cópia sua, sem indicação de encaminhamento</string>
     <string name="ForwardTextEmptyNotice">O texto da mensagem não pode ficar vazio</string>
-
     <string name="XChannel">Canal Niagram</string>
     <string name="EnableSaveDeletedMessages">Salvar mensagens apagadas</string>
+    <string name="SpyMode">Modo espião</string>
+    <string name="SaveDeletedMessagesInPrivate">Conversas privadas</string>
+    <string name="SaveDeletedMessagesInGroups">Grupos</string>
+    <string name="SaveDeletedMessagesInChannels">Canais</string>
+    <string name="AllowScreenCapture">Permitir captura de tela</string>
+    <string name="AllowScreenCaptureNotice">Desativa as restrições de FLAG_SECURE para permitir capturas e gravações de tela em todas as conversas, mídias temporárias e visualizações protegidas.</string>
+    <string name="AllowCopyProtectedContent">Permitir copiar conteúdo protegido</string>
+    <string name="AllowCopyProtectedContentNotice">Permite copiar textos, salvar fotos/vídeos e reenviar mensagens de canais e conversas protegidos (com encaminhamento desativado).</string>
+    <string name="SaveTTLMedia">Salvar mídias autodestrutivas e temporárias</string>
+    <string name="SaveTTLMediaNotice">Permite sempre salvar, compartilhar e visualizar fotos e vídeos temporários sem restrições.</string>
+    <string name="CompactChatInput">Modo compacto</string>
+    <string name="CompactChatInputNotice">Reduz a altura da barra de digitação para 40 dp e diminui as margens.</string>
+    <string name="useIosSounds">Sons de mensagens do iOS</string>
+    <string name="UseIosSoundsNotice">Usa os sons de mensagens do Telegram para iOS dentro do aplicativo.</string>
     <string name="DeletedMessage">apagada</string>
     <string name="EnableSaveEditsHistory">Salvar histórico de edições</string>
     <string name="EditsHistoryMenuText">Histórico de edições</string>
@@ -122,7 +157,7 @@
     <string name="LlmApiKey">Chave da API</string>
     <string name="LlmModelName">Modelo</string>
     <string name="LlmApiUrlNotice">URL base da API. O padrão será o endpoint do Gemini compatível com OpenAI se deixado em branco.</string>
-    <string name="LlmApiKeyNotice">Insira uma ou mais chaves de API, separadas por vírgulas (ex: chave1,chave2). Múltiplas chaves serão usadas em rotação.</string>
+    <string name="LlmApiKeyNotice">Insira uma ou mais chaves de API, separadas por vírgulas (ex.: chave1,chave2). Múltiplas chaves serão usadas em rotação.</string>
     <string name="LlmProviderPreset">Provedor do modelo</string>
     <string name="LlmProviderCustom">Personalizado</string>
     <string name="LlmProviderOpenAIKey">Chave da API da OpenAI</string>
@@ -158,7 +193,7 @@
     <string name="ClearRegexFilters">Limpar</string>
     <string name="ClearRegexFiltersAlertMessage">Tem certeza de que deseja limpar todos os filtros salvos? Isso removerá os filtros compartilhados, filtros de usuário e filtros específicos do chat.</string>
     <string name="PreferredTranslateTargetLang">Lista de idiomas preferidos personalizados</string>
-    <string name="PreferredTranslateTargetLangExample">ex: ja, zh_cn, zh_tw</string>
+    <string name="PreferredTranslateTargetLangExample">ex.: ja, zh_cn, zh_tw</string>
     <string name="PreferredTranslateTargetLangName">Idiomas preferidos</string>
     <string name="ClearDeleted">Limpar apagadas</string>
     <string name="ClearDeletedAlertMessage">Tem certeza de que deseja limpar todas as mensagens apagadas deste chat?</string>
@@ -172,7 +207,8 @@
     <string name="RegexFiltersUserFilterHint">Inserir ID do usuário</string>
     <string name="RegexFiltersGlobalHeader">Filtros globais</string>
     <string name="RegexFiltersTextSelectionAddtoShared">Adicionar aos filtros compartilhados</string>
-    <string name="UnshadowBan">Remover Shadow Ban</string>
+    <string name="ShadowBan">Banimento oculto</string>
+    <string name="UnshadowBan">Remover banimento oculto</string>
     <string name="ShadowBanAdded">Adicionado aos **filtros de usuário**.</string>
     <string name="ShadowBanRemoved">Removido dos **filtros de usuário**.</string>
     <string name="ShadowBanChannelAdded">Adicionado aos **filtros de canal**.</string>
@@ -188,7 +224,7 @@
     <string name="MessageSavingSaveMediaInPrivateGroups">... em grupos privados</string>
     <string name="TelegramUIAutoTranslate">Traduzir Chats Inteiros</string>
     <string name="ShowCocoonAttribution">Mostrar informações do Cocoon</string>
-    <string name="ShowCocoonAttributionDescription">Exibir banner de atribuição do Cocoon AI no menu de tradução.</string>
+    <string name="ShowCocoonAttributionDescription">Exibe o banner de atribuição do Cocoon AI no menu de tradução.</string>
     <string name="Translated">traduzido</string>
     <string name="ProviderRealMicrosoftTranslator">Microsoft Tradutor</string>
     <string name="TranslatorSettings">Tradutor</string>
@@ -215,7 +251,7 @@
     <string name="Other">Outros</string>
     <string name="RestartApp">Reiniciar app</string>
     <string name="ResetSettings">Redefinir configurações</string>
-    <string name="ResetSettingsAlert">Tem certeza de que deseja redefinir todas as N-Configurações?</string>
+    <string name="ResetSettingsAlert">Tem certeza de que deseja redefinir todas as Configurações Neo?</string>
     <string name="DontAutoPlayNextVoice">Não reproduzir a próxima mensagem de voz automaticamente</string>
     <string name="SaveToChatSubfolder">Salvar anexos por nome do chat</string>
     <string name="MessageColoredBackground">Fundos coloridos nas mensagens</string>
@@ -344,8 +380,30 @@
     <string name="DidNotGetTheCodeBlameDurov">Se você não recebeu o código em outro dispositivo ou não tem o Telegram conectado em outro aparelho, use o aplicativo oficial do Telegram para receber o código.\n\nO Telegram **desativou o login por SMS** em aplicativos de terceiros. Usuários que entram em aplicativos de terceiros só podem receber códigos de login via Telegram.\n\nNão podemos ajudar com isso. Se tiver problemas para entrar, entre em contato com o suporte do Telegram.</string>
     <string name="QRLoginMessage">Escaneie o código QR com outro dispositivo para entrar.</string>
     <string name="DnsType">Resolução DNS</string>
+    <string name="DnsTypeCloudflare">Cloudflare</string>
+    <string name="DnsTypeGoogle">DNS Público do Google</string>
+    <string name="DnsTypeTencent">DNS da Tencent</string>
+    <string name="DnsTypeAliDNS">AliDNS</string>
     <string name="DnsTypeSystem">Sistema</string>
     <string name="CustomDoH">DoH personalizado</string>
+    <string name="CustomDoHHint">https://1.0.0.1/dns-query, ... (mantenha pressionado para escolher predefinições)</string>
+    <string name="PresetDoHServers">Servidores DoH predefinidos</string>
+    <string name="CustomApiDefault">API padrão</string>
+    <string name="CustomApiOfficial">Telegram oficial</string>
+    <string name="CustomApiCustom">API personalizada</string>
+    <string name="WebProxy">Proxy web / HTTP</string>
+    <string name="WebProxyMode">Proxy web / HTTP</string>
+    <string name="WebProxyAbout">Encaminhe solicitações HTTP/HTTPS externas (como traduções por IA, verificações de atualização e transcrição de voz) por meio de um proxy.</string>
+    <string name="WebProxyModeFollow">Seguir o Telegram (SOCKS5)</string>
+    <string name="WebProxyModeDirect">Direto (desativado)</string>
+    <string name="WebProxyModeCustom">Proxy personalizado</string>
+    <string name="WebProxyType">Tipo de proxy</string>
+    <string name="WebProxyTypeHttp">HTTP / HTTPS</string>
+    <string name="WebProxyTypeSocks5">SOCKS5</string>
+    <string name="WebProxyHost">Host do proxy</string>
+    <string name="WebProxyPort">Porta do proxy</string>
+    <string name="WebProxyUsername">Nome de usuário (opcional)</string>
+    <string name="WebProxyPassword">Senha (opcional)</string>
     <string name="PinnedReactions">Reações Fixadas</string>
     <string name="PinnedReactions_Status_Chats">Ativar reações fixadas em chats</string>
     <string name="PinnedReactions_Status_Channels">Ativar reações fixadas em canais</string>
@@ -355,7 +413,7 @@
     <string name="PinnedReactions_Type">Este emoji não é suportado.</string>
     <string name="PinnedReactions_Apply">Atualizar reações fixadas</string>
     <string name="HideStoriesFromHeader">Ocultar do cabeçalho</string>
-    <string name="DisableProfileAvatarBlur">Desativar desfoque do avatar</string>
+    <string name="DisableProfileAvatarBlur">Desativar desfoque da foto de perfil</string>
     <string name="ExportSettingsIncludeApiKeys">Incluir chaves de API</string>
     <string name="DisableInAppBrowserGestures">Desativar gestos</string>
     <string name="HowToObtain">Como obter?</string>
@@ -432,6 +490,7 @@
     <string name="CenterActionBarTitleOff">Desativado</string>
     <string name="TabletModeOn">Ativado</string>
     <string name="TabletModeOff">Desativado</string>
+    <string name="TabletModeLandscape">Apenas em modo paisagem</string>
     <string name="HideDialogsSearchField">Ocultar barra de pesquisa</string>
     <string name="DeepLTranslateKey">Chave da API do DeepL</string>
     <string name="DeepLTranslateKeyNotice">Configure sua chave da API do DeepL; deixe em branco para usar as credenciais integradas.</string>
@@ -443,34 +502,78 @@
     <string name="ForceFontWeightFallback">Forçar fallback de peso de fonte</string>
     <string name="FontSettings">Configurações de fonte</string>
     <string name="FontCategoryRegular">Fonte regular</string>
-    <string name="FontCategoryBold">Fonte negrito</string>
-    <string name="FontCategoryItalic">Fonte itálico</string>
+    <string name="FontCategoryBold">Fonte em negrito</string>
+    <string name="FontCategoryItalic">Fonte em itálico</string>
     <string name="FontCategoryMono">Fonte monoespaçada</string>
     <string name="FontSelectFile">Selecionar arquivo .ttf / .otf</string>
     <string name="FontResetToDefault">Redefinir para o padrão do sistema</string>
-    <string name="FontPreviewTitle">Pré-visualização de fonte</string>
+    <string name="FontPreviewTitle">Pré-visualização da fonte</string>
     <string name="FontApply">Aplicar</string>
     <string name="FontApplyAs">Aplicar fonte como…</string>
     <string name="FontAppliedSuccess">Fonte aplicada com sucesso!</string>
     <string name="FontInvalidFile">Arquivo de fonte inválido ou corrompido.</string>
-    <string name="InputFieldTextSize">Tamanho do texto no campo de entrada</string>
+    <string name="InputFieldTextSize">Tamanho do texto no campo de digitação</string>
     <string name="InputFieldTextSizeDefault">Padrão</string>
-    <string name="HideGiftButtons">Ocultar botão de presente nos perfis</string>
     <string name="EnableQuickSchedule">Agendamento rápido</string>
-    <string name="EnableQuickScheduleNotice">Exibe opções de agendamento ao pressionar longamente o botão de enviar, respeitando o estado de silêncio.</string>
+    <string name="EnableQuickScheduleNotice">Exibe opções de agendamento (Enviar mais tarde / Enviar quando online) ao manter o botão de envio pressionado, respeitando o status de silêncio.</string>
     <string name="DisableAiEditor">Desativar editor de IA</string>
     <string name="ForceForward">Encaminhamento forçado</string>
     <string name="ForceForwardPremiumOnly">Assine o **Telegram Premium** para usar o encaminhamento forçado.</string>
-    <string name="ShowForwardCount">Mostrar contagem de encaminhamentos</string>
+    <string name="DefaultHlsVideoQualityAuto">Automática</string>
+    <string name="DefaultHlsVideoQualityOriginal">Original</string>
+    <string name="DefaultHlsVideoQualityHigh">Alta qualidade (1080p+)</string>
+    <string name="DefaultHlsVideoQualityMedium">Qualidade média (720p)</string>
+    <string name="DefaultHlsVideoQualityLow">Baixa qualidade (480p)</string>
+
+    <!-- Ban by ID in ChatUsersActivity -->
+    <string name="NiaBanById">Banir por ID de usuário</string>
+    <string name="NiaBanByIdDialogTitle">Banir usuário por ID</string>
+    <string name="NiaBanByIdDialogMessage">Insira o ID numérico (inteiro de 64 bits) do usuário. A solicitação de banimento será enviada diretamente aos servidores do Telegram.</string>
+    <string name="NiaBanByIdHint">ex.: 123456789</string>
+    <string name="NiaBanByIdConfirm">Banir usuário</string>
+    <string name="NiaBanByIdConfirmTitle">Confirmar banimento</string>
+    <string name="NiaBanByIdConfirmMessage">Tem certeza de que deseja banir o usuário com o ID: %1$s?</string>
+    <string name="NiaBanByIdSuccess">O usuário com o ID %1$s foi banido com sucesso.</string>
+    <string name="NiaBanByIdCannotBanSelf">Você não pode banir a si mesmo.</string>
+    <string name="NiaBanByIdCannotBanCreator">Não é possível banir o criador ou proprietário deste grupo.</string>
+    <string name="NiaBanByIdInvalid">Insira um ID numérico positivo válido.</string>
+    <string name="NiaBanByIdErrorNotParticipant">O usuário não está neste grupo. Os servidores do Telegram não permitem banir quem não é participante.</string>
+    <string name="NiaBanByIdErrorInvalidUser">ID de usuário inválido ou usuário não encontrado no Telegram.</string>
+    <string name="NiaBanByIdErrorAdminRequired">Você não tem privilégios de administrador suficientes para banir este usuário.</string>
+    <string name="NiaBanByIdServerError">Falha ao banir o usuário: %1$s</string>
+
+    <!-- Proxy Auto Acceleration -->
+    <string name="ProxyAutoSpeedAcceleration">Selecionar o proxy mais rápido automaticamente</string>
+    <string name="ProxyAutoSpeedAccelerationInfo">Testa e alterna automaticamente para o proxy com o menor ping a fim de acelerar a conexão.</string>
+    <string name="UseFastestProxy">Alternar para o proxy mais rápido</string>
+    <string name="SwitchedToFastestProxy">Alternado para o proxy mais rápido</string>
+    <string name="AlreadyFastestProxy">Você já está usando o proxy mais rápido</string>
+
+    <!-- Login Optimization -->
+    <string name="PrioritizeEmailCode">Priorizar código por e-mail</string>
+    <string name="SendCodeViaEmail">Enviar código por e-mail</string>
+    <string name="FastResendDialogTitle">Reenviar código</string>
+    <string name="FastResendDialogMessage">Ainda não recebeu o código? Deseja pular a contagem regressiva e solicitar um novo código agora?</string>
+    <string name="FastResendNow">Reenviar agora</string>
+    <string name="CodeSentToOtherDeviceTitle">Confira seu app do Telegram</string>
+    <string name="CodeSentToOtherDeviceInfo">O código de login foi enviado ao aplicativo do Telegram nos seus outros dispositivos.\n\nObservação: para receber códigos de login por e-mail, primeiro vincule um e-mail de login no app oficial do Telegram em Configurações &gt; Privacidade e Segurança &gt; Verificação em Duas Etapas.</string>
+    <string name="SendCodeUnavailableInfo">O Telegram não pode enviar o código por outros canais no momento. Se outro dispositivo estiver conectado, confira o código enviado ao seu app do Telegram.\n\nPara usar o login por e-mail, certifique-se de configurar um e-mail de login nas configurações de Privacidade e Segurança do Telegram.</string>
+
+    <!-- Public Proxy Nullgram -->
+    <string name="PublicProxy">Proxy público integrado</string>
+    <string name="PublicProxyDescription">Túnel de proxy fornecido pelo Nullgram (WebSocket via Cloudflare)</string>
+    <string name="PublicProxyCannotDelete">O proxy público integrado não pode ser excluído.</string>
+    <string name="PublicProxyCannotShare">O proxy público integrado não pode ser compartilhado.</string>
+    <string name="DisableProxyWhenVpnEnabledDesc">Suspende automaticamente o proxy quando a VPN do sistema for detectada. Observação: trocar de rede (ex.: de Wi-Fi para dados móveis) ou reconectar a VPN pode reativar o proxy momentaneamente.</string>
 
     <!-- Verified Badge -->
-    <string name="VerifySelf">Verificar a si mesmo</string>
-    <string name="VerifySelfDetail">Exibe localmente o selo de verificação exclusivo para a sua conta atual</string>
-    <string name="NiagramVerifiedOfficial">Oficial NiagramX</string>
-    <string name="NagramVerifiedDev">Desenvolvedor Nagram</string>
+    <string name="VerifySelf">Verificar própria conta</string>
+    <string name="VerifySelfDetail">Exibe localmente o selo de verificação exclusivo para a sua conta atual.</string>
+    <string name="NiagramVerifiedOfficial">Oficial do NiagramX</string>
+    <string name="NagramVerifiedDev">Desenvolvedor do Nagram</string>
 
     <!-- Input Text Animations -->
-    <string name="InputTextAnimations">Animação de entrada e partículas de exclusão</string>
+    <string name="InputTextAnimations">Animação de digitação e partículas ao apagar</string>
     <string name="InputAnimationStrength">Intensidade da animação</string>
     <string name="InputAnimationWeakest">Mínima</string>
     <string name="InputAnimationWeak">Fraca</string>
@@ -478,11 +581,24 @@
     <string name="InputAnimationStrong">Forte</string>
     <string name="InputAnimationStrongest">Máxima</string>
 
+    <!-- Chat Lock -->
+    <string name="LockChat">Bloquear conversa</string>
+    <string name="UnlockChat">Desbloquear conversa</string>
+    <string name="ChatLocked">Conversa bloqueada</string>
+    <string name="ChatLockedDescription">Confirme sua identidade para abrir esta conversa</string>
+    <string name="ChatLockedMessage">A conversa está bloqueada</string>
+
+    <!-- Bottom Style -->
+    <string name="ChatActivityNavbarTransparent">Barra de navegação da conversa totalmente transparente</string>
+
     <!-- Legacy Nekogram Strings -->
-    <string name="NekoSettings">N-Configurações</string>
+    <string name="NekoSettings">Configurações Neo</string>
     <string name="IPv6">Preferir IPv6</string>
     <string name="MessageMenu">Menu de mensagem</string>
     <string name="HidePhone">Ocultar número de telefone</string>
+    <string name="HideStarsRating">Ocultar avaliação por estrelas</string>
+    <string name="HideGiftButtons">Ocultar botão de presente</string>
+    <string name="ScrollToSeenPhotoOnClose">Rolar até a foto visualizada ao fechar</string>
     <string name="DeleteAllFromSelf">Apagar minhas mensagens</string>
     <string name="DeleteAllFromSelfAlert">Aviso! Isso irá **apagar todas as suas mensagens** neste chat para **todos** os participantes.</string>
     <string name="DeleteAllFromSelfAlertBefore">Aviso! Isso irá **apagar todas as suas mensagens antes de %s** neste chat para **todos** os participantes.</string>
@@ -548,7 +664,7 @@
     <string name="CallTo">Ligar para **%1$s**?</string>
     <string name="DisableNumberRounding">Desativar arredondamento de números</string>
     <string name="Categories">Categorias</string>
-    <string name="OfficialChannel">Canal Nagram</string>
+    <string name="OfficialChannel">Canal de builds do Niagram</string>
     <string name="About">Sobre</string>
     <string name="SourceCode">Código-fonte</string>
     <string name="ResetStickerSize">Redefinir tamanho do sticker</string>
@@ -585,12 +701,17 @@
     <string name="DatacenterStatusAbout">Verifique o status dos **datacenters** do Telegram.</string>
     <string name="DatacenterStatus">Status do datacenter</string>
     <string name="enhancedFileLoader">Aumentar velocidade de download</string>
+    <string name="enhancedFileLoaderOff">Desativado (4×128 KB)</string>
+    <string name="enhancedFileLoaderBalanced">Equilibrado (6×256 KB)</string>
+    <string name="enhancedFileLoaderExtreme">Extremo (8×512 KB)</string>
+    <string name="enhancedFileLoaderBalancedNotice">O modo Equilibrado (6×256 KB) aumenta significativamente a velocidade de download, evitando limites de taxa do servidor para contas que não sejam Premium. Recomendado para uso geral.</string>
+    <string name="enhancedFileLoaderExtremeNotice">O modo Extremo (8×512 KB) faz downloads com o número máximo de solicitações paralelas.\n\n⚠️ Aviso: para contas que não sejam Telegram Premium, o download de arquivos grandes pode pausar temporariamente por 7 a 10 segundos entre 65 e 75 MB devido à limitação de largura de banda imposta pelos servidores do Telegram. Se notar lentidão ou pausas, mude para o modo Equilibrado.</string>
     <string name="mapDriftingFixForGoogleMaps">Corrigir desvio do Google Maps na China</string>
     <string name="useOSMDroidMap">Usar mapa OSMDroid</string>
-    <string name="UnknownNekoSettingsOption">Não existe esta opção nas N-Configurações.</string>
-    <string name="PasscodeNeeded">​Você precisa ativar a senha de bloqueio primeiro</string>
+    <string name="UnknownNekoSettingsOption">Não existe esta opção nas Configurações Neo.</string>
+    <string name="PasscodeNeeded">Você precisa ativar a senha de bloqueio primeiro</string>
     <string name="PasscodeNeko">Senha de acesso</string>
-    <string name="PasscodeShowInSettings">Mostrar nas N-Configurações</string>
+    <string name="PasscodeShowInSettings">Mostrar nas Configurações Neo</string>
     <string name="PasscodeShowInSettingsAbout">Após ocultar, você poderá abrir esta página **APENAS** por este link:</string>
     <string name="PasscodeSet">Definir senha</string>
     <string name="PasscodeEdit">Alterar senha</string>
@@ -607,7 +728,7 @@
     <string name="PasscodePanicCodeAbout">Use o código de pânico para encerrar a sessão das contas se algo der errado.</string>
     <string name="RestrictionReason">Motivo da restrição</string>
     <string name="InvalidCustomEmojiTypeface">Arquivo de fonte inválido.</string>
-    <string name="DownloadEmojiSet">Download %s</string>
+    <string name="DownloadEmojiSet">Baixar %s</string>
     <string name="EmojiSets">Pacotes de emoji</string>
     <string name="MyEmojiSets">Meus pacotes de emoji</string>
     <string name="InstalledEmojiSet">Instalado</string>
@@ -629,14 +750,14 @@
     <string name="ClearRecentChats">Limpar chats recentes</string>
     <string name="ClearRecentChatAlert">Deseja limpar suas conversas recentes?</string>
     <string name="CloudConfig">Configurações da nuvem</string>
-    <string name="CloudConfigDesc">Salve suas N-Configurações na nuvem do Telegram.</string>
+    <string name="CloudConfigDesc">Salve suas Configurações Neo na nuvem do Telegram.</string>
     <string name="CloudConfigSyncDate">Última sincronização: %1$s, nuvem: %2$s</string>
     <string name="CloudConfigSyncDateNever">nunca</string>
     <string name="CloudConfigSync">Sincronizar com a nuvem</string>
     <string name="CloudConfigRestore">Restaurar da nuvem</string>
     <string name="CloudConfigSyncing">Sincronizando...</string>
     <string name="CloudConfigAutoSync">Sincronizar automaticamente</string>
-    <string name="CloudConfigAutoSyncDesc">Sincronizar com a nuvem automaticamente após alterar as N-Configurações.</string>
+    <string name="CloudConfigAutoSyncDesc">Sincronizar com a nuvem automaticamente após alterar as Configurações Neo.</string>
     <string name="CloudConfigSyncFailed">Falha ao sincronizar as configurações com a nuvem</string>
     <string name="CloudConfigRestoreFailed">Falha ao restaurar as configurações da nuvem</string>
     <string name="CopyCallback">Copiar dados de callback</string>
@@ -669,7 +790,6 @@
     <string name="NiagramXPushService">Serviço de notificação</string>
     <string name="DisableSystemAccount">Desativar conta do sistema</string>
     <string name="DisableProxyWhenVpnEnabled">Desativar proxy quando a VPN estiver ativada</string>
-    <string name="DisableProxyWhenVpnEnabledDesc">Suspende automaticamente o proxy quando a VPN do sistema for detectada. Nota: Trocar de rede (ex.: de Wi-Fi para dados móveis) ou reconectar a VPN pode reativar o proxy momentaneamente.</string>
     <string name="SkipOpenLinkConfirm">Ignorar confirmação ao abrir links</string>
     <string name="UnblockAll">Desbloquear todos</string>
     <string name="UnblockAllWarn">Tem certeza de que deseja desbloquear **todos os usuários e bots**?</string>
@@ -732,4 +852,9 @@
     <string name="EmojiUseDefault">Usar emoji do sistema</string>
     <string name="Chat">Chats</string>
     <string name="Appearance">Aparência</string>
+    <string name="ThemeAmoledDark">Escuro AMOLED</string>
+    <string name="NoPreloadTrackIfRepeatOne">Não pré-carregar a próxima faixa ao repetir uma única</string>
+    <string name="NekoAboutSectionCommunity">Comunidade</string>
+    <string name="NekoAboutSectionDevelopment">Desenvolvimento</string>
+    <string name="NekoAboutSectionDiagnostics">Diagnósticos</string>
 </resources>
