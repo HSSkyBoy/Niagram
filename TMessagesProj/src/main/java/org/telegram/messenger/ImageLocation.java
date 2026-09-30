@@ -187,7 +187,7 @@ public class ImageLocation {
             return null;
         }
         if (type == TYPE_VIDEO_BIG || type == TYPE_VIDEO_SMALL) {
-            if (MessagesController.getInstance(currentAccount).isPremiumUser(user) && user.photo.has_video) {
+            if ((MessagesController.getInstance(currentAccount).isPremiumUser(user) || top.nkbe.niagram.config.NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool()) && user.photo.has_video) {
                 final TLRPC.UserFull userFull = MessagesController.getInstance(currentAccount).getUserFull(user.id);
                 TLRPC.Photo photo = null;
                 if (userFull != null) {

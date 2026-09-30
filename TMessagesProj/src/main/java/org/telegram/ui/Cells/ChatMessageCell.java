@@ -360,7 +360,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     currentPhoto = null;
                 }
                 avatarDrawable.setInfo(currentAccount, currentUser);
-                avatarImage.setForUserOrChat(currentUser, avatarDrawable, null, LiteMode.isEnabled(LiteMode.FLAGS_CHAT), VectorAvatarThumbDrawable.TYPE_SMALL, false);
+                avatarImage.setForUserOrChat(currentUser, avatarDrawable, null, LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool(), VectorAvatarThumbDrawable.TYPE_SMALL, false);
             } else if (currentChat != null) {
                 if (currentChat.photo != null) {
                     currentPhoto = currentChat.photo.photo_small;
@@ -372,7 +372,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     if (did >= 0) {
                         final TLRPC.User user = MessagesController.getInstance(messageObject.currentAccount).getUser(did);
                         avatarDrawable.setInfo(currentAccount, user);
-                        avatarImage.setForUserOrChat(user, avatarDrawable);
+                        avatarImage.setForUserOrChat(user, avatarDrawable, null, LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool(), VectorAvatarThumbDrawable.TYPE_SMALL, false);
                     } else {
                         final TLRPC.Chat chat = MessagesController.getInstance(messageObject.currentAccount).getChat(-did);
                         avatarDrawable.setInfo(currentAccount, chat);

@@ -448,7 +448,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                 setImage(null, null, avatarDrawable, null, parentObject, 0);
                 return;
             }
-            isPremium = user.premium;
+            isPremium = user.premium || MessagesController.getInstance(currentAccount).isPremiumUser(user);
             if (user.photo != null) {
                 strippedBitmap = user.photo.strippedBitmap;
                 hasStripped = user.photo.stripped_thumb != null;
@@ -461,7 +461,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                         }
                     }
                 }
-                if (NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool() && vectorImageMarkup == null && animationEnabled && MessagesController.getInstance(currentAccount).isPremiumUser(user) && user.photo.has_video && LiteMode.isEnabled(LiteMode.FLAG_AUTOPLAY_VIDEOS)) {
+                if (NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool() && vectorImageMarkup == null && animationEnabled && user.photo.has_video && (LiteMode.isEnabled(LiteMode.FLAG_AUTOPLAY_VIDEOS) || NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool())) {
                     final TLRPC.UserFull userFull = MessagesController.getInstance(currentAccount).getUserFull(user.id);
                     if (userFull == null) {
                         MessagesController.getInstance(currentAccount).loadFullUser(user, currentGuid, false);
@@ -511,7 +511,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             }
             if (videoLocation != null) {
                 setImage(videoLocation, "avatar", location, filter, null, null, strippedBitmap, 0, null, parentObject, 0);
-                animatedFileDrawableRepeatMaxCount = 3;
+                animatedFileDrawableRepeatMaxCount = isPremium ? 30 : 3;
             } else {
                 if (strippedBitmap != null) {
                     setImage(location, filter, strippedBitmap, null, parentObject, 0);

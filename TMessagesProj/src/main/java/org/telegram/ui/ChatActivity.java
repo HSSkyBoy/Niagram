@@ -3081,6 +3081,11 @@ public class ChatActivity extends BaseFragment implements
                     hasQuickReplies = QuickRepliesController.getInstance(currentAccount).hasReplies();
                 }
             }
+            if (currentUser != null && currentUser.photo != null && currentUser.photo.has_video && NyaConfig.INSTANCE.getPremiumItemVideoAvatar().Bool()) {
+                if (getMessagesController().getUserFull(currentUser.id) == null) {
+                    getMessagesController().loadFullUser(currentUser, classGuid, false);
+                }
+            }
         } else if (encId != 0) {
             currentEncryptedChat = getMessagesController().getEncryptedChat(encId);
             final MessagesStorage messagesStorage = getMessagesStorage();
@@ -25268,6 +25273,7 @@ public class ChatActivity extends BaseFragment implements
                 updateGreetInfo();
                 updateBottomOverlay();
                 checkThemeEmoticonOrWallpaper();
+                checkAndUpdateAvatar();
                 if (chatActivityEnterView != null) {
                     chatActivityEnterView.checkChannelRights();
                     chatActivityEnterView.updateGiftButton(true);

@@ -1618,7 +1618,7 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
         } else {
             avatarDrawable.setScaleSize(1f);
             if (avatarImageView != null) {
-                avatarImageView.setForUserOrChat(user, avatarDrawable);
+                avatarImageView.imageReceiver.setForUserOrChat(user, avatarDrawable, null, true, VectorAvatarThumbDrawable.TYPE_STATIC, false);
             }
         }
     }
