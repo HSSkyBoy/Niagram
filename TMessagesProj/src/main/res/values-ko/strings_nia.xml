@@ -370,6 +370,8 @@
     <string name="UnblockAllChannelsWarn">**모든 채널**의 차단을 해제하시겠습니까?</string>
     <string name="BlockChannelsUnavailable">일부 채널을 일시적으로 사용할 수 없습니다.</string>
     <string name="FixLinkPreview">링크 미리보기 수정</string>
+    <string name="CleanTrackingParams">링크 추적 매개변수 자동 제거</string>
+    <string name="CleanTrackingParamsNotice">링크를 열거나 복사할 때 추적 매개변수(UTM, si, fbclid 등)를 자동으로 제거합니다.</string>
     <string name="NoQuoteForwardShort">인용 없음</string>
     <string name="ViewDeleted">삭제된 메시지 보기</string>
     <string name="PasskeyLogin">패스키 로그인</string>

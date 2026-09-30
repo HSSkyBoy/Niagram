@@ -1763,26 +1763,29 @@ public class AlertsCreator {
 
     public static void showOpenUrlAlert(Context context, String url, boolean punycode, boolean tryTelegraph, boolean ask, boolean forceNotInternalForApps, long inlineReturn, Browser.Progress progress, @Nullable TLRPC.WebPage webPage, Theme.ResourcesProvider resourcesProvider) {
         if (!AndroidUtilities.isContextSafe(context)) return;
-        final String scheme = url == null ? null : Uri.parse(url).getScheme();
-        if ((Browser.isInternalUrl(url, null) || !ask || "mailto".equalsIgnoreCase(scheme) || NyaConfig.skipOpenLinkConfirm.Bool()) && !NyaConfig.INSTANCE.getConfirmAllLinks().Bool()) {
-            Browser.openUrl(context, Uri.parse(url), inlineReturn == 0, tryTelegraph, forceNotInternalForApps && checkInternalBotApp(url), progress, null, false, true, false);
+        final String cleanUrl = (url != null && NyaConfig.INSTANCE.getCleanTrackingParams().Bool())
+                ? top.nkbe.niagram.utils.UrlCleaner.clean(url)
+                : url;
+        final String scheme = cleanUrl == null ? null : Uri.parse(cleanUrl).getScheme();
+        if ((Browser.isInternalUrl(cleanUrl, null) || !ask || "mailto".equalsIgnoreCase(scheme) || NyaConfig.skipOpenLinkConfirm.Bool()) && !NyaConfig.INSTANCE.getConfirmAllLinks().Bool()) {
+            Browser.openUrl(context, Uri.parse(cleanUrl), inlineReturn == 0, tryTelegraph, forceNotInternalForApps && checkInternalBotApp(cleanUrl), progress, null, false, true, false);
             return;
         }
 
         String urlFinal;
         if (punycode) {
             try {
-                Uri uri = Uri.parse(url);
+                Uri uri = Uri.parse(cleanUrl);
                 urlFinal = Browser.replaceHostname(uri, Browser.IDN_toUnicode(uri.getHost()), null);
             } catch (Exception e) {
                 FileLog.e(e, false);
-                urlFinal = url;
+                urlFinal = cleanUrl;
             }
         } else {
-            urlFinal = url;
+            urlFinal = cleanUrl;
         }
 
-        final Runnable open = () -> Browser.openUrl(context, Uri.parse(url), inlineReturn == 0, tryTelegraph, progress);
+        final Runnable open = () -> Browser.openUrl(context, Uri.parse(cleanUrl), inlineReturn == 0, tryTelegraph, progress);
         final AlertDialog[] dialog = new AlertDialog[1];
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context, resourcesProvider);
@@ -1829,7 +1832,7 @@ public class AlertsCreator {
         builder.setPositiveButton(LocaleController.getString(R.string.Open), (dialogInterface, i) -> open.run());
         builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
         builder.setNeutralButton(LocaleController.getString(R.string.Copy), (dialogInterface, i) -> {
-            AndroidUtilities.addToClipboard(url);
+            AndroidUtilities.addToClipboard(cleanUrl);
             BulletinFactory.of(LaunchActivity.getSafeLastFragment()).createCopyLinkBulletin().show();
         });
         dialog[0] = builder.show();

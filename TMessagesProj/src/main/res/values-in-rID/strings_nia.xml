@@ -371,6 +371,8 @@
     <string name="UnblockAllChannelsWarn">Apakah Anda yakin ingin membuka blokir **semua saluran**?</string>
     <string name="BlockChannelsUnavailable">Beberapa saluran sementara tidak tersedia.</string>
     <string name="FixLinkPreview">Perbaiki Pratinjau Tautan</string>
+    <string name="CleanTrackingParams">Bersihkan Parameter Pelacakan Tautan</string>
+    <string name="CleanTrackingParamsNotice">Hapus parameter pelacakan (UTM, si, fbclid, dll.) secara otomatis saat membuka atau menyalin tautan.</string>
     <string name="NoQuoteForwardShort">Tanpa Kutipan</string>
     <string name="ViewDeleted">Lihat yang Dihapus</string>
     <string name="PasskeyLogin">Masuk dengan Passkey</string>

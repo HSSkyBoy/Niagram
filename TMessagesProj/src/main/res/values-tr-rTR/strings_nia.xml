@@ -369,6 +369,8 @@
     <string name="UnblockAllChannelsWarn">**Tüm kanalların** engelini kaldırmak istediğinizden emin misiniz?</string>
     <string name="BlockChannelsUnavailable">Bazı kanallar geçici olarak kullanılamıyor.</string>
     <string name="FixLinkPreview">Bağlantı Önizlemesini Düzelt</string>
+    <string name="CleanTrackingParams">Bağlantı İzleme Parametrelerini Temizle</string>
+    <string name="CleanTrackingParamsNotice">Bağlantıları açarken veya kopyalarken izleme parametrelerini (UTM, si, fbclid vb.) otomatik olarak kaldırın.</string>
     <string name="NoQuoteForwardShort">Alıntısız</string>
     <string name="ViewDeleted">Silinenleri Görüntüle</string>
     <string name="PasskeyLogin">Geçiş Anahtarı (Passkey) ile Giriş</string>

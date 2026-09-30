@@ -1744,6 +1744,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val cleanTrackingParams =
+        addConfig(
+            "CleanTrackingParams",
+            ConfigItem.configTypeBool,
+            true
+        )
     val showAddToBookmark =
         addConfig(
             "ShowAddToBookmark",

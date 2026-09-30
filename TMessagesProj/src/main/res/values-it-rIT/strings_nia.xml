@@ -375,6 +375,8 @@ Non possiamo aiutarti in questo caso; se hai problemi di accesso, contatta il Su
     <string name="UnblockAllChannelsWarn">Sei sicuro di voler sbloccare **tutti i canali**?</string>
     <string name="BlockChannelsUnavailable">Alcuni canali sono temporaneamente non disponibili.</string>
     <string name="FixLinkPreview">Correggi l\'anteprima link</string>
+    <string name="CleanTrackingParams">Pulisci parametri di tracciamento link</string>
+    <string name="CleanTrackingParamsNotice">Rimuove automaticamente i parametri di tracciamento (UTM, si, fbclid, ecc.) durante l\'apertura o la copia dei link.</string>
     <string name="NoQuoteForwardShort">Ness. cit.</string>
     <string name="ViewDeleted">Visualizza eliminati</string>
     <string name="PasskeyLogin">Accesso con Passkey</string>

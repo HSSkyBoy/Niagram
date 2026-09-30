@@ -370,6 +370,8 @@
     <string name="UnblockAllChannelsWarn">آیا مطمئن هستید که می‌خواهید **همه کانال‌ها** را از حالت مسدود خارج کنید؟</string>
     <string name="BlockChannelsUnavailable">برخی از کانال‌ها به‌طور موقت در دسترس نیستند.</string>
     <string name="FixLinkPreview">رفع مشکل پیش‌نمایش لینک</string>
+    <string name="CleanTrackingParams">پاکسازی پارامترهای ردیابی پیوند</string>
+    <string name="CleanTrackingParamsNotice">هنگام باز کردن یا کپی کردن پیوندها، پارامترهای ردیابی (UTM، si، fbclid و غیره) را به‌طور خودکار حذف کنید.</string>
     <string name="NoQuoteForwardShort">بدون نقل قول</string>
     <string name="ViewDeleted">مشاهده موارد حذف‌شده</string>
     <string name="PasskeyLogin">ورود با رمز عبور</string>

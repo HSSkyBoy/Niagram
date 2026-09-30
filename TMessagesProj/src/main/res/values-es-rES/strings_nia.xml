@@ -371,6 +371,8 @@ También puede utilizar texto sin formato, pero no olvide escapar los paréntesi
     <string name="UnblockAllChannelsWarn">¿Estás seguro de que deseas desbloquear **todos los canales**?</string>
     <string name="BlockChannelsUnavailable">Algunos canales no están disponibles temporalmente.</string>
     <string name="FixLinkPreview">Corregir vista previa de enlaces</string>
+    <string name="CleanTrackingParams">Limpiar parámetros de rastreo de enlaces</string>
+    <string name="CleanTrackingParamsNotice">Elimina automáticamente los parámetros de rastreo (UTM, si, fbclid, etc.) al abrir o copiar enlaces.</string>
     <string name="NoQuoteForwardShort">Sin citar</string>
     <string name="ViewDeleted">Ver eliminados</string>
     <string name="PasskeyLogin">Passkey Login</string>

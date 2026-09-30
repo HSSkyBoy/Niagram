@@ -358,6 +358,8 @@
     <string name="UnblockAllChannelsWarn">Bạn có chắc chắn muốn bỏ chặn **tất cả các kênh** không?</string>
     <string name="BlockChannelsUnavailable">Một số kênh tạm thời không khả dụng.</string>
     <string name="FixLinkPreview">Sửa lỗi xem trước liên kết</string>
+    <string name="CleanTrackingParams">Xóa tham số theo dõi liên kết</string>
+    <string name="CleanTrackingParamsNotice">Tự động loại bỏ các tham số theo dõi (UTM, si, fbclid, v.v.) khi mở hoặc sao chép liên kết.</string>
     <string name="NoQuoteForwardShort">NoQuote</string>
     <string name="ViewDeleted">Xem tin đã xóa</string>
     <string name="PasskeyLogin">Đăng nhập bằng Passkey</string>

@@ -427,6 +427,8 @@
     <string name="UnblockAllChannelsWarn">您確定要解除封鎖**所有頻道**？</string>
     <string name="BlockChannelsUnavailable">某些頻道暫時無法顯示。</string>
     <string name="FixLinkPreview">修復連結預覽</string>
+    <string name="CleanTrackingParams">自動清理連結追蹤參數</string>
+    <string name="CleanTrackingParamsNotice">在開啟或複製連結時，自動過濾掉冗餘的追蹤參數（如 UTM、si、fbclid 等）。</string>
     <string name="NoQuoteForwardShort">無引用</string>
     <string name="ViewDeleted">檢視已刪除訊息</string>
     <string name="PasskeyLogin">Passkey 登入</string>

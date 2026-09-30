@@ -446,6 +446,8 @@
     <string name="UnblockAllChannelsWarn">Are you sure you want to unblock **all channels**?</string>
     <string name="BlockChannelsUnavailable">Some channels are temporarily unavailable.</string>
     <string name="FixLinkPreview">Fix Link Preview</string>
+    <string name="CleanTrackingParams">Clean Link Tracking Parameters</string>
+    <string name="CleanTrackingParamsNotice">Automatically strip tracking parameters (UTM, si, fbclid, etc.) when opening or copying links.</string>
     <string name="NoQuoteForwardShort">NoQuote</string>
     <string name="ViewDeleted">View Deleted</string>
     <string name="PasskeyLogin">Passkey Login</string>

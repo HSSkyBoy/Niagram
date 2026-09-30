@@ -370,6 +370,8 @@
     <string name="UnblockAllChannelsWarn">Czy na pewno chcesz odblokować **wszystkie kanały**?</string>
     <string name="BlockChannelsUnavailable">Niektóre kanały są tymczasowo niedostępne.</string>
     <string name="FixLinkPreview">Napraw podgląd linku</string>
+    <string name="CleanTrackingParams">Usuwaj parametry śledzące z linków</string>
+    <string name="CleanTrackingParamsNotice">Automatycznie usuwaj parametry śledzące (UTM, si, fbclid itp.) podczas otwierania lub kopiowania linków.</string>
     <string name="NoQuoteForwardShort">Przekaż bez śledzenia</string>
     <string name="ViewDeleted">Wyświetl usunięte</string>
     <string name="PasskeyLogin">Logowanie za pomocą klucza</string>

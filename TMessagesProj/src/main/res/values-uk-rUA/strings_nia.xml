@@ -389,6 +389,8 @@
     <string name="UnblockAllChannelsWarn">Ви впевнені, що хочете розблокувати **всі канали**?</string>
     <string name="BlockChannelsUnavailable">Деякі канали тимчасово недоступні.</string>
     <string name="FixLinkPreview">Виправити прев’ю посилань</string>
+    <string name="CleanTrackingParams">Очищення параметрів відстеження посилань</string>
+    <string name="CleanTrackingParamsNotice">Автоматично видаляти параметри відстеження (UTM, si, fbclid тощо) під час відкриття або копіювання посилань.</string>
     <string name="NoQuoteForwardShort">Без цитати</string>
     <string name="ViewDeleted">Переглянути видалені</string>
     <string name="PasskeyLogin">Вхід за ключем доступу</string>

@@ -369,6 +369,8 @@
     <string name="UnblockAllChannelsWarn">Tem certeza de que deseja desbloquear **todos os canais**?</string>
     <string name="BlockChannelsUnavailable">Alguns canais estão indisponíveis temporariamente.</string>
     <string name="FixLinkPreview">Corrigir prévia de link</string>
+    <string name="CleanTrackingParams">Limpar parâmetros de rastreamento de links</string>
+    <string name="CleanTrackingParamsNotice">Remove automaticamente parâmetros de rastreamento (UTM, si, fbclid, etc.) ao abrir ou copiar links.</string>
     <string name="NoQuoteForwardShort">Sem autor</string>
     <string name="ViewDeleted">Ver apagadas</string>
     <string name="PasskeyLogin">Chave de acesso</string>

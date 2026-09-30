@@ -378,6 +378,8 @@
     <string name="UnblockAllChannelsWarn">**すべてのチャンネル**のブロックを解除してもよろしいですか？</string>
     <string name="BlockChannelsUnavailable">一部のチャンネルは一時的に表示できません。</string>
     <string name="FixLinkPreview">リンクプレビューを改善</string>
+    <string name="CleanTrackingParams">リンクの追跡パラメータを自動削除</string>
+    <string name="CleanTrackingParamsNotice">リンクを開くまたはコピーするときに、追跡パラメータ（UTM、si、fbclidなど）を自動的に削除します。</string>
     <string name="NoQuoteForwardShort">引用なし</string>
     <string name="ViewDeleted">削除済みを表示</string>
     <string name="PasskeyLogin">パスキーログイン</string>

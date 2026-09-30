@@ -401,6 +401,8 @@
     <string name="UnblockAllChannelsWarn">Вы уверены, что хотите разблокировать **все каналы**?</string>
     <string name="BlockChannelsUnavailable">Некоторые каналы временно недоступны.</string>
     <string name="FixLinkPreview">Исправить предпросмотр ссылок</string>
+    <string name="CleanTrackingParams">Очистка параметров отслеживания ссылок</string>
+    <string name="CleanTrackingParamsNotice">Автоматически удалять параметры отслеживания (UTM, si, fbclid и др.) при открытии или копировании ссылок.</string>
     <string name="NoQuoteForwardShort">Без автора</string>
     <string name="ViewDeleted">Просмотреть удалённые</string>
     <string name="PasskeyLogin">Вход по паролю</string>

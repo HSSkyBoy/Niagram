@@ -3627,6 +3627,13 @@ public class AndroidUtilities {
 
     public static boolean addToClipboard(CharSequence plain, String html) {
         if (html == null) return addToClipboard(plain);
+        if (plain != null && top.nkbe.niagram.config.NyaConfig.INSTANCE.getCleanTrackingParams().Bool()) {
+            String s = plain.toString().trim();
+            if (s.startsWith("http://") || s.startsWith("https://")) {
+                plain = top.nkbe.niagram.utils.UrlCleaner.clean(s);
+                html = plain.toString();
+            }
+        }
         try {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) ApplicationLoader.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE);
             android.content.ClipData clip = android.content.ClipData.newHtmlText("label", plain, html);
@@ -3639,6 +3646,12 @@ public class AndroidUtilities {
     }
 
     public static boolean addToClipboard(CharSequence str) {
+        if (str != null && top.nkbe.niagram.config.NyaConfig.INSTANCE.getCleanTrackingParams().Bool()) {
+            String s = str.toString().trim();
+            if (s.startsWith("http://") || s.startsWith("https://")) {
+                str = top.nkbe.niagram.utils.UrlCleaner.clean(s);
+            }
+        }
         try {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) ApplicationLoader.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE);
 
