@@ -4990,7 +4990,9 @@ public class ChatActivity extends BaseFragment implements
             if (NyaConfig.INSTANCE.getChatMenuItemClearDeleted().Bool() && NyaConfig.INSTANCE.getEnableSaveDeletedMessages().Bool()) headerItem.lazilyAddSubItem(nkbtn_clearDeleted, R.drawable.msg_clear, getString(R.string.ClearDeleted));
             if (dialog_id != 0) {
                 boolean isLocked = top.nkbe.niagram.helpers.ChatLockManager.isChatLocked(currentAccount, dialog_id);
-                headerItem.lazilyAddSubItem(nkbtn_lock_chat, isLocked ? R.drawable.menu_unlock : R.drawable.baseline_lock_24, LocaleController.getString(isLocked ? R.string.UnlockChat : R.string.LockChat));
+                if (NyaConfig.INSTANCE.getChatMenuItemLockChat().Bool() || isLocked) {
+                    headerItem.lazilyAddSubItem(nkbtn_lock_chat, isLocked ? R.drawable.menu_unlock : R.drawable.baseline_lock_24, LocaleController.getString(isLocked ? R.string.UnlockChat : R.string.LockChat));
+                }
             }
             if (!isTopic) {
                 if (NyaConfig.INSTANCE.getChatMenuItemDeleteOwnMessages().Bool() && (ChatObject.isMegagroup(currentChat) || currentChat != null && !ChatObject.isChannel(currentChat))) {

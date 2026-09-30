@@ -1322,6 +1322,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val chatMenuItemLockChat =
+        addConfig(
+            "ChatMenuItemLockChat",
+            ConfigItem.configTypeBool,
+            true
+        )
     val mediaViewerMenuItemForward =
         addConfig(
             "MediaViewerMenuItemForward",

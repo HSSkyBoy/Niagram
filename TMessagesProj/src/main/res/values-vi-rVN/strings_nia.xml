@@ -699,4 +699,6 @@
     <string name="EmojiUseDefault">Sử dụng biểu tượng cảm xúc hệ thống</string>
     <string name="Chat">Trò chuyện</string>
     <string name="Appearance">Giao diện</string>
+    <string name="LockChat">Khóa trò chuyện</string>
+    <string name="UnlockChat">Mở khóa trò chuyện</string>
 </resources>

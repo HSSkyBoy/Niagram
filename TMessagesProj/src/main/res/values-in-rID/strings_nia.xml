@@ -734,4 +734,6 @@
     <string name="EmojiUseDefault">Gunakan emoji sistem</string>
     <string name="Chat">Obrolan</string>
     <string name="Appearance">Tampilan</string>
+    <string name="LockChat">Kunci obrolan</string>
+    <string name="UnlockChat">Buka kunci obrolan</string>
 </resources>

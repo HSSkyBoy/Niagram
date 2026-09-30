@@ -732,4 +732,6 @@
     <string name="EmojiUseDefault">Usar emoji do sistema</string>
     <string name="Chat">Chats</string>
     <string name="Appearance">Aparência</string>
+    <string name="LockChat">Bloquear chat</string>
+    <string name="UnlockChat">Desbloquear chat</string>
 </resources>

@@ -736,4 +736,6 @@ Non possiamo aiutarti in questo caso; se hai problemi di accesso, contatta il Su
     <string name="EmojiUseDefault">Usa le Emoji di Sistema</string>
     <string name="Chat">Chats</string>
     <string name="Appearance">Aspetto</string>
+    <string name="LockChat">Blocca chat</string>
+    <string name="UnlockChat">Sblocca chat</string>
 </resources>

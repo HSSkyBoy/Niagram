@@ -730,4 +730,6 @@
     <string name="EmojiUseDefault">Sistem emojilerini kullan</string>
     <string name="Chat">Sohbetler</string>
     <string name="Appearance">Görünüm</string>
+    <string name="LockChat">Sohbeti kilitle</string>
+    <string name="UnlockChat">Sohbetin kilidini aç</string>
 </resources>

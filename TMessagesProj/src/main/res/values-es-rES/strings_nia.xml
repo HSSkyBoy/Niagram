@@ -732,4 +732,6 @@ También puede utilizar texto sin formato, pero no olvide escapar los paréntesi
     <string name="EmojiUseDefault">Usar emojis del sistema</string>
     <string name="Chat">Chats</string>
     <string name="Appearance">Apariencia</string>
+    <string name="LockChat">Bloquear chat</string>
+    <string name="UnlockChat">Desbloquear chat</string>
 </resources>

@@ -731,4 +731,6 @@
     <string name="EmojiUseDefault">Użyj systemowych emoji</string>
     <string name="Chat">Czaty</string>
     <string name="Appearance">Wygląd</string>
+    <string name="LockChat">Zablokuj czat</string>
+    <string name="UnlockChat">Odblokuj czat</string>
 </resources>

@@ -731,4 +731,6 @@
     <string name="EmojiUseDefault">استفاده از اموجی سیستم</string>
     <string name="Chat">گفتگوها</string>
     <string name="Appearance">ظاهر</string>
+    <string name="LockChat">قفل کردن گفتگو</string>
+    <string name="UnlockChat">باز کردن قفل گفتگو</string>
 </resources>
