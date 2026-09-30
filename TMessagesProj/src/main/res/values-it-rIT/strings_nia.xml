@@ -132,7 +132,7 @@
     <string name="LlmSystemPromptHint">Sei un traduttore professionista.</string>
     <string name="LlmSystemPromptNotice">Definisci il ruolo e il comportamento dell\'IA.\n\nQuesto prompt imposta il tono, la personalità e i limiti dell\'IA. Considera descrivere che tipo di assistente dovrebbe essere l\'IA.</string>
     <string name="LlmUserPrompt">Prompt Utente</string>
-    <string name="LlmUserPromptHint">Traduci @text in @toLang.</string>
+    <string name="LlmUserPromptHint">Traduci in @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Utilizza @text come placeholder per il messaggio originale e @toLang per la lingua di destinazione (facoltativo).\n\nLasciando questo campo vuoto verrà utilizzato il prompt predefinito.</string>
     <string name="LlmUseContext">Usa contesto</string>
     <string name="LlmUseContextNotice">Migliora la qualità della traduzione a scapito di più token.</string>

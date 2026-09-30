@@ -139,7 +139,7 @@
     <string name="LlmSystemPromptHint">あなたはプロの翻訳者です。</string>
     <string name="LlmSystemPromptNotice">AI の役割と行動指針を定義します。\n\nこのプロンプトは、AI の口調や個性、制約などを設定するものです。どのようなアシスタントとして振る舞ってほしいかを記述してください。</string>
     <string name="LlmUserPrompt">ユーザープロンプト</string>
-    <string name="LlmUserPromptHint">\@text を @toLang に翻訳してください。</string>
+    <string name="LlmUserPromptHint">@toLang に翻訳：\n@text</string>
     <string name="LlmUserPromptNotice">元のメッセージのプレースホルダーとして @text を、ターゲット言語のプレースホルダーとして @toLang を使用します（オプション）。\n\n空白のままにすると、デフォルトのプロンプトが使用されます。</string>
     <string name="LlmUseContext">コンテキストを使用</string>
     <string name="LlmUseContextNotice">より多くのトークンを消費しますが、翻訳品質が向上します。</string>

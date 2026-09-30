@@ -132,7 +132,7 @@ También puede utilizar texto sin formato, pero no olvide escapar los paréntesi
     <string name="LlmSystemPromptHint">Eres un traductor profesional.</string>
     <string name="LlmSystemPromptNotice">Define el rol y el comportamiento de la IA.\n\nEsta instrucción define el tono, la personalidad y las limitaciones de la IA. Considera describir qué tipo de asistente debería ser la IA.</string>
     <string name="LlmUserPrompt">Prompt del usuario</string>
-    <string name="LlmUserPromptHint">Traducir @text a @toLang.</string>
+    <string name="LlmUserPromptHint">Traducir a @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Utilice @text como marcador de posición para el mensaje original y @toLang para el idioma de destino (opcional).\n\nSi deja este campo en blanco, se utilizará el mensaje predeterminado.</string>
     <string name="LlmUseContext">Usar contexto</string>
     <string name="LlmUseContextNotice">Mejora la calidad de la traducción a costa de más tokens.</string>

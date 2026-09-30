@@ -131,7 +131,7 @@
     <string name="LlmSystemPromptHint">شما یک مترجم حرفه‌ای هستید.</string>
     <string name="LlmSystemPromptNotice">نقش و رفتار هوش مصنوعی را تعریف کنید.\n\nاین دستورالعمل، لحن، شخصیت و محدودیت‌های هوش مصنوعی را تعیین می‌کند. در نظر بگیرید که این هوش مصنوعی باید چه نوع دستیاری باشد.</string>
     <string name="LlmUserPrompt">دستور کاربر</string>
-    <string name="LlmUserPromptHint">‎@text را به @toLang ترجمه کنید.</string>
+    <string name="LlmUserPromptHint">ترجمه به @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">از @text به عنوان جایگزین برای پیام اصلی و از @toLang برای زبان مقصد (اختیاری) استفاده کنید.\n\nخالی گذاشتن این قسمت، از دستور پیش‌فرض استفاده می‌کند.</string>
     <string name="LlmUseContext">استفاده از زمینه</string>
     <string name="LlmUseContextNotice">کیفیت ترجمه را با هزینه توکن‌های بیشتر بهبود می‌بخشد.</string>

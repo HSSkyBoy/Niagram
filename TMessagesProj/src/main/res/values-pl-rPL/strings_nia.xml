@@ -131,7 +131,7 @@
     <string name="LlmSystemPromptHint">Jesteś profesjonalnym tłumaczem.</string>
     <string name="LlmSystemPromptNotice">Zdefiniuj rolę i zachowanie sztucznej inteligencji AI.\n\nTo pole określa charakter, osobowość i ograniczenia sztucznej inteligencji. Rozważ opisanie, jakim typem asystenta powinna być sztuczna inteligencja.</string>
     <string name="LlmUserPrompt">Polecenie</string>
-    <string name="LlmUserPromptHint">Przetłumacz @text na @toLang.</string>
+    <string name="LlmUserPromptHint">Przetłumacz na @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Użyj @text jako symbolu zastępczego dla oryginalnej wiadomości i @toLang dla języka docelowego (opcjonalnie).\n\nPozostawienie tego pola pustego spowoduje użycie domyślnego monitu.</string>
     <string name="LlmUseContext">Użyj kontekstu</string>
     <string name="LlmUseContextNotice">Poprawia jakość tłumaczenia kosztem większej liczby tokenów.</string>

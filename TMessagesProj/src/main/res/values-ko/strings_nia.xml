@@ -131,7 +131,7 @@
     <string name="LlmSystemPromptHint">당신은 전문 번역가입니다.</string>
     <string name="LlmSystemPromptNotice">AI의 역할과 동작을 정의하세요.\n\n이 프롬프트는 AI의 어조, 성격, 제한 사항을 설정합니다. AI가 어떤 유형의 어시스턴트여야 하는지 설명해 보세요.</string>
     <string name="LlmUserPrompt">사용자 프롬프트</string>
-    <string name="LlmUserPromptHint">원문 @text를 대상 언어(@toLang)로 번역하세요.</string>
+    <string name="LlmUserPromptHint">@toLang(으)로 번역:\n@text</string>
     <string name="LlmUserPromptNotice">원문 메시지의 자리표시자로 @text를, 대상 언어의 자리표시자로 @toLang을 사용하세요(선택 사항).\n\n비워 두면 기본 프롬프트를 사용합니다.</string>
     <string name="LlmUseContext">문맥 사용</string>
     <string name="LlmUseContextNotice">더 많은 토큰을 사용하는 대신 번역 품질을 높입니다.</string>

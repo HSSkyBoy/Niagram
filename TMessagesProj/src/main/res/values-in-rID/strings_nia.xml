@@ -132,7 +132,7 @@
     <string name="LlmSystemPromptHint">Anda adalah seorang penerjemah profesional.</string>
     <string name="LlmSystemPromptNotice">Tentukan peran dan perilaku AI.\n\nPerintah ini menentukan gaya, kepribadian, dan batasan AI. Pertimbangkan untuk mendeskripsikan jenis asisten seperti apa yang seharusnya dimiliki oleh AI.</string>
     <string name="LlmUserPrompt">Perintah Pengguna</string>
-    <string name="LlmUserPromptHint">Terjemahkan @text ke @toLang.</string>
+    <string name="LlmUserPromptHint">Terjemahkan ke @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Gunakan @text sebagai pengganti pesan asli, dan @toLang untuk bahasa tujuan (opsional).\n\nJika dibiarkan kosong, akan menggunakan perintah default.</string>
     <string name="LlmUseContext">Gunakan Konteks</string>
     <string name="LlmUseContextNotice">Meningkatkan kualitas terjemahan dengan mengorbankan lebih banyak token.</string>

@@ -131,7 +131,7 @@
     <string name="LlmSystemPromptHint">Você é um tradutor profissional.</string>
     <string name="LlmSystemPromptNotice">Defina o papel e o comportamento da IA.\n\nEste comando estabelece o tom, a personalidade e as limitações da IA. Descreva que tipo de assistente a IA deve ser.</string>
     <string name="LlmUserPrompt">Prompt do usuário</string>
-    <string name="LlmUserPromptHint">Traduza @text para @toLang.</string>
+    <string name="LlmUserPromptHint">Traduzir para @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Use @text como um marcador para a mensagem original e @toLang para o idioma de destino (opcional).\n\nDeixar este campo em branco usará o comando padrão.</string>
     <string name="LlmUseContext">Usar contexto</string>
     <string name="LlmUseContextNotice">Melhora a qualidade da tradução, porém consome mais tokens.</string>

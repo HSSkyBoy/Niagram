@@ -131,7 +131,7 @@
     <string name="LlmSystemPromptHint">Sen profesyonel bir çevirmensin.</string>
     <string name="LlmSystemPromptNotice">Yapay zekanın rolünü ve davranışını tanımlayın.\n\nBu istem, yapay zeka için üslup, kişilik ve sınırları belirler. Yapay zekanın ne tür bir asistan olması gerektiğini açıklamayı düşünebilirsiniz.</string>
     <string name="LlmUserPrompt">Kullanıcı İstemi</string>
-    <string name="LlmUserPromptHint">\@text metnini @toLang diline çevir.</string>
+    <string name="LlmUserPromptHint">@toLang diline çevir:\n@text</string>
     <string name="LlmUserPromptNotice">Orijinal mesaj için yer tutucu olarak @text ve hedef dil için @toLang kullanın (isteğe bağlı).\n\nBunu boş bırakmak varsayılan istemi kullanacaktır.</string>
     <string name="LlmUseContext">Bağlamı Kullan</string>
     <string name="LlmUseContextNotice">Daha fazla token kullanımı pahasına çeviri kalitesini artırır.</string>

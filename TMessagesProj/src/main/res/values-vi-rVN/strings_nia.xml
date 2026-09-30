@@ -130,7 +130,7 @@
     <string name="LlmSystemPromptHint">Bạn là một dịch giả chuyên nghiệp.</string>
     <string name="LlmSystemPromptNotice">Xác định vai trò và cách thức hoạt động của AI.\n\n Câu lệnh này thiết lập giọng điệu, cá tính và các giới hạn cho AI. Hãy cân nhắc mô tả loại trợ lý mà AI cần thực hiện.</string>
     <string name="LlmUserPrompt">Lời nhắc của người dùng</string>
-    <string name="LlmUserPromptHint">Dịch @text sang @toLang.</string>
+    <string name="LlmUserPromptHint">Dịch sang @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Sử dụng @text làm biến giữ chỗ cho tin nhắn gốc và @toLang cho ngôn ngữ đích (tùy chọn).\n\nNếu để trống, hệ thống sẽ sử dụng câu lệnh (prompt) mặc định.</string>
     <string name="LlmUseContext">Sử dụng ngữ cảnh</string>
     <string name="LlmUseContextNotice">Cải thiện chất lượng dịch nhưng tốn nhiều token hơn.</string>

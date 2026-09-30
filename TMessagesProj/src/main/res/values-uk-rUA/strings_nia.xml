@@ -131,7 +131,7 @@
     <string name="LlmSystemPromptHint">Ти професійний перекладач.</string>
     <string name="LlmSystemPromptNotice">Визначте роль і поведінку AI.\n\nЦей промпт задає тон, індивідуальність і обмеження для AI. Подумайте про те, яким типом помічника має бути AI.</string>
     <string name="LlmUserPrompt">Користувацький Промпт</string>
-    <string name="LlmUserPromptHint">Перекласти @text на @toLang.</string>
+    <string name="LlmUserPromptHint">Перекласти на @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Використовуйте @text як заповнювач для оригінального повідомлення та @toLang для мови перекладу (необов\'язково).\n\nЯкщо залишити це поле порожнім, використовуватиметься запит за замовчуванням.</string>
     <string name="LlmUseContext">Використовувати контекст</string>
     <string name="LlmUseContextNotice">Покращує якість перекладу за рахунок більшої кількості токенів.</string>

@@ -196,8 +196,8 @@ object LLMTranslator : Translator {
             generateSystemPrompt()
         }
         val userPrompt = NyaConfig.llmUserPrompt.String()?.takeIf { it.isNotEmpty() }
-            ?.replace("@text", query)
-            ?.replace("@toLang", to)
+            ?.replace("@text", query, ignoreCase = true)
+            ?.replace("@toLang", to, ignoreCase = true)
             ?: generatePrompt(query, to)
 
         val contextPrompt = rawContext?.let { buildContextPrompt(it) }
