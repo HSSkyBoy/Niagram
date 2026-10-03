@@ -3617,11 +3617,15 @@ public class AndroidUtilities {
         ApplicationLoader.appCenterLog(e);
     }
 
+    public static boolean isColorOS() {
+        return !TextUtils.isEmpty(AndroidUtilities.getSystemProperty("ro.build.version.oplusrom"));
+    }
+
     public static boolean shouldShowClipboardToast() {
         boolean origin = (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || !OneUIUtilities.hasBuiltInClipboardToasts()) && Build.VERSION.SDK_INT < 32;
         if (origin) return true;
         boolean isMIUI = XiaomiUtilities.isMIUI();
-        boolean isColorOS = !TextUtils.isEmpty(AndroidUtilities.getSystemProperty("ro.build.version.oplusrom"));
+        boolean isColorOS = isColorOS();
         return isMIUI || isColorOS;
     }
 

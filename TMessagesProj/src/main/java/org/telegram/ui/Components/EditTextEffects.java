@@ -320,7 +320,7 @@ public class EditTextEffects extends EditText {
             ) && (
                 Build.MODEL == null ||
                 !Build.MODEL.toLowerCase().contains("mediapad")
-            );
+            ) && !AndroidUtilities.isColorOS();
         }
         return allowHackingTextCanvasCache;
     }
