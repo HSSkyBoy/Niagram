@@ -18,7 +18,7 @@
     <string name="ShowMessageID">Show Message ID</string>
     <string name="HideReadReceiptsLocally">Hide Read Receipts Locally</string>
     <string name="HideReadReceiptsLocallyNotice">Always display your sent messages with a single checkmark locally even after they have been read by the recipient.</string>
-    <string name="ShowRPCError">Toast RPC Errors</string>
+    <string name="ShowRPCError">Show RPC Errors as Toast</string>
     <string name="AppIconNeko">Neko</string>
     <string name="AppIconNekoDark">Neko Dark</string>
     <string name="AppIconNekoColorful">Neko Colorful</string>
@@ -40,7 +40,6 @@
     <string name="CustomEditedMessage">Custom Edited Mark</string>
     <string name="NotificationIcon">Notification Icon</string>
     <string name="Official">Official</string>
-    <string name="Nagram" translatable="false">Nagram</string>
     <string name="ShowOnlineStatus">Show Online Status</string>
     <string name="ShowOnlineStatusNotice">Show the online status of other people next to their profile photo in groups.</string>
     <string name="DoActionsInCommonGroups">Applied in common groups</string>
@@ -61,7 +60,7 @@
     <string name="ProviderTranSmartTranslate">TranSmart Translator</string>
     <string name="DisableMarkdown">Disable Markdown</string>
     <string name="SendWithMarkdown">Send with Markdown</string>
-    <string name="TipsChannel">Features Tips Channel</string>
+    <string name="TipsChannel">Feature Tips Channel</string>
     <string name="ShowSmallGIF">Show Small GIF</string>
     <string name="DisableClickCommandToSend">Ask Before Sending Bot Command</string>
     <string name="DisableDialogsFloatingButton">Hide Floating Button</string>
@@ -78,8 +77,8 @@
     <string name="StickersChooseShortNameForStickerPack">Choose a short name for your pack.</string>
     <string name="StickersCopyStickerSet">Copy Sticker Set</string>
     <string name="DisableChannelMuteButton">Hide Bottom Bar in Channels</string>
-    <string name="DisablePreviewVideoSoundShortcut">Disable Unmute Videos with Volume Buttons</string>
-    <string name="DisablePreviewVideoSoundShortcutNotice">Prevent volume key from enabling preview video sound.</string>
+    <string name="DisablePreviewVideoSoundShortcut">Don\'t Unmute Videos with Volume Buttons</string>
+    <string name="DisablePreviewVideoSoundShortcutNotice">Prevent the volume keys from unmuting video previews.</string>
     <string name="PreviewSendPhoto">Send Photo</string>
     <string name="PreviewSendVideo">Send Video</string>
     <string name="PreviewSendFile">Send File</string>
@@ -101,7 +100,7 @@
     <string name="SearchHashtagDefaultPageChat">Default Hashtag Search Page in Chats</string>
     <string name="Pangu" translatable="false">Pangu</string>
     <string name="EnablePanguOnSending">Enable Pangu on Sending</string>
-    <string name="PanguInfo">Paranoid text spacing for good readability, to automatically insert whitespace between CJK (Chinese, Japanese, Korean), half-width English, digit and symbol characters.</string>
+    <string name="PanguInfo">Automatically adds spaces between CJK (Chinese, Japanese, Korean) text and Latin letters, digits, and symbols for better readability.</string>
     <string name="SendWithPangu">Send with Pangu</string>
     <string name="SendWithoutPangu">Send without Pangu</string>
     <string name="DefaultHlsVideoQuality">Default Video Quality</string>
@@ -121,12 +120,12 @@
     <string name="ActionButtonStyleAccent">Accent</string>
     <string name="ActionButtonStyleNeutral">Neutral</string>
     <string name="ActionButtonStyleWhite">White</string>
-    <string name="LiquidGlassAngle">Liquid Glass angle</string>
-    <string name="LiquidGlassIntensity">Liquid Glass intensity</string>
-    <string name="DisableGooeyAvatarAnimation">Disable \"Gooey\" avatar animation</string>
-    <string name="ShowSquareAvatar">Square avatars</string>
-    <string name="ClownAvatarForBlockedUsers">Clown avatar for blocked users</string>
-    <string name="ClownAvatarForBlockedUsersDetail">Show a clown avatar for users you have blocked instead of their avatar or empty avatar</string>
+    <string name="LiquidGlassAngle">Liquid Glass Angle</string>
+    <string name="LiquidGlassIntensity">Liquid Glass Intensity</string>
+    <string name="DisableGooeyAvatarAnimation">Disable \"Gooey\" Avatar Animation</string>
+    <string name="ShowSquareAvatar">Square Avatars</string>
+    <string name="ClownAvatarForBlockedUsers">Clown Avatars for Blocked Users</string>
+    <string name="ClownAvatarForBlockedUsersDetail">Show a clown avatar for users you\'ve blocked instead of their original or blank avatar.</string>
     <string name="ShowForwardTextEdit">Edit message text when forwarding</string>
     <string name="AccDescrForwardTextEdit">Edit message text</string>
     <string name="ForwardTextPlaceholder">Message text</string>
@@ -136,19 +135,19 @@
     <string name="XChannel">Niagram Channel</string>
     <string name="EnableSaveDeletedMessages">Save Deleted Messages</string>
     <string name="SpyMode">Spy Mode</string>
-    <string name="SaveDeletedMessagesInPrivate">Direct Chats</string>
+    <string name="SaveDeletedMessagesInPrivate">Private Chats</string>
     <string name="SaveDeletedMessagesInGroups">Groups</string>
     <string name="SaveDeletedMessagesInChannels">Channels</string>
     <string name="AllowScreenCapture">Allow Screen Capture</string>
-    <string name="AllowScreenCaptureNotice">Disable FLAG_SECURE restrictions to allow screenshots and screen recording in all chats, TTL media, and protected views.</string>
-    <string name="AllowCopyProtectedContent">Allow Copy Protected Content</string>
-    <string name="AllowCopyProtectedContentNotice">Allow copying text, saving photos/videos, and repeating messages from protected (noforwards) channels and chats.</string>
-    <string name="SaveTTLMedia">Save Disappearing &amp; TTL Media</string>
-    <string name="SaveTTLMediaNotice">Always allow saving, sharing, and viewing disappearing photos and videos without restrictions.</string>
-    <string name="CompactChatInput">Compact mode</string>
-    <string name="CompactChatInputNotice">Compress input bar height to 40dp and tighten margins.</string>
+    <string name="AllowScreenCaptureNotice">Remove the FLAG_SECURE restriction so screenshots and screen recordings work everywhere, including secret chats, self-destructing media, and passcode screens.</string>
+    <string name="AllowCopyProtectedContent">Allow Copying Protected Content</string>
+    <string name="AllowCopyProtectedContentNotice">Allow copying text, saving photos and videos, and reposting messages from channels and groups that restrict saving (noforwards).</string>
+    <string name="SaveTTLMedia">Save Self-Destructing Media</string>
+    <string name="SaveTTLMediaNotice">Save, share, and view self-destructing photos and videos without restrictions.</string>
+    <string name="CompactChatInput">Compact Mode</string>
+    <string name="CompactChatInputNotice">Reduce the input bar height to 40dp and tighten the margins.</string>
     <string name="useIosSounds">iOS Message Sounds</string>
-    <string name="UseIosSoundsNotice">Use Telegram-iOS in-app message sounds.</string>
+    <string name="UseIosSoundsNotice">Use the native Telegram iOS sounds for sent and received messages in chats.</string>
     <string name="DeletedMessage">deleted</string>
     <string name="EnableSaveEditsHistory">Save Edits History</string>
     <string name="EditsHistoryMenuText">Edits History</string>
@@ -226,7 +225,7 @@
     <string name="RegexFiltersGlobalHeader">Global Filters</string>
     <string name="RegexFiltersTextSelectionAddtoShared">Add to shared filters</string>
     <string name="ShadowBan">Shadow Ban</string>
-    <string name="UnshadowBan">Unshadow Ban</string>
+    <string name="UnshadowBan">Remove Shadow Ban</string>
     <string name="ShadowBanAdded">Added to **user filters**.</string>
     <string name="ShadowBanRemoved">Removed from **user filters**.</string>
     <string name="ShadowBanChannelAdded">Added to **channel filters**.</string>
@@ -234,7 +233,7 @@
     <string name="botCommandConfirmTitle">Send Command</string>
     <string name="botCommandConfirmText">Do you want to send this command?\n\n%s</string>
     <string name="MessageSavingSaveMedia">Save Media</string>
-    <string name="MessageSavingSaveMediaHint">Click for More.</string>
+    <string name="MessageSavingSaveMediaHint">Tap for more.</string>
     <string name="MessageSavingSaveMediaInPrivateChats">… in Private Chats</string>
     <string name="MessageSavingSaveMediaInPublicChannels">… in Public Channels</string>
     <string name="MessageSavingSaveMediaInPrivateChannels">… in Private Channels</string>
@@ -284,7 +283,7 @@
     <string name="TgBrowserOpenFail">In-App Browser is unavailable</string>
     <string name="TgBrowserOpenFail_Desc">The selected operation is not available because the in-app browser has been disabled.</string>
     <string name="GhostMode">Ghost Mode</string>
-    <string name="GhostEssentialsHeader">Ghost essentials</string>
+    <string name="GhostEssentialsHeader">Ghost Essentials</string>
     <string name="EnableGhostMode">Enable Ghost</string>
     <string name="DisableGhostMode">Disable Ghost</string>
     <string name="GhostModeEnabled">Ghost mode turned on</string>
@@ -296,8 +295,8 @@
     <string name="DontSendOnlinePackets">Don\'t Send Online</string>
     <string name="DontSendUploadProgress">Don\'t Send Typing</string>
     <string name="SendOfflinePacketAfterOnline">Go Offline Automatically</string>
-    <string name="MarkReadAfterSend">Read on Interact</string>
-    <string name="GhostModeNotice">Long tap on any option to prevent it from changing on toggling Ghost Mode.</string>
+    <string name="MarkReadAfterSend">Read on Interaction</string>
+    <string name="GhostModeNotice">Long-press an option to exclude it from changes when toggling Ghost Mode.</string>
     <string name="MarkReadAfterSendNotice">Automatically reads message when you send a new one or tap a reaction.</string>
     <string name="SendWithoutSoundRowNotice">Automatically sends outgoing messages without sound.</string>
     <string name="GhostReadMessage">Read Message</string>
@@ -359,15 +358,15 @@
     <string name="MonoCode">Code</string>
     <string name="CreateCode">Create Code</string>
     <string name="CreateCodeLanguage">Language</string>
-    <string name="NoCaptionForward">NoCaption forward</string>
-    <string name="NoCaptionForwardShort">NoCaption</string>
+    <string name="NoCaptionForward">Forward without Caption</string>
+    <string name="NoCaptionForwardShort">No Caption</string>
     <string name="PreferCommonGroupsTab">Prefer Groups Tab</string>
     <string name="PreferCommonGroupsTabNotice">Auto-select \"Groups\" tab instead of \"Gifts\" when possible.</string>
     <string name="GroupedMessageMenu">Group Message Menu</string>
     <string name="GroupedMessageMenuNotice">Grouping moves the main actions to the bottom of the message menu.</string>
     <string name="CopySticker">Copy Sticker</string>
     <string name="CheckUpdate">Check for Updates</string>
-    <string name="AutoCheckUpdateOFF">OFF</string>
+    <string name="AutoCheckUpdateOFF">Off</string>
     <string name="AutoCheckUpdateSwitch">Update Channel</string>
     <string name="AutoCheckUpdateRelease">Release</string>
     <string name="AutoCheckUpdateBeta">Beta</string>
@@ -381,7 +380,7 @@
     <string name="PremiumItemStarInReactions">Star in Reactions</string>
     <string name="PremiumItemVideoAvatar">Animated Avatars</string>
     <string name="PremiumItemCustomWallpaper">Custom Wallpapers</string>
-    <string name="TranslationTargetApp">Follow App</string>
+    <string name="TranslationTargetApp">Follow App Language</string>
     <string name="SwitchStyle">Switch Style</string>
     <string name="SliderStyle">Slider Style</string>
     <string name="StyleModern">Modern</string>
@@ -392,12 +391,12 @@
     <string name="KeepTranslatorPreferences">Keep Translator Preferences</string>
     <string name="KeepTranslatorPreferencesNotice">Preserve the current translator settings when changing App language.</string>
     <string name="UsePersianCalendar">Use Persian Calendar</string>
-    <string name="UsePersianCalendarInfo">Display date with Solar Hijri calendar</string>
-    <string name="DisplayPersianCalendarByLatin">Display Persian calendar by Latin</string>
+    <string name="UsePersianCalendarInfo">Show dates using the Solar Hijri calendar</string>
+    <string name="DisplayPersianCalendarByLatin">Show Persian Calendar in Latin Script</string>
     <string name="TestBackendOn">This account will connect to the test backend.</string>
     <string name="TestBackendOff">This account will connect to the production backend.</string>
     <string name="DidNotGetTheCodeBlameDurov">If you didn\'t get the code on another device or you don\'t have Telegram logged in on another device, please use the official Telegram app to receive the code.\n\nTelegram has **disabled the ability to log in with SMS** on third-party apps. Users logging into third-party apps are only able to receive login codes via Telegram.\n\nWe cannot help you with this, if you have any issues with logging in, please contact Telegram Support.</string>
-    <string name="QRLoginMessage">Scan QRCode with another device to login.</string>
+    <string name="QRLoginMessage">Scan this QR code with another device to log in.</string>
     <string name="DnsType">DNS Resolver</string>
     <string name="DnsTypeCloudflare">Cloudflare</string>
     <string name="DnsTypeGoogle">Google Public DNS</string>
@@ -405,16 +404,16 @@
     <string name="DnsTypeAliDNS">AliDNS</string>
     <string name="DnsTypeSystem">System</string>
     <string name="CustomDoH">Custom DoH</string>
-    <string name="CustomDoHHint">https://1.0.0.1/dns-query, ... (Long press to pick presets)</string>
+    <string name="CustomDoHHint">https://1.1.1.1/dns-query, … (long-press to choose a preset)</string>
     <string name="PresetDoHServers">Preset DoH Servers</string>
     <string name="CustomApiDefault">Default API</string>
     <string name="CustomApiOfficial">Telegram Official</string>
     <string name="CustomApiCustom">Custom API</string>
     <string name="WebProxy">Web / HTTP Proxy</string>
     <string name="WebProxyMode">Web / HTTP Proxy</string>
-    <string name="WebProxyAbout">Route external HTTP/HTTPS requests (such as LLM translations, update checks, and voice transcription) through proxy.</string>
-    <string name="WebProxyModeFollow">Follow Telegram (SOCKS5)</string>
-    <string name="WebProxyModeDirect">Direct (Disabled)</string>
+    <string name="WebProxyAbout">Route external HTTP/HTTPS requests (such as LLM translation, update checks, and voice transcription) through a proxy.</string>
+    <string name="WebProxyModeFollow">Follow Telegram Proxy (SOCKS5)</string>
+    <string name="WebProxyModeDirect">Direct (No Proxy)</string>
     <string name="WebProxyModeCustom">Custom Proxy</string>
     <string name="WebProxyType">Proxy Type</string>
     <string name="WebProxyTypeHttp">HTTP / HTTPS</string>
@@ -448,7 +447,7 @@
     <string name="FixLinkPreview">Fix Link Preview</string>
     <string name="CleanTrackingParams">Clean Link Tracking Parameters</string>
     <string name="CleanTrackingParamsNotice">Automatically strip tracking parameters (UTM, si, fbclid, etc.) when opening or copying links.</string>
-    <string name="NoQuoteForwardShort">NoQuote</string>
+    <string name="NoQuoteForwardShort">No Quote</string>
     <string name="ViewDeleted">View Deleted</string>
     <string name="PasskeyLogin">Passkey Login</string>
     <string name="PasskeyInfo2">This feature only works with password managers that allow the user to manage trust settings for privileged apps, such as **Bitwarden** and **KeePassDX**.</string>
@@ -488,10 +487,10 @@
     <string name="BackAnimationSpring">Spring</string>
     <string name="BackAnimationPredictive">Predictive</string>
     <string name="AddToFilter">Add to Filter</string>
-    <string name="UnifiedPushNeverReceivedNotifications">You never received notifications with UnifiedPush since Niagram was started.</string>
-    <string name="UnifiedPushLastReceivedNotification">The last received notification with UnifiedPush was %1$d seconds ago.\n\nYou received %2$d notifications since Niagram was started.</string>
+    <string name="UnifiedPushNeverReceivedNotifications">No notifications have been received via UnifiedPush since Niagram started.</string>
+    <string name="UnifiedPushLastReceivedNotification">The last notification via UnifiedPush arrived %1$d seconds ago.\n\n%2$d notifications received since Niagram started.</string>
     <string name="UnifiedPushCurrentEndpoint">The current UnifiedPush endpoint is: %1$s</string>
-    <string name="PlayOnce">Play once</string>
+    <string name="PlayOnce">Play Once</string>
     <string name="StorageSettings">Storage</string>
     <string name="MainTabsSettingsHeader">Main Tabs</string>
     <string name="MainTabsHideTitles">Hide Titles</string>
@@ -500,8 +499,8 @@
     <string name="PasscodeShowMessagePreviewWhenLockedAbout">Shows notification content even when passcode lock is active.</string>
     <string name="StickerSavedHint">Sticker saved to gallery.</string>
     <string name="StickerCopied">Sticker copied to clipboard.</string>
-    <string name="StrokeOnViews">Glare effects</string>
-    <string name="FolderTabsStroke">Folder tabs highlight stroke</string>
+    <string name="StrokeOnViews">Glare Effects</string>
+    <string name="FolderTabsStroke">Folder Tab Highlight Stroke</string>
     <string name="HideBottomNavigationBar">Hide Bottom Navigation Bar</string>
     <string name="TranslatorMode">With Original Text</string>
     <string name="TranslatorWithOriginalTextOff">Off</string>
@@ -549,36 +548,36 @@
     <!-- Ban by ID in ChatUsersActivity -->
     <string name="NiaBanById">Ban by User ID</string>
     <string name="NiaBanByIdDialogTitle">Ban User by ID</string>
-    <string name="NiaBanByIdDialogMessage">Enter the target user\'s 64-bit integer ID. The ban request will be sent directly to Telegram server.</string>
+    <string name="NiaBanByIdDialogMessage">Enter the user\'s numeric ID. The ban request is sent straight to Telegram\'s servers.</string>
     <string name="NiaBanByIdHint">e.g. 123456789</string>
     <string name="NiaBanByIdConfirm">Ban User</string>
     <string name="NiaBanByIdConfirmTitle">Confirm Ban</string>
-    <string name="NiaBanByIdConfirmMessage">Are you sure you want to ban user with ID: %1$s?</string>
+    <string name="NiaBanByIdConfirmMessage">Ban the user with ID %1$s?</string>
     <string name="NiaBanByIdSuccess">User ID %1$s has been banned successfully.</string>
-    <string name="NiaBanByIdCannotBanSelf">You cannot ban yourself.</string>
-    <string name="NiaBanByIdCannotBanCreator">Cannot ban the creator or owner of this group.</string>
-    <string name="NiaBanByIdInvalid">Please enter a valid positive numeric ID.</string>
-    <string name="NiaBanByIdErrorNotParticipant">The user is not in this group. Telegram server does not allow banning users who are not participants.</string>
-    <string name="NiaBanByIdErrorInvalidUser">Invalid user ID or user not found on Telegram.</string>
-    <string name="NiaBanByIdErrorAdminRequired">You do not have sufficient administrator rights to ban this user.</string>
+    <string name="NiaBanByIdCannotBanSelf">You can\'t ban yourself.</string>
+    <string name="NiaBanByIdCannotBanCreator">You can\'t ban the owner of this group.</string>
+    <string name="NiaBanByIdInvalid">Please enter a valid numeric ID greater than 0.</string>
+    <string name="NiaBanByIdErrorNotParticipant">This user is not in the group. Telegram doesn\'t allow banning people who aren\'t members.</string>
+    <string name="NiaBanByIdErrorInvalidUser">Invalid user ID, or no such user exists on Telegram.</string>
+    <string name="NiaBanByIdErrorAdminRequired">You don\'t have enough admin rights to ban this user.</string>
     <string name="NiaBanByIdServerError">Failed to ban user: %1$s</string>
 
     <!-- Proxy Auto Acceleration -->
     <string name="ProxyAutoSpeedAcceleration">Auto-Select Fastest Proxy</string>
-    <string name="ProxyAutoSpeedAccelerationInfo">Automatically test and switch to the proxy with the lowest ping for faster connection.</string>
+    <string name="ProxyAutoSpeedAccelerationInfo">Automatically test proxies and switch to the one with the lowest ping for the best connection speed.</string>
     <string name="UseFastestProxy">Switch to Fastest Proxy</string>
     <string name="SwitchedToFastestProxy">Switched to fastest proxy</string>
-    <string name="AlreadyFastestProxy">Currently already using the fastest proxy</string>
+    <string name="AlreadyFastestProxy">Already using the fastest proxy</string>
 
     <!-- Login Optimization -->
-    <string name="PrioritizeEmailCode">Prioritize email code</string>
-    <string name="SendCodeViaEmail">Send code via email</string>
+    <string name="PrioritizeEmailCode">Prefer Email Login Code</string>
+    <string name="SendCodeViaEmail">Send Code via Email</string>
     <string name="FastResendDialogTitle">Resend Code</string>
-    <string name="FastResendDialogMessage">Haven\'t received the code yet? Skip the countdown and request a new code immediately?</string>
+    <string name="FastResendDialogMessage">Didn\'t receive the code? Skip the countdown and request a new one now?</string>
     <string name="FastResendNow">Resend Now</string>
     <string name="CodeSentToOtherDeviceTitle">Check Your Telegram App</string>
-    <string name="CodeSentToOtherDeviceInfo">The login code was sent to the Telegram app on your other devices.\n\nNote: To receive login codes via email, you must first bind a Login Email in the official Telegram app under Settings > Privacy &amp; Security > Two-Step Verification.</string>
-    <string name="SendCodeUnavailableInfo">Telegram cannot send a code through other channels right now. If your other device is logged in, please check the code sent to your Telegram app.\n\nTo use email login, ensure you have set up a Login Email in Telegram\'s Privacy &amp; Security settings.</string>
+    <string name="CodeSentToOtherDeviceInfo">The login code was sent to the Telegram app on your other devices.\n\nNote: To receive login codes by email, first add a login email in the official Telegram app under Settings > Privacy &amp; Security > Two-Step Verification.</string>
+    <string name="SendCodeUnavailableInfo">Telegram can\'t send a code through other channels right now. If you\'re signed in on another device, check for the code in the Telegram app there.\n\nTo log in with email, make sure a login email is set in Telegram\'s Privacy &amp; Security settings.</string>
 
     <!-- Public Proxy Nullgram -->
     <string name="PublicProxy">Built-in Public Proxy</string>
@@ -588,14 +587,14 @@
     <string name="DisableProxyWhenVpnEnabledDesc">Automatically suspend proxy when system VPN is detected. Note: Switching networks (e.g. Wi-Fi to cellular) or VPN reconnecting may cause proxy to resume momentarily.</string>
 
     <!-- Verified Badge -->
-    <string name="VerifySelf">Verify Self</string>
-    <string name="VerifySelfDetail">Locally display exclusive verified badge for your current account</string>
-    <string name="NiagramVerifiedOfficial">NiagramX Official</string>
+    <string name="VerifySelf">Verify Myself</string>
+    <string name="VerifySelfDetail">Show a verified badge on your current account (local only)</string>
+    <string name="NiagramVerifiedOfficial">Niagram Official</string>
     <string name="NagramVerifiedDev">Nagram Developer</string>
 
     <!-- Input Text Animations -->
-    <string name="InputTextAnimations">Input animation and deletion particles</string>
-    <string name="InputAnimationStrength">Animation strength</string>
+    <string name="InputTextAnimations">Typing Animation &amp; Deletion Particles</string>
+    <string name="InputAnimationStrength">Animation Strength</string>
     <string name="InputAnimationWeakest">Weakest</string>
     <string name="InputAnimationWeak">Weak</string>
     <string name="InputAnimationModerate">Moderate</string>
@@ -606,20 +605,20 @@
     <string name="LockChat">Lock chat</string>
     <string name="UnlockChat">Unlock chat</string>
     <string name="ChatLocked">Chat Locked</string>
-    <string name="ChatLockedDescription">Verify your identity to open this chat</string>
+    <string name="ChatLockedDescription">Verify your identity to open this chat.</string>
     <string name="ChatLockedMessage">Chat is locked</string>
 
     <!-- Bottom Style -->
-    <string name="ChatActivityNavbarTransparent">Chat navbar fully transparent</string>
+    <string name="ChatActivityNavbarTransparent">Fully Transparent Chat Navigation Bar</string>
 
     <!-- Legacy Nekogram Strings -->
     <string name="NekoSettings">Neo-Settings</string>
     <string name="IPv6">Prefer IPv6</string>
     <string name="MessageMenu">Message Menu</string>
     <string name="HidePhone">Hide Phone Number</string>
-    <string name="HideStarsRating">Hide Stars rating</string>
-    <string name="HideGiftButtons">Hide Gift button</string>
-    <string name="ScrollToSeenPhotoOnClose">Scroll to seen photo on close</string>
+    <string name="HideStarsRating">Hide Stars Rating</string>
+    <string name="HideGiftButtons">Hide Gift Buttons</string>
+    <string name="ScrollToSeenPhotoOnClose">Scroll to Viewed Photo on Close</string>
     <string name="DeleteAllFromSelf">Delete My Messages</string>
     <string name="DeleteAllFromSelfAlert">Warning! This will **delete all messages from you** in this chat for **all** participants.</string>
     <string name="DeleteAllFromSelfAlertBefore">Warning! This will **delete all messages from you before %s** in this chat for **all** participants.</string>
@@ -632,13 +631,13 @@
     <string name="FirstLast">First Last</string>
     <string name="LastFirst">Last First</string>
     <string name="TypefaceUseDefault">Use System Font</string>
-    <string name="NoQuoteForward">NoQuote forward</string>
+    <string name="NoQuoteForward">Forward without Quote</string>
     <string name="Repeat">Repost</string>
     <string name="AddToSavedMessages">Save</string>
     <string name="CreateMention">Create Mention</string>
     <string name="ActionBarDecoration">Title Bar Decoration</string>
     <string name="DependsOnDate">Depends on date</string>
-    <string name="Christmas">Yule</string>
+    <string name="Christmas">Christmas</string>
     <string name="Snowflakes">Snowflakes</string>
     <string name="Fireworks">Fireworks</string>
     <string name="DeleteDownloadedFile">Clear</string>
@@ -658,15 +657,15 @@
     <string name="MessageDetails">Details</string>
     <string name="ExportAsJson">Export as JSON</string>
     <string name="Translate">Translate</string>
-    <string name="TranslateFailed">Translate server error</string>
+    <string name="TranslateFailed">Translation server error</string>
     <string name="TranslationProvider">Translation Provider</string>
     <string name="ProviderGoogleTranslate">Google Translate</string>
-    <string name="TranslateApiUnsupported">The translation provider you selected don\'t support your language.</string>
+    <string name="TranslateApiUnsupported">The selected translation provider doesn\'t support your language.</string>
     <string name="ProviderLingocloud">LingoCloud Translate</string>
     <string name="UndoTranslate">Hide Translation</string>
     <string name="BotToken">Token</string>
     <string name="UnlimitedPinnedDialogs">Unlimited Pinned Dialogs</string>
-    <string name="UnlimitedPinnedDialogsAbout">Pin unlimited dialogs by turn their sync off.</string>
+    <string name="UnlimitedPinnedDialogsAbout">Pin unlimited chats by turning off pin sync.</string>
     <string name="OpenArchiveOnPull">Open \"Archived Chats\" on Pull-Down</string>
     <string name="HideKeyboardOnChatScroll">Hide Keyboard on Scroll</string>
     <string name="UserRestrictionsSendStickers2">Send Stickers</string>
@@ -681,7 +680,7 @@
     <string name="TabTitleTypeMix">Icons with Titles</string>
     <string name="ConfirmAVMessage">Ask Before Sending Video/Voice Message</string>
     <string name="AskBeforeCalling">Ask Before Calling</string>
-    <string name="ConfirmCall">Confirm calling</string>
+    <string name="ConfirmCall">Confirm Call</string>
     <string name="CallTo">Call to **%1$s**?</string>
     <string name="DisableNumberRounding">Disable Number Rounding</string>
     <string name="Categories">Categories</string>
@@ -725,15 +724,15 @@
     <string name="enhancedFileLoaderOff">Off (4×128KB)</string>
     <string name="enhancedFileLoaderBalanced">Balanced (6×256KB)</string>
     <string name="enhancedFileLoaderExtreme">Extreme (8×512KB)</string>
-    <string name="enhancedFileLoaderBalancedNotice">Balanced (6×256KB) significantly boosts download speed while avoiding server-side rate limits on non-Premium accounts. Recommended for general use.</string>
-    <string name="enhancedFileLoaderExtremeNotice">Extreme (8×512KB) downloads with maximum parallel requests.\n\n⚠️ Notice: For non-Telegram Premium accounts, downloading large files may temporarily stall for 7-10 seconds around 65-75MB due to Telegram server-side bandwidth throttling. If you experience stalls, please switch to Balanced mode.</string>
+    <string name="enhancedFileLoaderBalancedNotice">Balanced (6×256KB) greatly speeds up downloads while avoiding Telegram\'s server-side throttling on non-Premium accounts. Recommended for most users.</string>
+    <string name="enhancedFileLoaderExtremeNotice">Extreme (8×512KB) downloads with the maximum number of parallel requests.\n\n⚠️ Note: On non-Premium accounts, large downloads may stall for 7–10 seconds at around 65–75MB because of Telegram\'s server-side bandwidth throttling. If this happens, switch to Balanced mode.</string>
     <string name="mapDriftingFixForGoogleMaps">Fix Google Maps Drifting in China</string>
     <string name="useOSMDroidMap">Use OSMDroid Map</string>
     <string name="UnknownNekoSettingsOption">There is no such Neo-Settings option.</string>
     <string name="PasscodeNeeded">You have to enable passcode lock first</string>
     <string name="PasscodeNeko">Passcode</string>
     <string name="PasscodeShowInSettings">Show in Neo-Settings</string>
-    <string name="PasscodeShowInSettingsAbout">After hiding, you can **ONLY** open this page by link:</string>
+    <string name="PasscodeShowInSettingsAbout">Once hidden, this page can **only** be opened via this link:</string>
     <string name="PasscodeSet">Set passcode</string>
     <string name="PasscodeEdit">Change passcode</string>
     <string name="PasscodeRemove">Remove passcode</string>
@@ -803,7 +802,7 @@
     <string name="ChangeTranslateProvider">Change Provider</string>
     <string name="ProviderYandexTranslate">Yandex Translate</string>
     <string name="GoogleCloudTransKey">Google Cloud Translate Key</string>
-    <string name="GoogleCloudTransKeyNotice">If you set up a Google Cloud Trans Key, the cloud translation API will be called instead of submitting a fake form to the web version when translating (faster, stable and saving traffic).</string>
+    <string name="GoogleCloudTransKeyNotice">With a Google Cloud Translate key, translations use the official Cloud Translation API instead of the web translator\'s form endpoint — faster, more stable, and lighter on data.</string>
     <string name="TransToLang">Target Language</string>
     <string name="TransInputToLang">Pre-Send Translation Language</string>
     <string name="More">More</string>
@@ -851,7 +850,7 @@
     <string name="AutoLockImmediately">Immediately</string>
     <string name="BackupSettings">Export Settings</string>
     <string name="ImportSettings">Import Settings</string>
-    <string name="ImportSettingsAlert">Overwrite the settings\? Importing settings from unknown sources may cause the pin to be overwritten and the app to be locked.</string>
+    <string name="ImportSettingsAlert">Overwrite current settings? Importing settings from an unknown source may overwrite your passcode and lock you out of the app.</string>
     <string name="unreadBadgeOnBackButton">Unread Badge on Back Button</string>
     <string name="useCustomEmoji">Use custom emoji</string>
     <string name="repeatConfirm">Ask Before Repost</string>
@@ -875,7 +874,7 @@
     <string name="Chat">Chats</string>
     <string name="Appearance">Appearance</string>
     <string name="ThemeAmoledDark">AMOLED Dark</string>
-    <string name="NoPreloadTrackIfRepeatOne">Don\'t preload next track if repeating single</string>
+    <string name="NoPreloadTrackIfRepeatOne">Don\'t Preload Next Track When Repeating One</string>
     <string name="NekoAboutSectionCommunity">Community</string>
     <string name="NekoAboutSectionDevelopment">Development</string>
     <string name="NekoAboutSectionDiagnostics">Diagnostics</string>

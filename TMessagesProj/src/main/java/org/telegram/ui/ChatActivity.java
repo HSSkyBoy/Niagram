@@ -20302,7 +20302,8 @@ public class ChatActivity extends BaseFragment implements
                     RepeatAsCopyItem.setVisibility(canSendMessage && (!noforwards || getMessageHelper().canSendMessagesAsCopy(getSelectedMessages1())));
                 }
                 if (forceForwardItem != null) {
-                    forceForwardItem.setVisibility(chatMode != MODE_SCHEDULED && NyaConfig.INSTANCE.getShowForceForward().Bool() && getMessageHelper().canSendMessagesAsCopy(getSelectedMessages1()) ? View.VISIBLE : View.GONE);
+                    boolean noQuoteForwardAvailable = canForward && NyaConfig.INSTANCE.getShowNoQuoteForward().Bool();
+                    forceForwardItem.setVisibility(chatMode != MODE_SCHEDULED && !noQuoteForwardAvailable && NyaConfig.INSTANCE.getShowForceForward().Bool() && getMessageHelper().canSendMessagesAsCopy(getSelectedMessages1()) ? View.VISIBLE : View.GONE);
                 }
                 if (reportItem != null) {
                     reportItem.setVisibility(canReport);
@@ -49369,11 +49370,13 @@ public class ChatActivity extends BaseFragment implements
                 }
                 // --- NagramX Start ---
                 if (chatMode != MODE_SCHEDULED) {
+                    boolean noQuoteForwardShown = false;
                     if (chatMode != MODE_WELCOME_MESSAGES && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16) {
                         if (!noforwards && NyaConfig.INSTANCE.getShowNoQuoteForward().Bool()) {
                             items.add(LocaleController.getString(R.string.NoQuoteForward));
                             options.add(nkbtn_forward_noquote);
                             icons.add(R.drawable.msg_forward_noquote);
+                            noQuoteForwardShown = true;
                         }
                     }
                     if (NyaConfig.INSTANCE.getShowSetReminder().Bool()) {
@@ -49413,7 +49416,7 @@ public class ChatActivity extends BaseFragment implements
                         options.add(nkbtn_repeatascopy);
                         icons.add(R.drawable.msg_repeat);
                     }
-                    if (chatMode != MODE_WELCOME_MESSAGES && !isAyuDeleted && !selectedObject.needDrawBluredPreview() && getMessageHelper().canSendMessageAsCopy(selectedObject, selectedObjectGroup) && (noforwards || !selectedObject.canForwardMessage() || NyaConfig.INSTANCE.getShowForceForward().Bool())) {
+                    if (chatMode != MODE_WELCOME_MESSAGES && !isAyuDeleted && !selectedObject.needDrawBluredPreview() && getMessageHelper().canSendMessageAsCopy(selectedObject, selectedObjectGroup) && !noQuoteForwardShown && (noforwards || !selectedObject.canForwardMessage() || NyaConfig.INSTANCE.getShowForceForward().Bool())) {
                         items.add(LocaleController.getString(R.string.ForceForward));
                         options.add(nkbtn_force_forward);
                         icons.add(R.drawable.msg_forward);

@@ -1,7 +1,7 @@
 package top.nkbe.niagram.config
 
 /**
- * Domain-specific configuration for fonts and typography in NiagramX.
+ * Domain-specific configuration for fonts and typography in Niagram.
  * Consolidates typeface toggles, font weight fallback, and custom font paths.
  */
 object FontConfig {

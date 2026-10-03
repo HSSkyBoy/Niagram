@@ -408,7 +408,7 @@ public class EmojiHelper extends BaseRemoteHelper implements NotificationCenter.
                 OkHttpClient client = HttpClient.INSTANCE.getInstance();
                 Request request = new Request.Builder()
                         .url(EMOJI_INDEX_URL)
-                        .header("User-Agent", "NiagramX")
+                        .header("User-Agent", "Niagram")
                         .build();
 
                 try (Response response = client.newCall(request).execute()) {
@@ -1001,7 +1001,7 @@ public class EmojiHelper extends BaseRemoteHelper implements NotificationCenter.
                 OkHttpClient client = HttpClient.INSTANCE.getInstance();
                 Request request = new Request.Builder()
                         .url(pack.getDownloadUrl())
-                        .header("User-Agent", "NiagramX")
+                        .header("User-Agent", "Niagram")
                         .build();
 
                 try (Response response = client.newCall(request).execute()) {

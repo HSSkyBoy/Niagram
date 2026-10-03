@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="N_Config">Налаштування N</string>
+    <string name="N_Config">Налаштування Neo</string>
     <string name="CombineMessage">Об\'єднати повідомлення</string>
     <string name="TextStyle">Стиль тексту</string>
     <string name="NoiseSuppressAndVoiceEnhance">Покращення голосу</string>
-    <string name="RepeatAsCopy">Відповісти як копія</string>
+    <string name="RepeatAsCopy">Повторити як копію</string>
     <string name="DoubleTapAction">Дія при подвійному дотику</string>
     <string name="SendReactions">Надсилати реакції</string>
     <string name="ShowReactions">Показати реакції</string>
@@ -86,18 +86,18 @@
     <string name="SearchHashtagDefaultPageChannel">Типовий пошук хештегів у каналах</string>
     <string name="SearchHashtagDefaultPageChat">Типовий пошук хештегів у чатах</string>
     <string name="EnablePanguOnSending">Увімкнути Pangu при надсиланні</string>
-    <string name="PanguInfo">Параноїдальний інтервал для тексту для кращої читабельності, автоматичне вставлення пробілів між символами CJK (китайська, японська, корейська), англійськими напівширинними, цифрами та символами.</string>
+    <string name="PanguInfo">Автоматично додає пробіли між текстом CJK (китайським, японським, корейським) і латинськими літерами, цифрами та символами для кращої читабельності.</string>
     <string name="SendWithPangu">Надіслати з Pangu</string>
     <string name="SendWithoutPangu">Надіслати без Pangu</string>
-    <string name="DefaultHlsVideoQuality">Якість відео HLS за замовчуванням</string>
+    <string name="DefaultHlsVideoQuality">Якість відео за замовчуванням</string>
     <string name="DisableBotOpenButton">Вимкнути кнопку відкриття бота</string>
     <string name="CustomTitleUserName">Використовувати ім\'я користувача як заголовок</string>
     <string name="EnhancedVideoBitrate">Покращений бітрейт відео</string>
     <string name="ActionBarButtons">Кнопки панелі дій</string>
     <string name="VideoPlayerDecoder">Декодер відео</string>
     <string name="VideoPlayerDecoderPreferSW">Перевага програмному</string>
-    <string name="VideoPlayerDecoderHardware">Тільки апаратне декодування</string>
-    <string name="VideoPlayerDecoderPreferHW">Перевага HW</string>
+    <string name="VideoPlayerDecoderHardware">Лише апаратне</string>
+    <string name="VideoPlayerDecoderPreferHW">Перевага апаратному</string>
     <string name="DisableGooeyAvatarAnimation">Вимкнути плавну анімацію аватара</string>
     <string name="ShowSquareAvatar">Квадратні аватари</string>
     <string name="ShowForwardTextEdit">Редагувати текст повідомлення під час пересилання</string>
@@ -107,7 +107,7 @@
     <string name="ForwardTextEmptyNotice">Текст повідомлення не може бути порожнім</string>
 
     <string name="XChannel">Канал Niagram</string>
-    <string name="EnableSaveDeletedMessages">Зберігати видаленні повідомлення</string>
+    <string name="EnableSaveDeletedMessages">Зберігати видалені повідомлення</string>
     <string name="DeletedMessage">видалено</string>
     <string name="EnableSaveEditsHistory">Зберегти історію змін</string>
     <string name="EditsHistoryMenuText">Історія редагувань</string>
@@ -117,7 +117,7 @@
     <string name="CustomDeletedMark">Підпис для видалених повідомлень</string>
     <string name="HidePremiumSection">Приховати \"Преміум\" в налаштуваннях</string>
     <string name="HideHelpSection">Приховати \"Допомога\" в налаштуваннях</string>
-    <string name="ProviderLLMTranslator">AI Перекладач</string>
+    <string name="ProviderLLMTranslator">ШІ-перекладач</string>
     <string name="LlmApiUrl">API URL</string>
     <string name="LlmApiKey">Ключ API</string>
     <string name="LlmModelName">Модель</string>
@@ -127,10 +127,10 @@
     <string name="LlmProviderCustom">Користувацька</string>
     <string name="LlmProviderOpenAIKey">Ключ API OpenAI</string>
     <string name="LlmProviderGeminiKey">Ключ API Gemini</string>
-    <string name="LlmSystemPrompt">Системний Промпт</string>
-    <string name="LlmSystemPromptHint">Ти професійний перекладач.</string>
-    <string name="LlmSystemPromptNotice">Визначте роль і поведінку AI.\n\nЦей промпт задає тон, індивідуальність і обмеження для AI. Подумайте про те, яким типом помічника має бути AI.</string>
-    <string name="LlmUserPrompt">Користувацький Промпт</string>
+    <string name="LlmSystemPrompt">Системний промпт</string>
+    <string name="LlmSystemPromptHint">Ти професійний багатомовний перекладач.</string>
+    <string name="LlmSystemPromptNotice">Визначте роль і поведінку ШІ.\n\nЦей промпт задає тон, характер і стиль ШІ.</string>
+    <string name="LlmUserPrompt">Користувацький промпт</string>
     <string name="LlmUserPromptHint">Перекласти на @toLang:\n@text</string>
     <string name="LlmUserPromptNotice">Використовуйте @text як заповнювач для оригінального повідомлення та @toLang для мови перекладу (необов\'язково).\n\nЯкщо залишити це поле порожнім, використовуватиметься запит за замовчуванням.</string>
     <string name="LlmUseContext">Використовувати контекст</string>
@@ -144,12 +144,12 @@
     <string name="LlmTestResultHttpStatusCode">HTTP-код</string>
     <string name="LlmTestResultDuration">Тривалість</string>
     <string name="LlmTestResultResponse">Відповідь</string>
-    <string name="AITranslatorSettings">AI Перекладач</string>
+    <string name="AITranslatorSettings">ШІ-перекладач</string>
     <string name="TranslucentDeletedMessages">Напівпрозорі видалені повідомлення</string>
     <string name="ArticleTranslationProvider">Сервіс перекладу статей</string>
     <string name="EnableSeparateArticleTranslator">Використовувати інший сервіс для статей</string>
     <string name="DisableCrashlyticsCollection">Вимкнути Firebase Crashlytics</string>
-    <string name="ShowStickersRowToplevel">Показувати наліпки у Головних Налаштуваннях</string>
+    <string name="ShowStickersRowToplevel">Показувати наліпки в основних налаштуваннях</string>
     <string name="HideShareButtonInChannel">Сховати бокову кнопку «Поділитися»</string>
     <string name="DeleteCloudBackup">Видалити дані з хмари</string>
     <string name="DeleteCloudBackupFailed">Не вдалося очистити дані із хмари</string>
@@ -158,12 +158,12 @@
     <string name="ClearRegexFilters">Очистити</string>
     <string name="ClearRegexFiltersAlertMessage">Ви впевнені, що хочете очистити всі збережені фільтри? Це призведе до видалення спільних фільтрів, фільтрів користувачів та фільтрів для чату.</string>
     <string name="PreferredTranslateTargetLang">Користувацький список мов</string>
-    <string name="PreferredTranslateTargetLangExample">Для прикладу, ua, pl, zh_tw</string>
+    <string name="PreferredTranslateTargetLangExample">напр. uk, pl, zh_tw</string>
     <string name="PreferredTranslateTargetLangName">Пріоритетні мови</string>
     <string name="ClearDeleted">Очистити видалені</string>
     <string name="ClearDeletedAlertMessage">Ви дійсно хочете очистити всі видалені повідомлення в цьому чаті?</string>
-    <string name="ForwardsRestrictedInfoAyuDeleted">Пересилка заборона.</string>
-    <string name="RegexFiltersNotice">Натисніть для Редагування.</string>
+    <string name="ForwardsRestrictedInfoAyuDeleted">Пересилання заборонене.</string>
+    <string name="RegexFiltersNotice">Натисніть, щоб редагувати.</string>
     <string name="RegexFiltersImport">Імпорт</string>
     <string name="RegexFiltersExport">Експорт</string>
     <string name="RegexFiltersImportSuccess">Фільтри імпортовано.</string>
@@ -197,15 +197,15 @@
     <string name="ChatsOnly">Лише в чатах</string>
     <string name="InstantViewTranslation">Миттєвий перегляд</string>
     <string name="SaveDeletedMessageForBot">Зберегти у чатах бота</string>
-    <string name="HideArchive">Видалити \"Архівні чати\" зі Списку Чату</string>
+    <string name="HideArchive">Прибрати «Архівні чати» зі списку чатів</string>
     <string name="ConfirmAllLinks">Запитувати перед відкриттям вбудованих посилань</string>
-    <string name="ConfirmAllLinksDescription">Включаючи внутрішні посилання, такі як t.me у вбудованих ботах.</string>
+    <string name="ConfirmAllLinksDescription">Включно з внутрішніми посиланнями Telegram, як-от t.me у вбудованих кнопках ботів.</string>
     <string name="TranslatorMinimizedChannel">Для цього каналу було згорнуто панель перекладу.</string>
     <string name="TranslatorMinimizedGroup">Для цього групового чату було згорнуто панель перекладу.</string>
     <string name="TranslatorMinimized">Для цього чату згорнуто панель перекладу.</string>
     <string name="UseDeletedIcon">Показати значок замість \"видалено\"</string>
     <string name="ShowEditedIcon">Показати значок замість \"відредаговано\"</string>
-    <string name="SilentMessageByDefault">Надіслати повідомлення без звуку за замовчуванням</string>
+    <string name="SilentMessageByDefault">Надсилати без звуку</string>
     <string name="FolderNameAsTitle">Використовувати ім\'я теки як заголовок</string>
     <string name="SaveDeletedMessageForBotUser">Зберегти повідомлення бота</string>
     <string name="TranslatorKeepMarkdown">Зберігати розмітку</string>
@@ -216,9 +216,9 @@
     <string name="Other">Інше</string>
     <string name="RestartApp">Перезапустити застосунок</string>
     <string name="ResetSettings">Скидання налаштувань</string>
-    <string name="ResetSettingsAlert">Ви дійсно бажаєте скинути всі N-Налаштування?</string>
+    <string name="ResetSettingsAlert">Ви дійсно бажаєте скинути всі налаштування Neo?</string>
     <string name="DontAutoPlayNextVoice">Не відтворювати наступне голосове повідомлення</string>
-    <string name="SaveToChatSubfolder">Зберегти вкладення від назви чату</string>
+    <string name="SaveToChatSubfolder">Зберігати вкладення за назвою чату</string>
     <string name="MessageColoredBackground">Кольорове тло повідомлень</string>
     <string name="ChatMenu">Меню чату</string>
     <string name="MediaViewerMenu">Меню Медіа</string>
@@ -231,15 +231,15 @@
     <string name="TgBrowserOpenFail">Вбудований Браузер недоступний</string>
     <string name="TgBrowserOpenFail_Desc">Вибрана операція недоступна, оскільки вбудований браузер вимкнено.</string>
     <string name="GhostMode">Режим привида</string>
-    <string name="GhostEssentialsHeader">Налаштування привида</string>
-    <string name="EnableGhostMode">Увімкнути привида</string>
-    <string name="DisableGhostMode">Вимкнути привида</string>
+    <string name="GhostEssentialsHeader">Основні налаштування режиму привида</string>
+    <string name="EnableGhostMode">Увімкнути режим привида</string>
+    <string name="DisableGhostMode">Вимкнути режим привида</string>
     <string name="GhostModeEnabled">Режим \"привид\" увімкнено</string>
     <string name="GhostModeDisabled">Режим \"привид\" вимкнено</string>
     <string name="GhostModeInDrawer">Швидкий доступ</string>
     <string name="GhostModeStatusIndicator">Індикатор режиму «привид»</string>
-    <string name="DontSendReadMessagePackets">Не читати повідомлення</string>
-    <string name="DontReadStoriesPackets">Не читати історії</string>
+    <string name="DontSendReadMessagePackets">Не позначати повідомлення прочитаними</string>
+    <string name="DontReadStoriesPackets">Не позначати історії переглянутими</string>
     <string name="DontSendOnlinePackets">Не надсилати онлайн-статус</string>
     <string name="DontSendUploadProgress">Не надсилати статус введення тексту</string>
     <string name="SendOfflinePacketAfterOnline">Автоматично переходити в офлайн</string>
@@ -247,7 +247,7 @@
     <string name="GhostModeNotice">Довге натискання на будь-яку опцію запобігає її зміні під час перемикання Режиму привида.</string>
     <string name="MarkReadAfterSendNotice">Коли ви надсилаєте нове повідомлення або натискаєте на реакцію, повідомлення автоматично відзначається як прочитане.</string>
     <string name="SendWithoutSoundRowNotice">Автоматично надсилати вихідні повідомлення без звуку.</string>
-    <string name="GhostReadMessage">Прочитати повідомлення</string>
+    <string name="GhostReadMessage">Позначити прочитаним</string>
     <string name="GhostModeExcludeRead">Виключити читання</string>
     <string name="GhostModeExcludeTyping">Виключити введення тексту</string>
     <string name="SendWithSound">Надіслати зі звуком</string>
@@ -268,15 +268,15 @@
     <string name="GeminiApiKeyNotSet">Ключ API Gemini не налаштовано.</string>
     <string name="GeminiApiKeyDialog">Налаштуйте ключ API Gemini. Залишіть порожнім, щоб використовувати ключ із налаштувань перекладача.\n**Як отримати?**\n</string>
     <string name="ReplyInPrivate">Відповісти в приватному чаті</string>
-    <string name="TranscribeProviderGeminiPrompt">Prompt (необов\'язково)</string>
+    <string name="TranscribeProviderGeminiPrompt">Промпт (необов\'язково)</string>
     <string name="uploadBoost">Збільшення швидкості вивантаження</string>
     <string name="HideDividers">Приховати розділювачі</string>
     <string name="IconReplacements">Заміна іконок</string>
     <string name="IconReplacementSolar">Значки Solar від @Design480</string>
-    <string name="DebugMenuEnableInvoicePayment">Включити оплату за рахунками</string>
-    <string name="DebugMenuDisableInvoicePayment">Вимкнути оплату за рахунками</string>
-    <string name="DebugMenuUseCamera2Api">Використовувати камеру 2 API</string>
-    <string name="DebugMenuUseOldCamera1Api">Використовувати стару камеру 1 API</string>
+    <string name="DebugMenuEnableInvoicePayment">Увімкнути оплату рахунків</string>
+    <string name="DebugMenuDisableInvoicePayment">Вимкнути оплату рахунків</string>
+    <string name="DebugMenuUseCamera2Api">Використовувати Camera 2 API</string>
+    <string name="DebugMenuUseOldCamera1Api">Використовувати старий Camera 1 API</string>
     <string name="DebugMenuUseCpuBlur">Повернутися до розмиття CPU</string>
     <string name="DebugMenuUseNewGpuBlur">Використовувати нове розмиття на GPU</string>
     <string name="DebugMenuEnableAdaptableColorInBrowser">Увімкнути адаптивні кольори браузера</string>
@@ -285,7 +285,7 @@
     <string name="DebugMenuDisableVideoQualitiesDebug">Вимкнути налагодження якості відео</string>
     <string name="DebugMenuReloadAppConfig">Перезавантажити налаштування програми</string>
     <string name="DebugMenuForceForumTabs">Примусові вкладки у форумах</string>
-    <string name="DebugMenuDoNotForceForumTabs">Не примусово вкладки у форумах</string>
+    <string name="DebugMenuDoNotForceForumTabs">Не використовувати вкладки у форумах примусово</string>
     <string name="DebugMenuCleanAppUpdate">Очистити оновлення програми</string>
     <string name="DebugMenuMakeMemoryDump">Зробити дамп пам\'яті</string>
     <string name="DebugMenuShowFrameMetrics">Показувати статистику кадрів</string>
@@ -300,7 +300,7 @@
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
     <string name="OpenAiCredentialsNotSet">Облікові дані API не встановлені.</string>
     <string name="AppIconTelegramOriginal">Оригінал</string>
-    <string name="BurnTtlMessage">Спалити</string>
+    <string name="BurnTtlMessage">Знищити</string>
     <string name="StreamMkvNax">Показувати MKV як відео</string>
     <string name="StreamAllVideoNax">Потокове відтворення всіх відео</string>
     <string name="MonoCode">Код</string>
@@ -308,27 +308,27 @@
     <string name="CreateCodeLanguage">Мова</string>
     <string name="NoCaptionForward">Переслати без підпису</string>
     <string name="NoCaptionForwardShort">Без підпису</string>
-    <string name="PreferCommonGroupsTab">Перевага вкладці \"Групи”</string>
+    <string name="PreferCommonGroupsTab">Перевага вкладці «Групи»</string>
     <string name="PreferCommonGroupsTabNotice">Автоматично вибирати вкладку «Групи» замість «Подарунки», коли це можливо.</string>
     <string name="GroupedMessageMenu">Згрупувати меню повідомлення</string>
     <string name="GroupedMessageMenuNotice">Групування переміщує основні дії в нижню частину меню повідомлення.</string>
     <string name="CopySticker">Копіювати наліпку</string>
     <string name="CheckUpdate">Перевірити наявність оновлень</string>
-    <string name="AutoCheckUpdateOFF">Вимкнути</string>
+    <string name="AutoCheckUpdateOFF">Вимкнено</string>
     <string name="AutoCheckUpdateSwitch">Канал оновлення</string>
     <string name="AutoCheckUpdateRelease">Стабільна версія</string>
     <string name="AutoCheckUpdateBeta">Бета</string>
     <string name="YourVersionIsLatestNax">Ваша версія актуальна.</string>
-    <string name="PremiumElements">Преміум елементи</string>
+    <string name="PremiumElements">Елементи Premium</string>
     <string name="PremiumItemBoosts">Лічильник бустів</string>
-    <string name="PremiumItemStickerEffects">Ефекти наклейок</string>
-    <string name="PremiumItemEmojiStatus">Емоджі-статуси</string>
+    <string name="PremiumItemStickerEffects">Ефекти наліпок</string>
+    <string name="PremiumItemEmojiStatus">Емодзі-статуси</string>
     <string name="PremiumItemEmojiInReplies">Емодзі у відповідях</string>
     <string name="PremiumItemCustomColorInReplies">Користувацькі кольори</string>
     <string name="PremiumItemStarInReactions">Зірка у реакціях</string>
     <string name="PremiumItemVideoAvatar">Анімовані аватари</string>
     <string name="PremiumItemCustomWallpaper">Користувацькі шпалери</string>
-    <string name="TranslationTargetApp">Слідкувати за додатком</string>
+    <string name="TranslationTargetApp">Мова застосунку</string>
     <string name="SwitchStyle">Стиль перемикача</string>
     <string name="SliderStyle">Стиль слайдера</string>
     <string name="StyleModern">Сучасний</string>
@@ -341,7 +341,7 @@
     <string name="UsePersianCalendarInfo">Показувати дату у форматі Solar Hijri (перський календар)</string>
     <string name="DisplayPersianCalendarByLatin">Показувати перський календар латиницею</string>
     <string name="TestBackendOn">Цей обліковий запис буде під\'єднано до тестового сервера.</string>
-    <string name="TestBackendOff">Цей обліковий запис буде підключений до тестового сервера.</string>
+    <string name="TestBackendOff">Цей обліковий запис буде під\'єднано до основного сервера.</string>
     <string name="DidNotGetTheCodeBlameDurov">Якщо ви не отримали код на інший пристрій або ви не входили у Telegram на інших пристроях, будь ласка, скористайтеся офіційним клієнтом Telegram для отримання коду.\n\nTelegram **заблокував можливість входу через СМС** для сторонніх додатків. При вході через сторонні додатки користувачі можуть отримувати коди лише безпосередньо у Telegram.\n\nМи не можемо з цим нічого зробити, якщо у вас виникли будь-які складнощі зі входом, будь ласка, зверніться до служби підтримки Telegram.</string>
     <string name="QRLoginMessage">Для входу проскануйте QR-код з іншого пристрою.</string>
     <string name="DnsType">DNS-резолвер</string>
@@ -351,13 +351,13 @@
     <string name="DnsTypeAliDNS">AliDNS</string>
     <string name="DnsTypeSystem">Системний</string>
     <string name="CustomDoH">Власний DoH</string>
-    <string name="CustomDoHHint">https://1.0.0.1/dns-query, ... (Затисніть для вибору пресету)</string>
+    <string name="CustomDoHHint">https://1.1.1.1/dns-query, … (затисніть, щоб вибрати пресет)</string>
     <string name="PresetDoHServers">Попередньо встановлені сервери DoH</string>
     <string name="WebProxy">Веб / HTTP-проксі</string>
     <string name="WebProxyMode">Веб / HTTP-проксі</string>
     <string name="WebProxyAbout">Спрямовувати зовнішні HTTP/HTTPS-запити (такі як переклад LLM, перевірка оновлень та розпізнавання голосу) через проксі.</string>
-    <string name="WebProxyModeFollow">Як у Telegram (SOCKS5)</string>
-    <string name="WebProxyModeDirect">Пряме з\'єднання (вимкнено)</string>
+    <string name="WebProxyModeFollow">Використовувати проксі Telegram (SOCKS5)</string>
+    <string name="WebProxyModeDirect">Пряме з\'єднання (без проксі)</string>
     <string name="WebProxyModeCustom">Власний проксі</string>
     <string name="WebProxyType">Тип проксі</string>
     <string name="WebProxyTypeHttp">HTTP / HTTPS</string>
@@ -441,8 +441,8 @@
     <string name="MainTabsHideContacts">Приховати вкладку «Контакти»</string>
     <string name="PasscodeShowMessagePreviewWhenLocked">Показувати попередній перегляд повідомлень</string>
     <string name="PasscodeShowMessagePreviewWhenLockedAbout">Показувати вміст сповіщень навіть під час блокування паролем.</string>
-    <string name="StickerSavedHint">Стікер збережено в галереї.</string>
-    <string name="StickerCopied">Стікер скопійовано в буфер обміну.</string>
+    <string name="StickerSavedHint">Наліпку збережено в галерею.</string>
+    <string name="StickerCopied">Наліпку скопійовано в буфер обміну.</string>
     <string name="StrokeOnViews">Ефекти відблисків</string>
     <string name="FolderTabsStroke">Обведення активної папки</string>
     <string name="HideBottomNavigationBar">Приховати нижню панель навігації</string>
@@ -488,7 +488,7 @@
     <!-- Verified Badge -->
     <string name="VerifySelf">Верифікувати себе</string>
     <string name="VerifySelfDetail">Локально відображати ексклюзивний значок верифікації для поточного акаунта</string>
-    <string name="NiagramVerifiedOfficial">Представник NiagramX</string>
+    <string name="NiagramVerifiedOfficial">Представник Niagram</string>
     <string name="NagramVerifiedDev">Розробник Nagram</string>
 
     <!-- Input Text Animations -->
@@ -501,14 +501,14 @@
     <string name="InputAnimationStrongest">Найсильніша</string>
 
     <!-- Legacy Nekogram Strings -->
-    <string name="NekoSettings">N-налаштування</string>
+    <string name="NekoSettings">Налаштування Neo</string>
     <string name="IPv6">Надавати перевагу IPv6</string>
     <string name="MessageMenu">Меню повідомлень</string>
     <string name="HidePhone">Приховати номер телефону</string>
     <string name="DeleteAllFromSelf">Видалити мої повідомлення</string>
     <string name="DeleteAllFromSelfAlert">Увага! Це **видалить всі ваші повідомлення** в цьому чаті для **всіх** учасників.</string>
     <string name="DeleteAllFromSelfAlertBefore">Увага! Це **видалить усі ваші повідомлення до %s** у цьому чаті для **всіх** учасників.</string>
-    <string name="DeleteAllFromSelfBefore">До...</string>
+    <string name="DeleteAllFromSelfBefore">До…</string>
     <string name="DeleteAllFromSelfAdmin">З правами адміністратора</string>
     <string name="DeleteAllFromSelfDone">Усі ваші повідомлення видалені</string>
     <string name="IgnoreBlocked">Приховати повідомлення від заблокованих користувачів</string>
@@ -518,7 +518,7 @@
     <string name="LastFirst">Спочатку прізвище</string>
     <string name="TypefaceUseDefault">Використовувати системний шрифт</string>
     <string name="NoQuoteForward">Переслати без автора</string>
-    <string name="Repeat">Поширити</string>
+    <string name="Repeat">Повторити</string>
     <string name="AddToSavedMessages">Зберегти</string>
     <string name="CreateMention">Згадати</string>
     <string name="ActionBarDecoration">Оформлення заголовка</string>
@@ -550,8 +550,8 @@
     <string name="ProviderLingocloud">LingoCloud</string>
     <string name="UndoTranslate">Приховати переклад</string>
     <string name="BotToken">Токен</string>
-    <string name="UnlimitedPinnedDialogs">Необмежені закріплені діалоги</string>
-    <string name="UnlimitedPinnedDialogsAbout">Закріплення необмеженої кількості діалогів відбудеться у разі відключення їхньої синхронізації.</string>
+    <string name="UnlimitedPinnedDialogs">Необмежені закріплені чати</string>
+    <string name="UnlimitedPinnedDialogsAbout">Закріплюйте скільки завгодно чатів — синхронізацію закріплених буде вимкнено.</string>
     <string name="OpenArchiveOnPull">Відкривати \"Архівні чати\" при витягуванні вниз</string>
     <string name="HideKeyboardOnChatScroll">Ховати клавіатуру під час прокрутки</string>
     <string name="UserRestrictionsSendStickers2">Надсилання наліпок</string>
@@ -570,7 +570,7 @@
     <string name="CallTo">Зателефонувати до **%1$s**?</string>
     <string name="DisableNumberRounding">Не округлювати числа</string>
     <string name="Categories">Категорії</string>
-    <string name="OfficialChannel">Канал Nagram</string>
+    <string name="OfficialChannel">Канал збірок Niagram</string>
     <string name="About">Про додаток</string>
     <string name="SourceCode">Вихідний код</string>
     <string name="ResetStickerSize">Скинути розмір наліпки</string>
@@ -614,10 +614,10 @@
     <string name="enhancedFileLoaderExtremeNotice">Максимальний режим (8×512 КБ) завантажує файли з максимальною кількістю паралельних запитів.\n\n⚠️ Увага: Для акаунтів без Telegram Premium під час завантаження великих файлів (близько 65–75 МБ) можлива пауза на 7–10 секунд через серверні обмеження пропускної здатності. У такому разі рекомендується використовувати «Збалансований» режим.</string>
     <string name="mapDriftingFixForGoogleMaps">Виправити дрейф карт Google в Китаї</string>
     <string name="useOSMDroidMap">Використовувати карти OSMDroid</string>
-    <string name="UnknownNekoSettingsOption">В «N-налаштуваннях» немає такої опції.</string>
+    <string name="UnknownNekoSettingsOption">У «Налаштуваннях Neo» немає такої опції.</string>
     <string name="PasscodeNeeded">Спочатку необхідно увімкнути код блокування</string>
     <string name="PasscodeNeko">Код блокування</string>
-    <string name="PasscodeShowInSettings">Показати в N-налаштуваннях</string>
+    <string name="PasscodeShowInSettings">Показувати в налаштуваннях Neo</string>
     <string name="PasscodeShowInSettingsAbout">Після приховування ви зможете відкрити цю сторінку **ЛИШЕ** за посиланням:</string>
     <string name="PasscodeSet">Встановити код розблокування</string>
     <string name="PasscodeEdit">Змінити код розблокування</string>
@@ -654,15 +654,15 @@
     <string name="RecentChats">Нещодавні чати</string>
     <string name="ClearRecentChats">Очистити недавні чати</string>
     <string name="ClearRecentChatAlert">Ви хочете очистити останні чати?</string>
-    <string name="CloudConfig">Налаштування хмарного Сховища</string>
-    <string name="CloudConfigDesc">Збережіть свої N-налаштування у хмарі Telegram.</string>
+    <string name="CloudConfig">Хмарні налаштування</string>
+    <string name="CloudConfigDesc">Збережіть свої налаштування Neo у хмарі Telegram.</string>
     <string name="CloudConfigSyncDate">Остання синхронізація: %1$s, хмара: %2$s</string>
     <string name="CloudConfigSyncDateNever">ніколи</string>
     <string name="CloudConfigSync">Синхронізувати до хмари</string>
     <string name="CloudConfigRestore">Відновити з хмари</string>
-    <string name="CloudConfigSyncing">Синхронізація...</string>
+    <string name="CloudConfigSyncing">Синхронізація…</string>
     <string name="CloudConfigAutoSync">Автоматична синхронізація</string>
-    <string name="CloudConfigAutoSyncDesc">Автоматично синхронізувати з хмарою після внесення змін до N-налаштувань.</string>
+    <string name="CloudConfigAutoSyncDesc">Автоматично синхронізувати з хмарою після змін у налаштуваннях Neo.</string>
     <string name="CloudConfigSyncFailed">Не вдалося синхронізувати налаштування з хмарою</string>
     <string name="CloudConfigRestoreFailed">Не вдалося відновити налаштування з хмари</string>
     <string name="CopyCallback">Копіювати дані зворотного виклику</string>
@@ -675,7 +675,7 @@
     <string name="ChatAttachEnterMenuDisableLinkPreview">Без прев’ю посилань</string>
     <string name="ChatAttachEnterMenuEnableLinkPreview">З прев’ю посилань</string>
     <string name="UseChatAttachEnterMenu">Використовувати меню надсилання</string>
-    <string name="UseChatAttachEnterMenuNotice">Кнопка надсилання буде замінена на розширене меню.</string>
+    <string name="UseChatAttachEnterMenuNotice">Кнопку запису буде замінено на меню введення з перемикачем прев\'ю посилань.</string>
     <string name="DisableLinkPreviewByDefault">Вимкнути попередній перегляд посилань за замовчуванням</string>
     <string name="CustomApi">Користувацький API</string>
     <string name="UseCustomApiNotice">Увійдіть за допомогою користувацького API. Якщо ви не можете зареєструватися або увійти, це може допомогти.\n\nПримітка: FCM не працюватиме, якщо ви використовуєте користувацький API.</string>
@@ -687,7 +687,7 @@
     <string name="ProviderYandexTranslate">Яндекс</string>
     <string name="GoogleCloudTransKeyNotice">Встановіть ключ Google Cloud Translation, щоб викликати хмарне API перекладу замість імітації надсилання форми у веб-версію (швидше, стабільніше й заощаджує трафік).</string>
     <string name="TransToLang">Цільова мова</string>
-    <string name="TransInputToLang">Перекладати з</string>
+    <string name="TransInputToLang">Мова перекладу перед надсиланням</string>
     <string name="More">Більше</string>
     <string name="ShowIdAndDc">Показати ID/DC в профілі</string>
     <string name="DialogsSettings">Чати</string>
@@ -726,14 +726,14 @@
     <string name="TextOrigin">Оригінал</string>
     <string name="TextReplace">Замінити</string>
     <string name="ReplaceRegex">Використовувати регулярні вирази</string>
-    <string name="DisableTrending">Вимкнути Тренди</string>
+    <string name="DisableTrending">Вимкнути тренди</string>
     <string name="AutoDownload">Вимкнути автоматичне завантаження</string>
     <string name="Win32ExecutableFiles">Виконавчі файли Win32</string>
     <string name="ArchiveFiles">Архіви</string>
     <string name="AutoLockImmediately">Негайно</string>
     <string name="BackupSettings">Експорт налаштувань</string>
     <string name="ImportSettings">Імпорт налаштувань</string>
-    <string name="ImportSettingsAlert">Перезаписати налаштування? Імпорт налаштувань з невідомих джерел може призвести до перезапису Pin-коду та блокування додатка.</string>
+    <string name="ImportSettingsAlert">Перезаписати поточні налаштування? Імпорт налаштувань із невідомого джерела може перезаписати ваш пароль і заблокувати доступ до застосунку.</string>
     <string name="unreadBadgeOnBackButton">Кількість непрочитаних на кнопці Назад</string>
     <string name="useCustomEmoji">Власні емодзі</string>
     <string name="repeatConfirm">Запитувати перед повтором</string>
@@ -758,27 +758,21 @@
     <string name="Appearance">Зовнішній вигляд</string>
 
     <!-- Added from PR #23 -->
-    <string name="HideStarsRating">Приховати зіркові оцінки</string>
+    <string name="HideStarsRating">Приховати рейтинг Stars</string>
     <string name="ScrollToSeenPhotoOnClose">Прокручувати до переглянутого фото при закритті</string>
     <string name="ProviderTelegramAPI">Telegram API</string>
-    <string name="NekoX" translatable="false">NekoX</string>
     <string name="GoogleCloudTransKey">Ключ Google Cloud Translate</string>
     <string name="ThemeAmoledDark">AMOLED Темна</string>
     <string name="NoPreloadTrackIfRepeatOne">Не завантажувати наступний трек, якщо повторюється один</string>
     <string name="AppIconMusheen">Musheen</string>
-    <string name="AppIconSpace">Space</string>
-    <string name="AppIconCloud">Cloud</string>
-    <string name="AppIconNeon">Neon</string>
+    <string name="AppIconSpace">Космос</string>
+    <string name="AppIconCloud">Хмара</string>
+    <string name="AppIconNeon">Неон</string>
     <string name="AppIconMaterial">Material</string>
-    <string name="Nagram" translatable="false">Nagram</string>
     <string name="ShowGroupMemberJoinDate">Показувати дату приєднання учасника групи</string>
     <string name="ShowGroupMemberJoinDateNotice">Показувати, коли учасник приєднався до групи, у меню учасника та профілі.</string>
     <string name="GroupMemberJoinDate">Приєднався(-лася) до групи</string>
-    <string name="PushServiceTypeFCM" translatable="false">Google FCM</string>
-    <string name="PushServiceTypeUnified" translatable="false">UnifiedPush</string>
-    <string name="PushServiceTypeMicroG" translatable="false">microG</string>
     <string name="PushServiceTypeUnifiedGateway">Шлюз Unified Push</string>
-    <string name="Pangu" translatable="false">Pangu</string>
     <string name="InputBar">Панель введення</string>
     <string name="IosButtonPlacement">Розташування кнопок (iOS)</string>
     <string name="IosInputAppearance">Вигляд (iOS)</string>
@@ -791,34 +785,20 @@
     <string name="LiquidGlassIntensity">Інтенсивність Liquid Glass</string>
     <string name="ClownAvatarForBlockedUsers">Аватар клоуна для заблокованих</string>
     <string name="ClownAvatarForBlockedUsersDetail">Показувати аватар клоуна для заблокованих вами користувачів замість їхнього справжнього або порожнього аватара</string>
-    <string name="NiagramX" translatable="false">Niagram</string>
     <string name="SpyMode">Режим шпигуна</string>
     <string name="SaveDeletedMessagesInPrivate">Особисті чати</string>
     <string name="SaveDeletedMessagesInGroups">Групи</string>
     <string name="SaveDeletedMessagesInChannels">Канали</string>
     <string name="AllowScreenCapture">Дозволити знімок екрана</string>
-    <string name="AllowScreenCaptureNotice">Вимкнути обмеження FLAG_SECURE, щоб дозволити знімки екрана та запис екрана в усіх чатах, медіа з таймером (TTL) та захищених переглядах.</string>
+    <string name="AllowScreenCaptureNotice">Знімає обмеження FLAG_SECURE, дозволяючи знімки та запис екрана будь-де, зокрема в секретних чатах, медіа, що самознищуються, та на екранах пароля.</string>
     <string name="AllowCopyProtectedContent">Дозволити копіювання захищеного вмісту</string>
     <string name="AllowCopyProtectedContentNotice">Дозволити копіювання тексту, збереження фото/відео та повторне надсилання повідомлень із захищених каналів та чатів (де заборонено пересилання).</string>
-    <string name="SaveTTLMedia">Зберігати зникаючі та TTL медіа</string>
-    <string name="SaveTTLMediaNotice">Завжди дозволяти зберігати, ділитися та переглядати зникаючі фото та відео без обмежень.</string>
+    <string name="SaveTTLMedia">Зберігати медіа, що самознищуються</string>
+    <string name="SaveTTLMediaNotice">Зберігайте, пересилайте та переглядайте фото й відео, що самознищуються, без обмежень.</string>
     <string name="CompactChatInput">Компактний режим</string>
     <string name="CompactChatInputNotice">Зменшити висоту панелі введення до 40dp та звузити відступи.</string>
     <string name="useIosSounds">Звуки повідомлень iOS</string>
     <string name="UseIosSoundsNotice">Використовувати внутрішні звуки повідомлень з Telegram для iOS.</string>
-    <string name="LlmApiUrlHint" translatable="false">https://api.openai.com/v1</string>
-    <string name="LlmApiUrlDefault" translatable="false">https://generativelanguage.googleapis.com/v1beta/openai</string>
-    <string name="LlmModelNameDefault" translatable="false">gemini-flash-latest</string>
-    <string name="LlmProviderOpenAIModel" translatable="false">gpt-5.6-luna</string>
-    <string name="LlmProviderGeminiModel" translatable="false">gemini-flash-lite-latest</string>
-    <string name="LlmProviderGroqModel" translatable="false">openai/gpt-oss-120b</string>
-    <string name="LlmProviderDeepSeekModel" translatable="false">deepseek-v4-flash</string>
-    <string name="LlmProviderXAIModel" translatable="false"></string>
-    <string name="LlmProviderCerebrasModel" translatable="false">gpt-oss-120b</string>
-    <string name="LlmProviderOllamaCloudModel" translatable="false">gemma4:31b</string>
-    <string name="LlmProviderOpenRouterModel" translatable="false">openrouter/free</string>
-    <string name="LlmProviderVercelAIGatewayModel" translatable="false">google/gemma-4-31b-it</string>
-    <string name="StyleMaterialDesign3" translatable="false">Material Design 3</string>
     <string name="CustomApiDefault">Стандартний API</string>
     <string name="CustomApiOfficial">Офіційний Telegram</string>
     <string name="CustomApiCustom">Власний API</string>
@@ -830,15 +810,15 @@
     <string name="DefaultHlsVideoQualityLow">Низька якість (480p)</string>
     <string name="NiaBanById">Заблокувати за ID користувача</string>
     <string name="NiaBanByIdDialogTitle">Заблокувати користувача за ID</string>
-    <string name="NiaBanByIdDialogMessage">Введіть 64-бітний числовий ID цільового користувача. Запит на блокування буде надіслано безпосередньо на сервер Telegram.</string>
+    <string name="NiaBanByIdDialogMessage">Введіть числовий ID користувача. Запит на блокування буде надіслано безпосередньо на сервери Telegram.</string>
     <string name="NiaBanByIdHint">напр. 123456789</string>
     <string name="NiaBanByIdConfirm">Заблокувати користувача</string>
     <string name="NiaBanByIdConfirmTitle">Підтвердити блокування</string>
     <string name="NiaBanByIdConfirmMessage">Ви впевнені, що хочете заблокувати користувача з ID: %1$s?</string>
     <string name="NiaBanByIdSuccess">Користувача з ID %1$s успішно заблоковано.</string>
     <string name="NiaBanByIdCannotBanSelf">Ви не можете заблокувати себе.</string>
-    <string name="NiaBanByIdCannotBanCreator">Неможливо заблокувати творця або власника цієї групи.</string>
-    <string name="NiaBanByIdInvalid">Будь ласка, введіть дійсний додатній числовий ID.</string>
+    <string name="NiaBanByIdCannotBanCreator">Неможливо заблокувати власника цієї групи.</string>
+    <string name="NiaBanByIdInvalid">Введіть коректний числовий ID, більший за 0.</string>
     <string name="NiaBanByIdErrorNotParticipant">Цього користувача немає в групі. Сервер Telegram не дозволяє блокувати користувачів, які не є учасниками.</string>
     <string name="NiaBanByIdErrorInvalidUser">Недійсний ID користувача або користувача не знайдено в Telegram.</string>
     <string name="NiaBanByIdErrorAdminRequired">У вас недостатньо прав адміністратора, щоб заблокувати цього користувача.</string>

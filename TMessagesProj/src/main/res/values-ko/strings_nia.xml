@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="N_Config">N-설정</string>
+    <string name="N_Config">Neo 설정</string>
     <string name="CombineMessage">메시지 합치기</string>
     <string name="TextStyle">텍스트 스타일</string>
     <string name="NoiseSuppressAndVoiceEnhance">음성 향상</string>
@@ -60,6 +60,7 @@
     <string name="PushServiceType">푸시 서비스 유형</string>
     <string name="PushServiceTypeInApp">앱 내</string>
     <string name="PushServiceTypeInAppDialog">상주 알림 표시</string>
+    <string name="PushServiceTypeUnifiedGateway">Unified Push Gateway</string>
     <string name="SendMp4DocumentAsVideo">MP4 문서를 동영상으로 보내기</string>
     <string name="StickersChooseShortNameForStickerPack">팩의 짧은 이름을 선택하세요.</string>
     <string name="StickersCopyStickerSet">스티커 세트 복사</string>
@@ -86,18 +87,18 @@
     <string name="SearchHashtagDefaultPageChannel">채널의 기본 해시태그 검색 페이지</string>
     <string name="SearchHashtagDefaultPageChat">채팅의 기본 해시태그 검색 페이지</string>
     <string name="EnablePanguOnSending">보낼 때 Pangu 활성화</string>
-    <string name="PanguInfo">가독성을 높이기 위한 세심한 텍스트 간격 조정으로, CJK(중국어, 일본어, 한국어), 반각 영어, 숫자, 기호 문자 사이에 공백을 자동으로 삽입합니다.</string>
+    <string name="PanguInfo">가독성을 위해 CJK(중국어, 일본어, 한국어) 텍스트와 라틴 문자, 숫자, 기호 사이에 공백을 자동으로 넣습니다.</string>
     <string name="SendWithPangu">Pangu로 보내기</string>
     <string name="SendWithoutPangu">Pangu 없이 보내기</string>
-    <string name="DefaultHlsVideoQuality">기본 HLS 동영상 화질</string>
+    <string name="DefaultHlsVideoQuality">기본 동영상 화질</string>
     <string name="DisableBotOpenButton">봇 열기 버튼 비활성화</string>
     <string name="CustomTitleUserName">사용자 닉네임을 제목으로 사용</string>
     <string name="EnhancedVideoBitrate">공유 동영상 비트레이트 향상</string>
     <string name="ActionBarButtons">액션 바 버튼</string>
     <string name="VideoPlayerDecoder">동영상 디코더</string>
-    <string name="VideoPlayerDecoderPreferSW">SW 우선</string>
-    <string name="VideoPlayerDecoderHardware">HW 전용</string>
-    <string name="VideoPlayerDecoderPreferHW">HW 우선</string>
+    <string name="VideoPlayerDecoderPreferSW">소프트웨어 우선</string>
+    <string name="VideoPlayerDecoderHardware">하드웨어 전용</string>
+    <string name="VideoPlayerDecoderPreferHW">하드웨어 우선</string>
     <string name="DisableGooeyAvatarAnimation">프로필 아바타 유체 애니메이션 비활성화</string>
     <string name="ShowSquareAvatar">사각형 프로필 사진</string>
     <string name="ShowForwardTextEdit">전달 시 메시지 텍스트 수정</string>
@@ -131,14 +132,14 @@
     <string name="LlmSystemPromptHint">당신은 전문 번역가입니다.</string>
     <string name="LlmSystemPromptNotice">AI의 역할과 동작을 정의하세요.\n\n이 프롬프트는 AI의 어조, 성격, 제한 사항을 설정합니다. AI가 어떤 유형의 어시스턴트여야 하는지 설명해 보세요.</string>
     <string name="LlmUserPrompt">사용자 프롬프트</string>
-    <string name="LlmUserPromptHint">@toLang(으)로 번역:\n@text</string>
+    <string name="LlmUserPromptHint">\@toLang(으)로 번역:\n@text</string>
     <string name="LlmUserPromptNotice">원문 메시지의 자리표시자로 @text를, 대상 언어의 자리표시자로 @toLang을 사용하세요(선택 사항).\n\n비워 두면 기본 프롬프트를 사용합니다.</string>
     <string name="LlmUseContext">문맥 사용</string>
     <string name="LlmUseContextNotice">더 많은 토큰을 사용하는 대신 번역 품질을 높입니다.</string>
     <string name="LlmContextSize">문맥 메시지</string>
     <string name="LlmUseContextInAutoTranslate">자동 번역에서 문맥 사용</string>
     <string name="LlmUseContextInAutoTranslateNotice">토큰 사용량과 지연 시간이 늘어날 수 있습니다.</string>
-    <string name="LlmTemperature">Temperature</string>
+    <string name="LlmTemperature">온도</string>
     <string name="LlmModelsLoadFailed">모델 목록을 불러오지 못했습니다.</string>
     <string name="LlmTest">테스트</string>
     <string name="LlmTestResultHttpStatusCode">HTTP 코드</string>
@@ -195,7 +196,7 @@
     <string name="TranslatorSettings">번역기</string>
     <string name="SettingsOnly">설정에서만</string>
     <string name="ChatsOnly">채팅에서만</string>
-    <string name="InstantViewTranslation">인스턴트</string>
+    <string name="InstantViewTranslation">인스턴트 뷰</string>
     <string name="SaveDeletedMessageForBot">봇 채팅에 저장</string>
     <string name="HideArchive">채팅 목록에서 \"보관된 채팅\" 제거</string>
     <string name="ConfirmAllLinks">인라인 링크 열기 전 확인</string>
@@ -216,7 +217,7 @@
     <string name="Other">기타</string>
     <string name="RestartApp">앱 다시 시작</string>
     <string name="ResetSettings">설정 초기화</string>
-    <string name="ResetSettingsAlert">모든 N-Settings를 초기화하시겠습니까?</string>
+    <string name="ResetSettingsAlert">모든 Neo 설정을 초기화하시겠습니까?</string>
     <string name="DontAutoPlayNextVoice">다음 음성 메시지 자동 재생 안 함</string>
     <string name="SaveToChatSubfolder">채팅 이름별로 첨부 파일 저장</string>
     <string name="MessageColoredBackground">다채로운 메시지 배경</string>
@@ -247,7 +248,7 @@
     <string name="GhostModeNotice">고스트 모드를 전환할 때 변경되지 않도록 하려면 옵션을 길게 탭하세요.</string>
     <string name="MarkReadAfterSendNotice">새 메시지를 보내거나 반응을 탭하면 메시지를 자동으로 읽음 처리합니다.</string>
     <string name="SendWithoutSoundRowNotice">발신 메시지를 자동으로 소리 없이 보냅니다.</string>
-    <string name="GhostReadMessage">메시지 읽기</string>
+    <string name="GhostReadMessage">읽음으로 표시</string>
     <string name="GhostModeExcludeRead">읽음 제외</string>
     <string name="GhostModeExcludeTyping">입력 중 제외</string>
     <string name="SendWithSound">소리와 함께 보내기</string>
@@ -262,8 +263,8 @@
     <string name="TranscribeProviderGemini">Gemini</string>
     <string name="CloudflareCredentials">Cloudflare 자격 증명</string>
     <string name="CloudflareCredentialsNotSet">Cloudflare 자격 증명이 구성되지 않았습니다.</string>
-    <string name="CloudflareAccountID">Account ID</string>
-    <string name="CloudflareAPIToken">API Token</string>
+    <string name="CloudflareAccountID">계정 ID</string>
+    <string name="CloudflareAPIToken">API 토큰</string>
     <string name="CloudflareCredentialsDialog">Cloudflare Account ID와 API Token을 구성하세요.\n**얻는 방법**\n</string>
     <string name="GeminiApiKeyNotSet">Gemini API 키가 구성되지 않았습니다.</string>
     <string name="GeminiApiKeyDialog">Gemini API 키를 구성하세요. 비워 두면 번역기 설정의 키를 사용합니다.\n**얻는 방법**\n</string>
@@ -291,16 +292,16 @@
     <string name="DebugMenuShowFrameMetrics">프레임 메트릭 표시</string>
     <string name="DebugMenuHideFrameMetrics">프레임 메트릭 숨기기</string>
     <string name="TranslateMessageLLM">AI로 번역</string>
-    <string name="EditLocalNameOverride">로컬 이름 재정의 편집</string>
-    <string name="ResetChatNameOverrides">채팅 이름 재정의 초기화</string>
-    <string name="ResetChatNameNotification">채팅 이름 재정의가 지워졌습니다.</string>
+    <string name="EditLocalNameOverride">로컬 이름을 편집하는 중입니다.</string>
+    <string name="ResetChatNameOverrides">로컬 채팅 이름 초기화</string>
+    <string name="ResetChatNameNotification">로컬 채팅 이름이 지워졌습니다.</string>
     <string name="LeftBottomButtonAction">왼쪽 버튼 동작</string>
     <string name="TranscribeProviderOpenAI">OpenAI 호환 API</string>
     <string name="OpenAiApiCredentialsDialog">OpenAI 호환 API를 구성하세요. 이 **문서**를 참조할 수 있습니다.\n</string>
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
     <string name="OpenAiCredentialsNotSet">API 자격 증명이 구성되지 않았습니다.</string>
     <string name="AppIconTelegramOriginal">원본</string>
-    <string name="BurnTtlMessage">태우기</string>
+    <string name="BurnTtlMessage">파기</string>
     <string name="StreamMkvNax">MKV를 동영상으로 표시</string>
     <string name="StreamAllVideoNax">모든 동영상 스트리밍</string>
     <string name="MonoCode">코드</string>
@@ -325,7 +326,7 @@
     <string name="PremiumItemEmojiStatus">이모지 상태</string>
     <string name="PremiumItemEmojiInReplies">답장의 이모지</string>
     <string name="PremiumItemCustomColorInReplies">사용자 지정 색상</string>
-    <string name="PremiumItemStarInReactions">Star 반응</string>
+    <string name="PremiumItemStarInReactions">반응의 별</string>
     <string name="PremiumItemVideoAvatar">움직이는 아바타</string>
     <string name="PremiumItemCustomWallpaper">사용자 지정 배경화면</string>
     <string name="TranslationTargetApp">앱 언어 따르기</string>
@@ -460,7 +461,7 @@
     <string name="InputFieldTextSizeDefault">기본값</string>
     <string name="HideGiftButtons">프로필의 선물 버튼 숨기기</string>
     <string name="EnableQuickSchedule">빠른 일정</string>
-    <string name="EnableQuickScheduleNotice">음소거 상태를 존중하며, 보내기 버튼을 길게 눌렀을 때 일정 옵션을 표시합니다.</string>
+    <string name="EnableQuickScheduleNotice">보내기 버튼을 길게 누르면 예약 옵션(나중에 보내기 / 온라인일 때 보내기)을 표시하며, 무음 상태를 따릅니다.</string>
     <string name="DisableAiEditor">AI 편집기 비활성화</string>
     <string name="ForceForward">강제 전달</string>
     <string name="ForceForwardPremiumOnly">강제 전달 기능을 사용하려면 **Telegram Premium**을 구독하세요.</string>
@@ -470,8 +471,8 @@
     <!-- Verified Badge -->
     <string name="VerifySelf">본인 인증 배지 켜기</string>
     <string name="VerifySelfDetail">현재 계정에 로컬 전용 인증 배지를 표시합니다</string>
-    <string name="NiagramVerifiedOfficial">NiagramX 공식</string>
-    <string name="NagramVerifiedDev">Nagram 개발者</string>
+    <string name="NiagramVerifiedOfficial">Niagram 공식</string>
+    <string name="NagramVerifiedDev">Nagram 개발자</string>
 
     <!-- Input Text Animations -->
     <string name="InputTextAnimations">입력 애니메이션 및 삭제 파티클 효과</string>
@@ -483,14 +484,14 @@
     <string name="InputAnimationStrongest">가장 강하게</string>
 
     <!-- Legacy Nekogram Strings -->
-    <string name="NekoSettings">N-설정</string>
+    <string name="NekoSettings">Neo 설정</string>
     <string name="IPv6">IPv6 우선 사용</string>
     <string name="MessageMenu">메시지 메뉴</string>
     <string name="HidePhone">전화번호 숨기기</string>
     <string name="DeleteAllFromSelf">내 메시지 삭제</string>
     <string name="DeleteAllFromSelfAlert">경고! 이 채팅의 **내 모든 메시지**가 **모든** 참가자에게서 삭제됩니다.</string>
     <string name="DeleteAllFromSelfAlertBefore">경고! 이 채팅에서 **%s 이전의 내 모든 메시지**가 **모든** 참가자에게서 삭제됩니다.</string>
-    <string name="DeleteAllFromSelfBefore">이전...</string>
+    <string name="DeleteAllFromSelfBefore">이전…</string>
     <string name="DeleteAllFromSelfAdmin">관리자 권한으로</string>
     <string name="DeleteAllFromSelfDone">내 모든 메시지가 삭제되었습니다</string>
     <string name="IgnoreBlocked">차단한 사용자의 메시지 숨기기</string>
@@ -519,7 +520,7 @@
     <string name="StickerSizeDialogMessageSmallOne">작은 크기</string>
     <string name="StickerSizeDialogMessageReplyTo">야옹</string>
     <string name="StickerSizeDialogName">Duang</string>
-    <string name="Experimental">실험실</string>
+    <string name="Experimental">실험적 기능</string>
     <string name="UnlimitedFavoredStickers">즐겨찾는 스티커 무제한</string>
     <string name="UnlimitedFavoredStickersAbout">즐겨찾기에 스티커를 무제한으로 추가합니다. 스티커가 다른 기기에 동기화되지 않을 수 있습니다.</string>
     <string name="MessageDetails">세부 정보</string>
@@ -552,7 +553,7 @@
     <string name="CallTo">**%1$s**에게 전화할까요?</string>
     <string name="DisableNumberRounding">숫자 반올림 끄기</string>
     <string name="Categories">카테고리</string>
-    <string name="OfficialChannel">Nagram 채널</string>
+    <string name="OfficialChannel">Niagram 빌드 채널</string>
     <string name="About">정보</string>
     <string name="SourceCode">소스 코드</string>
     <string name="ResetStickerSize">스티커 크기 초기화</string>
@@ -596,10 +597,10 @@
     <string name="enhancedFileLoaderExtremeNotice">최대 가속(8×512KB) 모드는 최대 병렬 요청 수로 다운로드합니다.\n\n⚠️ 주의: Telegram Premium 미가입 계정의 경우 대용량 파일(약 65~75MB 구간) 다운로드 시 서버 측 대역폭 제한으로 인해 7~10초간 일시 중단될 수 있습니다. 중단 현상이 발생하면 \'균형 가속\' 모드로 변경하는 것을 권장합니다.</string>
     <string name="mapDriftingFixForGoogleMaps">중국에서 Google Maps 위치 밀림 수정</string>
     <string name="useOSMDroidMap">OSMDroid 지도 사용</string>
-    <string name="UnknownNekoSettingsOption">해당 N-Settings 옵션이 없습니다.</string>
+    <string name="UnknownNekoSettingsOption">해당 Neo 설정 옵션이 없습니다.</string>
     <string name="PasscodeNeeded">먼저 암호 잠금을 활성화해야 합니다</string>
     <string name="PasscodeNeko">암호</string>
-    <string name="PasscodeShowInSettings">N-Settings에 표시</string>
+    <string name="PasscodeShowInSettings">Neo 설정에 표시</string>
     <string name="PasscodeShowInSettingsAbout">숨긴 후에는 이 페이지를 **링크로만** 열 수 있습니다:</string>
     <string name="PasscodeSet">암호 설정</string>
     <string name="PasscodeEdit">암호 변경</string>
@@ -620,7 +621,7 @@
     <string name="EmojiSets">이모지 세트</string>
     <string name="MyEmojiSets">내 이모지 세트</string>
     <string name="InstalledEmojiSet">설치됨</string>
-    <string name="InstallingEmojiSet">설치 중...</string>
+    <string name="InstallingEmojiSet">설치 중…</string>
     <string name="UpdateEmojiSet">%s 업데이트</string>
     <string name="EmojiSetHint">이 설정은 내 이모지 모양에만 영향을 줍니다. 다른 사람에게는 각자의 설정에 따라 보입니다.</string>
     <string name="CustomEmojiSetHint">내부 저장소에서 이모지 세트를 가져와 선택합니다.</string>
@@ -633,18 +634,19 @@
     <string name="EmojiSetApplied">이모지 세트가 적용되었습니다.</string>
     <string name="EmojiSetAppliedInfo">%1$s이(가) 이제 내 이모지 세트입니다.</string>
     <string name="EmojiSetAlreadyApplied">이미 적용된 이모지 세트입니다.</string>
+    <string name="ProviderTelegramAPI">Telegram API</string>
     <string name="RecentChats">최근 채팅</string>
     <string name="ClearRecentChats">최근 채팅 지우기</string>
     <string name="ClearRecentChatAlert">최근 채팅을 지우시겠습니까?</string>
     <string name="CloudConfig">클라우드 설정</string>
-    <string name="CloudConfigDesc">N-Settings를 Telegram 클라우드에 저장합니다.</string>
+    <string name="CloudConfigDesc">Neo 설정을 Telegram 클라우드에 저장합니다.</string>
     <string name="CloudConfigSyncDate">마지막 동기화: %1$s, 클라우드: %2$s</string>
     <string name="CloudConfigSyncDateNever">없음</string>
     <string name="CloudConfigSync">클라우드에 동기화</string>
     <string name="CloudConfigRestore">클라우드에서 복원</string>
-    <string name="CloudConfigSyncing">동기화 중...</string>
+    <string name="CloudConfigSyncing">동기화 중…</string>
     <string name="CloudConfigAutoSync">자동 동기화</string>
-    <string name="CloudConfigAutoSyncDesc">N-Settings를 변경한 뒤 자동으로 클라우드에 동기화합니다.</string>
+    <string name="CloudConfigAutoSyncDesc">Neo 설정을 변경한 뒤 자동으로 클라우드에 동기화합니다.</string>
     <string name="CloudConfigSyncFailed">설정을 클라우드에 동기화하지 못했습니다</string>
     <string name="CloudConfigRestoreFailed">클라우드에서 설정을 복원하지 못했습니다</string>
     <string name="CopyCallback">Callback 데이터 복사</string>
@@ -667,7 +669,7 @@
     <string name="LinkedChannelChat">연결된 채널</string>
     <string name="ChangeTranslateProvider">제공업체 변경</string>
     <string name="ProviderYandexTranslate">Yandex 번역기</string>
-    <string name="GoogleCloudTransKeyNotice">Google Cloud Translate 키를 설정하면 번역 시 웹 버전에 가짜 양식을 제출하는 대신 클라우드 번역 API를 호출합니다. 더 빠르고 안정적이며 트래픽을 절약합니다.</string>
+    <string name="GoogleCloudTransKeyNotice">Google Cloud Translate 키를 설정하면 웹 번역기 양식 대신 공식 Cloud Translation API를 사용합니다. 더 빠르고 안정적이며 데이터도 절약됩니다.</string>
     <string name="TransToLang">대상 언어</string>
     <string name="TransInputToLang">전송 전 번역 언어</string>
     <string name="More">더보기</string>
@@ -716,7 +718,7 @@
     <string name="AutoLockImmediately">즉시</string>
     <string name="BackupSettings">설정 내보내기</string>
     <string name="ImportSettings">설정 가져오기</string>
-    <string name="ImportSettingsAlert">설정을 덮어쓸까요? 알 수 없는 출처의 설정을 가져오면 PIN이 덮어써져 앱이 잠길 수 있습니다.</string>
+    <string name="ImportSettingsAlert">현재 설정을 덮어쓸까요? 알 수 없는 출처의 설정을 가져오면 암호가 덮어써져 앱을 열지 못할 수 있습니다.</string>
     <string name="unreadBadgeOnBackButton">뒤로 버튼에 읽지 않음 배지 표시</string>
     <string name="useCustomEmoji">사용자 지정 이모지 사용</string>
     <string name="repeatConfirm">재게시 전 확인</string>
@@ -742,10 +744,10 @@
 
     <!-- App Icons -->
     <string name="AppIconMusheen">Musheen</string>
-    <string name="AppIconSpace">Space</string>
-    <string name="AppIconCloud">Cloud</string>
-    <string name="AppIconNeon">Neon</string>
-    <string name="AppIconMaterial">Material</string>
+    <string name="AppIconSpace">스페이스</string>
+    <string name="AppIconCloud">클라우드</string>
+    <string name="AppIconNeon">네온</string>
+    <string name="AppIconMaterial">머티리얼</string>
 
     <!-- Group Member Join Date -->
     <string name="ShowGroupMemberJoinDate">그룹 멤버 가입일 표시</string>
@@ -780,11 +782,11 @@
 
     <!-- Allow Screen Capture & Protected Content -->
     <string name="AllowScreenCapture">화면 캡처 허용</string>
-    <string name="AllowScreenCaptureNotice">FLAG_SECURE 제한을 비활성화하여 모든 채팅, 만료 미디어 및 보호된 화면에서 스크린샷과 화면 녹화를 허용합니다.</string>
+    <string name="AllowScreenCaptureNotice">FLAG_SECURE 제한을 해제하여 비밀 채팅, 자동 삭제 미디어, 암호 잠금 화면을 포함한 모든 곳에서 스크린샷과 화면 녹화를 허용합니다.</string>
     <string name="AllowCopyProtectedContent">보호된 콘텐츠 복사 허용</string>
     <string name="AllowCopyProtectedContentNotice">전달 금지된 채널 및 채팅에서 텍스트 복사, 사진/동영상 저장 및 메시지 재전송을 허용합니다.</string>
-    <string name="SaveTTLMedia">만료 및 TTL 미디어 저장</string>
-    <string name="SaveTTLMediaNotice">만료되는 사진 및 동영상을 제한 없이 저장, 공유 및 볼 수 있도록 항상 허용합니다.</string>
+    <string name="SaveTTLMedia">자동 삭제 미디어 저장</string>
+    <string name="SaveTTLMediaNotice">자동 삭제되는 사진과 동영상을 제한 없이 저장, 공유, 보기할 수 있습니다.</string>
 
     <!-- Compact Chat Input -->
     <string name="CompactChatInput">컴팩트 모드</string>
@@ -793,7 +795,6 @@
     <!-- iOS Sounds & Theme -->
     <string name="useIosSounds">iOS 메시지 알림음</string>
     <string name="UseIosSoundsNotice">Telegram iOS 버전의 인앱 메시지 효과음을 사용합니다.</string>
-    <string name="StyleMaterialDesign3">Material Design 3</string>
     <string name="TabletModeLandscape">가로 모드 전용</string>
 
     <!-- DNS / DoH -->
@@ -801,7 +802,7 @@
     <string name="DnsTypeGoogle">Google Public DNS</string>
     <string name="DnsTypeTencent">Tencent DNS</string>
     <string name="DnsTypeAliDNS">AliDNS</string>
-    <string name="CustomDoHHint">https://1.0.0.1/dns-query, ... (길게 눌러 프리셋 선택)</string>
+    <string name="CustomDoHHint">https://1.1.1.1/dns-query, … (길게 눌러 프리셋 선택)</string>
     <string name="PresetDoHServers">프리셋 DoH 서버</string>
 
     <!-- Custom API -->
@@ -814,7 +815,7 @@
     <string name="WebProxyMode">웹 / HTTP 프록시</string>
     <string name="WebProxyAbout">외부 HTTP/HTTPS 요청(예: LLM 번역, 업데이트 확인, 음성 텍스트 변환 등)을 프록시를 통해 라우팅합니다.</string>
     <string name="WebProxyModeFollow">Telegram 프록시 사용 (SOCKS5)</string>
-    <string name="WebProxyModeDirect">직접 연결 (비활성화)</string>
+    <string name="WebProxyModeDirect">직접 연결 (프록시 사용 안 함)</string>
     <string name="WebProxyModeCustom">사용자 지정 프록시</string>
     <string name="WebProxyType">프록시 종류</string>
     <string name="WebProxyTypeHttp">HTTP / HTTPS</string>
@@ -834,15 +835,15 @@
     <!-- Ban by User ID -->
     <string name="NiaBanById">사용자 ID로 차단</string>
     <string name="NiaBanByIdDialogTitle">사용자 ID로 차단</string>
-    <string name="NiaBanByIdDialogMessage">대상 사용자의 64비트 정수 ID를 입력하세요. 차단 요청은 Telegram 서버로 직접 전송됩니다.</string>
+    <string name="NiaBanByIdDialogMessage">대상 사용자의 숫자 ID를 입력하세요. 차단 요청은 Telegram 서버로 직접 전송됩니다.</string>
     <string name="NiaBanByIdHint">예: 123456789</string>
     <string name="NiaBanByIdConfirm">사용자 차단</string>
     <string name="NiaBanByIdConfirmTitle">차단 확인</string>
     <string name="NiaBanByIdConfirmMessage">ID: %1$s 사용자를 정말 차단하시겠습니까?</string>
     <string name="NiaBanByIdSuccess">사용자 ID %1$s을(를) 성공적으로 차단했습니다.</string>
     <string name="NiaBanByIdCannotBanSelf">자기 자신을 차단할 수 없습니다.</string>
-    <string name="NiaBanByIdCannotBanCreator">이 그룹의 소유자 또는 생성자를 차단할 수 없습니다.</string>
-    <string name="NiaBanByIdInvalid">올바른 양의 정수 ID를 입력하세요.</string>
+    <string name="NiaBanByIdCannotBanCreator">이 그룹의 소유자를 차단할 수 없습니다.</string>
+    <string name="NiaBanByIdInvalid">0보다 큰 올바른 숫자 ID를 입력하세요.</string>
     <string name="NiaBanByIdErrorNotParticipant">이 사용자는 그룹 멤버가 아닙니다. Telegram 서버는 참여자가 아닌 사용자의 차단을 허용하지 않습니다.</string>
     <string name="NiaBanByIdErrorInvalidUser">잘못된 사용자 ID이거나 Telegram에서 사용자를 찾을 수 없습니다.</string>
     <string name="NiaBanByIdErrorAdminRequired">이 사용자를 차단할 수 있는 충분한 관리자 권한이 없습니다.</string>
@@ -880,7 +881,7 @@
     <string name="ChatActivityNavbarTransparent">채팅 화면 하단 내비게이션 바 완전 투명화</string>
 
     <!-- Other settings -->
-    <string name="HideStarsRating">별 개수 숨기기</string>
+    <string name="HideStarsRating">Stars 등급 숨기기</string>
     <string name="ScrollToSeenPhotoOnClose">닫을 때 마지막으로 본 사진으로 스크롤</string>
     <string name="GoogleCloudTransKey">Google Cloud 번역 키</string>
     <string name="ThemeAmoledDark">AMOLED 다크</string>

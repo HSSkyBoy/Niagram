@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">NiagramX</string>
+    <string name="AppName">Niagram</string>
     <string name="LanguageName">喵喵中文</string>
     <string name="English">Chinese (Nya)</string>
     <string name="LanguageNameInEnglish">Chinese (Nya)</string>

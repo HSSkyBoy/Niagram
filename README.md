@@ -1,4 +1,4 @@
-# NiagramX
+# Niagram
 
 [![Crowdin](https://badges.crowdin.net/NagramX/localized.svg)](https://crowdin.com/project/NagramX)
 [![GitHub Release](https://img.shields.io/github/v/release/HSSkyBoy/NiagramX?include_prereleases&style=flat-square)](https://github.com/HSSkyBoy/NiagramX/releases)
@@ -60,8 +60,8 @@ Official release packages are signed with the official certificate:
 
 ```bash
 # Clone repository with all submodules
-git clone --recursive --shallow-submodules https://github.com/HSSkyBoy/NiagramX.git NiagramX
-cd NiagramX
+git clone --recursive --shallow-submodules https://github.com/HSSkyBoy/NiagramX.git Niagram
+cd Niagram
 
 # If submodules were not initialized during clone
 git submodule update --init --recursive --depth=1

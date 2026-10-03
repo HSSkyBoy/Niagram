@@ -121,7 +121,7 @@ public class UpdateHelper extends BaseRemoteHelper {
         Request request = new Request.Builder()
                 .url(url)
                 .header("Accept", "application/vnd.github.v3+json")
-                .header("User-Agent", "NiagramX-Updater")
+                .header("User-Agent", "Niagram-Updater")
                 .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {

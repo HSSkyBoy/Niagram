@@ -189,7 +189,7 @@ public class ApkDownloader {
             try {
                 Request request = new Request.Builder()
                         .url(url)
-                        .header("User-Agent", "NiagramX")
+                        .header("User-Agent", "Niagram")
                         .build();
                 response = getClient().newCall(request).execute();
                 ResponseBody body = response.body();

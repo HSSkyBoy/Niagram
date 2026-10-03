@@ -1,5 +1,5 @@
 /*
- * This is the source code of NiagramX for Android.
+ * This is the source code of Niagram for Android.
  * It is licensed under GNU GPL v2 or later.
  * You should have received a copy of the license in this archive (see LICENSE).
  */

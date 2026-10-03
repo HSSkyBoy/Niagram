@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="N_Config">Настройки N</string>
+    <string name="N_Config">Настройки Neo</string>
     <string name="CombineMessage">Объединить сообщения</string>
     <string name="TextStyle">Стиль текста</string>
     <string name="NoiseSuppressAndVoiceEnhance">Улучшение голоса</string>
@@ -90,15 +90,15 @@
     <string name="PanguInfo">Автоматическая расстановка пробелов для удобочитаемости: добавление пробелов между символами CJK (китайскими, японскими, корейскими), латинскими буквами, цифрами и специальными знаками.</string>
     <string name="SendWithPangu">Отправить с Pangu</string>
     <string name="SendWithoutPangu">Отправить без Pangu</string>
-    <string name="DefaultHlsVideoQuality">Качество видео HLS по умолчанию</string>
+    <string name="DefaultHlsVideoQuality">Качество видео по умолчанию</string>
     <string name="DisableBotOpenButton">Отключить кнопку открытия бота</string>
     <string name="CustomTitleUserName">Имя пользователя в качестве заголовка</string>
-    <string name="EnhancedVideoBitrate">Улучшить общий битрейт видео</string>
+    <string name="EnhancedVideoBitrate">Повышенный битрейт отправляемых видео</string>
     <string name="ActionBarButtons">Кнопки панели действий</string>
-    <string name="VideoPlayerDecoder">Видео декодер</string>
-    <string name="VideoPlayerDecoderPreferSW">Предпочтение SW</string>
-    <string name="VideoPlayerDecoderHardware">Только HW</string>
-    <string name="VideoPlayerDecoderPreferHW">Предпочтение HW</string>
+    <string name="VideoPlayerDecoder">Видеодекодер</string>
+    <string name="VideoPlayerDecoderPreferSW">Предпочитать программный</string>
+    <string name="VideoPlayerDecoderHardware">Только аппаратный</string>
+    <string name="VideoPlayerDecoderPreferHW">Предпочитать аппаратный</string>
     <string name="InputBar">Строка ввода</string>
     <string name="IosButtonPlacement">Расположение кнопок как в iOS</string>
     <string name="IosInputAppearance">Оформление как в iOS</string>
@@ -126,7 +126,7 @@
     <string name="CustomDeletedMark">Подпись для удалённых сообщений</string>
     <string name="HidePremiumSection">Скрыть «Premium» в настройках</string>
     <string name="HideHelpSection">Скрыть «Помощь» в настройках</string>
-    <string name="ProviderLLMTranslator">ИИ</string>
+    <string name="ProviderLLMTranslator">ИИ-переводчик</string>
     <string name="LlmApiUrl">API URL</string>
     <string name="LlmApiKey">Ключ API</string>
     <string name="LlmModelName">Модель</string>
@@ -225,7 +225,7 @@
     <string name="Other">Другое</string>
     <string name="RestartApp">Перезапустить приложение</string>
     <string name="ResetSettings">Сброс настроек</string>
-    <string name="ResetSettingsAlert">Вы уверены, что хотите сбросить все «Настройки N»?</string>
+    <string name="ResetSettingsAlert">Вы уверены, что хотите сбросить все «Настройки Neo»?</string>
     <string name="DontAutoPlayNextVoice">Не воспроизводить следующее голосовое сообщение автоматически</string>
     <string name="SaveToChatSubfolder">Сохранять вложения по названию чатов</string>
     <string name="MessageColoredBackground">Красочные фоны сообщений</string>
@@ -247,16 +247,16 @@
     <string name="GhostModeDisabled">Режим «Призрака» выключен</string>
     <string name="GhostModeInDrawer">Быстрый доступ</string>
     <string name="GhostModeStatusIndicator">Индикатор режима «Призрака»</string>
-    <string name="DontSendReadMessagePackets">Не читать сообщения</string>
-    <string name="DontReadStoriesPackets">Не читать истории</string>
+    <string name="DontSendReadMessagePackets">Не отмечать сообщения прочитанными</string>
+    <string name="DontReadStoriesPackets">Не отмечать истории просмотренными</string>
     <string name="DontSendOnlinePackets">Не отправлять онлайн-статус</string>
-    <string name="DontSendUploadProgress">Не отправлять ввод текста</string>
+    <string name="DontSendUploadProgress">Не отправлять «печатает…»</string>
     <string name="SendOfflinePacketAfterOnline">Автоматический офлайн</string>
     <string name="MarkReadAfterSend">Отмечать прочитанным после взаимодействия</string>
     <string name="GhostModeNotice">Долгое нажатие на любую опцию предотвращает её изменение при переключении режима «Призрака».</string>
     <string name="MarkReadAfterSendNotice">Когда вы отправляете новое сообщение или нажимаете на реакцию, сообщение автоматически отмечается как прочитанное.</string>
     <string name="SendWithoutSoundRowNotice">Автоматически отправлять исходящие сообщения без звука.</string>
-    <string name="GhostReadMessage">Прочитать сообщение</string>
+    <string name="GhostReadMessage">Отметить прочитанным</string>
     <string name="GhostModeExcludeRead">Исключить прочтение</string>
     <string name="GhostModeExcludeTyping">Исключить ввод текста</string>
     <string name="SendWithSound">Отправить со звуком</string>
@@ -278,7 +278,7 @@
     <string name="GeminiApiKeyDialog">Настройте ключ API Gemini. Оставьте поле пустым, чтобы использовать ключ из настроек переводчика.\n**Как получить?**\n</string>
     <string name="ReplyInPrivate">Ответить в личном чате</string>
     <string name="TranscribeProviderGeminiPrompt">Промпт (необязательно)</string>
-    <string name="uploadBoost">Увеличить скорость скачивания</string>
+    <string name="uploadBoost">Ускорение отправки файлов</string>
     <string name="HideDividers">Скрыть разделители</string>
     <string name="IconReplacements">Замена значков</string>
     <string name="IconReplacementSolar">Solar от @Design480</string>
@@ -309,7 +309,7 @@
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
     <string name="OpenAiCredentialsNotSet">Учётные данные API не настроены.</string>
     <string name="AppIconTelegramOriginal">Оригинальная</string>
-    <string name="BurnTtlMessage">Сжечь</string>
+    <string name="BurnTtlMessage">Уничтожить</string>
     <string name="StreamMkvNax">Показывать MKV как видео</string>
     <string name="StreamAllVideoNax">Стриминг всех видео</string>
     <string name="MonoCode">Код</string>
@@ -323,13 +323,13 @@
     <string name="GroupedMessageMenuNotice">Группировка перемещает основные действия в нижнюю часть меню сообщений.</string>
     <string name="CopySticker">Копировать стикер</string>
     <string name="CheckUpdate">Проверить обновления</string>
-    <string name="AutoCheckUpdateOFF">ВЫКЛ.</string>
+    <string name="AutoCheckUpdateOFF">Выкл.</string>
     <string name="AutoCheckUpdateSwitch">Канал обновлений</string>
-    <string name="AutoCheckUpdateRelease">Релиз</string>
+    <string name="AutoCheckUpdateRelease">Стабильный</string>
     <string name="AutoCheckUpdateBeta">Бета</string>
     <string name="YourVersionIsLatestNax">Ваша версия актуальна.</string>
     <string name="PremiumElements">Premium-элементы</string>
-    <string name="PremiumItemBoosts">Счётчик голосов</string>
+    <string name="PremiumItemBoosts">Счётчик бустов</string>
     <string name="PremiumItemStickerEffects">Эффекты стикеров</string>
     <string name="PremiumItemEmojiStatus">Эмодзи-статусы</string>
     <string name="PremiumItemEmojiInReplies">Эмодзи в ответах</string>
@@ -360,16 +360,16 @@
     <string name="DnsTypeAliDNS">AliDNS</string>
     <string name="DnsTypeSystem">Системный</string>
     <string name="CustomDoH">Пользовательский DoH</string>
-    <string name="CustomDoHHint">https://1.0.0.1/dns-query, ... (Зажмите для выбора пресета)</string>
+    <string name="CustomDoHHint">https://1.1.1.1/dns-query, … (зажмите для выбора пресета)</string>
     <string name="PresetDoHServers">Предустановленные серверы DoH</string>
     <string name="CustomApiDefault">API по умолчанию</string>
-    <string name="CustomApiOfficial">API по Telegram</string>
+    <string name="CustomApiOfficial">Официальный Telegram</string>
     <string name="CustomApiCustom">Пользовательский API</string>
     <string name="WebProxy">Веб / HTTP-прокси</string>
     <string name="WebProxyMode">Веб / HTTP-прокси</string>
     <string name="WebProxyAbout">Направлять внешние HTTP/HTTPS-запросы (такие как перевод LLM, проверка обновлений и расшифровка голоса) через прокси.</string>
     <string name="WebProxyModeFollow">Использовать прокси Telegram (SOCKS5)</string>
-    <string name="WebProxyModeDirect">Напрямую (отключено)</string>
+    <string name="WebProxyModeDirect">Напрямую (без прокси)</string>
     <string name="WebProxyModeCustom">Пользовательский прокси</string>
     <string name="WebProxyType">Тип прокси</string>
     <string name="WebProxyTypeHttp">HTTP / HTTPS</string>
@@ -405,10 +405,10 @@
     <string name="CleanTrackingParamsNotice">Автоматически удалять параметры отслеживания (UTM, si, fbclid и др.) при открытии или копировании ссылок.</string>
     <string name="NoQuoteForwardShort">Без автора</string>
     <string name="ViewDeleted">Просмотреть удалённые</string>
-    <string name="PasskeyLogin">Вход по паролю</string>
+    <string name="PasskeyLogin">Вход по ключу доступа</string>
     <string name="PasskeyInfo2">Эта функция работает только с менеджерами паролей, которые позволяют пользователю управлять настройками доверия для привилегированных приложений, такими как **Bitwarden** и **KeePassDX**.</string>
     <string name="PasskeyUnsupportedTitle">Неподдерживаемый менеджер паролей</string>
-    <string name="PasskeyUnsupportedMessage">Попробуйте другие менеджеры паролей. Например, Bitwarden или KeePassDX.</string>
+    <string name="PasskeyUnsupportedMessage">Попробуйте другие менеджеры паролей, например **Bitwarden** или **KeePassDX**.</string>
     <string name="PasskeyNoCredentialAvailable">Нет действительных учётных данных.</string>
     <string name="BookmarksManager">Закладки</string>
     <string name="AddBookmark">Добавить в закладки</string>
@@ -440,13 +440,13 @@
     <string name="DeleteChatForBothSides">Использовать «Также удалить для» по умолчанию</string>
     <string name="BackAnimationStyle">Анимация навигации</string>
     <string name="BackAnimationClassic">Классическая</string>
-    <string name="BackAnimationSpring">Spring</string>
+    <string name="BackAnimationSpring">Пружинная</string>
     <string name="BackAnimationPredictive">Предиктивная</string>
     <string name="AddToFilter">Добавить в фильтр</string>
     <string name="UnifiedPushNeverReceivedNotifications">С момента запуска Niagram вы не получали уведомлений с помощью UnifiedPush.</string>
     <string name="UnifiedPushLastReceivedNotification">Последнее уведомление, полученное с помощью UnifiedPush, было %1$d секунд назад.\n\nС момента запуска Niagram вы получили %2$d уведомлений.</string>
     <string name="UnifiedPushCurrentEndpoint">Текущая конечная точка UnifiedPush: %1$s</string>
-    <string name="PlayOnce">Играть один раз</string>
+    <string name="PlayOnce">Воспроизвести один раз</string>
     <string name="StorageSettings">Хранилище</string>
     <string name="MainTabsSettingsHeader">Основные вкладки</string>
     <string name="MainTabsHideTitles">Скрыть заголовки</string>
@@ -500,7 +500,7 @@
     <!-- Verified Badge -->
     <string name="VerifySelf">Верифицировать себя</string>
     <string name="VerifySelfDetail">Локально отображать эксклюзивный значок верификации для текущего аккаунта</string>
-    <string name="NiagramVerifiedOfficial">Представитель NiagramX</string>
+    <string name="NiagramVerifiedOfficial">Представитель Niagram</string>
     <string name="NagramVerifiedDev">Разработчик Nagram</string>
 
     <!-- Input Text Animations -->
@@ -513,14 +513,14 @@
     <string name="InputAnimationStrongest">Максимальная</string>
 
     <!-- Legacy Nekogram Strings -->
-    <string name="NekoSettings">Настройки N</string>
+    <string name="NekoSettings">Настройки Neo</string>
     <string name="IPv6">Предпочитать IPv6</string>
     <string name="MessageMenu">Меню сообщений</string>
     <string name="HidePhone">Скрыть номер телефона</string>
     <string name="DeleteAllFromSelf">Удалить мои сообщения</string>
     <string name="DeleteAllFromSelfAlert">Внимание! Это **удалит все ваши сообщения** в этом чате для **всех**.</string>
     <string name="DeleteAllFromSelfAlertBefore">Внимание! Это **удалит все ваши сообщения до %s** в этом чате для **всех**.</string>
-    <string name="DeleteAllFromSelfBefore">До...</string>
+    <string name="DeleteAllFromSelfBefore">До…</string>
     <string name="DeleteAllFromSelfAdmin">С правами администратора</string>
     <string name="DeleteAllFromSelfDone">Все ваши сообщения удалены</string>
     <string name="IgnoreBlocked">Скрыть сообщения от заблокированных пользователей</string>
@@ -551,7 +551,7 @@
     <string name="StickerSizeDialogName">Duang</string>
     <string name="Experimental">Экспериментальные</string>
     <string name="UnlimitedFavoredStickers">Неограниченные избранные стикеры</string>
-    <string name="UnlimitedFavoredStickersAbout">Их синхронизация будет отключена.</string>
+    <string name="UnlimitedFavoredStickersAbout">Добавляйте в избранное сколько угодно стикеров. Они могут не синхронизироваться с другими устройствами.</string>
     <string name="MessageDetails">Подробности</string>
     <string name="ExportAsJson">Экспорт в JSON</string>
     <string name="Translate">Перевести</string>
@@ -562,9 +562,9 @@
     <string name="ProviderLingocloud">Lingocloud</string>
     <string name="UndoTranslate">Скрыть перевод</string>
     <string name="BotToken">Токен</string>
-    <string name="UnlimitedPinnedDialogs">Неограниченные закреплённые диалоги</string>
-    <string name="UnlimitedPinnedDialogsAbout">Их синхронизация будет отключена.</string>
-    <string name="OpenArchiveOnPull">Открывать архив сразу</string>
+    <string name="UnlimitedPinnedDialogs">Неограниченные закреплённые чаты</string>
+    <string name="UnlimitedPinnedDialogsAbout">Закрепляйте сколько угодно чатов — синхронизация закреплённых будет отключена.</string>
+    <string name="OpenArchiveOnPull">Открывать архив свайпом вниз</string>
     <string name="HideKeyboardOnChatScroll">Скрыть клавиатуру при прокрутке</string>
     <string name="UserRestrictionsSendStickers2">Отправка стикеров</string>
     <string name="UserRestrictionsSendGifs">Отправка GIF</string>
@@ -582,7 +582,7 @@
     <string name="CallTo">Позвонить **%1$s**?</string>
     <string name="DisableNumberRounding">Не округлять числа</string>
     <string name="Categories">Настройки</string>
-    <string name="OfficialChannel">Канал Nagram</string>
+    <string name="OfficialChannel">Канал сборок Niagram</string>
     <string name="About">О проекте</string>
     <string name="SourceCode">Исходный код</string>
     <string name="ResetStickerSize">Размер стикеров по умолчанию</string>
@@ -604,12 +604,12 @@
     <string name="disableChoosingSticker">Отправлять «печатает» вместо «выбирает стикер»</string>
     <string name="hideSendAsChannel">Скрыть «Отправить как канал»</string>
     <string name="showSpoilersDirectly">Раскрывать спойлеры сразу</string>
-    <string name="SaveToDownloadCount_zero">Сохранение %1$d файлов для загрузки</string>
-    <string name="SaveToDownloadCount_one">Сохранение файла %1$d для загрузки</string>
-    <string name="SaveToDownloadCount_two">Сохранение %1$d файлов для загрузки</string>
-    <string name="SaveToDownloadCount_few">Сохранение %1$d файлов для загрузки</string>
-    <string name="SaveToDownloadCount_many">Сохранение %1$d файлов для загрузки</string>
-    <string name="SaveToDownloadCount_other">Сохранение %1$d файлов для загрузки</string>
+    <string name="SaveToDownloadCount_zero">Сохранение %1$d файлов в «Загрузки»</string>
+    <string name="SaveToDownloadCount_one">Сохранение %1$d файла в «Загрузки»</string>
+    <string name="SaveToDownloadCount_two">Сохранение %1$d файлов в «Загрузки»</string>
+    <string name="SaveToDownloadCount_few">Сохранение %1$d файлов в «Загрузки»</string>
+    <string name="SaveToDownloadCount_many">Сохранение %1$d файлов в «Загрузки»</string>
+    <string name="SaveToDownloadCount_other">Сохранение %1$d файлов в «Загрузки»</string>
     <string name="disableNotificationBubbles">Отключить всплывающие уведомления</string>
     <string name="customSavePath">Путь хранения загрузок</string>
     <string name="customSavePathHint">Оставьте пустым, чтобы сохранять напрямую в «Загрузки»</string>
@@ -619,17 +619,17 @@
     <string name="DatacenterStatusAbout">Проверьте состояние **дата-центров** Telegram.</string>
     <string name="DatacenterStatus">Состояние дата-центров</string>
     <string name="enhancedFileLoader">Увеличить скорость загрузки</string>
-    <string name="enhancedFileLoaderOff">Выкл (4×128 КБ)</string>
+    <string name="enhancedFileLoaderOff">Выкл. (4×128 КБ)</string>
     <string name="enhancedFileLoaderBalanced">Сбалансированный (6×256 КБ)</string>
     <string name="enhancedFileLoaderExtreme">Максимальный (8×512 КБ)</string>
     <string name="enhancedFileLoaderBalancedNotice">Сбалансированный режим (6×256 КБ) значительно увеличивает скорость загрузки и предотвращает ограничение скорости сервером Telegram для обычных аккаунтов.</string>
     <string name="enhancedFileLoaderExtremeNotice">Максимальный режим (8×512 КБ) загружает файлы с максимальным числом параллельных запросов.\n\n⚠️ Внимание: Для аккаунтов без Telegram Premium при загрузке больших файлов (около 65–75 МБ) возможна пауза на 7–10 секунд из-за серверных ограничений пропускной способности. В таком случае рекомендуется использовать «Сбалансированный» режим.</string>
     <string name="mapDriftingFixForGoogleMaps">Исправить дрейф Google Карт в Китае</string>
     <string name="useOSMDroidMap">Использовать карту OSMDroid</string>
-    <string name="UnknownNekoSettingsOption">В «Настройках N» нет такой опции.</string>
+    <string name="UnknownNekoSettingsOption">В «Настройках Neo» нет такой опции.</string>
     <string name="PasscodeNeeded">Сначала необходимо включить блокировку паролем</string>
     <string name="PasscodeNeko">Пароль</string>
-    <string name="PasscodeShowInSettings">Показывать в «Настройках N»</string>
+    <string name="PasscodeShowInSettings">Показывать в «Настройках Neo»</string>
     <string name="PasscodeShowInSettingsAbout">После скрытия вы сможете открыть эту страницу **ТОЛЬКО** по ссылке:</string>
     <string name="PasscodeSet">Установить пароль</string>
     <string name="PasscodeEdit">Изменить пароль</string>
@@ -663,18 +663,19 @@
     <string name="EmojiSetApplied">Набор эмодзи применён.</string>
     <string name="EmojiSetAppliedInfo">%1$s теперь ваш набор эмодзи.</string>
     <string name="EmojiSetAlreadyApplied">Набор эмодзи уже применён.</string>
+    <string name="ProviderTelegramAPI">Telegram API</string>
     <string name="RecentChats">Недавние чаты</string>
     <string name="ClearRecentChats">Очистить недавние чаты</string>
     <string name="ClearRecentChatAlert">Вы хотите очистить недавние чаты?</string>
     <string name="CloudConfig">Облачные настройки</string>
-    <string name="CloudConfigDesc">Сохраните ваши «Настройки N» в облаке Telegram.</string>
+    <string name="CloudConfigDesc">Сохраните ваши «Настройки Neo» в облаке Telegram.</string>
     <string name="CloudConfigSyncDate">Последняя синхронизация: %1$s, облако: %2$s</string>
     <string name="CloudConfigSyncDateNever">никогда</string>
     <string name="CloudConfigSync">Синхронизировать с облаком</string>
     <string name="CloudConfigRestore">Восстановить из облака</string>
-    <string name="CloudConfigSyncing">Синхронизация...</string>
+    <string name="CloudConfigSyncing">Синхронизация…</string>
     <string name="CloudConfigAutoSync">Автосинхронизация</string>
-    <string name="CloudConfigAutoSyncDesc">Автоматическая синхронизация с облаком после изменений в «Настройках N».</string>
+    <string name="CloudConfigAutoSyncDesc">Автоматическая синхронизация с облаком после изменений в «Настройках Neo».</string>
     <string name="CloudConfigSyncFailed">Не удалось синхронизировать настройки с облаком</string>
     <string name="CloudConfigRestoreFailed">Не удалось восстановить настройки из облака</string>
     <string name="CopyCallback">Копировать данные обратного вызова</string>
@@ -687,7 +688,7 @@
     <string name="ChatAttachEnterMenuDisableLinkPreview">Без предпросмотра</string>
     <string name="ChatAttachEnterMenuEnableLinkPreview">С предпросмотром</string>
     <string name="UseChatAttachEnterMenu">Использовать меню отправки</string>
-    <string name="UseChatAttachEnterMenuNotice">Кнопка отправки будет заменена на расширенное меню.</string>
+    <string name="UseChatAttachEnterMenuNotice">Кнопка записи заменяется меню ввода с переключателем предпросмотра ссылок.</string>
     <string name="DisableLinkPreviewByDefault">Отправлять ссылки без предпросмотра</string>
     <string name="CustomApi">Выбрать API</string>
     <string name="UseCustomApiNotice">Войдите в систему, используя пользовательский API. Если вы не можете зарегистрироваться или войти в систему, это может помочь.\n\nПримечание: FCM не будет работать, если вы используете пользовательский API.</string>
@@ -698,9 +699,9 @@
     <string name="ChangeTranslateProvider">Изменить сервис перевода</string>
     <string name="ProviderYandexTranslate">Яндекс</string>
     <string name="GoogleCloudTransKey">Ключ Google Translation API</string>
-    <string name="GoogleCloudTransKeyNotice">Если вы ввели свой ключ, перевод будет быстрее и стабильнее.</string>
+    <string name="GoogleCloudTransKeyNotice">С ключом Google Cloud Translate перевод выполняется через официальный Cloud Translation API вместо формы веб-переводчика — быстрее, стабильнее и экономнее по трафику.</string>
     <string name="TransToLang">Язык перевода</string>
-    <string name="TransInputToLang">Переводить с</string>
+    <string name="TransInputToLang">Язык перевода перед отправкой</string>
     <string name="More">Ещё</string>
     <string name="ShowIdAndDc">Показывать ID и DC в профиле</string>
     <string name="DialogsSettings">Настройки чатов</string>
@@ -718,8 +719,8 @@
     <string name="ImportStickersX">Импорт стикеров</string>
     <string name="ImportStickersList">Импорт стикеров</string>
     <string name="StickerSets">Наборы стикеров</string>
-    <string name="InvalidStickersFile">Недопустимый файл стикеров:</string>
-    <string name="ImportedProxies">Импортированные прокси:</string>
+    <string name="InvalidStickersFile">Недопустимый файл стикеров: </string>
+    <string name="ImportedProxies">Импортированные прокси: </string>
     <string name="DeleteAllServer">Удалить все</string>
     <string name="DeleteUnavailableServer">Удалить недоступные</string>
     <string name="ImportProxyFromClipboard">Импорт из буфера обмена</string>
@@ -730,7 +731,7 @@
     <string name="TransSite">Платформа переводов</string>
     <string name="ShareMessages">Поделиться</string>
     <string name="DisableVibration">Отключить вибрацию</string>
-    <string name="SendCommentAfterForward">Комментарий после пересылаемого</string>
+    <string name="SendCommentAfterForward">Отправлять комментарий после пересылки</string>
     <string name="ImportLogin">Вход по QR-коду</string>
     <string name="UserRestrictionsSendGames">Отправка игр</string>
     <string name="UserRestrictionsSendInline">Отправка через ботов</string>
@@ -741,13 +742,13 @@
     <string name="TextReplace">Заменить на</string>
     <string name="ReplaceRegex">Используйте регулярные выражения</string>
     <string name="DisableTrending">Отключить тренды</string>
-    <string name="AutoDownload">Автозагрузка</string>
+    <string name="AutoDownload">Отключить автозагрузку</string>
     <string name="Win32ExecutableFiles">Исполняемые файлы Win32</string>
     <string name="ArchiveFiles">Архивы</string>
     <string name="AutoLockImmediately">Немедленно</string>
     <string name="BackupSettings">Экспорт настроек</string>
     <string name="ImportSettings">Импорт настроек</string>
-    <string name="ImportSettingsAlert">Перезаписать настройки? Импорт настроек из ненадежных источников может привести к блокировке приложения.</string>
+    <string name="ImportSettingsAlert">Перезаписать текущие настройки? Импорт настроек из неизвестного источника может перезаписать ваш пароль и заблокировать доступ к приложению.</string>
     <string name="unreadBadgeOnBackButton">Количество непрочитанных на кнопке «Назад»</string>
     <string name="useCustomEmoji">Свой набор эмодзи</string>
     <string name="repeatConfirm">Спрашивать перед повтором</string>
@@ -773,9 +774,9 @@
 
     <!-- App Icons -->
     <string name="AppIconMusheen">Musheen</string>
-    <string name="AppIconSpace">Space</string>
-    <string name="AppIconCloud">Cloud</string>
-    <string name="AppIconNeon">Neon</string>
+    <string name="AppIconSpace">Космос</string>
+    <string name="AppIconCloud">Облако</string>
+    <string name="AppIconNeon">Неон</string>
     <string name="AppIconMaterial">Material</string>
 
     <!-- Group Member Join Date -->
@@ -801,11 +802,11 @@
 
     <!-- Allow Screen Capture & Protected Content -->
     <string name="AllowScreenCapture">Разрешить снимок экрана</string>
-    <string name="AllowScreenCaptureNotice">Отключить ограничения FLAG_SECURE, чтобы разрешить скриншоты и запись экрана во всех чатах, самоуничтожающихся медиа и защищенных экранах.</string>
+    <string name="AllowScreenCaptureNotice">Снимает ограничение FLAG_SECURE, разрешая скриншоты и запись экрана везде, включая секретные чаты, самоуничтожающиеся медиа и экраны пароля.</string>
     <string name="AllowCopyProtectedContent">Разрешить копирование защищенного контента</string>
     <string name="AllowCopyProtectedContentNotice">Разрешить копирование текста, сохранение фото/видео и повторную отправку сообщений из защищенных каналов и чатов (где запрещена пересылка).</string>
-    <string name="SaveTTLMedia">Сохранять исчезающие и TTL-медиа</string>
-    <string name="SaveTTLMediaNotice">Всегда разрешать сохранение, отправку и просмотр исчезающих фото и видео без ограничений.</string>
+    <string name="SaveTTLMedia">Сохранять самоуничтожающиеся медиа</string>
+    <string name="SaveTTLMediaNotice">Сохраняйте, пересылайте и просматривайте самоуничтожающиеся фото и видео без ограничений.</string>
 
     <!-- Compact Chat Input -->
     <string name="CompactChatInput">Компактный режим</string>
@@ -814,7 +815,6 @@
     <!-- iOS Sounds & Theme -->
     <string name="useIosSounds">Звуки сообщений iOS</string>
     <string name="UseIosSoundsNotice">Использовать звуки сообщений из Telegram для iOS.</string>
-    <string name="StyleMaterialDesign3">Material Design 3</string>
     <string name="TabletModeLandscape">Только альбомная</string>
 
     <!-- HLS Video Quality -->
@@ -827,15 +827,15 @@
     <!-- Ban by User ID -->
     <string name="NiaBanById">Заблокировать по ID пользователя</string>
     <string name="NiaBanByIdDialogTitle">Заблокировать пользователя по ID</string>
-    <string name="NiaBanByIdDialogMessage">Введите 64-битный числовой ID пользователя. Запрос на блокировку будет отправлен напрямую на сервер Telegram.</string>
+    <string name="NiaBanByIdDialogMessage">Введите числовой ID пользователя. Запрос на блокировку будет отправлен напрямую на серверы Telegram.</string>
     <string name="NiaBanByIdHint">напр. 123456789</string>
     <string name="NiaBanByIdConfirm">Заблокировать пользователя</string>
     <string name="NiaBanByIdConfirmTitle">Подтвердить блокировку</string>
     <string name="NiaBanByIdConfirmMessage">Вы уверены, что хотите заблокировать пользователя с ID: %1$s?</string>
     <string name="NiaBanByIdSuccess">Пользователь с ID %1$s успешно заблокирован.</string>
     <string name="NiaBanByIdCannotBanSelf">Вы не можете заблокировать себя.</string>
-    <string name="NiaBanByIdCannotBanCreator">Невозможно заблокировать создателя или владельца этой группы.</string>
-    <string name="NiaBanByIdInvalid">Пожалуйста, введите корректный положительный числовой ID.</string>
+    <string name="NiaBanByIdCannotBanCreator">Невозможно заблокировать владельца этой группы.</string>
+    <string name="NiaBanByIdInvalid">Введите корректный числовой ID больше 0.</string>
     <string name="NiaBanByIdErrorNotParticipant">Этого пользователя нет в группе. Сервер Telegram не позволяет блокировать пользователей, которые не состоят в группе.</string>
     <string name="NiaBanByIdErrorInvalidUser">Недействительный ID пользователя или пользователь не найден в Telegram.</string>
     <string name="NiaBanByIdErrorAdminRequired">У вас недостаточно прав администратора, чтобы заблокировать этого пользователя.</string>
@@ -873,7 +873,7 @@
     <string name="ChatActivityNavbarTransparent">Полностью прозрачная панель навигации чата</string>
 
     <!-- Other settings -->
-    <string name="HideStarsRating">Скрыть количество звезд</string>
+    <string name="HideStarsRating">Скрыть рейтинг Stars</string>
     <string name="ScrollToSeenPhotoOnClose">Прокручивать к просмотренному фото при закрытии</string>
     <string name="ThemeAmoledDark">AMOLED Тёмная</string>
     <string name="NoPreloadTrackIfRepeatOne">Не предзагружать следующий трек при повторе одного</string>

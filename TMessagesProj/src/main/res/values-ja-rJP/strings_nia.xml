@@ -41,14 +41,14 @@
     <string name="TypeMessageHintUseGroupName">入力ヒントとしてグループ名を使用</string>
     <string name="HideBotButtonInInputField">入力欄のボットボタンを非表示</string>
     <string name="ShowSendAsUnderMessageHint">入力ヒントの下に送信者を表示</string>
-    <string name="CheckAllForum">すべてのトピックモードグループを追加</string>
+    <string name="CheckAllForum">トピックモードのグループをすべて追加</string>
     <string name="DecorationNone">なし</string>
     <string name="ChatDecoration">チャットデコレーション</string>
     <string name="DoNotUnarchiveBySwipe">スワイプによるアーカイブ解除を無効化</string>
     <string name="DefaultDeleteMenu">デフォルトの削除メニュー</string>
     <string name="DisableStories">ストーリー機能を無効化</string>
     <string name="CopyPhotoAsSticker">ステッカーとしてコピー</string>
-    <string name="ProviderTranSmartTranslate">TransSmart 翻訳</string>
+    <string name="ProviderTranSmartTranslate">TranSmart 翻訳</string>
     <string name="DisableMarkdown">Markdown を無効化</string>
     <string name="SendWithMarkdown">Markdown で送信</string>
     <string name="TipsChannel">機能紹介チャンネル</string>
@@ -60,11 +60,12 @@
     <string name="PushServiceType">通知プッシュサービス</string>
     <string name="PushServiceTypeInApp">内蔵</string>
     <string name="PushServiceTypeInAppDialog">常駐通知を表示</string>
-    <string name="SendMp4DocumentAsVideo">MP4 動画をファイルとして送信するときにプレビュー可能にする</string>
+    <string name="PushServiceTypeUnifiedGateway">Unified Push Gateway</string>
+    <string name="SendMp4DocumentAsVideo">MP4 ファイルを動画として送信</string>
     <string name="StickersChooseShortNameForStickerPack">パックの短い名前を選択してください</string>
     <string name="StickersCopyStickerSet">ステッカーパック全体をコピー</string>
     <string name="DisableChannelMuteButton">チャンネルでボトムバーを非表示</string>
-    <string name="DisablePreviewVideoSoundShortcut">プレビュー音声ショートカットを無効化</string>
+    <string name="DisablePreviewVideoSoundShortcut">音量ボタンで動画の音声をオンにしない</string>
     <string name="DisablePreviewVideoSoundShortcutNotice">音量ボタンによるプレビュー動画の音声オンを無効にします。</string>
     <string name="PreviewSendPhoto">画像を送信</string>
     <string name="PreviewSendVideo">動画を送信</string>
@@ -139,7 +140,7 @@
     <string name="LlmSystemPromptHint">あなたはプロの翻訳者です。</string>
     <string name="LlmSystemPromptNotice">AI の役割と行動指針を定義します。\n\nこのプロンプトは、AI の口調や個性、制約などを設定するものです。どのようなアシスタントとして振る舞ってほしいかを記述してください。</string>
     <string name="LlmUserPrompt">ユーザープロンプト</string>
-    <string name="LlmUserPromptHint">@toLang に翻訳：\n@text</string>
+    <string name="LlmUserPromptHint">\@toLang に翻訳：\n@text</string>
     <string name="LlmUserPromptNotice">元のメッセージのプレースホルダーとして @text を、ターゲット言語のプレースホルダーとして @toLang を使用します（オプション）。\n\n空白のままにすると、デフォルトのプロンプトが使用されます。</string>
     <string name="LlmUseContext">コンテキストを使用</string>
     <string name="LlmUseContextNotice">より多くのトークンを消費しますが、翻訳品質が向上します。</string>
@@ -203,11 +204,11 @@
     <string name="TranslatorSettings">翻訳</string>
     <string name="SettingsOnly">設定のみ</string>
     <string name="ChatsOnly">チャットのみ</string>
-    <string name="InstantViewTranslation">アーティクル</string>
+    <string name="InstantViewTranslation">インスタントビュー</string>
     <string name="SaveDeletedMessageForBot">ボットチャットで保存</string>
     <string name="HideArchive">チャットリストで「収納したチャット」を非表示</string>
-    <string name="ConfirmAllLinks">埋め込みリンクを開く前に確認</string>
-    <string name="ConfirmAllLinksDescription">有効にすると、Telegram 内部リンクを含むすべての埋め込みリンクを開く前に、確認を求めるようになります。</string>
+    <string name="ConfirmAllLinks">インラインボタンのリンクを開く前に確認</string>
+    <string name="ConfirmAllLinksDescription">ボットのインラインボタンにある t.me リンクなど、Telegram の内部リンクも含みます。</string>
     <string name="TranslatorMinimizedChannel">このチャンネルでは、翻訳ツールバーが最小化されました。</string>
     <string name="TranslatorMinimizedGroup">このグループでは、翻訳ツールバーが最小化されました。</string>
     <string name="TranslatorMinimized">このチャットでは、翻訳ツールバーが最小化されました。</string>
@@ -284,7 +285,7 @@
     <string name="DebugMenuEnableInvoicePayment">請求書の支払いを有効化</string>
     <string name="DebugMenuDisableInvoicePayment">請求書の支払いを無効化</string>
     <string name="DebugMenuUseCamera2Api">Camera 2 API を使用</string>
-    <string name="DebugMenuUseOldCamera1Api">古い Camera  1 API を使用</string>
+    <string name="DebugMenuUseOldCamera1Api">古い Camera 1 API を使用</string>
     <string name="DebugMenuUseCpuBlur">CPU ブラーに戻る</string>
     <string name="DebugMenuUseNewGpuBlur">新しい GPU ブラーを使用</string>
     <string name="DebugMenuEnableAdaptableColorInBrowser">アダプティブブラウザの色を有効化</string>
@@ -303,7 +304,7 @@
     <string name="ResetChatNameOverrides">チャット名の上書きをリセット</string>
     <string name="ResetChatNameNotification">チャット名の上書きがクリアされました。</string>
     <string name="LeftBottomButtonAction">左ボタンの動作</string>
-    <string name="TranscribeProviderOpenAI">OpenAI-Compatible API</string>
+    <string name="TranscribeProviderOpenAI">OpenAI 互換 API</string>
     <string name="OpenAiApiCredentialsDialog">OpenAI と互換性のある API を設定します。この**ドキュメント**を参照できます。\n</string>
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
     <string name="OpenAiCredentialsNotSet">API 認証情報が設定されていません。</string>
@@ -328,12 +329,12 @@
     <string name="AutoCheckUpdateBeta">ベータ</string>
     <string name="YourVersionIsLatestNax">お使いのバージョンは最新です。</string>
     <string name="PremiumElements">プレミアム要素</string>
-    <string name="PremiumItemBoosts">後押し者標示</string>
+    <string name="PremiumItemBoosts">ブーストカウンター</string>
     <string name="PremiumItemStickerEffects">ステッカーエフェクト</string>
     <string name="PremiumItemEmojiStatus">絵文字ステータス</string>
     <string name="PremiumItemEmojiInReplies">返信の絵文字</string>
     <string name="PremiumItemCustomColorInReplies">返信の色</string>
-    <string name="PremiumItemStarInReactions">反応中のスター</string>
+    <string name="PremiumItemStarInReactions">リアクション内のスター</string>
     <string name="PremiumItemVideoAvatar">アバターアニメーション</string>
     <string name="PremiumItemCustomWallpaper">カスタム背景</string>
     <string name="TranslationTargetApp">アプリに従う</string>
@@ -346,34 +347,34 @@
     <string name="KeepTranslatorPreferences">翻訳設定を維持</string>
     <string name="KeepTranslatorPreferencesNotice">アプリの言語を変更する際、現在の翻訳設定を維持します。</string>
     <string name="UsePersianCalendar">イラン暦を使用</string>
-    <string name="UsePersianCalendarInfo">日付を表示</string>
-    <string name="DisplayPersianCalendarByLatin">イラン暦をラテン語で表示</string>
-    <string name="TestBackendOn">テストバックエンドに接続します。</string>
-    <string name="TestBackendOff">本番バックエンドに接続します。</string>
+    <string name="UsePersianCalendarInfo">日付を太陽ヒジュラ暦で表示</string>
+    <string name="DisplayPersianCalendarByLatin">イラン暦をラテン文字で表示</string>
+    <string name="TestBackendOn">このアカウントはテスト用バックエンドに接続します。</string>
+    <string name="TestBackendOff">このアカウントは本番バックエンドに接続します。</string>
     <string name="DidNotGetTheCodeBlameDurov">別のデバイスでコードを受け取っていない場合、または別のデバイスでTelegramにログインしていない場合は、公式のTelegramアプリを使用してコードを受け取ってください。\n\nTelegramは、**サードパーティアプリでSMSによるログイン機能を無効にしました。**サードパーティアプリにログインしているユーザーは、Telegram経由でのみログイン コードを受信できます。\n\nこれについては弊社ではサポートできません。ログインに関して問題がある場合は、Telegramサポートにお問い合わせください。</string>
     <string name="QRLoginMessage">QR コードを別のデバイスでスキャンしてログインします。</string>
     <string name="DnsType">DNS リゾルバ</string>
     <string name="DnsTypeSystem">システム</string>
     <string name="CustomDoH">カスタム DoH</string>
-    <string name="PinnedReactions">ピン留めされたアクション</string>
+    <string name="PinnedReactions">ピン留めしたリアクション</string>
     <string name="PinnedReactions_Status_Chats">チャットでピン留めリアクションを有効化</string>
     <string name="PinnedReactions_Status_Channels">チャンネルでピン留めリアクションを有効化</string>
     <string name="PinnedReactions_Description">どのパックからもリアクションをピン留めできます。</string>
     <string name="PinnedReactions_Description_Channels">デフォルトのリアクションのみをピン留めできます。</string>
     <string name="PinnedReactions_Limit">最大 %d つのリアクションを選択できます。</string>
     <string name="PinnedReactions_Type">この絵文字は使用できません。</string>
-    <string name="PinnedReactions_Apply">ピン留めされたアクションを更新</string>
+    <string name="PinnedReactions_Apply">ピン留めしたリアクションを更新</string>
     <string name="HideStoriesFromHeader">ヘッダーから非表示</string>
     <string name="DisableProfileAvatarBlur">アバターぼかしを無効化</string>
     <string name="ExportSettingsIncludeApiKeys">API キーを含める</string>
     <string name="DisableInAppBrowserGestures">ジェスチャーを無効化</string>
     <string name="HowToObtain">取得方法は？</string>
-    <string name="BlockChannel">ブロック</string>
+    <string name="BlockChannel">チャンネルをブロック</string>
     <string name="BlockedChannels">ブロックしたチャンネル</string>
-    <string name="BlockedChannelsCount_one">ブロック数 %1$d</string>
-    <string name="BlockedChannelsCount_other">ブロック数 %1$d</string>
+    <string name="BlockedChannelsCount_one">%1$d 件のブロック中のチャンネル</string>
+    <string name="BlockedChannelsCount_other">%1$d 件のブロック中のチャンネル</string>
     <string name="BlockedChannelsInfo">グループ内でブロックしたチャンネルからのメッセージを非表示にできます。 %s</string>
-    <string name="ChannelBlocked">ブロックしました。</string>
+    <string name="ChannelBlocked">チャンネルをブロックしました。</string>
     <string name="BlockedChannelsEmpty">ブロック中のチャンネルはありません</string>
     <string name="UnblockAllChannelsWarn">**すべてのチャンネル**のブロックを解除してもよろしいですか？</string>
     <string name="BlockChannelsUnavailable">一部のチャンネルは一時的に表示できません。</string>
@@ -382,7 +383,7 @@
     <string name="CleanTrackingParamsNotice">リンクを開くまたはコピーするときに、追跡パラメータ（UTM、si、fbclidなど）を自動的に削除します。</string>
     <string name="NoQuoteForwardShort">引用なし</string>
     <string name="ViewDeleted">削除済みを表示</string>
-    <string name="PasskeyLogin">パスキーログイン</string>
+    <string name="PasskeyLogin">パスキーでログイン</string>
     <string name="PasskeyInfo2">この機能は、**Bitwarden** や **KeePassDX** など、特権アプリの信頼設定をユーザーが管理できるパスワードマネージャーでのみ動作します。</string>
     <string name="PasskeyUnsupportedTitle">非対応のパスワードマネージャー</string>
     <string name="PasskeyUnsupportedMessage">**Bitwarden** や **KeePassDX** などの他のパスワードマネージャーをお試しください。</string>
@@ -417,7 +418,7 @@
     <string name="DeleteChatForBothSides">デフォルトで「相手側も削除」を使用</string>
     <string name="BackAnimationStyle">画面遷移アニメーション</string>
     <string name="BackAnimationClassic">クラシック</string>
-    <string name="BackAnimationSpring">Spring</string>
+    <string name="BackAnimationSpring">スプリング</string>
     <string name="BackAnimationPredictive">予測型</string>
     <string name="AddToFilter">フィルターに追加</string>
     <string name="UnifiedPushNeverReceivedNotifications">Niagram の起動以降、UnifiedPush 経由で通知を受信したことはありません。</string>
@@ -477,7 +478,7 @@
     <!-- Verified Badge -->
     <string name="VerifySelf">自身を認証済みにする</string>
     <string name="VerifySelfDetail">現在のアカウントにローカルで専用の認証バッジを表示します</string>
-    <string name="NiagramVerifiedOfficial">NiagramX 公式</string>
+    <string name="NiagramVerifiedOfficial">Niagram 公式</string>
     <string name="NagramVerifiedDev">Nagram 開発者</string>
 
     <!-- Input Text Animations -->
@@ -563,12 +564,12 @@
     <string name="About">アプリについて</string>
     <string name="SourceCode">ソースコード</string>
     <string name="ResetStickerSize">ステッカーサイズをリセット</string>
-    <string name="RestartAppToTakeEffect">変更適用にはアプリを再起動。</string>
+    <string name="RestartAppToTakeEffect">変更を適用するにはアプリを再起動してください。</string>
     <string name="MediaPreview">チャットリストのメディアプレビュー</string>
     <string name="AutoPauseVideo">ビデオの自動一時停止</string>
     <string name="AutoPauseVideoAbout">画面ロック時/バックグラウンドに移動時。</string>
     <string name="DisableProximityEvents">近接イベントを無効化</string>
-    <string name="SelectBetween">範囲内のメッセージを選択</string>
+    <string name="SelectBetween">範囲を選択</string>
     <string name="ProviderDeepLTranslate">DeepL 翻訳</string>
     <string name="ProviderMicrosoftTranslator">Bing 翻訳</string>
     <string name="DontSendGreetingSticker">挨拶ステッカーを無効化</string>
@@ -603,7 +604,7 @@
     <string name="enhancedFileLoaderExtremeNotice">最大モード（8×512KB）は最大並列リクエストでダウンロードします。\n\n⚠️ 注意: Telegram Premium 未加入アカウントの場合、大容量ファイル（約65〜75MB付近）のダウンロード時にサーバー側の帯域制限により7〜10秒程度一時停止することがあります。停止が発生する場合は「バランス」モードへの切り替えを推奨します。</string>
     <string name="mapDriftingFixForGoogleMaps">中国における Google マップのずれを修正</string>
     <string name="useOSMDroidMap">OSMDroid マップを使用</string>
-    <string name="UnknownNekoSettingsOption">そのようなNeo 設定オプションはありません。</string>
+    <string name="UnknownNekoSettingsOption">その Neo 設定のオプションは存在しません。</string>
     <string name="PasscodeNeeded">最初にパスコードを有効にする必要があります</string>
     <string name="PasscodeNeko">パスコード</string>
     <string name="PasscodeShowInSettings">Neo 設定に表示</string>
@@ -640,6 +641,7 @@
     <string name="EmojiSetApplied">絵文字セットが適用されました。</string>
     <string name="EmojiSetAppliedInfo">%1$s が絵文字セットとして適用されました。</string>
     <string name="EmojiSetAlreadyApplied">絵文字セットは既に適用されています。</string>
+    <string name="ProviderTelegramAPI">Telegram API</string>
     <string name="RecentChats">最近のチャット</string>
     <string name="ClearRecentChats">最近のチャットをクリア</string>
     <string name="ClearRecentChatAlert">本当に最近のチャットをクリアしますか？</string>
@@ -649,7 +651,7 @@
     <string name="CloudConfigSyncDateNever">なし</string>
     <string name="CloudConfigSync">クラウドに同期</string>
     <string name="CloudConfigRestore">クラウドから復元</string>
-    <string name="CloudConfigSyncing">同期中...</string>
+    <string name="CloudConfigSyncing">同期中…</string>
     <string name="CloudConfigAutoSync">自動同期</string>
     <string name="CloudConfigAutoSyncDesc">Neo 設定を変更した後、自動的にクラウドに同期します。</string>
     <string name="CloudConfigSyncFailed">設定をクラウドに同期できませんでした</string>
@@ -659,12 +661,12 @@
     <string name="CopyID">ID をコピー</string>
     <string name="Locked">ロックされています</string>
     <string name="AccDescrChatAttachEnterMenu">チャット入力メニュー</string>
-    <string name="ChatAttachEnterMenuRecordVideo">録画</string>
-    <string name="ChatAttachEnterMenuRecordAudio">レコードオーディオ</string>
+    <string name="ChatAttachEnterMenuRecordVideo">動画を録画</string>
+    <string name="ChatAttachEnterMenuRecordAudio">音声を録音</string>
     <string name="ChatAttachEnterMenuDisableLinkPreview">リンクプレビューを無効化</string>
     <string name="ChatAttachEnterMenuEnableLinkPreview">リンクプレビューを有効化</string>
     <string name="UseChatAttachEnterMenu">入力メニューを使用する</string>
-    <string name="UseChatAttachEnterMenuNotice">記録ボタンを入力メニューに変更し、リンクプレビュースイッチを追加します。</string>
+    <string name="UseChatAttachEnterMenuNotice">録音ボタンを入力メニューに変更し、リンクプレビューの切り替えを追加します。</string>
     <string name="DisableLinkPreviewByDefault">デフォルトでリンクプレビューを無効化</string>
     <string name="CustomApi">カスタム API</string>
     <string name="UseCustomApiNotice">カスタム API を使用してログインします。登録やログインができない場合は、これが役に立つ可能性があります。\n\n注意: カスタム API を使用している場合、FCM は動作しません。</string>
@@ -674,12 +676,12 @@
     <string name="LinkedChannelChat">リンクされたチャンネル</string>
     <string name="ChangeTranslateProvider">プロバイダを変更</string>
     <string name="ProviderYandexTranslate">Yandex 翻訳</string>
-    <string name="GoogleCloudTransKeyNotice">Google Cloud Trans Key を設定すると、翻訳時に偽のフォームをウェブバージョンに送信する代わりにクラウド翻訳APIが呼び出されます（高速で安定しており、トラフィックの節約になります）</string>
+    <string name="GoogleCloudTransKeyNotice">Google Cloud 翻訳キーを設定すると、Web 翻訳のフォームの代わりに公式の Cloud Translation API を使用します（より高速・安定で、通信量も少なくなります）。</string>
     <string name="TransToLang">翻訳先言語</string>
     <string name="TransInputToLang">入力翻訳先言語</string>
     <string name="More">もっと見る</string>
     <string name="ShowIdAndDc">プロファイルに ID / DC を表示</string>
-    <string name="DialogsSettings">ダイアログ</string>
+    <string name="DialogsSettings">チャット</string>
     <string name="NiagramXPushService">プッシュ通知サービス</string>
     <string name="DisableSystemAccount">システムアカウントを無効化</string>
     <string name="DisableProxyWhenVpnEnabled">VPN が有効な場合プロキシを無効化</string>
@@ -694,8 +696,8 @@
     <string name="ImportStickersX">ファイルからステッカーをインポート</string>
     <string name="ImportStickersList">ステッカーをインポート</string>
     <string name="StickerSets">ステッカーセット</string>
-    <string name="InvalidStickersFile">ステッカーファイルが無効です:</string>
-    <string name="ImportedProxies">インポートされたプロキシサーバー:</string>
+    <string name="InvalidStickersFile">ステッカーファイルが無効です: </string>
+    <string name="ImportedProxies">インポートされたプロキシサーバー: </string>
     <string name="DeleteAllServer">すべてのサーバーを削除</string>
     <string name="DeleteUnavailableServer">使用できないサーバーを削除する</string>
     <string name="ImportProxyFromClipboard">クリップボードからインポート</string>
@@ -711,7 +713,7 @@
     <string name="UserRestrictionsSendGames">ゲームを送る</string>
     <string name="UserRestrictionsSendInline">インラインボット経由で送信</string>
     <string name="TabletMode">タブレットモード</string>
-    <string name="TabletModeDefault">デフォルト</string>
+    <string name="TabletModeDefault">自動</string>
     <string name="ReplaceText">テキストを置換</string>
     <string name="TextOrigin">置換前</string>
     <string name="TextReplace">置換後</string>
@@ -723,12 +725,12 @@
     <string name="AutoLockImmediately">すぐに</string>
     <string name="BackupSettings">設定をバックアップ</string>
     <string name="ImportSettings">設定をインポート</string>
-    <string name="ImportSettingsAlert">設定を上書きしますか？ 不明なソースから設定をインポートすると、PINが上書きされ、アプリがロックされる可能性があります。</string>
+    <string name="ImportSettingsAlert">現在の設定を上書きしますか？不明な提供元から設定をインポートすると、パスコードが上書きされてアプリを開けなくなる可能性があります。</string>
     <string name="unreadBadgeOnBackButton">チャットの戻るボタンに未読数を表示</string>
     <string name="useCustomEmoji">カスタム絵文字を使用</string>
     <string name="repeatConfirm">リポストに確認</string>
     <string name="repeatConfirmText">本当にリポストしますか？</string>
-    <string name="rememberAllBackMessages">全てのクリックされた返信を記憶</string>
+    <string name="rememberAllBackMessages">タップしたすべての返信を記憶</string>
     <string name="DisableInstantCamera">インスタントカメラを無効化</string>
     <string name="showSeconds">タイムスタンプを秒単位で表示</string>
     <string name="Name">名前</string>
@@ -749,10 +751,10 @@
 
     <!-- App Icons -->
     <string name="AppIconMusheen">Musheen</string>
-    <string name="AppIconSpace">Space</string>
-    <string name="AppIconCloud">Cloud</string>
-    <string name="AppIconNeon">Neon</string>
-    <string name="AppIconMaterial">Material</string>
+    <string name="AppIconSpace">スペース</string>
+    <string name="AppIconCloud">クラウド</string>
+    <string name="AppIconNeon">ネオン</string>
+    <string name="AppIconMaterial">マテリアル</string>
 
     <!-- Group Member Join Date -->
     <string name="ShowGroupMemberJoinDate">メンバーの参加日時を表示</string>
@@ -777,10 +779,10 @@
 
     <!-- Allow Screen Capture & Protected Content -->
     <string name="AllowScreenCapture">画面キャプチャを許可</string>
-    <string name="AllowScreenCaptureNotice">FLAG_SECURE の制限を解除し、すべてのチャット、消えるメディア、保護された画面でのスクリーンショットや画面録画を許可します。</string>
+    <string name="AllowScreenCaptureNotice">FLAG_SECURE の制限を解除し、シークレットチャットや消えるメディア、パスコード画面を含むあらゆる場所でスクリーンショットと画面録画を可能にします。</string>
     <string name="AllowCopyProtectedContent">保護されたコンテンツのコピーを許可</string>
     <string name="AllowCopyProtectedContentNotice">転送禁止のチャンネルやチャットからテキストのコピー、写真/動画の保存、メッセージの再送信を許可します。</string>
-    <string name="SaveTTLMedia">消えるメディアと TTL メディアを保存</string>
+    <string name="SaveTTLMedia">消えるメディアを保存</string>
     <string name="SaveTTLMediaNotice">消える写真や動画を制限なく保存、共有、表示できるようにします。</string>
 
     <!-- Compact Chat Input -->
@@ -790,7 +792,6 @@
     <!-- iOS Sounds & Theme -->
     <string name="useIosSounds">iOS メッセージサウンド</string>
     <string name="UseIosSoundsNotice">Telegram iOS 版のアプリ内メッセージサウンドを使用します。</string>
-    <string name="StyleMaterialDesign3">Material Design 3</string>
     <string name="TabletModeLandscape">横画面のみ</string>
 
     <!-- DNS / DoH -->
@@ -798,7 +799,7 @@
     <string name="DnsTypeGoogle">Google Public DNS</string>
     <string name="DnsTypeTencent">Tencent DNS</string>
     <string name="DnsTypeAliDNS">AliDNS</string>
-    <string name="CustomDoHHint">https://1.0.0.1/dns-query, ... (長押しでプリセットを選択)</string>
+    <string name="CustomDoHHint">https://1.1.1.1/dns-query, …（長押しでプリセットを選択）</string>
     <string name="PresetDoHServers">プリセット DoH サーバー</string>
 
     <!-- Custom API -->
@@ -810,8 +811,8 @@
     <string name="WebProxy">Web / HTTP プロキシ</string>
     <string name="WebProxyMode">Web / HTTP プロキシ</string>
     <string name="WebProxyAbout">外部 HTTP/HTTPS リクエスト（LLM 翻訳、更新確認、音声書き起こしなど）をプロキシ経由でルーティングします。</string>
-    <string name="WebProxyModeFollow">Telegram に従う (SOCKS5)</string>
-    <string name="WebProxyModeDirect">直接接続 (無効)</string>
+    <string name="WebProxyModeFollow">Telegram のプロキシに従う (SOCKS5)</string>
+    <string name="WebProxyModeDirect">直接接続（プロキシなし）</string>
     <string name="WebProxyModeCustom">カスタムプロキシ</string>
     <string name="WebProxyType">プロキシの種類</string>
     <string name="WebProxyTypeHttp">HTTP / HTTPS</string>
@@ -831,15 +832,15 @@
     <!-- Ban by User ID -->
     <string name="NiaBanById">ユーザー ID で BAN</string>
     <string name="NiaBanByIdDialogTitle">ユーザー ID で BAN</string>
-    <string name="NiaBanByIdDialogMessage">対象ユーザーの 64 ビット整数 ID を入力してください。BAN リクエストは Telegram サーバーに直接送信されます。</string>
+    <string name="NiaBanByIdDialogMessage">対象ユーザーの数値 ID を入力してください。BAN リクエストは Telegram サーバーに直接送信されます。</string>
     <string name="NiaBanByIdHint">例: 123456789</string>
     <string name="NiaBanByIdConfirm">ユーザーを BAN</string>
     <string name="NiaBanByIdConfirmTitle">BAN の確認</string>
     <string name="NiaBanByIdConfirmMessage">ID: %1$s のユーザーを本当に BAN しますか？</string>
     <string name="NiaBanByIdSuccess">ユーザー ID %1$s を正常に BAN しました。</string>
     <string name="NiaBanByIdCannotBanSelf">自分自身を BAN することはできません。</string>
-    <string name="NiaBanByIdCannotBanCreator">このグループの作成者またはオーナーを BAN することはできません。</string>
-    <string name="NiaBanByIdInvalid">正の整数で有効な ID を入力してください。</string>
+    <string name="NiaBanByIdCannotBanCreator">このグループのオーナーを BAN することはできません。</string>
+    <string name="NiaBanByIdInvalid">0 より大きい有効な数値 ID を入力してください。</string>
     <string name="NiaBanByIdErrorNotParticipant">このユーザーはグループに参加していません。Telegram サーバーはメンバーでないユーザーの BAN を許可していません。</string>
     <string name="NiaBanByIdErrorInvalidUser">無効なユーザー ID か、Telegram 上で見つかりません。</string>
     <string name="NiaBanByIdErrorAdminRequired">このユーザーを BAN するための十分な管理者権限がありません。</string>
@@ -877,7 +878,7 @@
     <string name="ChatActivityNavbarTransparent">チャット画面のナビゲーションバーを完全透明化</string>
 
     <!-- Other settings -->
-    <string name="HideStarsRating">スター数を非表示</string>
+    <string name="HideStarsRating">スターの評価を非表示</string>
     <string name="ScrollToSeenPhotoOnClose">閉じるときに閲覧済みの写真までスクロール</string>
     <string name="GoogleCloudTransKey">Google Cloud 翻訳キー</string>
     <string name="ThemeAmoledDark">AMOLED ダーク</string>

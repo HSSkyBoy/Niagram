@@ -315,7 +315,13 @@ object NyaConfig {
         addConfig(
             "NotificationIcon",
             ConfigItem.configTypeInt,
-            1
+            1 // 0: Telegram; 1: Niagram; 2: NekoX
+        )
+    val notificationIconNagramRemoved =
+        addConfig(
+            "NotificationIconNagramRemoved",
+            ConfigItem.configTypeBool,
+            false
         )
     val showSetReminder =
         addConfig(
@@ -1898,6 +1904,18 @@ object NyaConfig {
         }
         if (translatorMode.Int() !in 0..2) {
             translatorMode.setConfigInt(0)
+        }
+        if (!notificationIconNagramRemoved.Bool()) {
+            if (getPreferences().contains(notificationIcon.key)) {
+                when (notificationIcon.Int()) {
+                    2 -> notificationIcon.setConfigInt(0)
+                    3 -> notificationIcon.setConfigInt(2)
+                }
+            }
+            notificationIconNagramRemoved.setConfigBool(true)
+        }
+        if (notificationIcon.Int() !in 0..2) {
+            notificationIcon.setConfigInt(1)
         }
         if (!getPreferences().contains(idDcType.key) && !getPreferences().getBoolean(
                 "ShowIdAndDc", true

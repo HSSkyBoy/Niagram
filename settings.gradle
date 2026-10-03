@@ -25,7 +25,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NiagramX"
+rootProject.name = "Niagram"
 include ':TMessagesProj'
 include ':libs:tcp2ws'
 include ':jlatexmath'

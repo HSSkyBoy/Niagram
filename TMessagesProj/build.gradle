@@ -245,7 +245,7 @@ android {
 androidComponents {
     onVariants(selector().all()) { variant ->
         variant.outputs.forEach { output ->
-            String gramName = 'NiagramX'
+            String gramName = 'Niagram'
             String first = String.format('%s-v%s(%s)', gramName, verName, verCode)
             output.outputFileName.set(
                 output.outputFileName.get()
