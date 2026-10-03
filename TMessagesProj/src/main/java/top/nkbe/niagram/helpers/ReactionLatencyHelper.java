@@ -47,9 +47,9 @@ public final class ReactionLatencyHelper {
     private static final String PREFS_KEY = "entries";
 
     private static final Object LOCK = new Object();
-    private static final Map<String, Entry> entries = new LinkedHashMap<String, Entry>(256, 0.75f, true) {
+    private static final Map<String, UserEntry> entries = new LinkedHashMap<String, UserEntry>(256, 0.75f, true) {
         @Override
-        protected boolean removeEldestEntry(Map.Entry<String, Entry> eldest) {
+        protected boolean removeEldestEntry(Map.Entry<String, UserEntry> eldest) {
             return size() > MAX_ENTRIES;
         }
     };
@@ -59,7 +59,7 @@ public final class ReactionLatencyHelper {
     private ReactionLatencyHelper() {
     }
 
-    private static final class Entry {
+    private static final class UserEntry {
         /** Samples as {messageId, latencySeconds}, kept sorted by message id. */
         final ArrayList<int[]> samples = new ArrayList<>();
         /** 0 until the member speaks after being tracked; afterwards the stricter threshold applies. */
@@ -159,7 +159,7 @@ public final class ReactionLatencyHelper {
     public static Info getInfo(long dialogId, long userId) {
         synchronized (LOCK) {
             ensureLoaded();
-            final Entry entry = entries.get(key(dialogId, userId));
+            final UserEntry entry = entries.get(key(dialogId, userId));
             if (entry == null) {
                 return new Info(0, 0, false);
             }
@@ -194,9 +194,9 @@ public final class ReactionLatencyHelper {
         synchronized (LOCK) {
             ensureLoaded();
             final String key = key(dialogId, userId);
-            Entry entry = entries.get(key);
+            UserEntry entry = entries.get(key);
             if (entry == null) {
-                entry = new Entry();
+                entry = new UserEntry();
                 entries.put(key, entry);
             }
             for (int i = 0, n = entry.samples.size(); i < n; i++) {
@@ -216,7 +216,7 @@ public final class ReactionLatencyHelper {
     private static boolean markSpoke(long dialogId, long userId) {
         synchronized (LOCK) {
             ensureLoaded();
-            final Entry entry = entries.get(key(dialogId, userId));
+            final UserEntry entry = entries.get(key(dialogId, userId));
             if (entry == null) {
                 return false;
             }
@@ -230,7 +230,7 @@ public final class ReactionLatencyHelper {
         }
     }
 
-    private static int trailingFastStreak(Entry entry) {
+    private static int trailingFastStreak(UserEntry entry) {
         int streak = 0;
         for (int i = entry.samples.size() - 1; i >= 0; i--) {
             if (entry.samples.get(i)[1] <= FAST_SECONDS) {
@@ -263,7 +263,7 @@ public final class ReactionLatencyHelper {
                 if (head.length < 3) {
                     continue;
                 }
-                final Entry entry = new Entry();
+                final UserEntry entry = new UserEntry();
                 entry.level = Integer.parseInt(head[1]);
                 if (!head[2].isEmpty()) {
                     for (String sample : head[2].split(";")) {
@@ -293,9 +293,9 @@ public final class ReactionLatencyHelper {
         final StringBuilder builder = new StringBuilder();
         synchronized (LOCK) {
             saveScheduled = false;
-            for (Iterator<Map.Entry<String, Entry>> it = entries.entrySet().iterator(); it.hasNext(); ) {
-                final Map.Entry<String, Entry> item = it.next();
-                final Entry entry = item.getValue();
+            for (Iterator<Map.Entry<String, UserEntry>> it = entries.entrySet().iterator(); it.hasNext(); ) {
+                final Map.Entry<String, UserEntry> item = it.next();
+                final UserEntry entry = item.getValue();
                 if (entry.samples.isEmpty() && entry.level == 0) {
                     continue;
                 }
