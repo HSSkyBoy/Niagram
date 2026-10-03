@@ -4302,15 +4302,17 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                             return true;
                         }
                     }
-                    if (botWebViewContainer != null && Browser.isInternalUri(uriNew, null)) {
+                    // The close callbacks below may detach this WebView and null out the field, so keep a local reference.
+                    final BotWebViewContainer container = botWebViewContainer;
+                    if (container != null && Browser.isInternalUri(uriNew, null)) {
                         if (!bot && "1".equals(uriNew.getQueryParameter("embed")) && "t.me".equals(uriNew.getAuthority())) {
                             return false;
                         }
-                        if (MessagesController.getInstance(botWebViewContainer.currentAccount).webAppAllowedProtocols != null &&
-                            MessagesController.getInstance(botWebViewContainer.currentAccount).webAppAllowedProtocols.contains(uriNew.getScheme())) {
+                        if (MessagesController.getInstance(container.currentAccount).webAppAllowedProtocols != null &&
+                            MessagesController.getInstance(container.currentAccount).webAppAllowedProtocols.contains(uriNew.getScheme())) {
                             if (opener != null) {
-                                if (botWebViewContainer.delegate != null) {
-                                    botWebViewContainer.delegate.onInstantClose();
+                                if (container.delegate != null) {
+                                    container.delegate.onInstantClose();
                                 } else if (onCloseListener != null) {
                                     onCloseListener.run();
                                     onCloseListener = null;
@@ -4319,7 +4321,7 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                                     opener.botWebViewContainer.delegate.onCloseToTabs();
                                 }
                             }
-                            botWebViewContainer.onOpenUri(uriNew);
+                            container.onOpenUri(uriNew);
                         }
                         d("shouldOverrideUrlLoading("+url+") = true");
                         return true;
@@ -4681,7 +4683,7 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                                             .setMessage(AndroidUtilities.replaceSingleTag(getString(R.string.ChromeCrashMessage), () -> Browser.openUrl(getContext(), "https://play.google.com/store/apps/details?id=com.google.android.webview")))
                                             .setPositiveButton(getString(R.string.OK), null)
                                             .setOnDismissListener(d -> {
-                                                if (botWebViewContainer.delegate != null) {
+                                                if (botWebViewContainer != null && botWebViewContainer.delegate != null) {
                                                     botWebViewContainer.delegate.onCloseRequested(null);
                                                 }
                                             })
