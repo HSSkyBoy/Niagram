@@ -760,6 +760,9 @@
     <string name="ShowGroupMemberJoinDate">メンバーの参加日時を表示</string>
     <string name="ShowGroupMemberJoinDateNotice">メンバーメニューやプロフィールに参加日時を表示します。</string>
     <string name="GroupMemberJoinDate">グループに参加</string>
+    <string name="AutoReactionDetect">自動リアクションクライアントを検出</string>
+    <string name="AutoReactionDetectNotice">グループメンバーがメッセージにリアクションするまでの速さを記録し、1 秒以内に連続してリアクションしたメンバーにマークを付けます。データはこの端末内にのみ保存され、何も報告されません。</string>
+    <string name="AutoReactionSuspected">自動リアクションの疑い：1 秒以内のリアクションが %1$d 回連続</string>
 
     <!-- Liquid Glass -->
     <string name="LiquidGlassAngle">Liquid Glass の角度</string>

@@ -46,6 +46,9 @@
     <string name="ShowGroupMemberJoinDate">نمایش تاریخ پیوستن به گروه</string>
     <string name="ShowGroupMemberJoinDateNotice">زمان پیوستن عضو به گروه را در منوی عضو و پروفایل او نشان می‌دهد.</string>
     <string name="GroupMemberJoinDate">تاریخ پیوستن به گروه</string>
+    <string name="AutoReactionDetect">تشخیص کلاینت‌های واکنش خودکار</string>
+    <string name="AutoReactionDetectNotice">سرعت واکنش اعضای گروه به پیام‌ها را ثبت می‌کند و اعضایی را که چند بار پشت‌سرهم در کمتر از ۱ ثانیه واکنش نشان می‌دهند علامت می‌زند. همه چیز فقط روی همین دستگاه می‌ماند و چیزی گزارش نمی‌شود.</string>
+    <string name="AutoReactionSuspected">کلاینت واکنش خودکار احتمالی: %1$d واکنش پشت‌سرهم در کمتر از ۱ ثانیه</string>
     <string name="TypeMessageHintUseGroupName">استفاده از نام گروه به عنوان متن راهنما</string>
     <string name="HideBotButtonInInputField">پنهان کردن دکمه ربات در فیلد ورودی</string>
     <string name="ShowSendAsUnderMessageHint">نمایش فرستنده زیر متن راهنما</string>

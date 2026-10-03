@@ -772,6 +772,9 @@
     <string name="ShowGroupMemberJoinDate">Показувати дату приєднання учасника групи</string>
     <string name="ShowGroupMemberJoinDateNotice">Показувати, коли учасник приєднався до групи, у меню учасника та профілі.</string>
     <string name="GroupMemberJoinDate">Приєднався(-лася) до групи</string>
+    <string name="AutoReactionDetect">Виявляти клієнти з автореакціями</string>
+    <string name="AutoReactionDetectNotice">Відстежує, як швидко учасники групи ставлять реакції, і позначає тих, хто кілька разів поспіль реагує протягом 1 секунди. Усе зберігається лише на цьому пристрої, нічого не надсилається.</string>
+    <string name="AutoReactionSuspected">Можливий клієнт з автореакціями: %1$d реакцій поспіль протягом 1 секунди</string>
     <string name="PushServiceTypeUnifiedGateway">Шлюз Unified Push</string>
     <string name="InputBar">Панель введення</string>
     <string name="IosButtonPlacement">Розташування кнопок (iOS)</string>

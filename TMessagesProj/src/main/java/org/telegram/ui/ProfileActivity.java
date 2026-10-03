@@ -367,6 +367,7 @@ import top.nkbe.niagram.helpers.ChatsHelper;
 import top.nkbe.niagram.helpers.LocalNameHelper;
 import top.nkbe.niagram.helpers.MainTabsHelper;
 import top.nkbe.niagram.helpers.MessageHelper;
+import top.nkbe.niagram.helpers.ReactionLatencyHelper;
 import top.nkbe.niagram.helpers.ProfileDateHelper;
 import top.nkbe.niagram.helpers.SettingsHelper;
 import top.nkbe.niagram.helpers.SettingsSearchResult;
@@ -7469,8 +7470,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
             boolean result = (canEditAdmin || canEditTag || canRestrict || allowKick);
             boolean showJoinDate = NyaConfig.INSTANCE.getShowGroupMemberJoinDate().Bool() && joined != 0;
-            if (resultOnly || (!result && !showJoinDate)) {
-                return result || showJoinDate;
+            final String reactionNote = currentChat != null ? ReactionLatencyHelper.getSuspectText(-currentChat.id, participant.user_id) : null;
+            if (resultOnly || (!result && !showJoinDate && reactionNote == null)) {
+                return result || showJoinDate || reactionNote != null;
             }
 
             Utilities.Callback<Integer> openRightsEdit = action -> {
@@ -7524,9 +7526,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         kickUser(selectedUser, participant);
                     })
                     .setMinWidth(190);
-            if (showJoinDate) {
+            if (showJoinDate || reactionNote != null) {
                 if (result || !self) options.addGap();
-                options.addText(LocaleController.formatJoined(joined), 13);
+                if (showJoinDate) options.addText(LocaleController.formatJoined(joined), 13);
+                if (reactionNote != null) options.addText(reactionNote, 13);
             }
             options.show();
         } else {

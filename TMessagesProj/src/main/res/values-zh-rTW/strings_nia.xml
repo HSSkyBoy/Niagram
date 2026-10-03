@@ -47,6 +47,9 @@
     <string name="ShowGroupMemberJoinDate">群組成員顯示入群時間</string>
     <string name="ShowGroupMemberJoinDateNotice">在群組成員功能表與個人資料頁中顯示成員加入群組的時間。</string>
     <string name="GroupMemberJoinDate">入群時間</string>
+    <string name="AutoReactionDetect">偵測自動反應用戶端</string>
+    <string name="AutoReactionDetectNotice">記錄群組成員對訊息做出反應的速度，並標記連續多次在 1 秒內反應的成員。所有資料只保存在本機，不會回報任何內容。</string>
+    <string name="AutoReactionSuspected">疑似自動反應用戶端：連續 %1$d 次在 1 秒內反應</string>
     <string name="TypeMessageHintUseGroupName">在輸入框中顯示群組名稱</string>
     <string name="HideBotButtonInInputField">隱藏輸入框中的機器人按鈕</string>
     <string name="ShowSendAsUnderMessageHint">在輸入提示下方顯示傳送身分</string>
@@ -69,6 +72,7 @@
     <string name="PushServiceType">推播服務類型</string>
     <string name="PushServiceTypeInApp">應用程式內</string>
     <string name="PushServiceTypeInAppDialog">顯示常駐通知</string>
+    <string name="PushServiceTypeUnifiedGateway">Unified Push Gateway</string>
     <string name="SendMp4DocumentAsVideo">將 MP4 檔案以影片傳送</string>
     <string name="StickersChooseShortNameForStickerPack">為您的貼圖包選擇一個簡短的名稱</string>
     <string name="StickersCopyStickerSet">複製整個貼圖包</string>
@@ -742,6 +746,7 @@
     <string name="EmojiSetApplied">Emoji 套件已套用。</string>
     <string name="EmojiSetAppliedInfo">%1$s 現在是您的 Emoji 套件。</string>
     <string name="EmojiSetAlreadyApplied">已在使用此 Emoji 套件。</string>
+    <string name="ProviderTelegramAPI">Telegram API</string>
     <string name="RecentChats">最近聊天</string>
     <string name="ClearRecentChats">清除最近聊天</string>
     <string name="ClearRecentChatAlert">要清除最近聊天嗎？</string>

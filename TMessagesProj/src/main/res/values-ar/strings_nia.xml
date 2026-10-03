@@ -47,6 +47,9 @@
     <string name="ShowGroupMemberJoinDate">إظهار تاريخ انضمام الأعضاء</string>
     <string name="ShowGroupMemberJoinDateNotice">يُظهر تاريخ انضمام العضو إلى المجموعة في قائمة العضو وملفه الشخصي.</string>
     <string name="GroupMemberJoinDate">انضم إلى المجموعة</string>
+    <string name="AutoReactionDetect">اكتشاف تطبيقات التفاعل التلقائي</string>
+    <string name="AutoReactionDetectNotice">يسجّل مدى سرعة تفاعل أعضاء المجموعة مع الرسائل ويضع علامة على من يتفاعل خلال ثانية واحدة عدة مرات متتالية. تبقى كل البيانات على هذا الجهاز ولا يُبلَّغ عن أي شيء.</string>
+    <string name="AutoReactionSuspected">تطبيق تفاعل تلقائي محتمل: %1$d تفاعلات متتالية خلال ثانية واحدة</string>
     <string name="TypeMessageHintUseGroupName">استخدام اسم المجموعة كنص تلميح</string>
     <string name="HideBotButtonInInputField">إخفاء زر البوت في حقل الإدخال</string>
     <string name="ShowSendAsUnderMessageHint">إظهار المُرسِل أسفل تلميح الرسالة</string>

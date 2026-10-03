@@ -753,6 +753,9 @@
     <string name="ShowGroupMemberJoinDate">그룹 멤버 가입일 표시</string>
     <string name="ShowGroupMemberJoinDateNotice">멤버 메뉴 및 프로필에 멤버가 그룹에 가입한 날짜를 표시합니다.</string>
     <string name="GroupMemberJoinDate">그룹 가입</string>
+    <string name="AutoReactionDetect">자동 반응 클라이언트 감지</string>
+    <string name="AutoReactionDetectNotice">그룹 멤버가 메시지에 반응하는 속도를 기록하고, 1초 이내에 연속으로 반응한 멤버를 표시합니다. 모든 데이터는 이 기기에만 저장되며 아무것도 신고되지 않습니다.</string>
+    <string name="AutoReactionSuspected">자동 반응 클라이언트 의심: 1초 이내 반응이 %1$d회 연속</string>
 
     <!-- Input Bar iOS Style -->
     <string name="InputBar">입력 바</string>

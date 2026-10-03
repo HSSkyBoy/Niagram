@@ -46,6 +46,9 @@
     <string name="ShowGroupMemberJoinDate">Tampilkan Tanggal Bergabung ke Grup</string>
     <string name="ShowGroupMemberJoinDateNotice">Menampilkan kapan anggota bergabung ke grup di menu anggota dan profilnya.</string>
     <string name="GroupMemberJoinDate">Bergabung ke grup</string>
+    <string name="AutoReactionDetect">Deteksi Klien Reaksi Otomatis</string>
+    <string name="AutoReactionDetectNotice">Mencatat seberapa cepat anggota grup bereaksi terhadap pesan dan menandai anggota yang bereaksi dalam 1 detik beberapa kali berturut-turut. Semuanya tersimpan di perangkat ini; tidak ada yang dilaporkan.</string>
+    <string name="AutoReactionSuspected">Kemungkinan klien reaksi otomatis: %1$d reaksi berturut-turut dalam 1 detik</string>
     <string name="TypeMessageHintUseGroupName">Gunakan Nama Grup sebagai Teks Petunjuk</string>
     <string name="HideBotButtonInInputField">Sembunyikan Tombol Bot di Kolom Input</string>
     <string name="ShowSendAsUnderMessageHint">Tampilkan Pengirim di Bawah Petunjuk Pesan</string>

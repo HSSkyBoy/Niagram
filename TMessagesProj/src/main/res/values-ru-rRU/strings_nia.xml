@@ -783,6 +783,9 @@
     <string name="ShowGroupMemberJoinDate">Показывать дату вступления участника</string>
     <string name="ShowGroupMemberJoinDateNotice">Показывать, когда участник вступил в группу, в меню участника и профиле.</string>
     <string name="GroupMemberJoinDate">Вступил(а) в группу</string>
+    <string name="AutoReactionDetect">Обнаруживать клиенты с автореакциями</string>
+    <string name="AutoReactionDetectNotice">Отслеживает, как быстро участники группы ставят реакции, и помечает тех, кто несколько раз подряд реагирует в течение 1 секунды. Всё хранится только на этом устройстве, ничего не отправляется.</string>
+    <string name="AutoReactionSuspected">Возможен клиент с автореакциями: %1$d реакций подряд в течение 1 секунды</string>
 
     <!-- Liquid Glass -->
     <string name="LiquidGlassAngle">Угол Liquid Glass</string>

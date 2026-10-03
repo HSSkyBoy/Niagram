@@ -47,6 +47,9 @@
     <string name="ShowGroupMemberJoinDate">Show Group Member Join Date</string>
     <string name="ShowGroupMemberJoinDateNotice">Show when a member joined the group in member menu and profile.</string>
     <string name="GroupMemberJoinDate">Joined Group</string>
+    <string name="AutoReactionDetect">Detect Auto-Reaction Clients</string>
+    <string name="AutoReactionDetectNotice">Tracks how quickly group members react to messages and flags members who react within 1 second several times in a row. Everything stays on this device; nothing is reported.</string>
+    <string name="AutoReactionSuspected">Possible auto-reaction client: %1$d reactions in a row within 1 second</string>
     <string name="TypeMessageHintUseGroupName">Use Group Name as Hint Text</string>
     <string name="HideBotButtonInInputField">Hide Bot Button in Input Field</string>
     <string name="ShowSendAsUnderMessageHint">Show Sender Under Message Hint</string>

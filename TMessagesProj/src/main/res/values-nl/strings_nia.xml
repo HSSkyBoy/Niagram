@@ -47,6 +47,9 @@
     <string name="ShowGroupMemberJoinDate">Toetredingsdatum van groepsleden tonen</string>
     <string name="ShowGroupMemberJoinDateNotice">Toont in het ledenmenu en het profiel wanneer een lid de groep is binnengekomen.</string>
     <string name="GroupMemberJoinDate">Lid van de groep geworden</string>
+    <string name="AutoReactionDetect">Clients met automatische reacties detecteren</string>
+    <string name="AutoReactionDetectNotice">Houdt bij hoe snel groepsleden op berichten reageren en markeert leden die meerdere keren achter elkaar binnen 1 seconde reageren. Alles blijft op dit apparaat; er wordt niets gemeld.</string>
+    <string name="AutoReactionSuspected">Mogelijk client met automatische reacties: %1$d reacties achter elkaar binnen 1 seconde</string>
     <string name="TypeMessageHintUseGroupName">Groepsnaam als hinttekst gebruiken</string>
     <string name="HideBotButtonInInputField">Botknop in het invoerveld verbergen</string>
     <string name="ShowSendAsUnderMessageHint">Afzender onder de berichthint tonen</string>

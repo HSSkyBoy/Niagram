@@ -46,6 +46,9 @@
     <string name="ShowGroupMemberJoinDate">Pokazuj datę dołączenia do grupy</string>
     <string name="ShowGroupMemberJoinDateNotice">Pokazuje, kiedy członek dołączył do grupy, w menu członka i w jego profilu.</string>
     <string name="GroupMemberJoinDate">Dołączył(a) do grupy</string>
+    <string name="AutoReactionDetect">Wykrywaj klienty z automatycznymi reakcjami</string>
+    <string name="AutoReactionDetectNotice">Rejestruje, jak szybko członkowie grupy reagują na wiadomości, i oznacza tych, którzy kilka razy z rzędu reagują w ciągu 1 sekundy. Wszystko zostaje na tym urządzeniu; nic nie jest zgłaszane.</string>
+    <string name="AutoReactionSuspected">Możliwy klient z automatycznymi reakcjami: %1$d reakcji z rzędu w ciągu 1 sekundy</string>
     <string name="TypeMessageHintUseGroupName">Użyj nazwy grupy jako tekstu podpowiedzi</string>
     <string name="HideBotButtonInInputField">Ukryj przycisk bota w polu wprowadzania</string>
     <string name="ShowSendAsUnderMessageHint">Pokaż nadawcę pod wskazówką wiadomości</string>

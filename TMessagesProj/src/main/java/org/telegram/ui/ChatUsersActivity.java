@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
 import top.nkbe.niagram.config.NyaConfig;
+import top.nkbe.niagram.helpers.ReactionLatencyHelper;
 import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.ChatObject;
@@ -1946,8 +1947,9 @@ public class ChatUsersActivity extends BaseFragment implements NotificationCente
 
             boolean result = allowSetAdmin || (ChatObject.canBlockUsers(currentChat) && canEditAdmin);
             boolean showJoinDate = NyaConfig.INSTANCE.getShowGroupMemberJoinDate().Bool() && joined != 0;
-            if (resultOnly || (!result && !showJoinDate)) {
-                return result || showJoinDate;
+            final String reactionNote = user != null && currentChat != null ? ReactionLatencyHelper.getSuspectText(-currentChat.id, user.id) : null;
+            if (resultOnly || (!result && !showJoinDate && reactionNote == null)) {
+                return result || showJoinDate || reactionNote != null;
             }
 
             Utilities.Callback<Integer> openRightsFor = action ->
@@ -1991,9 +1993,10 @@ public class ChatUsersActivity extends BaseFragment implements NotificationCente
                     }
                 })
                 .setMinWidth(190);
-            if (showJoinDate) {
+            if (showJoinDate || reactionNote != null) {
                 if (result || user != null) options.addGap();
-                options.addText(LocaleController.formatJoined(joined), 13);
+                if (showJoinDate) options.addText(LocaleController.formatJoined(joined), 13);
+                if (reactionNote != null) options.addText(reactionNote, 13);
             }
             options.show();
         } else {

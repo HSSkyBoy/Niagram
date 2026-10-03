@@ -392,6 +392,7 @@ import top.nkbe.niagram.filters.ReactionFilter;
 import top.nkbe.niagram.filters.RegexFilterEditActivity;
 import top.nkbe.niagram.helpers.ChatsHelper;
 import top.nkbe.niagram.helpers.MessageHelper;
+import top.nkbe.niagram.helpers.ReactionLatencyHelper;
 import top.nkbe.niagram.helpers.TranscribeHelper;
 import top.nkbe.niagram.helpers.remote.EmojiHelper;
 import top.nkbe.niagram.helpers.remote.PagePreviewRulesHelper;
@@ -21752,6 +21753,7 @@ public class ChatActivity extends BaseFragment implements
             postponedScrollToLastMessageQueryIndex = 0;
         }
         ArrayList<MessageObject> messArr = (ArrayList<MessageObject>) args[2];
+        ReactionLatencyHelper.recordMessages(currentAccount, dialog_id, messArr);
 
         boolean universalNotify = false;
         HashMap<Integer, MessageObject> oldMessages = null;
@@ -23287,6 +23289,7 @@ public class ChatActivity extends BaseFragment implements
             FileLog.d("ChatActivity didReceiveNewMessages start");
             long did = (Long) args[0];
             ArrayList<MessageObject> arr = (ArrayList<MessageObject>) args[1];
+            ReactionLatencyHelper.onNewMessages(did, arr);
             if (isInsideContainer) return;
             if (did == dialog_id) {
                 boolean scheduled = (Boolean) args[2];
@@ -24467,6 +24470,7 @@ public class ChatActivity extends BaseFragment implements
                 MessageObject messageObject = messagesDict[did == dialog_id ? 0 : 1].get(msgId);
                 if (messageObject != null) {
                     MessageObject.updateReactions(messageObject.messageOwner, (TLRPC.TL_messageReactions) args[2]);
+                    ReactionLatencyHelper.recordMessage(currentAccount, did, messageObject);
                     messageObject.forceUpdate = true;
                     messageObject.reactionsChanged = true;
                     updateMessageAnimated(messageObject, true);

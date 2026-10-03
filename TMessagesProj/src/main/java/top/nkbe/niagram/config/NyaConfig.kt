@@ -347,6 +347,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val autoReactionDetect =
+        addConfig(
+            "AutoReactionDetect",
+            ConfigItem.configTypeBool,
+            false
+        )
     val typeMessageHintUseGroupName =
         addConfig(
             "TypeMessageHintUseGroupName",

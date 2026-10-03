@@ -47,6 +47,9 @@
     <string name="ShowGroupMemberJoinDate">Beitrittsdatum von Gruppenmitgliedern anzeigen</string>
     <string name="ShowGroupMemberJoinDateNotice">Zeigt im Mitgliedermenü und im Profil an, wann ein Mitglied der Gruppe beigetreten ist.</string>
     <string name="GroupMemberJoinDate">Der Gruppe beigetreten</string>
+    <string name="AutoReactionDetect">Clients mit automatischen Reaktionen erkennen</string>
+    <string name="AutoReactionDetectNotice">Erfasst, wie schnell Gruppenmitglieder auf Nachrichten reagieren, und markiert Mitglieder, die mehrmals hintereinander innerhalb von 1 Sekunde reagieren. Alles bleibt auf diesem Gerät; es wird nichts gemeldet.</string>
+    <string name="AutoReactionSuspected">Möglicher Client mit automatischen Reaktionen: %1$d Reaktionen in Folge innerhalb von 1 Sekunde</string>
     <string name="TypeMessageHintUseGroupName">Gruppennamen als Hinweistext verwenden</string>
     <string name="HideBotButtonInInputField">Bot-Schaltfläche im Eingabefeld ausblenden</string>
     <string name="ShowSendAsUnderMessageHint">Absender unter dem Nachrichtenhinweis anzeigen</string>

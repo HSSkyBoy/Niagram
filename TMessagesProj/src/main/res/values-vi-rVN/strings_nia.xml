@@ -46,6 +46,9 @@
     <string name="ShowGroupMemberJoinDate">Hiện ngày tham gia nhóm</string>
     <string name="ShowGroupMemberJoinDateNotice">Hiện thời điểm thành viên tham gia nhóm trong menu thành viên và trang hồ sơ.</string>
     <string name="GroupMemberJoinDate">Đã tham gia nhóm</string>
+    <string name="AutoReactionDetect">Phát hiện ứng dụng tự động thả cảm xúc</string>
+    <string name="AutoReactionDetectNotice">Ghi lại tốc độ thành viên nhóm thả cảm xúc vào tin nhắn và đánh dấu những người thả cảm xúc trong vòng 1 giây nhiều lần liên tiếp. Mọi dữ liệu chỉ lưu trên thiết bị này; không có gì được báo cáo.</string>
+    <string name="AutoReactionSuspected">Có thể là ứng dụng tự động thả cảm xúc: %1$d lần liên tiếp trong vòng 1 giây</string>
     <string name="TypeMessageHintUseGroupName">Sử dụng Tên Nhóm làm Văn bản gợi ý</string>
     <string name="HideBotButtonInInputField">Ẩn nút Bot trong trường nhập liệu</string>
     <string name="ShowSendAsUnderMessageHint">Hiển thị người gửi bên dưới gợi ý tin nhắn</string>

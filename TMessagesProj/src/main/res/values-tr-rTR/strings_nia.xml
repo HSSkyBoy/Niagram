@@ -46,6 +46,9 @@
     <string name="ShowGroupMemberJoinDate">Gruba katılma tarihini göster</string>
     <string name="ShowGroupMemberJoinDateNotice">Üyenin gruba ne zaman katıldığını üye menüsünde ve profilinde gösterir.</string>
     <string name="GroupMemberJoinDate">Gruba katıldı</string>
+    <string name="AutoReactionDetect">Otomatik Tepki Veren İstemcileri Algıla</string>
+    <string name="AutoReactionDetectNotice">Grup üyelerinin mesajlara ne kadar hızlı tepki verdiğini kaydeder ve art arda birkaç kez 1 saniye içinde tepki verenleri işaretler. Her şey bu cihazda kalır; hiçbir şey bildirilmez.</string>
+    <string name="AutoReactionSuspected">Olası otomatik tepki istemcisi: 1 saniye içinde art arda %1$d tepki</string>
     <string name="TypeMessageHintUseGroupName">Grup Adını İpucu Metni Olarak Kullan</string>
     <string name="HideBotButtonInInputField">Giriş Alanında Bot Butonunu Gizle</string>
     <string name="ShowSendAsUnderMessageHint">Mesaj İpucunun Altında Göndereni Göster</string>
