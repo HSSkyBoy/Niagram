@@ -46,7 +46,12 @@ public class AyuFilter {
                     var str = NyaConfig.INSTANCE.getRegexFiltersData().String();
                     FilterModel[] arr = new Gson().fromJson(str, FilterModel[].class);
                     if (arr != null) {
-                        filterModels = new ArrayList<>(Arrays.asList(arr));
+                        filterModels = new ArrayList<>(arr.length);
+                        for (var filter : arr) {
+                            if (filter != null && filter.regex != null) {
+                                filterModels.add(filter);
+                            }
+                        }
                         boolean migrated = false;
                         for (var filter : filterModels) {
                             if (filter.migrateFromLegacy(0L)) {
