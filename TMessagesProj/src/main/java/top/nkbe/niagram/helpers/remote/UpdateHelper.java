@@ -346,9 +346,10 @@ public class UpdateHelper extends BaseRemoteHelper {
     }
 
     private ApkReleaseGroup findLatestApkReleaseGroup(ArrayList<TLRPC.Message> messages) {
-        // Group all APKs by their versionCode
-        Map<Integer, ApkReleaseGroup> groupsByVersionCode = new HashMap<>();
-        int maxVersionCode = -1;
+        // Group APKs by versionCode + commit. Builds share one versionCode, and history is
+        // newest first, so the first group seen with the highest versionCode is the latest build.
+        Map<String, ApkReleaseGroup> groups = new HashMap<>();
+        ApkReleaseGroup latest = null;
 
         for (TLRPC.Message message : messages) {
             if (message.media != null && message.media.document != null) {
@@ -366,17 +367,17 @@ public class UpdateHelper extends BaseRemoteHelper {
                     abi = matcher.group(4).toLowerCase();
                 }
 
-                if (versionCode > maxVersionCode) {
-                    maxVersionCode = versionCode;
-                }
-
-                ApkReleaseGroup group = groupsByVersionCode.get(versionCode);
+                String key = versionCode + ":" + commit;
+                ApkReleaseGroup group = groups.get(key);
                 if (group == null) {
                     group = new ApkReleaseGroup(version, commit, versionCode, message.grouped_id);
-                    groupsByVersionCode.put(versionCode, group);
+                    groups.put(key, group);
+                }
+                if (latest == null || versionCode > latest.versionCode) {
+                    latest = group;
                 }
 
-                if (abi != null) {
+                if (abi != null && !group.abiDocuments.containsKey(abi.toLowerCase())) {
                     group.abiDocuments.put(abi.toLowerCase(), message.media.document);
                 }
                 if (!TextUtils.isEmpty(message.message) && TextUtils.isEmpty(group.changelog)) {
@@ -385,7 +386,7 @@ public class UpdateHelper extends BaseRemoteHelper {
                 }
             }
         }
-        return maxVersionCode >= 0 ? groupsByVersionCode.get(maxVersionCode) : null;
+        return latest;
     }
 
     private static int tryParseIntOrZero(String s) {
