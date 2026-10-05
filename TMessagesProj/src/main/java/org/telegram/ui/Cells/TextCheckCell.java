@@ -172,9 +172,14 @@ public class TextCheckCell extends FrameLayout {
         AvatarSpan.checkSpansParent(text, this);
         textView.setText(text);
         if (isNekoCell) {
-            textView.setLines(0);
-            textView.setMaxLines(0);
+            textView.setMaxLines(Integer.MAX_VALUE);
             textView.setSingleLine(false);
+            textView.setEllipsize(null);
+        } else {
+            textView.setLines(1);
+            textView.setMaxLines(1);
+            textView.setSingleLine(true);
+            textView.setEllipsize(TextUtils.TruncateAt.END);
         }
         isMultiline = false;
         if (checkBox != null) {
@@ -258,16 +263,36 @@ public class TextCheckCell extends FrameLayout {
         if (multiline) {
             if (isNekoCell) {
                 if (!TextUtils.isEmpty(value)) {
+                    textView.setLines(1);
                     textView.setMaxLines(1);
+                    textView.setSingleLine(true);
                     textView.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textView.setMaxLines(Integer.MAX_VALUE);
+                    textView.setSingleLine(false);
+                    textView.setEllipsize(null);
                 }
+            } else {
+                textView.setLines(1);
+                textView.setMaxLines(1);
+                textView.setSingleLine(true);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
             }
-            valueTextView.setLines(0);
-            valueTextView.setMaxLines(0);
+            valueTextView.setMaxLines(Integer.MAX_VALUE);
             valueTextView.setSingleLine(false);
             valueTextView.setEllipsize(null);
             valueTextView.setPadding(0, 0, 0, AndroidUtilities.dp(11));
         } else {
+            if (isNekoCell) {
+                textView.setMaxLines(Integer.MAX_VALUE);
+                textView.setSingleLine(false);
+                textView.setEllipsize(null);
+            } else {
+                textView.setLines(1);
+                textView.setMaxLines(1);
+                textView.setSingleLine(true);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+            }
             valueTextView.setLines(1);
             valueTextView.setMaxLines(1);
             valueTextView.setSingleLine(true);
@@ -290,8 +315,7 @@ public class TextCheckCell extends FrameLayout {
         valueTextView.setVisibility(VISIBLE);
         isMultiline = multiline;
         if (multiline) {
-            valueTextView.setLines(0);
-            valueTextView.setMaxLines(0);
+            valueTextView.setMaxLines(Integer.MAX_VALUE);
             valueTextView.setSingleLine(false);
             valueTextView.setEllipsize(null);
             valueTextView.setPadding(0, 0, 0, AndroidUtilities.dp(11));

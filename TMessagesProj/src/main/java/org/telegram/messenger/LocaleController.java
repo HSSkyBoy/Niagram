@@ -1534,11 +1534,7 @@ public class LocaleController {
     }
 
     public static String getString(@StringRes int res) {
-        String key = resourcesCacheMap.get(res);
-        if (key == null) {
-            resourcesCacheMap.put(res, key = ApplicationLoader.applicationContext.getResources().getResourceEntryName(res));
-        }
-        return getString(key, res);
+        return getString(null, res);
     }
 
     // deprecated: String key is no longer necessary
@@ -1705,11 +1701,7 @@ public class LocaleController {
     }
 
     public static String formatString(@StringRes int res, Object... args) {
-        String key = resourcesCacheMap.get(res);
-        if (key == null) {
-            resourcesCacheMap.put(res, key = ApplicationLoader.applicationContext.getResources().getResourceEntryName(res));
-        }
-        return formatString(key, res, args);
+        return formatString(null, res, args);
     }
 
     // deprecated: String key is no longer necessary
@@ -1737,11 +1729,7 @@ public class LocaleController {
     }
 
     public static CharSequence formatSpannable(@StringRes int res, Object... args) {
-        String key = resourcesCacheMap.get(res);
-        if (key == null) {
-            resourcesCacheMap.put(res, key = ApplicationLoader.applicationContext.getResources().getResourceEntryName(res));
-        }
-        return formatSpannable(key, res, args);
+        return formatSpannable(null, res, args);
     }
 
     public static CharSequence formatSpannable(String key, int res, Object... args) {
