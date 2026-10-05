@@ -3,10 +3,14 @@ package org.telegram.plugin
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ApplicationVariant
+import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.register
 import org.telegram.tasks.GenerateLottieMetadataAssetFileTask
+import org.telegram.tasks.GenerateStringResourceIdsAssetTask
+import org.telegram.tasks.TelegramNamespaceStringsTask
+import org.telegram.tasks.TelegramStringsTask
 
 class TelegramBuildAppPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -14,6 +18,126 @@ class TelegramBuildAppPlugin : Plugin<Project> {
         val androidComponents =
             project.extensions.findByType(AndroidComponentsExtension::class.java)
                 ?: error("Apply com.android.application/library before org.telegram.build-app-plugin")
+
+        androidComponents.onVariants { variant ->
+            val suffix = variant.name.replaceFirstChar { it.uppercase() }
+
+            val task = project.tasks.register<TelegramStringsTask>(
+                "generate${suffix}TelegramStrings"
+            ) {
+                stringsXml.from(
+                    telegramModule.fileTree("src/main/res/values") {
+                        include("strings.xml")
+                    },
+                    project.fileTree("src/main/res/values") {
+                        include("strings.xml")
+                    }
+                )
+
+                localizationFiles.from(
+                    telegramModule.fileTree("src/main/res") {
+                        include("values-*/strings.xml")
+                    },
+                    project.fileTree("src/main/res") {
+                        include("values-*/strings.xml")
+                    }
+                )
+
+                stringsOutputDir.set(
+                    project.layout.buildDirectory.dir(
+                        "generated/telegramStrings/${variant.name}/res"
+                    )
+                )
+
+                assetsOutputDir.set(
+                    project.layout.buildDirectory.dir(
+                        "generated/telegramStrings/${variant.name}/assets"
+                    )
+                )
+
+                stableIdsFile.set(
+                    project.layout.buildDirectory.file(
+                        "generated/telegramStrings/${variant.name}/stable-ids.txt"
+                    )
+                )
+
+                resourcePackageName.set((variant as ApplicationVariant).applicationId)
+            }
+
+            variant.sources.res?.addGeneratedSourceDirectory(
+                task,
+                TelegramStringsTask::stringsOutputDir
+            )
+
+            variant.sources.assets?.addGeneratedSourceDirectory(
+                task,
+                TelegramStringsTask::assetsOutputDir
+            )
+
+            (variant as ApplicationVariant).androidResources.aaptAdditionalParameters.addAll(
+                task.flatMap { telegramStringsTask ->
+                    telegramStringsTask.stableIdsFile.map { stableIdsFile ->
+                        listOf(
+                            "--stable-ids",
+                            stableIdsFile.asFile.absolutePath
+                        )
+                    }
+                }
+            )
+
+            project.tasks.withType(LinkApplicationAndroidResourcesTask::class.java).configureEach {
+                if (name == "process${suffix}Resources") {
+                    dependsOn(task)
+                }
+            }
+        }
+
+        // Extra string namespaces (strings_<name>.xml, e.g. strings_nia.xml) are packed into
+        // their own localization assets and merged on top of the official ones at runtime.
+        androidComponents.onVariants { variant ->
+            val suffix = variant.name.replaceFirstChar { it.uppercase() }
+            val namespaceTask = project.tasks.register<TelegramNamespaceStringsTask>(
+                "generate${suffix}NamespaceStrings"
+            ) {
+                stringsXml.from(
+                    telegramModule.fileTree("src/main/res/values") {
+                        include("strings_*.xml")
+                    },
+                    project.fileTree("src/main/res/values") {
+                        include("strings_*.xml")
+                    }
+                )
+
+                localizationFiles.from(
+                    telegramModule.fileTree("src/main/res") {
+                        include("values-*/strings_*.xml")
+                    },
+                    project.fileTree("src/main/res") {
+                        include("values-*/strings_*.xml")
+                    }
+                )
+
+                assetsOutputDir.set(
+                    project.layout.buildDirectory.dir(
+                        "generated/namespaceStrings/${variant.name}/assets"
+                    )
+                )
+            }
+
+            variant.sources.assets?.addGeneratedSourceDirectory(
+                namespaceTask,
+                TelegramNamespaceStringsTask::assetsOutputDir
+            )
+        }
+
+        androidComponents.onVariants { variant ->
+            val suffix = variant.name.replaceFirstChar { it.uppercase() }
+            val task = project.tasks.register<GenerateStringResourceIdsAssetTask>("generate${suffix}StringResourceIdsAsset") {
+                runtimeSymbolList.set(variant.artifacts.get(SingleArtifact.RUNTIME_SYMBOL_LIST))
+                outputDir.set(project.layout.buildDirectory.dir("generated/stringResourceIds/${variant.name}/assets"))
+            }
+            variant.sources.assets?.addGeneratedSourceDirectory(task, GenerateStringResourceIdsAssetTask::outputDir)
+        }
 
         androidComponents.onVariants { variant ->
             val suffix = variant.name.replaceFirstChar { it.uppercase() }

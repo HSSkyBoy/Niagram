@@ -5,6 +5,7 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'org.telegram.build-plugin'
     id 'org.telegram.build-app-plugin'
     id 'idea'
 }
@@ -82,9 +83,7 @@ android {
 
     androidResources {
         noCompress += "pack"
-        localeFilters += [
-                'en', 'ar', 'de', 'es', 'es-rES', 'fa-rIR', 'in-rID', 'it', 'it-rIT', 'ja-rJP', 'ko', 'nl', 'pl-rPL', 'pt-rBR', 'ru-rRU', 'tr-rTR', 'uk-rUA', 'vi-rVN', 'zh-rCN', 'zh-rTW'
-        ]
+        localeFilters += ["zz"]
     }
 
     packaging {
