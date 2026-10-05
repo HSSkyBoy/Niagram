@@ -1111,6 +1111,10 @@ public class LocaleController {
                     saveOtherLanguages();
                 }
                 localeValues = stringMap;
+                localizationExternal = new Localization.Builder()
+                    .addLocalization(stringMap)
+                    .build();
+                localizationExternalSize = calculateTranslatedCount(stringMap);
                 applyLanguage(localeInfo, true, false, true, false, currentAccount, null);
                 return true;
             }
@@ -1437,11 +1441,17 @@ public class LocaleController {
             }
             if (pathToFile == null) {
                 localeValues.clear();
+                localizationExternal = Localization.EMPTY;
+                localizationExternalSize = 0;
             } else if (!fromFile) {
                 localeValues = getLocaleFileStrings(hasBase ? localeInfo.getPathToBaseFile() : localeInfo.getPathToFile());
                 if (hasBase) {
                     localeValues.putAll(getLocaleFileStrings(localeInfo.getPathToFile()));
                 }
+                localizationExternal = new Localization.Builder()
+                    .addLocalization(localeValues)
+                    .build();
+                localizationExternalSize = calculateTranslatedCount(localeValues);
             }
             currentLocale = newLocale;
             currentLocaleInfo = localeInfo;
@@ -1526,7 +1536,10 @@ public class LocaleController {
     }
 
     public static String getServerString(String key) {
-        String value = getInstance().localeValues.get(key);
+        String value = getInstance().localizationExternal.getByResName(key);
+        if (value == null) {
+            value = getInstance().localeValues.get(key);
+        }
         if (value == null) {
             value = getInstance().getLocalizedString(key);
         }
@@ -1650,9 +1663,9 @@ public class LocaleController {
                 stringBuilder.insert(a, symbol);
             }
 
-            String value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localeValues.get(param) : null;
+            String value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localizationExternal.getByResName(param) : null;
             if (value == null) {
-                value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localeValues.get(key + "_other") : null;
+                value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localizationExternal.getByResName(key + "_other") : null;
             }
             if (value == null) {
                 try {
@@ -3222,6 +3235,10 @@ public class LocaleController {
                         editor.apply();
 
                         localeValues = valuesToSet;
+                        localizationExternal = new Localization.Builder()
+                            .addLocalization(valuesToSet)
+                            .build();
+                        localizationExternalSize = calculateTranslatedCount(valuesToSet);
                         currentLocale = newLocale;
                         currentLocaleInfo = localeInfo;
                         if (!TextUtils.isEmpty(currentLocaleInfo.pluralLangCode)) {
@@ -4311,7 +4328,7 @@ public class LocaleController {
         if (alreadyPatched) {
             return false;
         }
-        int count = calculateTranslatedCount(localeValues);
+        int count = localizationExternalSize;
         if (count >= mustBeCount) {
             return false;
         }
