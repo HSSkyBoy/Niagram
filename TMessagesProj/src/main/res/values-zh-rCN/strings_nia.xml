@@ -820,6 +820,7 @@
     <string name="TextReplace">替换</string>
     <string name="ReplaceRegex">使用正则表达式</string>
     <string name="DisableTrending">禁用趋势推荐</string>
+    <string name="DisableGlobalSearch">禁用全局搜索</string>
     <string name="AutoDownload">禁用自动下载</string>
     <string name="Win32ExecutableFiles">Win32 可执行文件</string>
     <string name="ArchiveFiles">压缩文件</string>

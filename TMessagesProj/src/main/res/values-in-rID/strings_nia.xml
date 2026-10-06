@@ -808,6 +808,7 @@
     <string name="TextReplace">Ganti</string>
     <string name="ReplaceRegex">Gunakan Regex</string>
     <string name="DisableTrending">Nonaktifkan Trending</string>
+    <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="AutoDownload">Nonaktifkan Unduh Otomatis</string>
     <string name="Win32ExecutableFiles">Berkas yang dapat dijalankan Win32</string>
     <string name="ArchiveFiles">Berkas arsip</string>

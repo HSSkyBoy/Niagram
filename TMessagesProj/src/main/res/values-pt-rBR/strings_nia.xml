@@ -808,6 +808,7 @@
     <string name="TextReplace">Substituir</string>
     <string name="ReplaceRegex">Usar expressão regular</string>
     <string name="DisableTrending">Desativar tendências</string>
+    <string name="DisableGlobalSearch">Desativar Pesquisa Global</string>
     <string name="AutoDownload">Desativar download automático</string>
     <string name="Win32ExecutableFiles">Arquivos executáveis Win32</string>
     <string name="ArchiveFiles">Arquivos compactados</string>

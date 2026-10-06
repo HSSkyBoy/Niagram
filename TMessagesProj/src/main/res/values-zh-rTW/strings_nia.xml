@@ -819,6 +819,7 @@
     <string name="TextReplace">替換</string>
     <string name="ReplaceRegex">使用正規表示式</string>
     <string name="DisableTrending">停用趨勢推薦</string>
+    <string name="DisableGlobalSearch">停用全域搜尋</string>
     <string name="AutoDownload">停用自動下載</string>
     <string name="Win32ExecutableFiles">Win32 可執行檔案</string>
     <string name="ArchiveFiles">壓縮檔案</string>

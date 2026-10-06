@@ -742,6 +742,7 @@
     <string name="TextReplace">Заменить на</string>
     <string name="ReplaceRegex">Используйте регулярные выражения</string>
     <string name="DisableTrending">Отключить тренды</string>
+    <string name="DisableGlobalSearch">Отключить глобальный поиск</string>
     <string name="AutoDownload">Отключить автозагрузку</string>
     <string name="Win32ExecutableFiles">Исполняемые файлы Win32</string>
     <string name="ArchiveFiles">Архивы</string>

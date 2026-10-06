@@ -582,6 +582,9 @@ public class SearchAdapterHelper {
     }
 
     public ArrayList<TLObject> getGlobalSearch() {
+        if (NyaConfig.disableGlobalSearch.Bool()) {
+            return new ArrayList<>();
+        }
         return globalSearch;
     }
 

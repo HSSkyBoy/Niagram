@@ -787,6 +787,7 @@ object NyaConfig {
     @JvmField val disableLinkPreviewByDefault = addConfig("DisableLinkPreviewByDefault", ConfigItem.configTypeBool, false)
     @JvmField val sendCommentAfterForward = addConfig("SendCommentAfterForward", ConfigItem.configTypeBool, true)
     @JvmField val disableTrending = addConfig("DisableTrending", ConfigItem.configTypeBool, true)
+    @JvmField val disableGlobalSearch = addConfig("DisableGlobalSearch", ConfigItem.configTypeBool, false)
     @JvmField val dontSendGreetingSticker = addConfig("DontSendGreetingSticker", ConfigItem.configTypeBool, true)
     @JvmField val hideTimeForSticker = addConfig("HideTimeForSticker", ConfigItem.configTypeBool, false)
     @JvmField val takeGIFasVideo = addConfig("TakeGIFasVideo", ConfigItem.configTypeBool, false)

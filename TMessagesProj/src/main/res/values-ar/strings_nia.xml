@@ -825,6 +825,7 @@
     <string name="TextReplace">استبدال</string>
     <string name="ReplaceRegex">استخدام تعبير نمطي</string>
     <string name="DisableTrending">تعطيل الرائج</string>
+    <string name="DisableGlobalSearch">تعطيل البحث العالمي</string>
     <string name="AutoDownload">تعطيل التنزيل التلقائي</string>
     <string name="Win32ExecutableFiles">ملفات Win32 التنفيذية</string>
     <string name="ArchiveFiles">ملفات الأرشيف</string>

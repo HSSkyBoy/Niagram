@@ -808,6 +808,7 @@
     <string name="TextReplace">Değiştir</string>
     <string name="ReplaceRegex">Regex Kullan</string>
     <string name="DisableTrending">Trendleri Devre Dışı Bırak</string>
+    <string name="DisableGlobalSearch">Global Aramayı Devre Dışı Bırak</string>
     <string name="AutoDownload">Otomatik İndirmeyi Devre Dışı Bırak</string>
     <string name="Win32ExecutableFiles">Win32 çalıştırılabilir dosyaları</string>
     <string name="ArchiveFiles">Arşiv dosyaları</string>

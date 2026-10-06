@@ -809,6 +809,7 @@
     <string name="TextReplace">Thay thế</string>
     <string name="ReplaceRegex">Sử dụng Regex</string>
     <string name="DisableTrending">Tắt mục xu hướng</string>
+    <string name="DisableGlobalSearch">Tắt tìm kiếm toàn cầu</string>
     <string name="AutoDownload">Tắt tự động tải</string>
     <string name="Win32ExecutableFiles">Các tập tin thực thi Win32</string>
     <string name="ArchiveFiles">Tệp nén</string>

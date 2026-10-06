@@ -844,6 +844,7 @@
     <string name="TextReplace">Replace</string>
     <string name="ReplaceRegex">Use Regex</string>
     <string name="DisableTrending">Disable Trending</string>
+    <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="AutoDownload">Disable Auto Download</string>
     <string name="Win32ExecutableFiles">Win32 executable files</string>
     <string name="ArchiveFiles">Archive files</string>

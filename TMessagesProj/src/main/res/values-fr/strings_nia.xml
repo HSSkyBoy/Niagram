@@ -476,6 +476,7 @@
     <string name="TextReplace">Remplacer</string>
     <string name="ReplaceRegex">Utiliser une expression régulière</string>
     <string name="DisableTrending">Désactiver les tendances</string>
+    <string name="DisableGlobalSearch">Désactiver la recherche globale</string>
     <string name="AutoDownload">Désactiver le téléchargement automatique</string>
     <string name="Win32ExecutableFiles">Fichiers exécutables Win32</string>
     <string name="ArchiveFiles">Fichiers d\'archive</string>

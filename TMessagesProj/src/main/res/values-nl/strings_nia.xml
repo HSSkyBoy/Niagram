@@ -825,6 +825,7 @@
     <string name="TextReplace">Vervangen</string>
     <string name="ReplaceRegex">Reguliere expressie gebruiken</string>
     <string name="DisableTrending">Trending uitschakelen</string>
+    <string name="DisableGlobalSearch">Globaal zoeken uitschakelen</string>
     <string name="AutoDownload">Automatisch downloaden uitschakelen</string>
     <string name="Win32ExecutableFiles">Win32-uitvoerbare bestanden</string>
     <string name="ArchiveFiles">Archiefbestanden</string>

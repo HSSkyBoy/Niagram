@@ -712,6 +712,7 @@
     <string name="TextReplace">바꾸기</string>
     <string name="ReplaceRegex">Regex 사용</string>
     <string name="DisableTrending">인기 항목 끄기</string>
+    <string name="DisableGlobalSearch">전역 검색 비활성화</string>
     <string name="AutoDownload">자동 다운로드 끄기</string>
     <string name="Win32ExecutableFiles">Win32 실행 파일</string>
     <string name="ArchiveFiles">압축 파일</string>

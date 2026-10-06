@@ -808,6 +808,7 @@
     <string name="TextReplace">جایگزینی</string>
     <string name="ReplaceRegex">استفاده از Regex</string>
     <string name="DisableTrending">غیرفعال کردن موارد پرطرفدار</string>
+    <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="AutoDownload">غیرفعال کردن دانلود خودکار</string>
     <string name="Win32ExecutableFiles">فایل‌های اجرایی Win32</string>
     <string name="ArchiveFiles">فایل‌های فشرده</string>
