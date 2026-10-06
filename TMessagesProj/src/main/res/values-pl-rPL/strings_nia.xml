@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">Obecna baza danych wiadomości zostanie zastąpiona. Po zaimportowaniu aplikacja uruchomi się ponownie.</string>
     <string name="DisableSwipeToNext">Wyłącz przesuwanie do następnego</string>
     <string name="ForceFontWeightFallback">Wymuś zastępczą grubość czcionki</string>
+    <string name="DisableBoldFont">Wyłącz pogrubioną czcionkę</string>
     <string name="FontSettings">Ustawienia czcionki</string>
     <string name="FontCategoryRegular">Czcionka zwykła</string>
     <string name="FontCategoryBold">Czcionka pogrubiona</string>

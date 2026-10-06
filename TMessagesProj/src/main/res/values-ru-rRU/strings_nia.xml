@@ -475,6 +475,7 @@
     <string name="ImportAyuDBAlert">Текущая база данных сообщений будет заменена. После импорта приложение перезапустится.</string>
     <string name="DisableSwipeToNext">Отключить переход к следующему</string>
     <string name="ForceFontWeightFallback">Принудительный запасной вариант начертания</string>
+    <string name="DisableBoldFont">Отключить жирный шрифт</string>
     <string name="FontSettings">Настройки шрифта</string>
     <string name="FontCategoryRegular">Обычный шрифт</string>
     <string name="FontCategoryBold">Жирный шрифт</string>

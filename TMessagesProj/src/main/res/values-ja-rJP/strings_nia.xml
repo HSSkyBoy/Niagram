@@ -453,6 +453,7 @@
     <string name="ImportAyuDBAlert">現在のメッセージデータベースは置き換えられます。インポート後、アプリが再起動します。</string>
     <string name="DisableSwipeToNext">「スワイプして次へ」を無効化</string>
     <string name="ForceFontWeightFallback">フォントウェイトのフォールバックを強制</string>
+    <string name="DisableBoldFont">太字を無効にする</string>
     <string name="FontSettings">フォント設定</string>
     <string name="FontCategoryRegular">通常フォント</string>
     <string name="FontCategoryBold">太字フォント</string>

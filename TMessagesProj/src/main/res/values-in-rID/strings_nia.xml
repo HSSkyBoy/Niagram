@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">Basis data pesan saat ini akan diganti. Aplikasi akan dimulai ulang setelah proses impor selesai.</string>
     <string name="DisableSwipeToNext">Nonaktifkan Geser ke Berikutnya</string>
     <string name="ForceFontWeightFallback">Paksa Fallback Bobot Font</string>
+    <string name="DisableBoldFont">Nonaktifkan Font Tebal</string>
     <string name="FontSettings">Pengaturan Font</string>
     <string name="FontCategoryRegular">Font Reguler</string>
     <string name="FontCategoryBold">Font Tebal</string>

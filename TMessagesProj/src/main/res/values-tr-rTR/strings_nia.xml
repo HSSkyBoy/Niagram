@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">Mevcut mesaj veritabanı değiştirilecek. İçe aktarma işleminden sonra uygulama yeniden başlatılacak.</string>
     <string name="DisableSwipeToNext">Kaydırarak Sonrakine Geçmeyi Devre Dışı Bırak</string>
     <string name="ForceFontWeightFallback">Yedek Yazı Tipi Kalınlığını Zorla</string>
+    <string name="DisableBoldFont">Kalın Yazı Tipini Devre Dışı Bırak</string>
     <string name="FontSettings">Yazı Tipi Ayarları</string>
     <string name="FontCategoryRegular">Normal Yazı Tipi</string>
     <string name="FontCategoryBold">Kalın Yazı Tipi</string>

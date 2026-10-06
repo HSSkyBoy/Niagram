@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">O banco de dados de mensagens atual será substituído. O aplicativo será reiniciado após a importação.</string>
     <string name="DisableSwipeToNext">Desativar deslizar para o próximo</string>
     <string name="ForceFontWeightFallback">Forçar espessura de fonte alternativa</string>
+    <string name="DisableBoldFont">Desativar fonte em negrito</string>
     <string name="FontSettings">Configurações de fonte</string>
     <string name="FontCategoryRegular">Fonte regular</string>
     <string name="FontCategoryBold">Fonte negrito</string>

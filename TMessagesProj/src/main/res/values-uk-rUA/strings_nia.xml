@@ -463,6 +463,7 @@
     <string name="ImportAyuDBAlert">Поточну базу даних повідомлень буде замінено. Після імпорту програма перезапуститься.</string>
     <string name="DisableSwipeToNext">Вимкнути свайп вперед</string>
     <string name="ForceFontWeightFallback">Примусовий запасний варіант накреслення</string>
+    <string name="DisableBoldFont">Вимкнути жирний шрифт</string>
     <string name="FontSettings">Налаштування шрифту</string>
     <string name="FontCategoryRegular">Звичайний шрифт</string>
     <string name="FontCategoryBold">Жирний шрифт</string>

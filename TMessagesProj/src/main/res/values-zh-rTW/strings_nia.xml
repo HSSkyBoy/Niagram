@@ -501,6 +501,7 @@
     <string name="ImportAyuDBAlert">目前的訊息資料庫將被取代。匯入後應用程式將重新啟動。</string>
     <string name="DisableSwipeToNext">停用滑動切換到下一個</string>
     <string name="ForceFontWeightFallback">強制字重回退</string>
+    <string name="DisableBoldFont">停用粗體</string>
     <string name="FontSettings">字體設定</string>
     <string name="FontCategoryRegular">常規字體 (Regular)</string>
     <string name="FontCategoryBold">粗體字體 (Bold)</string>

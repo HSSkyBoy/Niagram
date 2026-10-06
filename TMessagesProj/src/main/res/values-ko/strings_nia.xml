@@ -445,6 +445,7 @@
     <string name="ImportAyuDBAlert">현재 메시지 데이터베이스가 교체됩니다. 가져오기 후 앱이 재시작됩니다.</string>
     <string name="DisableSwipeToNext">다음으로 스와이프 비활성화</string>
     <string name="ForceFontWeightFallback">폰트 굵기 대체 강제 적용</string>
+    <string name="DisableBoldFont">굵은 글꼴 비활성화</string>
     <string name="FontSettings">폰트 설정</string>
     <string name="FontCategoryRegular">일반 폰트</string>
     <string name="FontCategoryBold">굵은 폰트</string>

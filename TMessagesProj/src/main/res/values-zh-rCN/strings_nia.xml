@@ -515,6 +515,7 @@
     <string name="InputFieldTextSize">输入框文字大小</string>
     <string name="InputFieldTextSizeDefault">默认</string>
     <string name="ForceFontWeightFallback">强制字重回退</string>
+    <string name="DisableBoldFont">禁用粗体</string>
     <string name="EnableQuickSchedule">快速定时发送</string>
     <string name="EnableQuickScheduleNotice">长按发送按钮时显示定时选项（稍后发送 / 上线时发送），并沿用当前的静音状态。</string>
     <string name="DisableAiEditor">禁用 AI 编辑器</string>

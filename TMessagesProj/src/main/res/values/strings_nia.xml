@@ -520,6 +520,7 @@
     <string name="ImportAyuDBAlert">The current message database will be replaced. The app will restart after the import.</string>
     <string name="DisableSwipeToNext">Disable Swipe to Next</string>
     <string name="ForceFontWeightFallback">Force Font Weight Fallback</string>
+    <string name="DisableBoldFont">Disable Bold Font</string>
     <string name="FontSettings">Font Settings</string>
     <string name="FontCategoryRegular">Regular Font</string>
     <string name="FontCategoryBold">Bold Font</string>

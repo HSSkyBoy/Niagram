@@ -45,6 +45,7 @@ class NekoFontSettingsActivity : BaseFragment() {
     private var rowCount = 0
     private var headerTypefaceRow = -1
     private var useDefaultTypefaceRow = -1
+    private var disableBoldFontRow = -1
     private var forceFontWeightFallbackRow = -1
     private var divider1Row = -1
     private var headerCategoriesRow = -1
@@ -69,6 +70,7 @@ class NekoFontSettingsActivity : BaseFragment() {
         rowCount = 0
         headerTypefaceRow = rowCount++
         useDefaultTypefaceRow = rowCount++
+        disableBoldFontRow = rowCount++
         forceFontWeightFallbackRow = rowCount++
         divider1Row = rowCount++
         headerCategoriesRow = rowCount++
@@ -114,6 +116,16 @@ class NekoFontSettingsActivity : BaseFragment() {
                 useDefaultTypefaceRow -> {
                     val newState = !FontConfig.typeface.Bool()
                     FontConfig.typeface.setConfigBool(newState)
+                    AndroidUtilities.clearTypefaceCache()
+                    if (ApplicationLoader.applicationContext != null) {
+                        Theme.reloadAllResources(ApplicationLoader.applicationContext)
+                    }
+                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.didSetNewTheme, false, true, true)
+                    (view as? TextCheckCell)?.setChecked(newState)
+                }
+                disableBoldFontRow -> {
+                    val newState = !FontConfig.disableBoldFont.Bool()
+                    FontConfig.disableBoldFont.setConfigBool(newState)
                     AndroidUtilities.clearTypefaceCache()
                     if (ApplicationLoader.applicationContext != null) {
                         Theme.reloadAllResources(ApplicationLoader.applicationContext)
@@ -314,6 +326,7 @@ class NekoFontSettingsActivity : BaseFragment() {
         override fun isEnabled(holder: RecyclerView.ViewHolder): Boolean {
             val position = holder.adapterPosition
             return position == useDefaultTypefaceRow ||
+                    position == disableBoldFontRow ||
                     position == forceFontWeightFallbackRow ||
                     position == regularFontRow ||
                     position == boldFontRow ||
@@ -327,7 +340,7 @@ class NekoFontSettingsActivity : BaseFragment() {
         override fun getItemViewType(position: Int): Int {
             return when (position) {
                 headerTypefaceRow, headerCategoriesRow, headerInputTextSizeRow -> 0
-                useDefaultTypefaceRow, forceFontWeightFallbackRow -> 1
+                useDefaultTypefaceRow, disableBoldFontRow, forceFontWeightFallbackRow -> 1
                 regularFontRow, boldFontRow, italicFontRow, monoFontRow -> 2
                 inputTextSizeSliderRow -> 4
                 else -> 5
@@ -381,6 +394,11 @@ class NekoFontSettingsActivity : BaseFragment() {
                         useDefaultTypefaceRow -> checkCell.setTextAndCheck(
                             getString(R.string.TypefaceUseDefault),
                             FontConfig.typeface.Bool(),
+                            true
+                        )
+                        disableBoldFontRow -> checkCell.setTextAndCheck(
+                            getString(R.string.DisableBoldFont),
+                            FontConfig.disableBoldFont.Bool(),
                             true
                         )
                         forceFontWeightFallbackRow -> checkCell.setTextAndCheck(

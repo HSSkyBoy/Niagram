@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">ستُستبدل قاعدة بيانات الرسائل الحالية، وسيُعاد تشغيل التطبيق بعد الاستيراد.</string>
     <string name="DisableSwipeToNext">تعطيل السحب للانتقال إلى التالي</string>
     <string name="ForceFontWeightFallback">فرض وزن خط بديل</string>
+    <string name="DisableBoldFont">تعطيل الخط العريض</string>
     <string name="FontSettings">إعدادات الخط</string>
     <string name="FontCategoryRegular">الخط العادي</string>
     <string name="FontCategoryBold">الخط العريض</string>

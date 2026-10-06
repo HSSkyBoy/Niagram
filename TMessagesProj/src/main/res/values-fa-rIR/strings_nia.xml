@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">پایگاه داده پیام‌های فعلی جایگزین خواهد شد. پس از وارد کردن، برنامه راه‌اندازی مجدد خواهد شد.</string>
     <string name="DisableSwipeToNext">غیرفعال کردن کشیدن به بعدی</string>
     <string name="ForceFontWeightFallback">اجبار به استفاده از وزن پشتیبان فونت</string>
+    <string name="DisableBoldFont">غیرفعال کردن فونت پررنگ</string>
     <string name="FontSettings">تنظیمات فونت</string>
     <string name="FontCategoryRegular">فونت معمولی</string>
     <string name="FontCategoryBold">فونت ضخیم</string>

@@ -792,6 +792,7 @@
     <string name="ImportAyuDBAlert">La base de messages actuelle sera remplacée. L\'application redémarrera après l\'importation.</string>
     <string name="DisableSwipeToNext">Désactiver le balayage vers la suivante</string>
     <string name="ForceFontWeightFallback">Forcer le repli de l\'épaisseur de police</string>
+    <string name="DisableBoldFont">Désactiver le gras</string>
     <string name="FontSettings">Paramètres de police</string>
     <string name="FontCategoryRegular">Police normale</string>
     <string name="FontCategoryBold">Police grasse</string>

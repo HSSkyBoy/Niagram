@@ -717,6 +717,7 @@ object NyaConfig {
     @JvmField val tabletMode = addConfig("TabletMode", ConfigItem.configTypeInt, 0)
 
     @JvmField val typeface = addConfig("TypefaceUseDefault", ConfigItem.configTypeBool, false)
+    @JvmField val disableBoldFont = addConfig("DisableBoldFont", ConfigItem.configTypeBool, false)
     @JvmField val forceFontWeightFallback = addConfig("forceFontWeightFallback", ConfigItem.configTypeBool, false)
     @JvmField val nameOrder = addConfig("NameOrder", ConfigItem.configTypeInt, 1)
     @JvmField val showAddToSavedMessages = addConfig("showAddToSavedMessages", ConfigItem.configTypeBool, true)

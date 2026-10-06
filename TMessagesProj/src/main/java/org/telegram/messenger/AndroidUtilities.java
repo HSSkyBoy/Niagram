@@ -2401,7 +2401,7 @@ public class AndroidUtilities {
     public static Typeface getTypeface(String assetPath) {
         return typefaceCache.computeIfAbsent(assetPath, path -> {
             try {
-                if (NyaConfig.typeface.Bool() || FontHelper.hasAnyCustomFont()) {
+                if (NyaConfig.typeface.Bool() || FontHelper.hasAnyCustomFont() || NyaConfig.disableBoldFont.Bool()) {
                     return TypefaceHelper.createTypeface(path);
                 }
                 return TypefaceHelper.createTypefaceFromAsset(path);

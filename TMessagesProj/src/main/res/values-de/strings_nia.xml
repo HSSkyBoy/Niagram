@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">Die aktuelle Nachrichtendatenbank wird ersetzt. Die App wird nach dem Import neu gestartet.</string>
     <string name="DisableSwipeToNext">Wischen zum Weiterschalten deaktivieren</string>
     <string name="ForceFontWeightFallback">Schriftstärken-Fallback erzwingen</string>
+    <string name="DisableBoldFont">Fettschrift deaktivieren</string>
     <string name="FontSettings">Schrifteinstellungen</string>
     <string name="FontCategoryRegular">Normale Schrift</string>
     <string name="FontCategoryBold">Fette Schrift</string>

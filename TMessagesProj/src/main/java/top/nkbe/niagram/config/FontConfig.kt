@@ -8,6 +8,9 @@ object FontConfig {
     val typeface: ConfigItem
         get() = NyaConfig.typeface
 
+    val disableBoldFont: ConfigItem
+        get() = NyaConfig.disableBoldFont
+
     val forceFontWeightFallback: ConfigItem
         get() = NyaConfig.forceFontWeightFallback
 

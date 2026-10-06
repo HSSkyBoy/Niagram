@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">La base de datos de mensajes actual será reemplazada. La aplicación se reiniciará después de la importación.</string>
     <string name="DisableSwipeToNext">Desactivar deslizar al siguiente</string>
     <string name="ForceFontWeightFallback">Forzar grosor de fuente alternativo</string>
+    <string name="DisableBoldFont">Desactivar fuente en negrita</string>
     <string name="FontSettings">Configuración de fuentes</string>
     <string name="FontCategoryRegular">Fuente normal</string>
     <string name="FontCategoryBold">Fuente negrita</string>

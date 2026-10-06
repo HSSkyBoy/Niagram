@@ -63,10 +63,16 @@ public class TypefaceHelper {
             return custom;
         }
         if (!NyaConfig.typeface.Bool()) {
+            if (NyaConfig.disableBoldFont.Bool() && (assetPath.contains("medium") || assetPath.contains("bold"))) {
+                return Typeface.DEFAULT;
+            }
             return createTypefaceFromAsset(assetPath);
         }
         return switch (assetPath) {
             case AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM -> {
+                if (NyaConfig.disableBoldFont.Bool()) {
+                    yield Typeface.DEFAULT;
+                }
                 if (NyaConfig.forceFontWeightFallback.Bool()) {
                     yield createTypeface(700, false);
                 }
@@ -76,6 +82,9 @@ public class TypefaceHelper {
                 yield isMediumWeightSupported() ? Typeface.create("sans-serif-medium", Typeface.NORMAL) : Typeface.create("sans-serif", Typeface.BOLD);
             }
             case AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM_ITALIC -> {
+                if (NyaConfig.disableBoldFont.Bool()) {
+                    yield Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? Typeface.create(Typeface.DEFAULT, 400, true) : Typeface.create("sans-serif", Typeface.ITALIC);
+                }
                 if (NyaConfig.forceFontWeightFallback.Bool()) {
                     yield createTypeface(700, true);
                 }
@@ -85,15 +94,18 @@ public class TypefaceHelper {
                 yield isMediumWeightSupported() ? Typeface.create("sans-serif-medium", Typeface.ITALIC) : Typeface.create("sans-serif", Typeface.BOLD_ITALIC);
             }
             case AndroidUtilities.TYPEFACE_RCONDENSED_BOLD ->
-                    Typeface.create("sans-serif-condensed", Typeface.BOLD);
+                    NyaConfig.disableBoldFont.Bool() ? Typeface.create("sans-serif-condensed", Typeface.NORMAL) : Typeface.create("sans-serif-condensed", Typeface.BOLD);
             case AndroidUtilities.TYPEFACE_ROBOTO_EXTRA_BOLD ->
-                    createTypeface(800, false);
+                    NyaConfig.disableBoldFont.Bool() ? Typeface.DEFAULT : createTypeface(800, false);
             case AndroidUtilities.TYPEFACE_RITALIC ->
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? Typeface.create(Typeface.SANS_SERIF, 400, true) : Typeface.create("sans-serif", Typeface.ITALIC);
             case AndroidUtilities.TYPEFACE_ROBOTO_MONO ->
                     Typeface.MONOSPACE;
             default -> {
                 if (assetPath != null && (assetPath.contains("medium") || assetPath.contains("bold"))) {
+                    if (NyaConfig.disableBoldFont.Bool()) {
+                        yield Typeface.DEFAULT;
+                    }
                     yield Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? Typeface.create(Typeface.DEFAULT, 700, false) : Typeface.create("sans-serif", Typeface.BOLD);
                 } else if (assetPath != null && assetPath.contains("italic")) {
                     yield Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? Typeface.create(Typeface.DEFAULT, 400, true) : Typeface.create("sans-serif", Typeface.ITALIC);
@@ -114,6 +126,11 @@ public class TypefaceHelper {
             Typeface reg = FontHelper.getCustomTypeface(FontHelper.CATEGORY_REGULAR);
             if (reg != null) return Typeface.create(reg, Typeface.ITALIC);
         } else if (assetPath.contains("medium") || assetPath.contains("bold") || assetPath.contains("num")) {
+            if (NyaConfig.disableBoldFont.Bool()) {
+                Typeface reg = FontHelper.getCustomTypeface(FontHelper.CATEGORY_REGULAR);
+                if (reg != null) return reg;
+                return Typeface.DEFAULT;
+            }
             Typeface tf = FontHelper.getCustomTypeface(FontHelper.CATEGORY_BOLD);
             if (tf != null) return tf;
             Typeface reg = FontHelper.getCustomTypeface(FontHelper.CATEGORY_REGULAR);
@@ -185,6 +202,9 @@ public class TypefaceHelper {
     }
 
     public static Typeface createTypeface(int weight, boolean italic) {
+        if (NyaConfig.disableBoldFont.Bool() && weight >= 600) {
+            weight = 400;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             return Typeface.create(null, weight, italic);
         }
@@ -209,7 +229,7 @@ public class TypefaceHelper {
         }
         var builder = new SpannableStringBuilder(title);
         builder.setSpan(new LeadingMarginSpan.Standard(dp(2), 0), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        Typeface titleTypeface = NyaConfig.typeface.Bool() && NyaConfig.forceFontWeightFallback.Bool() ? createTypeface(700, false) : createTypeface(600, false);
+        Typeface titleTypeface = NyaConfig.disableBoldFont.Bool() ? createTypeface(400, false) : (NyaConfig.typeface.Bool() && NyaConfig.forceFontWeightFallback.Bool() ? createTypeface(700, false) : createTypeface(600, false));
         builder.setSpan(new TypefaceSpan(titleTypeface, 0, Theme.key_telegram_color_dialogsLogo, null), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }

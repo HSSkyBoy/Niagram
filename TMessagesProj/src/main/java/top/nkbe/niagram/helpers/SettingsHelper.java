@@ -20,6 +20,7 @@ import top.nkbe.niagram.settings.NekoAboutActivity;
 import top.nkbe.niagram.settings.NekoChatSettingsActivity;
 import top.nkbe.niagram.settings.NekoEmojiSettingsActivity;
 import top.nkbe.niagram.settings.NekoExperimentalSettingsActivity;
+import top.nkbe.niagram.settings.NekoFontSettingsActivity;
 import top.nkbe.niagram.settings.NekoGeneralSettingsActivity;
 import top.nkbe.niagram.settings.NekoPasscodeSettingsActivity;
 import top.nkbe.niagram.settings.NekoSettingsActivity;
@@ -69,6 +70,10 @@ public class SettingsHelper {
                 case "general":
                 case "g":
                     fragment = nekox_fragment = new NekoGeneralSettingsActivity();
+                    break;
+                case "font":
+                case "fonts":
+                    fragment = new NekoFontSettingsActivity();
                     break;
                 case "translator":
                 case "translate":

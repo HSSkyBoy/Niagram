@@ -499,6 +499,7 @@
     <string name="ImportAyuDBAlert">Cơ sở dữ liệu tin nhắn hiện tại sẽ bị thay thế. Ứng dụng sẽ khởi động lại sau khi nhập.</string>
     <string name="DisableSwipeToNext">Tắt vuốt để chuyển sang mục tiếp theo</string>
     <string name="ForceFontWeightFallback">Buộc dùng trọng số phông chữ dự phòng</string>
+    <string name="DisableBoldFont">Tắt phông chữ in đậm</string>
     <string name="FontSettings">Cài đặt phông chữ</string>
     <string name="FontCategoryRegular">Phông chữ thường</string>
     <string name="FontCategoryBold">Phông chữ đậm</string>

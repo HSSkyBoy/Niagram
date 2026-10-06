@@ -502,6 +502,7 @@
     <string name="ImportAyuDBAlert">De huidige berichtendatabase wordt vervangen. De app herstart na het importeren.</string>
     <string name="DisableSwipeToNext">Vegen naar volgende uitschakelen</string>
     <string name="ForceFontWeightFallback">Terugval voor lettergewicht afdwingen</string>
+    <string name="DisableBoldFont">Vetgedrukte lettertype uitschakelen</string>
     <string name="FontSettings">Lettertype-instellingen</string>
     <string name="FontCategoryRegular">Normaal lettertype</string>
     <string name="FontCategoryBold">Vet lettertype</string>
