@@ -813,6 +813,7 @@
     <string name="DisableRichEditor">Désactiver l\'éditeur de texte enrichi</string>
     <string name="DisableAttachCamera">Désactiver l\'appareil photo dans le sélecteur d\'albums</string>
     <string name="DefaultHidePinnedMessage">Masquer les messages épinglés par défaut</string>
+    <string name="HideGroupSubscribers">Masquer le nombre de membres dans les canaux et groupes</string>
     <string name="ForceForward">Forcer le transfert</string>
     <string name="ForceForwardPremiumOnly">Abonnez-vous à **Telegram Premium** pour forcer le transfert des messages.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatique</string>

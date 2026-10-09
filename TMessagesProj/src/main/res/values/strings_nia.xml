@@ -541,6 +541,7 @@
     <string name="DisableRichEditor">Disable Rich Editor</string>
     <string name="DisableAttachCamera">Disable Camera in Album Selector</string>
     <string name="DefaultHidePinnedMessage">Default Hide Pinned Messages</string>
+    <string name="HideGroupSubscribers">Hide Channel and Group Member Count</string>
     <string name="ForceForward">Force Forward</string>
     <string name="ForceForwardPremiumOnly">Subscribe to **Telegram Premium** to force forward messages.</string>
     <string name="DefaultHlsVideoQualityAuto">Auto</string>

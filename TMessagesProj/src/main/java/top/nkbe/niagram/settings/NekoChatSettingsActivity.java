@@ -505,6 +505,7 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
 
     // Channels
     private final AbstractConfigCell headerChannels = cellGroup.appendCell(new ConfigCellHeader(getString(R.string.ChannelsTab)));
+    private final AbstractConfigCell hideGroupSubscribersRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideGroupSubscribers()));
     private final AbstractConfigCell hideSendAsChannelRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.hideSendAsChannel));
     private final AbstractConfigCell hideShareButtonInChannelRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideShareButtonInChannel()));
     private final AbstractConfigCell disableChannelMuteButtonRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDisableChannelMuteButton()));

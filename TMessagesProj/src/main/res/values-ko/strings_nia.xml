@@ -467,6 +467,7 @@
     <string name="DisableRichEditor">서식 있는 텍스트 편집기 비활성화</string>
     <string name="DisableAttachCamera">앨범 선택기에서 카메라 비활성화</string>
     <string name="DefaultHidePinnedMessage">기본적으로 고정된 메시지 숨기기</string>
+    <string name="HideGroupSubscribers">채널 및 그룹 멤버 수 숨기기</string>
     <string name="ForceForward">강제 전달</string>
     <string name="ForceForwardPremiumOnly">강제 전달 기능을 사용하려면 **Telegram Premium**을 구독하세요.</string>
 

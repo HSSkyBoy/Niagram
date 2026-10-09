@@ -485,6 +485,7 @@
     <string name="DisableRichEditor">Вимкнути розширений редактор</string>
     <string name="DisableAttachCamera">Вимкнути камеру у виборі альбому</string>
     <string name="DefaultHidePinnedMessage">Приховувати закріплені повідомлення за замовчуванням</string>
+    <string name="HideGroupSubscribers">Приховувати кількість учасників у каналах і групах</string>
     <string name="ForceForward">Примусове пересилання</string>
     <string name="ForceForwardPremiumOnly">Оформіть підписку **Telegram Premium**, щоб використовувати примусове пересилання.</string>
     <string name="ShowForwardCount">Показувати кількість пересилань</string>

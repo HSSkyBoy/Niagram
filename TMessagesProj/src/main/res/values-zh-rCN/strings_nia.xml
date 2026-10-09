@@ -522,6 +522,7 @@
     <string name="DisableRichEditor">禁用富文本编辑器</string>
     <string name="DisableAttachCamera">在相册选择器中禁用相机</string>
     <string name="DefaultHidePinnedMessage">默认隐藏置顶消息</string>
+    <string name="HideGroupSubscribers">隐藏频道和群组成员数</string>
     <string name="ForceForward">强制转发</string>
     <string name="ForceForwardPremiumOnly">订阅 **Telegram Premium** 即可使用强制转发功能。</string>
     <string name="DefaultHlsVideoQualityAuto">自动</string>

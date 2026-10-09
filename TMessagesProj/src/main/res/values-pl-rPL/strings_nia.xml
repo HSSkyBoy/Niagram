@@ -525,6 +525,7 @@
     <string name="DisableRichEditor">Wyłącz edytor tekstu sformatowanego</string>
     <string name="DisableAttachCamera">Wyłącz aparat w selektorze albumów</string>
     <string name="DefaultHidePinnedMessage">Domyślnie ukrywaj przypięte wiadomości</string>
+    <string name="HideGroupSubscribers">Ukryj liczbę członków w kanałach i grupach</string>
     <string name="ForceForward">Wymuszone przekazywanie</string>
     <string name="ForceForwardPremiumOnly">Zasubskrybuj **Telegram Premium**, aby używać wymuszonego przekazywania.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatyczna</string>

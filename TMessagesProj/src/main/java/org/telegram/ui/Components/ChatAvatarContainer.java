@@ -1328,6 +1328,18 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
             }
         }
 
+        if (chat != null && NyaConfig.INSTANCE.getHideGroupSubscribers().Bool()) {
+            if (getSubtitleTextView() != null && getSubtitleTextView().getVisibility() != GONE) {
+                getSubtitleTextView().setVisibility(GONE);
+            }
+            titleTextView.setTranslationY(0.0f);
+            return;
+        } else {
+            if (getSubtitleTextView() != null && getSubtitleTextView().getVisibility() != VISIBLE) {
+                getSubtitleTextView().setVisibility(VISIBLE);
+            }
+        }
+
         subtitleIsThinkingBot = false;
         CharSequence printString = MessagesController.getInstance(currentAccount).getPrintingString(parentFragment.getDialogId(), parentFragment.getThreadId(), false);
         if (printString == null && UserObject.isBotForum(user)) {

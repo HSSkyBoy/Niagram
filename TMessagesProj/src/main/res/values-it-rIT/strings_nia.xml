@@ -525,6 +525,7 @@
     <string name="DisableRichEditor">Disabilita editor RTF</string>
     <string name="DisableAttachCamera">Disabilita fotocamera nel selettore album</string>
     <string name="DefaultHidePinnedMessage">Nascondi messaggi fissati per impostazione predefinita</string>
+    <string name="HideGroupSubscribers">Nascondi il numero di membri nei canali e nei gruppi</string>
     <string name="ForceForward">Inoltro forzato</string>
     <string name="ForceForwardPremiumOnly">Abbonati a **Telegram Premium** per usare l\'inoltro forzato.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatica</string>

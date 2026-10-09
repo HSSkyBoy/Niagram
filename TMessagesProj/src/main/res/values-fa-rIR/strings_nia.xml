@@ -525,6 +525,7 @@
     <string name="DisableRichEditor">غیرفعال کردن ویرایشگر متن غنی</string>
     <string name="DisableAttachCamera">غیرفعال کردن دوربین در انتخاب‌گر آلبوم</string>
     <string name="DefaultHidePinnedMessage">پنهان کردن پیام‌های سنجاق شده به طور پیش‌فرض</string>
+    <string name="HideGroupSubscribers">پنهان کردن تعداد اعضا در کانال‌ها و گروه‌ها</string>
     <string name="ForceForward">فوروارد اجباری</string>
     <string name="ForceForwardPremiumOnly">برای استفاده از فوروارد اجباری، **تلگرام پرمیوم** را فعال کنید.</string>
     <string name="DefaultHlsVideoQualityAuto">خودکار</string>

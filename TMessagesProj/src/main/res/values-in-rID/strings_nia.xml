@@ -525,6 +525,7 @@
     <string name="DisableRichEditor">Nonaktifkan Editor Rich Text</string>
     <string name="DisableAttachCamera">Nonaktifkan Kamera di Pemilih Album</string>
     <string name="DefaultHidePinnedMessage">Sembunyikan pesan tersemat secara default</string>
+    <string name="HideGroupSubscribers">Sembunyikan jumlah anggota di saluran dan grup</string>
     <string name="ForceForward">Teruskan Paksa</string>
     <string name="ForceForwardPremiumOnly">Berlangganan **Telegram Premium** untuk menggunakan fitur teruskan paksa.</string>
     <string name="DefaultHlsVideoQualityAuto">Otomatis</string>

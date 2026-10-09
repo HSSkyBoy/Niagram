@@ -523,6 +523,7 @@
     <string name="DisableRichEditor">تعطيل محرر النصوص الغنية</string>
     <string name="DisableAttachCamera">تعطيل الكاميرا في محدد الألبوم</string>
     <string name="DefaultHidePinnedMessage">إخفاء الرسائل المثبتة افتراضياً</string>
+    <string name="HideGroupSubscribers">إخفاء عدد الأعضاء في القنوات والمجموعات</string>
     <string name="ForceForward">فرض إعادة التوجيه</string>
     <string name="ForceForwardPremiumOnly">اشترك في **Telegram Premium** لفرض إعادة توجيه الرسائل.</string>
     <string name="DefaultHlsVideoQualityAuto">تلقائي</string>

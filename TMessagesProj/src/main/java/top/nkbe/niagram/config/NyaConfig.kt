@@ -1708,6 +1708,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val hideGroupSubscribers =
+        addConfig(
+            "HideGroupSubscribers",
+            ConfigItem.configTypeBool,
+            false
+        )
     val keepTranslatorPreferences =
         addConfig(
             "KeepTranslatorPreferences",

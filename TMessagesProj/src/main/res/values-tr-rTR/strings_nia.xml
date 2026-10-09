@@ -525,6 +525,7 @@
     <string name="DisableRichEditor">Zengin Metin Düzenleyicisini Devre Dışı Bırak</string>
     <string name="DisableAttachCamera">Albüm Seçicide Kamerayı Devre Dışı Bırak</string>
     <string name="DefaultHidePinnedMessage">Sabitlenmiş mesajları varsayılan olarak gizle</string>
+    <string name="HideGroupSubscribers">Kanal ve gruplarda üye sayısını gizle</string>
     <string name="ForceForward">Zorla İlet</string>
     <string name="ForceForwardPremiumOnly">Zorla ilet özelliğini kullanmak için **Telegram Premium** abonesi olun.</string>
     <string name="DefaultHlsVideoQualityAuto">Otomatik</string>
