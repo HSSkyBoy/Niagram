@@ -9480,4 +9480,80 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             return AndroidUtilities.fixedDispatchApplyWindowInsets(insets, this);
         }
     }
+
+    private boolean mouseRightHandled = false;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE) {
+            int action = ev.getActionMasked();
+            if (action == MotionEvent.ACTION_DOWN && (ev.getButtonState() & MotionEvent.BUTTON_SECONDARY) != 0) {
+                mouseRightHandled = false;
+                View decor = getWindow() != null ? getWindow().getDecorView() : null;
+                if (decor != null) {
+                    View target = findViewUnder(decor, ev.getRawX(), ev.getRawY());
+                    if (target != null && !isInsideSpecialTouchView(target)) {
+                        View v = target;
+                        while (v != null && v != decor) {
+                            if (v.performLongClick()) {
+                                mouseRightHandled = true;
+                                return true;
+                            }
+                            if (v.getParent() instanceof View) {
+                                v = (View) v.getParent();
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                if (mouseRightHandled) {
+                    mouseRightHandled = false;
+                    return true;
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private View findViewUnder(View view, float rawX, float rawY) {
+        if (view == null || view.getVisibility() != View.VISIBLE) {
+            return null;
+        }
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        if (rawX < x || rawX > x + view.getWidth() || rawY < y || rawY > y + view.getHeight()) {
+            return null;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) view;
+            for (int i = vg.getChildCount() - 1; i >= 0; i--) {
+                View child = vg.getChildAt(i);
+                View target = findViewUnder(child, rawX, rawY);
+                if (target != null) {
+                    return target;
+                }
+            }
+        }
+        return view;
+    }
+
+    private boolean isInsideSpecialTouchView(View view) {
+        View v = view;
+        View decor = getWindow() != null ? getWindow().getDecorView() : null;
+        while (v != null && v != decor) {
+            if (v instanceof org.telegram.ui.Cells.ChatMessageCell || v instanceof org.telegram.ui.Components.RecyclerListView) {
+                return true;
+            }
+            if (v.getParent() instanceof View) {
+                v = (View) v.getParent();
+            } else {
+                break;
+            }
+        }
+        return false;
+    }
 }

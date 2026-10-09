@@ -5010,6 +5010,14 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         lastTouchY = getEventY(event);
         backgroundDrawable.setTouchCoords(lastTouchX, lastTouchY);
 
+        if (event.getAction() == MotionEvent.ACTION_DOWN && event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE && (event.getButtonState() & MotionEvent.BUTTON_SECONDARY) != 0) {
+            if (isAvatarVisible && avatarImage.isInsideImage(lastTouchX, lastTouchY + getTop())) {
+                avatarPressed = true;
+            }
+            onLongPress();
+            return true;
+        }
+
         boolean result = checkSpoilersMotionEvent(event, 0);
 
         if (!result) {

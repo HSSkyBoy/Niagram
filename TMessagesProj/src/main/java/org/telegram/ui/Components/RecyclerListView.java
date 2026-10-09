@@ -1254,6 +1254,28 @@ public class RecyclerListView extends RecyclerView implements IBlur3Capture {
                     } else {
                         currentChildPosition = view.getChildAdapterPosition(currentChildView);
                     }
+                    if (event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE && (event.getButtonState() & MotionEvent.BUTTON_SECONDARY) != 0 && currentChildPosition != -1) {
+                        if (onItemLongClickListener != null) {
+                            if (onItemLongClickListener.onItemClick(currentChildView, currentChildPosition)) {
+                                try {
+                                    if (!NyaConfig.disableVibration.Bool()) currentChildView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                                } catch (Exception ignored) {}
+                                currentChildView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
+                            }
+                        } else if (onItemLongClickListenerExtended != null) {
+                            if (onItemLongClickListenerExtended.onItemClick(currentChildView, currentChildPosition, event.getX() - currentChildView.getX(), event.getY() - currentChildView.getY())) {
+                                try {
+                                    if (!NyaConfig.disableVibration.Bool()) currentChildView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                                } catch (Exception ignored) {}
+                                currentChildView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
+                                longPressCalled = true;
+                            }
+                        } else {
+                            currentChildView.performLongClick();
+                        }
+                        currentChildView = null;
+                        return true;
+                    }
                     MotionEvent childEvent = MotionEvent.obtain(0, 0, event.getActionMasked(), event.getX() - currentChildView.getLeft(), event.getY() - currentChildView.getTop(), 0);
                     if (currentChildView.onTouchEvent(childEvent)) {
                         interceptedByChild = true;
