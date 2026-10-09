@@ -524,6 +524,7 @@
     <string name="DisableAiEditor">Desativar editor de IA</string>
     <string name="DisableRichEditor">Desativar editor de texto formatado</string>
     <string name="DisableAttachCamera">Desativar câmera no seletor de álbuns</string>
+    <string name="DefaultHidePinnedMessage">Ocultar mensagens fixadas por padrão</string>
     <string name="ForceForward">Encaminhamento forçado</string>
     <string name="ForceForwardPremiumOnly">Assine o **Telegram Premium** para usar o encaminhamento forçado.</string>
     <string name="DefaultHlsVideoQualityAuto">Automática</string>

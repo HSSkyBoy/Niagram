@@ -712,6 +712,7 @@ public class ChatActivity extends BaseFragment implements
     private int pinnedCounterTextViewX;
     private AnimatorSet[] pinnedNextAnimation = new AnimatorSet[2];
     private boolean pinnedMessageButtonShown = false;
+    private boolean tempShowPinnedMessage = false;
     private ImageView closePinned;
     private RadialProgressView pinnedProgress;
     private ImageView pinnedListButton;
@@ -12466,6 +12467,7 @@ public class ChatActivity extends BaseFragment implements
             } else if (!pinnedMessageIds.isEmpty()) {
                 SharedPreferences preferences = MessagesController.getNotificationsSettings(currentAccount);
                 preferences.edit().putInt("pin_" + dialog_id, pinnedMessageIds.get(0)).apply();
+                tempShowPinnedMessage = false;
                 updatePinnedMessageView(true);
                 return;
             }
@@ -12476,6 +12478,7 @@ public class ChatActivity extends BaseFragment implements
                 } else if (userInfo != null) {
                     preferences.edit().putInt("pin_" + dialog_id, userInfo.pinned_msg_id).apply();
                 }
+                tempShowPinnedMessage = false;
                 updatePinnedMessageView(true);
                 return Unit.INSTANCE;
             });
@@ -29949,7 +29952,16 @@ public class ChatActivity extends BaseFragment implements
         String callLink = callLink(pinnedMessageObject);
         pinnedMessageButtonShown = botButton != null || !TextUtils.isEmpty(callLink);
         SharedPreferences preferences = MessagesController.getNotificationsSettings(currentAccount);
-        if ((threadMessageObject == null || isTopic) && (chatInfo == null && userInfo == null || pinned_msg_id == 0 || !pinnedMessageIds.isEmpty() && pinnedMessageIds.get(0) == preferences.getInt("pin_" + dialog_id, 0)) || isReport() || actionBar != null && (actionBar.isActionModeShowed() || actionBar.isSearchFieldVisible())) {
+        if (NyaConfig.INSTANCE.getDefaultHidePinnedMessage().Bool() && !tempShowPinnedMessage && (pinned_msg_id != 0 || !pinnedMessageIds.isEmpty())) {
+            changed = hidePinnedMessageView(animated);
+            if (headerItem != null) {
+                if (pinnedMessageIds.size() > 0 || pinned_msg_id != 0) {
+                    headerItem.showSubItem(nkheaderbtn_show_pinned);
+                } else {
+                    headerItem.hideSubItem(nkheaderbtn_show_pinned);
+                }
+            }
+        } else if ((threadMessageObject == null || isTopic) && (chatInfo == null && userInfo == null || pinned_msg_id == 0 || !pinnedMessageIds.isEmpty() && pinnedMessageIds.get(0) == preferences.getInt("pin_" + dialog_id, 0)) || isReport() || actionBar != null && (actionBar.isActionModeShowed() || actionBar.isSearchFieldVisible())) {
             changed = hidePinnedMessageView(animated);
             if (headerItem != null) {
                 if (pinnedMessageIds.size() > 0) {
@@ -46862,6 +46874,7 @@ public class ChatActivity extends BaseFragment implements
         } else if (id == nkheaderbtn_show_pinned) {
             SharedPreferences preferences = MessagesController.getNotificationsSettings(currentAccount);
             preferences.edit().remove("pin_" + dialog_id).apply();
+            tempShowPinnedMessage = true;
             updatePinnedMessageView(true);
         } else if (id == nkheaderbtn_linked_chat) {
             if (chatInfo == null) {

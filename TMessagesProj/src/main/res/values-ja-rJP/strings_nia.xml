@@ -474,6 +474,7 @@
     <string name="DisableAiEditor">AIエディターを無効にする</string>
     <string name="DisableRichEditor">リッチエディターを無効にする</string>
     <string name="DisableAttachCamera">アルバムセレクターでカメラを無効にする</string>
+    <string name="DefaultHidePinnedMessage">固定メッセージをデフォルトで非表示</string>
     <string name="ForceForward">強制転送</string>
     <string name="ForceForwardPremiumOnly">**Telegram Premium** に加入して強制転送を使用します。</string>
     <string name="ShowForwardCount">転送回数を表示</string>

@@ -521,6 +521,7 @@
     <string name="DisableAiEditor">Tắt trình chỉnh sửa AI</string>
     <string name="DisableRichEditor">Tắt trình chỉnh sửa văn bản đa dạng thức</string>
     <string name="DisableAttachCamera">Tắt máy ảnh trong bộ chọn album</string>
+    <string name="DefaultHidePinnedMessage">Mặc định ẩn tin nhắn đã ghim</string>
     <string name="ForceForward">Chuyển tiếp bắt buộc</string>
     <string name="ForceForwardPremiumOnly">Đăng ký **Telegram Premium** để sử dụng tính năng chuyển tiếp bắt buộc.</string>
     <string name="DefaultHlsVideoQualityAuto">Tự động</string>

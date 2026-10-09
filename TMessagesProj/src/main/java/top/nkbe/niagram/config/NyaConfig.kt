@@ -1702,6 +1702,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val defaultHidePinnedMessage =
+        addConfig(
+            "DefaultHidePinnedMessage",
+            ConfigItem.configTypeBool,
+            false
+        )
     val keepTranslatorPreferences =
         addConfig(
             "KeepTranslatorPreferences",

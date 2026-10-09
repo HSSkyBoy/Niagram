@@ -522,6 +522,7 @@
     <string name="DisableAiEditor">KI-Editor deaktivieren</string>
     <string name="DisableRichEditor">Rich-Editor deaktivieren</string>
     <string name="DisableAttachCamera">Kamera in der Albumauswahl deaktivieren</string>
+    <string name="DefaultHidePinnedMessage">Angeheftete Nachrichten standardmäßig ausblenden</string>
     <string name="ForceForward">Weiterleitung erzwingen</string>
     <string name="ForceForwardPremiumOnly">Abonniere **Telegram Premium**, um Nachrichten zwangsweise weiterzuleiten.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatisch</string>

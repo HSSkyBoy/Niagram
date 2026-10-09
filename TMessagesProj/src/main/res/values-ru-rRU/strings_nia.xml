@@ -496,6 +496,7 @@
     <string name="DisableAiEditor">Отключить редактор ИИ</string>
     <string name="DisableRichEditor">Отключить расширенный редактор</string>
     <string name="DisableAttachCamera">Отключить камеру в выборе альбома</string>
+    <string name="DefaultHidePinnedMessage">Скрывать закрепленные сообщения по умолчанию</string>
     <string name="ForceForward">Принудительная пересылка</string>
     <string name="ForceForwardPremiumOnly">Оформите подписку **Telegram Premium**, чтобы использовать принудительную пересылку.</string>
     <string name="ShowForwardCount">Показывать количество пересылок</string>
