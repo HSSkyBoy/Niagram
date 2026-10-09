@@ -494,6 +494,7 @@
     <string name="EnableQuickSchedule">Быстрое планирование</string>
     <string name="EnableQuickScheduleNotice">Показывает параметры планирования при долгом нажатии кнопки отправки с учётом состояния беззвучного режима.</string>
     <string name="DisableAiEditor">Отключить редактор ИИ</string>
+    <string name="DisableRichEditor">Отключить расширенный редактор</string>
     <string name="ForceForward">Принудительная пересылка</string>
     <string name="ForceForwardPremiumOnly">Оформите подписку **Telegram Premium**, чтобы использовать принудительную пересылку.</string>
     <string name="ShowForwardCount">Показывать количество пересылок</string>

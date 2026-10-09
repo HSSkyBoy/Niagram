@@ -464,6 +464,7 @@
     <string name="EnableQuickSchedule">빠른 일정</string>
     <string name="EnableQuickScheduleNotice">보내기 버튼을 길게 누르면 예약 옵션(나중에 보내기 / 온라인일 때 보내기)을 표시하며, 무음 상태를 따릅니다.</string>
     <string name="DisableAiEditor">AI 편집기 비활성화</string>
+    <string name="DisableRichEditor">서식 있는 텍스트 편집기 비활성화</string>
     <string name="ForceForward">강제 전달</string>
     <string name="ForceForwardPremiumOnly">강제 전달 기능을 사용하려면 **Telegram Premium**을 구독하세요.</string>
 

@@ -487,6 +487,7 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
     // Interactions
     private final AbstractConfigCell headerInteractions = cellGroup.appendCell(new ConfigCellHeader(getString(R.string.InteractionSettings)));
     private final AbstractConfigCell disableAiEditorRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDisableAiEditor()));
+    private final AbstractConfigCell disableRichEditorRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDisableRichEditor()));
     private final AbstractConfigCell groupedMessageMenuRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getGroupedMessageMenu(), getString(R.string.GroupedMessageMenuNotice)));
     private final AbstractConfigCell hideKeyboardOnChatScrollRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.hideKeyboardOnChatScroll));
     private final AbstractConfigCell disableVibrationRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.disableVibration));
@@ -592,6 +593,9 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
             }
             if (key.equals(NyaConfig.disableProximityEvents.getKey())) {
                 MediaController.getInstance().recreateProximityWakeLock();
+            } else if (key.equals(NyaConfig.INSTANCE.getDisableAiEditor().getKey())
+                    || key.equals(NyaConfig.INSTANCE.getDisableRichEditor().getKey())) {
+                NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.reloadInterface);
             } else if (key.equals(NyaConfig.showSeconds.getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else if (key.equals(NyaConfig.INSTANCE.getConfirmAllLinks().getKey())) {

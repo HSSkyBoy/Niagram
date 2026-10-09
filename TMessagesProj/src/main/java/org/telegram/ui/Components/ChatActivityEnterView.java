@@ -2730,6 +2730,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         NotificationCenter.getInstance(currentAccount).addObserver(this, NotificationCenter.currentUserPremiumStatusChanged);
         NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.emojiLoaded);
         NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.didSetNewTheme);
+        NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.reloadInterface);
 
         parentActivity = context;
         parentFragment = fragment;
@@ -7024,7 +7025,7 @@ public class ChatActivityEnterView extends FrameLayout implements
 
     private boolean shownRichButton;
     private void showRichButton(boolean show_) {
-        final boolean show = (richDraftActive || show_) && parentFragment != null && !parentFragment.isSecretChat() && editingMessageObject == null && MessagesController.getInstance(currentAccount).richEditorAvailable();
+        final boolean show = (richDraftActive || show_) && parentFragment != null && !parentFragment.isSecretChat() && editingMessageObject == null && MessagesController.getInstance(currentAccount).richEditorAvailable() && !NyaConfig.INSTANCE.getDisableRichEditor().Bool();
 
         if (shownRichButton == show) return;
         shownRichButton = show;
@@ -7590,6 +7591,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.currentUserPremiumStatusChanged);
         NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.emojiLoaded);
         NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.didSetNewTheme);
+        NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.reloadInterface);
         if (emojiView != null) {
             emojiView.onDestroy();
         }
@@ -15025,6 +15027,8 @@ public class ChatActivityEnterView extends FrameLayout implements
     public void didReceivedNotification(int id, int account, Object... args) {
         if (id == NotificationCenter.didSetNewTheme) {
             updateFieldTextSize();
+        } else if (id == NotificationCenter.reloadInterface) {
+            updateButtons();
         } else if (id == NotificationCenter.emojiLoaded) {
             if (emojiView != null) {
                 emojiView.invalidateViews();

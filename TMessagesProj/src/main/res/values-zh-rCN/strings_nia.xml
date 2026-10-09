@@ -519,6 +519,7 @@
     <string name="EnableQuickSchedule">快速定时发送</string>
     <string name="EnableQuickScheduleNotice">长按发送按钮时显示定时选项（稍后发送 / 上线时发送），并沿用当前的静音状态。</string>
     <string name="DisableAiEditor">禁用 AI 编辑器</string>
+    <string name="DisableRichEditor">禁用富文本编辑器</string>
     <string name="ForceForward">强制转发</string>
     <string name="ForceForwardPremiumOnly">订阅 **Telegram Premium** 即可使用强制转发功能。</string>
     <string name="DefaultHlsVideoQualityAuto">自动</string>

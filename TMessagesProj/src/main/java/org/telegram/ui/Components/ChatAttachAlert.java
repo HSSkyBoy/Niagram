@@ -6855,7 +6855,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
                 if (plainTextEnabled) {
                     locationButton = buttonsCount++;
                 }
-                if (plainTextEnabled && MessagesController.getInstance(currentAccount).richEditorAvailable()) {
+                if (plainTextEnabled && MessagesController.getInstance(currentAccount).richEditorAvailable() && !NyaConfig.INSTANCE.getDisableRichEditor().Bool()) {
                     richButton = buttonsCount++;
                 }
 

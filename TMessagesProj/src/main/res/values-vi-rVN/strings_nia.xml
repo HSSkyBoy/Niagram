@@ -519,6 +519,7 @@
     <string name="EnableQuickSchedule">Lên lịch nhanh</string>
     <string name="EnableQuickScheduleNotice">Hiển thị tùy chọn lên lịch (Gửi sau / Gửi khi trực tuyến) khi nhấn giữ nút gửi, có tính đến chế độ im lặng.</string>
     <string name="DisableAiEditor">Tắt trình chỉnh sửa AI</string>
+    <string name="DisableRichEditor">Tắt trình chỉnh sửa văn bản đa dạng thức</string>
     <string name="ForceForward">Chuyển tiếp bắt buộc</string>
     <string name="ForceForwardPremiumOnly">Đăng ký **Telegram Premium** để sử dụng tính năng chuyển tiếp bắt buộc.</string>
     <string name="DefaultHlsVideoQualityAuto">Tự động</string>

@@ -522,6 +522,7 @@
     <string name="EnableQuickSchedule">Hızlı Zamanlama</string>
     <string name="EnableQuickScheduleNotice">Gönder butonuna uzun basıldığında zamanlama seçeneklerini (Daha sonra gönder / Çevrimiçi olunca gönder) gösterir; sessiz modu dikkate alır.</string>
     <string name="DisableAiEditor">Yapay Zeka Editörünü Devre Dışı Bırak</string>
+    <string name="DisableRichEditor">Zengin Metin Düzenleyicisini Devre Dışı Bırak</string>
     <string name="ForceForward">Zorla İlet</string>
     <string name="ForceForwardPremiumOnly">Zorla ilet özelliğini kullanmak için **Telegram Premium** abonesi olun.</string>
     <string name="DefaultHlsVideoQualityAuto">Otomatik</string>

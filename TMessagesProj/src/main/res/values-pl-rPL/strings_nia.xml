@@ -522,6 +522,7 @@
     <string name="EnableQuickSchedule">Szybkie planowanie</string>
     <string name="EnableQuickScheduleNotice">Po przytrzymaniu przycisku wysyłania pokazuje opcje planowania (Wyślij później / Wyślij, gdy będzie online), uwzględniając wyciszenie.</string>
     <string name="DisableAiEditor">Wyłącz edytor AI</string>
+    <string name="DisableRichEditor">Wyłącz edytor tekstu sformatowanego</string>
     <string name="ForceForward">Wymuszone przekazywanie</string>
     <string name="ForceForwardPremiumOnly">Zasubskrybuj **Telegram Premium**, aby używać wymuszonego przekazywania.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatyczna</string>

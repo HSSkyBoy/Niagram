@@ -520,6 +520,7 @@
     <string name="EnableQuickSchedule">Snel inplannen</string>
     <string name="EnableQuickScheduleNotice">Toont bij lang drukken op de verstuurknop opties om in te plannen (Later versturen / Versturen als online), rekening houdend met de dempstatus.</string>
     <string name="DisableAiEditor">AI-editor uitschakelen</string>
+    <string name="DisableRichEditor">Rich-editor uitschakelen</string>
     <string name="ForceForward">Doorsturen afdwingen</string>
     <string name="ForceForwardPremiumOnly">Abonneer je op **Telegram Premium** om doorsturen af te dwingen.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatisch</string>

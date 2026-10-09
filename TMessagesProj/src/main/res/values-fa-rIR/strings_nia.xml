@@ -522,6 +522,7 @@
     <string name="EnableQuickSchedule">زمان‌بندی سریع</string>
     <string name="EnableQuickScheduleNotice">با نگه‌داشتن دکمه ارسال، گزینه‌های زمان‌بندی (ارسال بعداً / ارسال هنگام آنلاین شدن) را با در نظر گرفتن حالت بی‌صدا نمایش می‌دهد.</string>
     <string name="DisableAiEditor">غیرفعال کردن ویرایشگر هوش مصنوعی</string>
+    <string name="DisableRichEditor">غیرفعال کردن ویرایشگر متن غنی</string>
     <string name="ForceForward">فوروارد اجباری</string>
     <string name="ForceForwardPremiumOnly">برای استفاده از فوروارد اجباری، **تلگرام پرمیوم** را فعال کنید.</string>
     <string name="DefaultHlsVideoQualityAuto">خودکار</string>

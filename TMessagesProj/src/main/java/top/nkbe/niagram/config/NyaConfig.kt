@@ -1690,6 +1690,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val disableRichEditor =
+        addConfig(
+            "DisableRichEditor",
+            ConfigItem.configTypeBool,
+            false
+        )
     val keepTranslatorPreferences =
         addConfig(
             "KeepTranslatorPreferences",
