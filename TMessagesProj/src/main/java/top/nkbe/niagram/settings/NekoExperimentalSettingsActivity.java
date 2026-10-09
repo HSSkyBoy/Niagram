@@ -126,8 +126,6 @@ public class NekoExperimentalSettingsActivity extends BaseNekoXSettingsActivity 
     // N-Config
     private final AbstractConfigCell headerNConfig = cellGroup.appendCell(new ConfigCellHeader(getString(R.string.N_Config)));
     private final AbstractConfigCell showRPCErrorRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowRPCError()));
-    private final ConfigCellTextCheck forceFontWeightFallbackRow = (ConfigCellTextCheck) cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.forceFontWeightFallback, null, getString(R.string.ForceFontWeightFallback)));
-    private final ConfigCellTextCheck disableBoldFontRow = (ConfigCellTextCheck) cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.disableBoldFont, null, getString(R.string.DisableBoldFont)));
     private final AbstractConfigCell disableChoosingStickerRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.disableChoosingSticker));
     private final AbstractConfigCell disableFilteringRow = cellGroup.appendCell(new ConfigCellCustom("SensitiveDisableFiltering", CellGroup.ITEM_TYPE_TEXT_CHECK, true));
     private final AbstractConfigCell devicePerformanceClassRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NyaConfig.INSTANCE.getPerformanceClass(), new String[]{
@@ -158,7 +156,6 @@ public class NekoExperimentalSettingsActivity extends BaseNekoXSettingsActivity 
             cellGroup.rows.remove(springAnimationCrossfadeRow);
         }
         checkStoriesRows();
-        updateForceFontWeightFallbackEnabled();
         addRowsToMap(cellGroup);
     }
 
@@ -203,14 +200,6 @@ public class NekoExperimentalSettingsActivity extends BaseNekoXSettingsActivity 
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else if (key.equals(NyaConfig.INSTANCE.getPlayerDecoder().getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
-            } else if (key.equals(NyaConfig.forceFontWeightFallback.getKey())) {
-                tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
-            } else if (key.equals(NyaConfig.disableBoldFont.getKey())) {
-                AndroidUtilities.clearTypefaceCache();
-                if (ApplicationLoader.applicationContext != null) {
-                    Theme.reloadAllResources(ApplicationLoader.applicationContext);
-                }
-                NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.didSetNewTheme, false, true, true);
             } else if (key.equals(NyaConfig.INSTANCE.getDisableProxyWhenVpnEnabled().getKey())) {
                 ProxyUtil.checkVpnState();
             } else if (key.equals(NyaConfig.INSTANCE.getHideStoriesFromHeader().getKey())) {
@@ -240,11 +229,6 @@ public class NekoExperimentalSettingsActivity extends BaseNekoXSettingsActivity 
     public void onResume() {
         super.onResume();
         checkSensitive();
-        updateForceFontWeightFallbackEnabled();
-    }
-
-    private void updateForceFontWeightFallbackEnabled() {
-        forceFontWeightFallbackRow.setEnabled(NyaConfig.typeface.Bool());
     }
 
     @Override
