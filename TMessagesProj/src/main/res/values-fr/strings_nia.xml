@@ -853,4 +853,6 @@
     <string name="PublicProxyDescription">Tunnel proxy propulsé par Nullgram (WebSocket via Cloudflare)</string>
     <string name="PublicProxyCannotDelete">Le proxy public intégré ne peut pas être supprimé.</string>
     <string name="PublicProxyCannotShare">Le proxy public intégré ne peut pas être partagé.</string>
+    <string name="HideDrawerNightMode">Masquer le mode nuit dans le menu</string>
+    <string name="HideDrawerProxy">Masquer le proxy dans le menu</string>
 </resources>

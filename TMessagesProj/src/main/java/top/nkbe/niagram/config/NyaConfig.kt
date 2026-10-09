@@ -1872,6 +1872,18 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val hideDrawerNightMode =
+        addConfig(
+            "HideDrawerNightMode",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideDrawerProxy =
+        addConfig(
+            "HideDrawerProxy",
+            ConfigItem.configTypeBool,
+            false
+        )
     val deepLTranslateKey =
         addConfig(
             "DeepLTranslateKey",

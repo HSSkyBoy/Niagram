@@ -854,4 +854,6 @@
     <string name="ChatLockedDescription">برای باز کردن این گفتگو هویت خود را تأیید کنید.</string>
     <string name="ChatLockedMessage">گفتگو قفل است</string>
     <string name="ChatActivityNavbarTransparent">نوار ناوبری کاملاً شفاف در گفتگو</string>
+    <string name="HideDrawerNightMode">مخفی کردن حالت شب در منو</string>
+    <string name="HideDrawerProxy">مخفی کردن پروکسی در منو</string>
 </resources>

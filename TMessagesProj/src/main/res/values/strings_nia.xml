@@ -884,4 +884,6 @@
     <string name="NekoAboutSectionCommunity">Community</string>
     <string name="NekoAboutSectionDevelopment">Development</string>
     <string name="NekoAboutSectionDiagnostics">Diagnostics</string>
+    <string name="HideDrawerNightMode">Hide Night Mode in Menu</string>
+    <string name="HideDrawerProxy">Hide Proxy in Menu</string>
 </resources>

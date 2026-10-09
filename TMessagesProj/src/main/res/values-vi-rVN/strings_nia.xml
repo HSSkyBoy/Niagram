@@ -855,4 +855,6 @@
     <string name="ChatLockedDescription">Xác minh danh tính của bạn để mở cuộc trò chuyện này.</string>
     <string name="ChatLockedMessage">Cuộc trò chuyện đã bị khóa</string>
     <string name="ChatActivityNavbarTransparent">Thanh điều hướng trò chuyện trong suốt hoàn toàn</string>
+    <string name="HideDrawerNightMode">Ẩn chế độ ban đêm trong menu</string>
+    <string name="HideDrawerProxy">Ẩn proxy trong menu</string>
 </resources>

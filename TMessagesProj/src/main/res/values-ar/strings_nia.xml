@@ -865,4 +865,6 @@
     <string name="NekoAboutSectionCommunity">المجتمع</string>
     <string name="NekoAboutSectionDevelopment">التطوير</string>
     <string name="NekoAboutSectionDiagnostics">التشخيص</string>
+    <string name="HideDrawerNightMode">إخفاء الوضع الليلي في القائمة</string>
+    <string name="HideDrawerProxy">إخفاء الوكيل في القائمة</string>
 </resources>

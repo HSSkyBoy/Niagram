@@ -865,4 +865,6 @@
     <string name="NekoAboutSectionCommunity">Community</string>
     <string name="NekoAboutSectionDevelopment">Entwicklung</string>
     <string name="NekoAboutSectionDiagnostics">Diagnose</string>
+    <string name="HideDrawerNightMode">Nachtmodus im Menü ausblenden</string>
+    <string name="HideDrawerProxy">Proxy im Menü ausblenden</string>
 </resources>

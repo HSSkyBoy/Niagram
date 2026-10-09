@@ -856,4 +856,6 @@
     <string name="NekoAboutSectionCommunity">Спільнота</string>
     <string name="NekoAboutSectionDevelopment">Розробка</string>
     <string name="NekoAboutSectionDiagnostics">Діагностика</string>
+    <string name="HideDrawerNightMode">Приховати нічний режим у меню</string>
+    <string name="HideDrawerProxy">Приховати проксі в меню</string>
 </resources>

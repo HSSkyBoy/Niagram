@@ -859,4 +859,6 @@
     <string name="NekoAboutSectionCommunity">社群</string>
     <string name="NekoAboutSectionDevelopment">開發</string>
     <string name="NekoAboutSectionDiagnostics">診斷</string>
+    <string name="HideDrawerNightMode">隱藏選單中的夜間模式</string>
+    <string name="HideDrawerProxy">隱藏選單中的代理</string>
 </resources>

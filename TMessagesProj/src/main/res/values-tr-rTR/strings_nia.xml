@@ -854,4 +854,6 @@
     <string name="ChatLockedDescription">Bu sohbeti açmak için kimliğinizi doğrulayın.</string>
     <string name="ChatLockedMessage">Sohbet kilitli</string>
     <string name="ChatActivityNavbarTransparent">Tamamen saydam sohbet gezinme çubuğu</string>
+    <string name="HideDrawerNightMode">Menüde Gece Modunu Gizle</string>
+    <string name="HideDrawerProxy">Menüde Proxy\'yi Gizle</string>
 </resources>

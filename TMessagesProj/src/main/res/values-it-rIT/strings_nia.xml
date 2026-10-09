@@ -854,4 +854,6 @@
     <string name="ChatLockedDescription">Verifica la tua identità per aprire questa chat.</string>
     <string name="ChatLockedMessage">La chat è bloccata</string>
     <string name="ChatActivityNavbarTransparent">Barra di navigazione della chat completamente trasparente</string>
+    <string name="HideDrawerNightMode">Nascondi modalità notte nel menu</string>
+    <string name="HideDrawerProxy">Nascondi proxy nel menu</string>
 </resources>

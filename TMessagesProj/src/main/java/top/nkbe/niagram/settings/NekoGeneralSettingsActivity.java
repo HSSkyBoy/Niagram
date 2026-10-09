@@ -201,6 +201,8 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
     private final AbstractConfigCell disableDialogsFloatingButtonRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDisableDialogsFloatingButton()));
     private final AbstractConfigCell disableBotOpenButtonRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDisableBotOpenButton()));
     private final AbstractConfigCell mediaPreviewRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.mediaPreview));
+    private final AbstractConfigCell hideDrawerNightModeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideDrawerNightMode()));
+    private final AbstractConfigCell hideDrawerProxyRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideDrawerProxy()));
     private final AbstractConfigCell dividerDialogs = cellGroup.appendCell(new ConfigCellDivider());
 
     // Appearance

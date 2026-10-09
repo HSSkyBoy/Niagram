@@ -854,4 +854,6 @@
     <string name="ChatLockedDescription">Verifikasi identitas Anda untuk membuka obrolan ini.</string>
     <string name="ChatLockedMessage">Obrolan terkunci</string>
     <string name="ChatActivityNavbarTransparent">Bilah Navigasi Obrolan Transparan Penuh</string>
+    <string name="HideDrawerNightMode">Sembunyikan Mode Malam di Menu</string>
+    <string name="HideDrawerProxy">Sembunyikan Proksi di Menu</string>
 </resources>

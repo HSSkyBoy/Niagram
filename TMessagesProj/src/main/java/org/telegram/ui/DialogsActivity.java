@@ -14010,8 +14010,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             return;
         }
 
-        final boolean isCurrentThemeDark;
         final boolean hideBottomNavigationBar = NyaConfig.INSTANCE.getHideBottomNavigationBar().Bool();
+        if (!NyaConfig.INSTANCE.getHideDrawerNightMode().Bool()) {
+            final boolean isCurrentThemeDark;
             if (resourceProvider != null) {
                 isCurrentThemeDark = resourceProvider.isDark();
             } else {
@@ -14055,6 +14056,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         });
                     });
             io.addGap();
+        }
             if (hideBottomNavigationBar) {
                 io.add(R.drawable.left_status_profile, getString(R.string.MyProfile), () -> {
                     Bundle args = new Bundle();
@@ -14154,7 +14156,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             });
         }
 
-        if (proxyMenuSubItem != null) {
+        if (!NyaConfig.INSTANCE.getHideDrawerProxy().Bool() && proxyMenuSubItem != null) {
             proxyMenuSubItem.subtextView.setTextColor(getThemedColor(Theme.key_groupcreate_sectionText));
             proxyMenuSubItem.setOnClickListener(v -> {
                 io.dismiss();

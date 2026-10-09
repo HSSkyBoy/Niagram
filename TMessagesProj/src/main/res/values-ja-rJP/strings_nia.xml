@@ -892,4 +892,6 @@
     <string name="NekoAboutSectionCommunity">コミュニティ</string>
     <string name="NekoAboutSectionDevelopment">開発</string>
     <string name="NekoAboutSectionDiagnostics">診断</string>
+    <string name="HideDrawerNightMode">メニューの夜間モードを非表示</string>
+    <string name="HideDrawerProxy">メニューのプロキシを非表示</string>
 </resources>
