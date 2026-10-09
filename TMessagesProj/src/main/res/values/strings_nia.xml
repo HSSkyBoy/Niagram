@@ -539,6 +539,7 @@
     <string name="EnableQuickScheduleNotice">Show scheduling options (Send later / Send when online) on long pressing the send button, respecting mute state.</string>
     <string name="DisableAiEditor">Disable AI Editor</string>
     <string name="DisableRichEditor">Disable Rich Editor</string>
+    <string name="DisableAttachCamera">Disable Camera in Album Selector</string>
     <string name="ForceForward">Force Forward</string>
     <string name="ForceForwardPremiumOnly">Subscribe to **Telegram Premium** to force forward messages.</string>
     <string name="DefaultHlsVideoQualityAuto">Auto</string>

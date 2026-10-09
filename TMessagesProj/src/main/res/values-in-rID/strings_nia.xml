@@ -523,6 +523,7 @@
     <string name="EnableQuickScheduleNotice">Tampilkan opsi penjadwalan (Kirim nanti / Kirim saat online) saat menekan lama tombol kirim, dengan memperhatikan status senyap.</string>
     <string name="DisableAiEditor">Nonaktifkan Editor AI</string>
     <string name="DisableRichEditor">Nonaktifkan Editor Rich Text</string>
+    <string name="DisableAttachCamera">Nonaktifkan Kamera di Pemilih Album</string>
     <string name="ForceForward">Teruskan Paksa</string>
     <string name="ForceForwardPremiumOnly">Berlangganan **Telegram Premium** untuk menggunakan fitur teruskan paksa.</string>
     <string name="DefaultHlsVideoQualityAuto">Otomatis</string>

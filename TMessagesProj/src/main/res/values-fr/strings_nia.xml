@@ -811,6 +811,7 @@
     <string name="EnableQuickScheduleNotice">Affiche les options de planification (Envoyer plus tard / Envoyer lorsque le destinataire est en ligne) lors d\'un appui long sur le bouton d\'envoi, en tenant compte du mode muet.</string>
     <string name="DisableAiEditor">Désactiver l\'éditeur IA</string>
     <string name="DisableRichEditor">Désactiver l\'éditeur de texte enrichi</string>
+    <string name="DisableAttachCamera">Désactiver l\'appareil photo dans le sélecteur d\'albums</string>
     <string name="ForceForward">Forcer le transfert</string>
     <string name="ForceForwardPremiumOnly">Abonnez-vous à **Telegram Premium** pour forcer le transfert des messages.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatique</string>

@@ -523,6 +523,7 @@
     <string name="EnableQuickScheduleNotice">Muestra opciones de programación (Enviar más tarde / Enviar cuando esté en línea) al mantener pulsado el botón de enviar, respetando el modo silencio.</string>
     <string name="DisableAiEditor">Desactivar editor de IA</string>
     <string name="DisableRichEditor">Desactivar editor de texto enriquecido</string>
+    <string name="DisableAttachCamera">Desactivar cámara en el selector de álbumes</string>
     <string name="ForceForward">Reenvío forzado</string>
     <string name="ForceForwardPremiumOnly">Suscríbete a **Telegram Premium** para usar el reenvío forzado.</string>
     <string name="DefaultHlsVideoQualityAuto">Automática</string>

@@ -483,6 +483,7 @@
     <string name="EnableQuickScheduleNotice">Показує параметри планування при довгому натисканні кнопки відправки з урахуванням стану беззвучного режиму.</string>
     <string name="DisableAiEditor">Вимкнути редактор ШІ</string>
     <string name="DisableRichEditor">Вимкнути розширений редактор</string>
+    <string name="DisableAttachCamera">Вимкнути камеру у виборі альбому</string>
     <string name="ForceForward">Примусове пересилання</string>
     <string name="ForceForwardPremiumOnly">Оформіть підписку **Telegram Premium**, щоб використовувати примусове пересилання.</string>
     <string name="ShowForwardCount">Показувати кількість пересилань</string>

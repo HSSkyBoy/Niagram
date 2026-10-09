@@ -523,6 +523,7 @@
     <string name="EnableQuickScheduleNotice">Mostra le opzioni di programmazione (Invia più tardi / Invia quando è online) tenendo premuto il pulsante di invio, rispettando lo stato silenzioso.</string>
     <string name="DisableAiEditor">Disabilita editor AI</string>
     <string name="DisableRichEditor">Disabilita editor RTF</string>
+    <string name="DisableAttachCamera">Disabilita fotocamera nel selettore album</string>
     <string name="ForceForward">Inoltro forzato</string>
     <string name="ForceForwardPremiumOnly">Abbonati a **Telegram Premium** per usare l\'inoltro forzato.</string>
     <string name="DefaultHlsVideoQualityAuto">Automatica</string>

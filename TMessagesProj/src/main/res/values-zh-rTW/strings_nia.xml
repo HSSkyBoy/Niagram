@@ -520,6 +520,7 @@
     <string name="EnableQuickScheduleNotice">長按傳送按鈕時顯示排程選項（稍後傳送 / 上線時傳送），並沿用目前的靜音狀態。</string>
     <string name="DisableAiEditor">停用 AI 編輯器</string>
     <string name="DisableRichEditor">停用富文本編輯器</string>
+    <string name="DisableAttachCamera">在相簿選擇器中停用相機</string>
     <string name="ForceForward">強制轉傳</string>
     <string name="ForceForwardPremiumOnly">訂閱 **Telegram Premium** 即可使用強制轉傳功能。</string>
     <string name="DefaultHlsVideoQualityAuto">自動</string>

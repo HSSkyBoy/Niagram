@@ -1696,6 +1696,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val disableAttachCamera =
+        addConfig(
+            "DisableAttachCamera",
+            ConfigItem.configTypeBool,
+            false
+        )
     val keepTranslatorPreferences =
         addConfig(
             "KeepTranslatorPreferences",

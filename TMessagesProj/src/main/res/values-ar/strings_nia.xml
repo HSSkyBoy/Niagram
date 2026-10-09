@@ -521,6 +521,7 @@
     <string name="EnableQuickScheduleNotice">يعرض خيارات الجدولة (الإرسال لاحقًا / الإرسال عند الاتصال) عند الضغط مطولًا على زر الإرسال، مع مراعاة حالة الكتم.</string>
     <string name="DisableAiEditor">تعطيل محرر الذكاء الاصطناعي</string>
     <string name="DisableRichEditor">تعطيل محرر النصوص الغنية</string>
+    <string name="DisableAttachCamera">تعطيل الكاميرا في محدد الألبوم</string>
     <string name="ForceForward">فرض إعادة التوجيه</string>
     <string name="ForceForwardPremiumOnly">اشترك في **Telegram Premium** لفرض إعادة توجيه الرسائل.</string>
     <string name="DefaultHlsVideoQualityAuto">تلقائي</string>
