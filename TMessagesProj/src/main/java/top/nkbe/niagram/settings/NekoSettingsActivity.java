@@ -407,7 +407,7 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
                     } else if (position == ghostRow) {
                         textCell.setTextAndIcon(getString(R.string.GhostMode), R.drawable.ayu_ghost_solar, true);
                     } else if (position == spyRow) {
-                        textCell.setTextAndIcon(getString(R.string.SpyMode), R.drawable.chats_saved_solar, true);
+                        textCell.setTextAndIcon(getString(R.string.SpyMode), R.drawable.spy_mode_solar, true);
                     } else if (position == translatorRow) {
                         textCell.setTextAndIcon(getString(R.string.TranslatorSettings), R.drawable.ic_translate, true);
                     } else if (position == passcodeRow) {
