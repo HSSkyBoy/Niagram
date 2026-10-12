@@ -216,6 +216,7 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
             getString(R.string.DefaultHlsVideoQualityLow),
     }, null));
     private final AbstractConfigCell showSmallGifRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowSmallGIF()));
+    private final AbstractConfigCell alwaysSendVideosInHDRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getAlwaysSendVideosInHD()));
     private final AbstractConfigCell takeGIFasVideoRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.takeGIFasVideo));
     private final AbstractConfigCell autoPauseVideoRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.autoPauseVideo, getString(R.string.AutoPauseVideoAbout)));
     private final AbstractConfigCell disablePreviewVideoSoundShortcutRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDisablePreviewVideoSoundShortcut(), getString(R.string.DisablePreviewVideoSoundShortcutNotice)));

@@ -62,6 +62,7 @@
     <string name="SendWithMarkdown">Send with Markdown</string>
     <string name="TipsChannel">Feature Tips Channel</string>
     <string name="ShowSmallGIF">Show Small GIF</string>
+    <string name="AlwaysSendVideosInHD">Always send videos in HD</string>
     <string name="DisableClickCommandToSend">Ask Before Sending Bot Command</string>
     <string name="DisableDialogsFloatingButton">Hide Floating Button</string>
     <string name="CenterActionBarTitleType">Use Centered Title</string>

@@ -62,6 +62,7 @@
     <string name="SendWithMarkdown">使用 Markdown 傳送</string>
     <string name="TipsChannel">功能介紹頻道</string>
     <string name="ShowSmallGIF">以較小尺寸顯示 GIF</string>
+    <string name="AlwaysSendVideosInHD">一律以高畫質發送影片</string>
     <string name="DisableClickCommandToSend">傳送機器人指令前確認</string>
     <string name="DisableDialogsFloatingButton">隱藏浮動按鈕</string>
     <string name="CenterActionBarTitleType">標題置中</string>
