@@ -13979,7 +13979,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     presentFragment(new CommunityEditActivity(bundle));
                 });
                 if (CommunityUtils.COLLAPSED_SUPPORT) {
-                    io.addGap();
+                    if (!NyaConfig.INSTANCE.getHideDividers().Bool()) io.addGap();
                 }
             }
 
@@ -14055,7 +14055,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                             presentFragment(new ThemeActivity(ThemeActivity.THEME_TYPE_NIGHT));
                         });
                     });
-            io.addGap();
+            if (!NyaConfig.INSTANCE.getHideDividers().Bool()) io.addGap();
         }
             if (hideBottomNavigationBar) {
                 io.add(R.drawable.left_status_profile, getString(R.string.MyProfile), () -> {
@@ -14087,7 +14087,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     presentFragment(new ContactsActivity(args));
                 });
             }
-            io.addGapIf(hideBottomNavigationBar);
+            io.addGapIf(hideBottomNavigationBar && !NyaConfig.INSTANCE.getHideDividers().Bool());
             if (hideBottomNavigationBar) {
                 io.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> {
                     io.dismiss();
@@ -14122,7 +14122,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.mainUserInfoChanged);
                 });
             }
-            io.addGapIf(hideBottomNavigationBar);
+            io.addGapIf(hideBottomNavigationBar && !NyaConfig.INSTANCE.getHideDividers().Bool());
             if (ApplicationLoader.applicationLoaderInstance != null) {
                 ApplicationLoader.applicationLoaderInstance.addItemOptions(io);
             }
@@ -14171,7 +14171,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             final boolean proxyVisible = !SharedConfig.proxyList.isEmpty();
 
             if (proxyVisible) {
-                io.addGap();
+                if (!NyaConfig.INSTANCE.getHideDividers().Bool()) io.addGap();
                 io.add(proxyMenuSubItem);
             }
         }

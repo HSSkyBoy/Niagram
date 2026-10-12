@@ -81,7 +81,7 @@ public class SpyModeActivity extends BaseNekoXSettingsActivity {
 
     @Override
     public int getDrawable() {
-        return R.drawable.chats_saved_solar;
+        return R.drawable.spy_mode_solar;
     }
 
     @Override
