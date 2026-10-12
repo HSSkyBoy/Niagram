@@ -13310,15 +13310,6 @@ public class ChatActivity extends BaseFragment implements
         presentFragment(fragment);
     }
 
-    private void showForceForwardPremiumBulletin() {
-        BulletinFactory.of(this).createSimpleBulletin(
-            R.raw.star_premium_2,
-            AndroidUtilities.premiumText(LocaleController.getString(R.string.ForceForwardPremiumOnly), () -> {
-                showDialog(new PremiumFeatureBottomSheet(this, PremiumPreviewFragment.PREMIUM_FEATURE_LIMITS, true));
-            })
-        ).show();
-    }
-
     public void showBottomOverlayProgress(boolean show, boolean animated) {
         if (show && bottomOverlayProgress.getTag() != null || !show && bottomOverlayProgress.getTag() == null) {
             return;
@@ -36428,10 +36419,6 @@ public class ChatActivity extends BaseFragment implements
                 return 2;
             }
             case nkbtn_force_forward: {
-                if (!getUserConfig().isPremium()) {
-                    showForceForwardPremiumBulletin();
-                    return 2;
-                }
                 openForceForward(false);
                 return 2;
             }
@@ -46902,10 +46889,6 @@ public class ChatActivity extends BaseFragment implements
             repeatMessage(false, true);
             clearSelectionMode();
         } else if (id == nkbtn_force_forward) {
-            if (!getUserConfig().isPremium()) {
-                showForceForwardPremiumBulletin();
-                return;
-            }
             openForceForward(true);
             clearSelectionMode();
         } else if (id == nkheaderbtn_hide_title) {
@@ -46973,10 +46956,6 @@ public class ChatActivity extends BaseFragment implements
                 break;
             }
             case nkbtn_force_forward: {
-                if (!getUserConfig().isPremium()) {
-                    showForceForwardPremiumBulletin();
-                    break;
-                }
                 forwardingMessage = selectedObject;
                 forwardingMessageGroup = selectedObjectGroup;
                 openForceForward(false);
@@ -49408,13 +49387,11 @@ public class ChatActivity extends BaseFragment implements
                 }
                 // --- NagramX Start ---
                 if (chatMode != MODE_SCHEDULED) {
-                    boolean noQuoteForwardShown = false;
                     if (chatMode != MODE_WELCOME_MESSAGES && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16) {
                         if (!noforwards && NyaConfig.INSTANCE.getShowNoQuoteForward().Bool()) {
                             items.add(LocaleController.getString(R.string.NoQuoteForward));
                             options.add(nkbtn_forward_noquote);
                             icons.add(R.drawable.msg_forward_noquote);
-                            noQuoteForwardShown = true;
                         }
                     }
                     if (NyaConfig.INSTANCE.getShowSetReminder().Bool()) {
@@ -49454,7 +49431,7 @@ public class ChatActivity extends BaseFragment implements
                         options.add(nkbtn_repeatascopy);
                         icons.add(R.drawable.msg_repeat);
                     }
-                    if (chatMode != MODE_WELCOME_MESSAGES && !isAyuDeleted && !selectedObject.needDrawBluredPreview() && getMessageHelper().canSendMessageAsCopy(selectedObject, selectedObjectGroup) && !noQuoteForwardShown && (noforwards || !selectedObject.canForwardMessage() || NyaConfig.INSTANCE.getShowForceForward().Bool())) {
+                    if (chatMode != MODE_WELCOME_MESSAGES && !isAyuDeleted && !selectedObject.needDrawBluredPreview() && getMessageHelper().canSendMessageAsCopy(selectedObject, selectedObjectGroup)) {
                         items.add(LocaleController.getString(R.string.ForceForward));
                         options.add(nkbtn_force_forward);
                         icons.add(R.drawable.msg_forward);
