@@ -9,6 +9,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -36,11 +37,14 @@ import com.radolyn.ayugram.AyuConstants;
 import com.radolyn.ayugram.database.entities.DeletedMessageFull;
 import com.radolyn.ayugram.messages.AyuMessagesController;
 import com.radolyn.ayugram.proprietary.AyuMessageUtils;
+import com.radolyn.ayugram.utils.AyuFileLocation;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.ImageLoader;
+import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessagesController;
@@ -71,6 +75,7 @@ import org.telegram.ui.Components.chat.layouts.ChatActivitySideControlsButtonsLa
 import org.telegram.ui.Components.inset.WindowInsetsStateHolder;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -119,6 +124,10 @@ public class AyuViewDeleted extends NekoDelegateFragment {
     private boolean scrollingFloatingDate;
     private final Runnable updateFloatingDateRunnable = this::updateFloatingDateView;
     private final WindowInsetsStateHolder windowInsetsStateHolder = new WindowInsetsStateHolder(this::checkInsets);
+    private static final long PHOTO_SIZE_LOAD_TIMEOUT_MS = 25_000L;
+    private static final long PHOTO_SAVE_TOTAL_TIMEOUT_MS = 90_000L;
+    private static final int STRIPPED_PHOTO_JPEG_QUALITY = 95;
+    private final SparseArray<DeletedPhotoSave> activePhotoSaves = new SparseArray<>();
 
     public AyuViewDeleted(long dialogId) {
         this.dialogId = dialogId;
@@ -608,6 +617,8 @@ public class AyuViewDeleted extends NekoDelegateFragment {
         NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
         NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION);
         NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, NotificationCenter.voiceTranscriptionUpdate);
+        NotificationCenter.getInstance(getCurrentAccount()).addObserver(this, NotificationCenter.fileLoaded);
+        NotificationCenter.getInstance(getCurrentAccount()).addObserver(this, NotificationCenter.fileLoadFailed);
 
         return true;
     }
@@ -616,9 +627,12 @@ public class AyuViewDeleted extends NekoDelegateFragment {
     public void onFragmentDestroy() {
         super.onFragmentDestroy();
 
+        cancelActivePhotoSaves();
         NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
         NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION);
         NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, NotificationCenter.voiceTranscriptionUpdate);
+        NotificationCenter.getInstance(getCurrentAccount()).removeObserver(this, NotificationCenter.fileLoaded);
+        NotificationCenter.getInstance(getCurrentAccount()).removeObserver(this, NotificationCenter.fileLoadFailed);
         if (scrimPopupWindow != null) {
             scrimPopupWindow.dismiss();
             scrimPopupWindow = null;
@@ -695,7 +709,202 @@ public class AyuViewDeleted extends NekoDelegateFragment {
             }
         } else if (id == NotificationCenter.voiceTranscriptionUpdate) {
             handleVoiceTranscriptionUpdate(args);
+        } else if (id == NotificationCenter.fileLoaded || id == NotificationCenter.fileLoadFailed) {
+            handlePhotoSaveFileNotification(id, args);
         }
+    }
+
+    private final class DeletedPhotoSave {
+        final MessageObject message;
+        final TLRPC.Photo photo;
+        final ArrayList<TLRPC.PhotoSize> candidates;
+        final long deadlineMillis;
+        final int notificationId;
+        final Runnable sizeTimeoutRunnable;
+        int candidateIndex;
+        TLRPC.PhotoSize activeSize;
+        String activeFileName;
+        boolean cancelled;
+        boolean finished;
+
+        DeletedPhotoSave(MessageObject messageObject, TLRPC.Photo photoObject, ArrayList<TLRPC.PhotoSize> sizes, long deadline, int notifId) {
+            message = messageObject;
+            photo = photoObject;
+            candidates = sizes;
+            deadlineMillis = deadline;
+            notificationId = notifId;
+            sizeTimeoutRunnable = () -> advanceDeletedPhotoSave(this);
+        }
+    }
+
+    private static ArrayList<TLRPC.PhotoSize> collectDownloadablePhotoSizes(TLRPC.Photo photo) {
+        ArrayList<TLRPC.PhotoSize> sizes = new ArrayList<>();
+        if (photo == null || photo.sizes == null) {
+            return sizes;
+        }
+        for (int a = 0, N = photo.sizes.size(); a < N; a++) {
+            TLRPC.PhotoSize size = photo.sizes.get(a);
+            if (size.location != null && !(size.location instanceof TLRPC.TL_fileLocationUnavailable) && !(size.location instanceof AyuFileLocation) && size.w > 0 && size.h > 0) {
+                sizes.add(size);
+            }
+        }
+        sizes.sort((left, right) -> Long.compare(right.w * 1L * right.h, left.w * 1L * left.h));
+        return sizes;
+    }
+
+    private void startDeletedPhotoSave(MessageObject msg) {
+        if (activePhotoSaves.get(msg.getId()) != null) {
+            return;
+        }
+        TLRPC.Photo photo = msg.getPhoto();
+        ArrayList<TLRPC.PhotoSize> candidates = collectDownloadablePhotoSizes(photo);
+        int notificationId = top.nkbe.niagram.SaveToDownloadReceiver.createNotificationId();
+        DeletedPhotoSave save = new DeletedPhotoSave(msg, photo, candidates, System.currentTimeMillis() + PHOTO_SAVE_TOTAL_TIMEOUT_MS, notificationId);
+        activePhotoSaves.put(msg.getId(), save);
+        if (getParentActivity() != null) {
+            top.nkbe.niagram.SaveToDownloadReceiver.showNotification(getParentActivity(), notificationId, 1, () -> cancelDeletedPhotoSave(save));
+        }
+        advanceDeletedPhotoSave(save);
+    }
+
+    private void advanceDeletedPhotoSave(DeletedPhotoSave save) {
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        if (save.cancelled || save.finished) {
+            return;
+        }
+        if (save.activeSize != null && save.activeFileName != null) {
+            FileLoader.getInstance(getCurrentAccount()).cancelLoadFile(save.activeSize, false);
+            save.activeSize = null;
+            save.activeFileName = null;
+        }
+        if (System.currentTimeMillis() >= save.deadlineMillis || save.candidateIndex >= save.candidates.size()) {
+            saveStrippedPhotoFallback(save);
+            return;
+        }
+        TLRPC.PhotoSize size = save.candidates.get(save.candidateIndex++);
+        String fileName = FileLoader.getAttachFileName(size);
+        if (TextUtils.isEmpty(fileName)) {
+            advanceDeletedPhotoSave(save);
+            return;
+        }
+        File cached = FileLoader.getInstance(getCurrentAccount()).getPathToAttach(size, "jpg", false, true);
+        if (cached != null && cached.exists() && cached.length() > 0) {
+            finishDeletedPhotoSaveWithFile(save, cached, false);
+            return;
+        }
+        save.activeSize = size;
+        save.activeFileName = fileName;
+        AndroidUtilities.runOnUIThread(save.sizeTimeoutRunnable, PHOTO_SIZE_LOAD_TIMEOUT_MS);
+        FileLoader.getInstance(getCurrentAccount()).loadFile(ImageLocation.getForPhoto(size, save.photo), save.message, "jpg", FileLoader.PRIORITY_HIGH, save.message.shouldEncryptPhotoOrVideo() ? 2 : 0);
+    }
+
+    private void handlePhotoSaveFileNotification(int id, Object... args) {
+        if (args == null || args.length == 0 || !(args[0] instanceof String)) {
+            return;
+        }
+        String fileName = (String) args[0];
+        for (int i = activePhotoSaves.size() - 1; i >= 0; i--) {
+            DeletedPhotoSave save = activePhotoSaves.valueAt(i);
+            if (save.finished || save.cancelled || save.activeFileName == null || !fileName.equals(save.activeFileName)) {
+                continue;
+            }
+            TLRPC.PhotoSize loadedSize = save.activeSize;
+            save.activeSize = null;
+            save.activeFileName = null;
+            if (id == NotificationCenter.fileLoaded && loadedSize != null) {
+                File file = args.length > 1 && args[1] instanceof File ? (File) args[1] : FileLoader.getInstance(getCurrentAccount()).getPathToAttach(loadedSize, "jpg", false, true);
+                if (file != null && file.exists() && file.length() > 0) {
+                    finishDeletedPhotoSaveWithFile(save, file, false);
+                    continue;
+                }
+            }
+            advanceDeletedPhotoSave(save);
+        }
+    }
+
+    private void finishDeletedPhotoSaveWithFile(DeletedPhotoSave save, File file, boolean deleteSourceAfterSave) {
+        save.finished = true;
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        MessageObject msg = save.message;
+        MediaController.saveFile(msg, file.getPath(), getParentActivity(), 0, null, null, savedUri -> {
+            boolean wasSaved = savedUri != null;
+            if (deleteSourceAfterSave) {
+                file.delete();
+            }
+            top.nkbe.niagram.SaveToDownloadReceiver.cancelNotification(save.notificationId);
+            activePhotoSaves.remove(msg.getId());
+            if (save.cancelled || getParentActivity() == null) {
+                return;
+            }
+            if (wasSaved) {
+                BulletinFactory.of(this).createDownloadBulletin(BulletinFactory.FileType.PHOTO, getResourceProvider()).show();
+            } else {
+                BulletinFactory.of(this).createErrorBulletin(getString(R.string.DeletedMediaFileMissing), getResourceProvider()).show();
+            }
+        });
+    }
+
+    private void saveStrippedPhotoFallback(DeletedPhotoSave save) {
+        File stripped = decodeStrippedPhotoToFile(save.message.getId(), save.photo);
+        if (stripped != null) {
+            finishDeletedPhotoSaveWithFile(save, stripped, true);
+            return;
+        }
+        save.finished = true;
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        top.nkbe.niagram.SaveToDownloadReceiver.cancelNotification(save.notificationId);
+        activePhotoSaves.remove(save.message.getId());
+        if (getParentActivity() != null) {
+            BulletinFactory.of(this).createErrorBulletin(getString(R.string.DeletedMediaFileMissing), getResourceProvider()).show();
+        }
+    }
+
+    private File decodeStrippedPhotoToFile(int messageId, TLRPC.Photo photo) {
+        if (photo == null || photo.sizes == null) {
+            return null;
+        }
+        byte[] strippedBytes = null;
+        for (int a = 0, N = photo.sizes.size(); a < N; a++) {
+            TLRPC.PhotoSize size = photo.sizes.get(a);
+            if (size instanceof TLRPC.TL_photoStrippedSize && size.bytes != null && size.bytes.length > 0) {
+                strippedBytes = size.bytes;
+                break;
+            }
+        }
+        if (strippedBytes == null) {
+            return null;
+        }
+        Bitmap bitmap = ImageLoader.getStrippedPhotoBitmap(strippedBytes, null);
+        if (bitmap == null) {
+            return null;
+        }
+        File outputFile = new File(FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE), "stripped_" + messageId + "_" + System.currentTimeMillis() + ".jpg");
+        try (FileOutputStream stream = new FileOutputStream(outputFile)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, STRIPPED_PHOTO_JPEG_QUALITY, stream);
+            return outputFile;
+        } catch (Exception e) {
+            FileLog.e(e);
+            return null;
+        }
+    }
+
+    private void cancelDeletedPhotoSave(DeletedPhotoSave save) {
+        save.cancelled = true;
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        if (save.activeSize != null && save.activeFileName != null) {
+            FileLoader.getInstance(getCurrentAccount()).cancelLoadFile(save.activeSize, false);
+            save.activeSize = null;
+            save.activeFileName = null;
+        }
+        top.nkbe.niagram.SaveToDownloadReceiver.cancelNotification(save.notificationId);
+        activePhotoSaves.remove(save.message.getId());
+    }
+
+    private void cancelActivePhotoSaves() {
+        for (int i = activePhotoSaves.size() - 1; i >= 0; i--) {
+            cancelDeletedPhotoSave(activePhotoSaves.valueAt(i));
+        }
+        activePhotoSaves.clear();
     }
 
     private void createMenu(View v, float x, float y, int position) {
@@ -865,6 +1074,10 @@ public class AyuViewDeleted extends NekoDelegateFragment {
                                 ).show();
                             }
                         });
+                    } else if (msg.isPhoto()) {
+                        startDeletedPhotoSave(msg);
+                    } else {
+                        BulletinFactory.of(this).createErrorBulletin(getString(R.string.DeletedMediaFileMissing), getResourceProvider()).show();
                     }
                 } else if (option == OPTION_SAVE_TO_DOWNLOADS) {
                     ArrayList<MessageObject> messageObjects = new ArrayList<>();

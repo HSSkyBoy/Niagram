@@ -17,11 +17,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-/**
- * Sends copies of messages by referencing the media that already lives on Telegram's servers,
- * so nothing has to be downloaded and re-uploaded. When the server refuses the reference the
- * supplied fallback is run (the caller downloads the media and sends it the classic way).
- */
 public class CopyReferenceSender {
 
     private static final int MAX_TRACKED_REFERENCE_FAILURES = 64;
@@ -64,7 +59,6 @@ public class CopyReferenceSender {
         return true;
     }
 
-    /** Ids of albums in which every message can be sent by reference. */
     public static HashSet<Long> resolveFullyReferenceCapableGroupIds(ArrayList<MessageObject> messages) {
         HashMap<Long, int[]> groupCounts = new HashMap<>();
         for (int i = 0; i < messages.size(); i++) {
@@ -101,10 +95,6 @@ public class CopyReferenceSender {
         return canSendByReference(messageObject);
     }
 
-    /**
-     * @param fallback run on the UI thread if the server refuses the reference
-     * @return false when the request could not even be built; nothing was sent and fallback won't run
-     */
     public static boolean sendByReference(int currentAccount, ArrayList<MessageObject> messages,
                                           long targetDialogId, MessageObject replyTopMsg,
                                           boolean notify, int scheduleDate, long monoForumPeerId,

@@ -1324,10 +1324,6 @@ public class MessageHelper extends BaseController {
         return sendMessageAsCopy(messageObject, messageGroup, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, true);
     }
 
-    /**
-     * @param tryReference first try to reference the media already on the server; if that is not
-     *                     possible or refused, download the media and send it as a local copy
-     */
     private boolean sendMessageAsCopy(MessageObject messageObject, MessageObject.GroupedMessages messageGroup, long targetDialogId, MessageObject replyTo, MessageObject replyToTopMsg, ChatActivity.ReplyQuote quote, boolean notify, int scheduleDate, int mode, String quickReplyShortcut, int quickReplyShortcutId, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams, boolean tryReference) {
         if (messageObject == null || messageObject.messageOwner == null) {
             return false;
@@ -1404,10 +1400,6 @@ public class MessageHelper extends BaseController {
         return sendMessagesAsCopy(messages, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, true);
     }
 
-    /**
-     * @param tryReference first send what can be sent by referencing media on the server; whatever
-     *                     is refused or not referenceable is downloaded and sent as a local copy
-     */
     private boolean sendMessagesAsCopy(ArrayList<MessageObject> messages, long targetDialogId, MessageObject replyTo, MessageObject replyToTopMsg, ChatActivity.ReplyQuote quote, boolean notify, int scheduleDate, int mode, String quickReplyShortcut, int quickReplyShortcutId, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams, boolean tryReference) {
         if (messages == null || messages.isEmpty()) {
             return false;
@@ -1498,10 +1490,6 @@ public class MessageHelper extends BaseController {
                 && suggestionParams == null && !DialogObject.isEncryptedDialog(targetDialogId);
     }
 
-    /**
-     * Sends every album / single message that can be referenced on the server and removes it from
-     * {@code messages}. {@code onRefused} gets the batch the server later refuses.
-     */
     private void sendReferenceCapableMessages(ArrayList<MessageObject> messages, long targetDialogId, MessageObject replyTopMsg, boolean notify, int scheduleDate, long monoForumPeerId, Utilities.Callback<ArrayList<MessageObject>> onRefused) {
         int index = 0;
         while (index < messages.size()) {
@@ -1521,7 +1509,6 @@ public class MessageHelper extends BaseController {
         }
     }
 
-    /** Downloads the missing media of {@code messages} and runs {@code onReady}; failures also end up there. */
     private void downloadThen(ArrayList<MessageObject> messages, Runnable onReady) {
         HashSet<String> pendingFiles = new HashSet<>();
         ArrayList<MessageObject> toDownload = new ArrayList<>();
@@ -1753,8 +1740,6 @@ public class MessageHelper extends BaseController {
             return;
         }
 
-        // Media that can be referenced on the server needs no download; if the server refuses the
-        // reference, sendMessagesAsCopy falls back to downloading it in the background.
         HashSet<Long> referenceCapableGroupIds = CopyReferenceSender.resolveFullyReferenceCapableGroupIds(messages);
         ArrayList<MessageObject> missingFiles = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
