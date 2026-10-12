@@ -897,4 +897,14 @@
     <string name="NekoAboutSectionDiagnostics">진단</string>
     <string name="HideDrawerNightMode">메뉴의 야간 모드 숨기기</string>
     <string name="HideDrawerProxy">메뉴의 프록시 숨기기</string>
+    <string name="AlwaysSendVideosInHD">동영상을 항상 HD로 전송</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Volcengine 번역</string>
+    <string name="DeepLxCustomApi">DeepLX API 주소</string>
+    <string name="DeepLXCustomApiNotice">DeepLX 서비스의 주소를 입력하세요 (예: http://127.0.0.1:1188/translate)</string>
+    <string name="DeletedMediaFileMissing">미디어 파일을 더 이상 사용할 수 없습니다</string>
+    <string name="HideChatHeaderVerifiedBadge">채팅 헤더의 인증 배지 숨기기</string>
+    <string name="HideChatHeaderConnectionState">채팅 헤더의 연결 상태 숨기기</string>
+    <string name="HideFloatingDate">플로팅 날짜 숨기기</string>
+    <string name="HideAvatarTtlBadge">아바타의 자동 삭제 타이머 숨기기</string>
 </resources>

@@ -856,4 +856,14 @@
     <string name="ChatActivityNavbarTransparent">Tamamen saydam sohbet gezinme çubuğu</string>
     <string name="HideDrawerNightMode">Menüde Gece Modunu Gizle</string>
     <string name="HideDrawerProxy">Menüde Proxy\'yi Gizle</string>
+    <string name="AlwaysSendVideosInHD">Videoları her zaman HD olarak gönder</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Volcengine Çeviri</string>
+    <string name="DeepLxCustomApi">DeepLX API URL\'si</string>
+    <string name="DeepLXCustomApiNotice">DeepLX hizmetinizin URL\'sini girin, örn. http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">Medya dosyası artık kullanılamıyor</string>
+    <string name="HideChatHeaderVerifiedBadge">Sohbet başlığındaki doğrulama rozetini gizle</string>
+    <string name="HideChatHeaderConnectionState">Sohbet başlığındaki bağlantı durumunu gizle</string>
+    <string name="HideFloatingDate">Yüzen tarihi gizle</string>
+    <string name="HideAvatarTtlBadge">Avatarlardaki otomatik silme sayacını gizle</string>
 </resources>

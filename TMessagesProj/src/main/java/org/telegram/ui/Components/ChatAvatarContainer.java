@@ -1142,6 +1142,10 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
                 rightDrawable2ContentDescription = getString(R.string.ScamMessage);
                 rightDrawableIsScamOrVerified = true;
             }
+        } else if (verified && NyaConfig.INSTANCE.getHideChatHeaderVerifiedBadge().Bool()) {
+            titleTextView.setRightDrawable2(null);
+            rightDrawableIsScamOrVerified = false;
+            rightDrawable2ContentDescription = null;
         } else if (verified) {
             int verifiedType = top.nkbe.niagram.helpers.NiagramVerifiedHelper.TYPE_NONE;
             if (parentFragment instanceof org.telegram.ui.ChatActivity) {
@@ -1812,6 +1816,9 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
             title = getString(R.string.Updating);
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateConnectingToProxy) {
             title = getString(R.string.ConnectingToProxy);
+        }
+        if (NyaConfig.INSTANCE.getHideChatHeaderConnectionState().Bool()) {
+            title = null;
         }
         if (title == null) {
             if (lastSubtitle != null) {

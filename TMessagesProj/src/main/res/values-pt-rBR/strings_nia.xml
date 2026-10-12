@@ -859,4 +859,14 @@
     <string name="NekoAboutSectionDiagnostics">Diagnósticos</string>
     <string name="HideDrawerNightMode">Ocultar modo noturno no menu</string>
     <string name="HideDrawerProxy">Ocultar proxy no menu</string>
+    <string name="AlwaysSendVideosInHD">Sempre enviar vídeos em HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Tradutor Volcengine</string>
+    <string name="DeepLxCustomApi">URL da API do DeepLX</string>
+    <string name="DeepLXCustomApiNotice">Defina a URL do seu serviço DeepLX, por exemplo http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">O arquivo de mídia não está mais disponível</string>
+    <string name="HideChatHeaderVerifiedBadge">Ocultar selo de verificação no cabeçalho da conversa</string>
+    <string name="HideChatHeaderConnectionState">Ocultar status de conexão no cabeçalho da conversa</string>
+    <string name="HideFloatingDate">Ocultar data flutuante</string>
+    <string name="HideAvatarTtlBadge">Ocultar temporizador de autoexclusão nos avatares</string>
 </resources>

@@ -867,4 +867,8 @@
     <string name="NekoAboutSectionDiagnostics">診斷</string>
     <string name="HideDrawerNightMode">隱藏選單中的夜間模式</string>
     <string name="HideDrawerProxy">隱藏選單中的代理</string>
+    <string name="HideChatHeaderVerifiedBadge">隱藏聊天標題列的認證標誌</string>
+    <string name="HideChatHeaderConnectionState">隱藏聊天標題列的連線狀態</string>
+    <string name="HideFloatingDate">隱藏浮動日期</string>
+    <string name="HideAvatarTtlBadge">隱藏頭像上的自動刪除計時標誌</string>
 </resources>

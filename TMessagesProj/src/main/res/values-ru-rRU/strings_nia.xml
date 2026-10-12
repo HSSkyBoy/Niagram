@@ -888,4 +888,14 @@
     <string name="NekoAboutSectionDiagnostics">Диагностика</string>
     <string name="HideDrawerNightMode">Скрыть ночной режим в меню</string>
     <string name="HideDrawerProxy">Скрыть прокси в меню</string>
+    <string name="AlwaysSendVideosInHD">Всегда отправлять видео в HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Перевод Volcengine</string>
+    <string name="DeepLxCustomApi">URL API DeepLX</string>
+    <string name="DeepLXCustomApiNotice">Укажите URL вашего сервиса DeepLX, например http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">Медиафайл больше недоступен</string>
+    <string name="HideChatHeaderVerifiedBadge">Скрыть значок верификации в заголовке чата</string>
+    <string name="HideChatHeaderConnectionState">Скрыть статус подключения в заголовке чата</string>
+    <string name="HideFloatingDate">Скрыть плавающую дату</string>
+    <string name="HideAvatarTtlBadge">Скрыть таймер автоудаления на аватарах</string>
 </resources>

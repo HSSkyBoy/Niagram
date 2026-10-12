@@ -894,4 +894,14 @@
     <string name="NekoAboutSectionDiagnostics">診断</string>
     <string name="HideDrawerNightMode">メニューの夜間モードを非表示</string>
     <string name="HideDrawerProxy">メニューのプロキシを非表示</string>
+    <string name="AlwaysSendVideosInHD">動画を常に高画質で送信</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">火山翻訳</string>
+    <string name="DeepLxCustomApi">DeepLX API URL</string>
+    <string name="DeepLXCustomApiNotice">DeepLX サービスの URL を設定します（例: http://127.0.0.1:1188/translate）</string>
+    <string name="DeletedMediaFileMissing">メディアファイルは利用できなくなりました</string>
+    <string name="HideChatHeaderVerifiedBadge">チャットヘッダーの認証バッジを非表示</string>
+    <string name="HideChatHeaderConnectionState">チャットヘッダーの接続状態を非表示</string>
+    <string name="HideFloatingDate">フローティング日付を非表示</string>
+    <string name="HideAvatarTtlBadge">アバターの自動削除タイマーを非表示</string>
 </resources>

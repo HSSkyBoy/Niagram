@@ -856,4 +856,14 @@
     <string name="ChatActivityNavbarTransparent">Barra de navegación del chat totalmente transparente</string>
     <string name="HideDrawerNightMode">Ocultar modo nocturno en el menú</string>
     <string name="HideDrawerProxy">Ocultar proxy en el menú</string>
+    <string name="AlwaysSendVideosInHD">Enviar siempre los vídeos en HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Traductor Volcengine</string>
+    <string name="DeepLxCustomApi">URL de la API de DeepLX</string>
+    <string name="DeepLXCustomApiNotice">Configura la URL de tu servicio DeepLX, por ejemplo http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">El archivo multimedia ya no está disponible</string>
+    <string name="HideChatHeaderVerifiedBadge">Ocultar la insignia de verificación en la cabecera del chat</string>
+    <string name="HideChatHeaderConnectionState">Ocultar el estado de conexión en la cabecera del chat</string>
+    <string name="HideFloatingDate">Ocultar la fecha flotante</string>
+    <string name="HideAvatarTtlBadge">Ocultar el temporizador de autoeliminación en los avatares</string>
 </resources>

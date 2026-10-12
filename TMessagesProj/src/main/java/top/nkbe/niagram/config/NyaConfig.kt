@@ -1720,6 +1720,30 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val hideChatHeaderVerifiedBadge =
+        addConfig(
+            "HideChatHeaderVerifiedBadge",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideChatHeaderConnectionState =
+        addConfig(
+            "HideChatHeaderConnectionState",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideFloatingDate =
+        addConfig(
+            "HideFloatingDate",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideAvatarTtlBadge =
+        addConfig(
+            "HideAvatarTtlBadge",
+            ConfigItem.configTypeBool,
+            false
+        )
     val keepTranslatorPreferences =
         addConfig(
             "KeepTranslatorPreferences",

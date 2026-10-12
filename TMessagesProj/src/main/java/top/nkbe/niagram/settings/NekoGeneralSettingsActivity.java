@@ -203,6 +203,7 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
     private final AbstractConfigCell mediaPreviewRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.mediaPreview));
     private final AbstractConfigCell hideDrawerNightModeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideDrawerNightMode()));
     private final AbstractConfigCell hideDrawerProxyRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideDrawerProxy()));
+    private final AbstractConfigCell hideAvatarTtlBadgeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideAvatarTtlBadge()));
     private final AbstractConfigCell dividerDialogs = cellGroup.appendCell(new ConfigCellDivider());
 
     // Appearance

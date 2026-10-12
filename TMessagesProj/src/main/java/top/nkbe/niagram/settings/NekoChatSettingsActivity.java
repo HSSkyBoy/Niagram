@@ -135,6 +135,9 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
 
     // Chats
     private final AbstractConfigCell headerChats = cellGroup.appendCell(new ConfigCellHeader(getString(R.string.Chat)));
+    private final AbstractConfigCell hideChatHeaderVerifiedBadgeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideChatHeaderVerifiedBadge()));
+    private final AbstractConfigCell hideChatHeaderConnectionStateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideChatHeaderConnectionState()));
+    private final AbstractConfigCell hideFloatingDateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideFloatingDate()));
     private final AbstractConfigCell emojiSetsRow = cellGroup.appendCell(new ConfigCellCustom("EmojiSets", ConfigCellCustom.CUSTOM_ITEM_EmojiSet, true));
     private final AbstractConfigCell premiumElementsToggleRow = cellGroup.appendCell(new ConfigCellTextCheck2("PremiumElements", getString(R.string.PremiumElements), new ArrayList<>() {{
         add(new ConfigCellCheckBox(NyaConfig.INSTANCE.getPremiumItemEmojiStatus()));
