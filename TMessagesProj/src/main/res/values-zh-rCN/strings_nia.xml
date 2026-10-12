@@ -66,6 +66,7 @@
     <string name="SendWithMarkdown">使用 Markdown 发送</string>
     <string name="TipsChannel">功能介绍频道</string>
     <string name="ShowSmallGIF">以较小尺寸显示 GIF</string>
+    <string name="DeletedMediaFileMissing">媒体文件已不可用</string>
     <string name="AlwaysSendVideosInHD">始终以高清质量发送视频</string>
     <string name="DisableClickCommandToSend">发送机器人指令前确认</string>
     <string name="DisableDialogsFloatingButton">隐藏浮动按钮</string>

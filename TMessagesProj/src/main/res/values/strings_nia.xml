@@ -62,6 +62,7 @@
     <string name="SendWithMarkdown">Send with Markdown</string>
     <string name="TipsChannel">Feature Tips Channel</string>
     <string name="ShowSmallGIF">Show Small GIF</string>
+    <string name="DeletedMediaFileMissing">The media file is no longer available</string>
     <string name="AlwaysSendVideosInHD">Always send videos in HD</string>
     <string name="DisableClickCommandToSend">Ask Before Sending Bot Command</string>
     <string name="DisableDialogsFloatingButton">Hide Floating Button</string>
