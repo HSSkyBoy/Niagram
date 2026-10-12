@@ -441,11 +441,17 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val alwaysSendVideosInHD =
+        addConfig(
+            "AlwaysSendVideosInHD",
+            ConfigItem.configTypeBool,
+            true
+        )
     val disableClickCommandToSend =
         addConfig(
             "DisableClickCommandToSend",
             ConfigItem.configTypeBool,
-            false
+            true
         )
     val disableDialogsFloatingButton =
         addConfig(
