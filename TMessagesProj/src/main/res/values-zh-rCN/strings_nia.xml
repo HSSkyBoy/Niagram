@@ -58,6 +58,10 @@
     <string name="DisableStories">禁用动态</string>
     <string name="CopyPhotoAsSticker">复制为贴纸</string>
     <string name="ProviderTranSmartTranslate">腾讯交互翻译</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">火山翻译</string>
+    <string name="DeepLxCustomApi">DeepLX API 地址</string>
+    <string name="DeepLXCustomApiNotice">填写你的 DeepLX 服务地址，例如 http://127.0.0.1:1188/translate</string>
     <string name="DisableMarkdown">禁用 Markdown</string>
     <string name="SendWithMarkdown">使用 Markdown 发送</string>
     <string name="TipsChannel">功能介绍频道</string>

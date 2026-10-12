@@ -64,6 +64,8 @@ interface Translator {
         const val providerTelegram = 8
         const val providerTranSmart = 9
         const val providerLLMTranslator = 10
+        const val providerDeepLX = 11
+        const val providerVolcengine = 12
 
         @JvmStatic
         fun getInputTranslateLangForChat(chatId: Long): String {
@@ -281,7 +283,7 @@ interface Translator {
             val countryUpperCase = country.uppercase(Locale.ROOT)
 
             when (provider) {
-                providerDeepL -> language = when (language) {
+                providerDeepL, providerDeepLX -> language = when (language) {
                     "en" if (countryUpperCase == "GB" || countryUpperCase == "US") ->
                         "en-$countryUpperCase"
 
@@ -326,6 +328,8 @@ interface Translator {
                 providerTelegram -> TelegramAPITranslator
                 providerTranSmart -> TranSmartTranslator
                 providerLLMTranslator -> LLMTranslator
+                providerDeepLX -> DeepLXTranslator
+                providerVolcengine -> VolcengineTranslator
                 else -> throw IllegalArgumentException()
             }
 
@@ -350,6 +354,8 @@ interface Translator {
                     ProviderInfo(providerTelegram, R.string.ProviderTelegramAPI),
                     ProviderInfo(providerTranSmart, R.string.ProviderTranSmartTranslate),
                     ProviderInfo(providerLLMTranslator, R.string.ProviderLLMTranslator),
+                    ProviderInfo(providerDeepLX, R.string.ProviderDeepLXTranslate),
+                    ProviderInfo(providerVolcengine, R.string.ProviderVolcengineTranslate),
                 )
             }
         }

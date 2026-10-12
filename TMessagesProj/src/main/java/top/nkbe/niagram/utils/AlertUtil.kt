@@ -158,7 +158,9 @@ object AlertUtil {
                 ProviderInfo(Translator.providerDeepL, R.string.ProviderDeepLTranslate),
                 ProviderInfo(Translator.providerTelegram, R.string.ProviderTelegramAPI),
                 ProviderInfo(Translator.providerTranSmart, R.string.ProviderTranSmartTranslate),
-                ProviderInfo(Translator.providerLLMTranslator, R.string.ProviderLLMTranslator)
+                ProviderInfo(Translator.providerLLMTranslator, R.string.ProviderLLMTranslator),
+                ProviderInfo(Translator.providerDeepLX, R.string.ProviderDeepLXTranslate),
+                ProviderInfo(Translator.providerVolcengine, R.string.ProviderVolcengineTranslate)
             )
             val itemNames = providers.map { getString(it.nameResId) }
             popup.setItems(itemNames.toTypedArray()) { index, _ ->

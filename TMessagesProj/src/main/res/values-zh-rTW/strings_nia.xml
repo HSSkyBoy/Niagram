@@ -58,6 +58,10 @@
     <string name="DisableStories">停用限時動態</string>
     <string name="CopyPhotoAsSticker">複製為貼圖</string>
     <string name="ProviderTranSmartTranslate">騰訊翻譯</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">火山翻譯</string>
+    <string name="DeepLxCustomApi">DeepLX API 位址</string>
+    <string name="DeepLXCustomApiNotice">填寫你的 DeepLX 服務位址，例如 http://127.0.0.1:1188/translate</string>
     <string name="DisableMarkdown">停用 Markdown</string>
     <string name="SendWithMarkdown">使用 Markdown 傳送</string>
     <string name="TipsChannel">功能介紹頻道</string>

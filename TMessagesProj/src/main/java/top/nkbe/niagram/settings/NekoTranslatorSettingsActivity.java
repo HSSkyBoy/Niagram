@@ -145,6 +145,7 @@ public class NekoTranslatorSettingsActivity extends BaseNekoXSettingsActivity {
     );
     private final AbstractConfigCell googleCloudTranslateKeyRow = cellGroup.appendCell(new ConfigCellTextDetail(NyaConfig.googleCloudTranslateKey, (view, position) -> showConfigDialog(position, NyaConfig.googleCloudTranslateKey, getString(R.string.GoogleCloudTransKeyNotice), getString(R.string.LlmApiKey)), getString(R.string.None), true));
     private final AbstractConfigCell deepLTranslateKeyRow = cellGroup.appendCell(new ConfigCellTextDetail(NyaConfig.INSTANCE.getDeepLTranslateKey(), (view, position) -> showConfigDialog(position, NyaConfig.INSTANCE.getDeepLTranslateKey(), getString(R.string.DeepLTranslateKeyNotice), getString(R.string.LlmApiKey)), getString(R.string.None), true));
+    private final AbstractConfigCell deepLxCustomApiRow = cellGroup.appendCell(new ConfigCellTextDetail(NyaConfig.INSTANCE.getDeepLxCustomApi(), (view, position) -> showConfigDialog(position, NyaConfig.INSTANCE.getDeepLxCustomApi(), getString(R.string.DeepLXCustomApiNotice), getString(R.string.LlmApiUrlHint)), getString(R.string.None), true));
 
     private final AbstractConfigCell dividerTranslation = cellGroup.appendCell(new ConfigCellDivider());
 
@@ -330,6 +331,8 @@ public class NekoTranslatorSettingsActivity extends BaseNekoXSettingsActivity {
                 new ProviderInfo(Translator.providerTelegram, R.string.ProviderTelegramAPI),
                 new ProviderInfo(Translator.providerTranSmart, R.string.ProviderTranSmartTranslate),
                 new ProviderInfo(Translator.providerLLMTranslator, R.string.ProviderLLMTranslator),
+                new ProviderInfo(Translator.providerDeepLX, R.string.ProviderDeepLXTranslate),
+                new ProviderInfo(Translator.providerVolcengine, R.string.ProviderVolcengineTranslate),
         };
     }
 
@@ -611,6 +614,8 @@ public class NekoTranslatorSettingsActivity extends BaseNekoXSettingsActivity {
             cellGroup.appendCell(googleCloudTranslateKeyRow);
         } else if (shouldShowDeepLTranslateKeyRow()) {
             cellGroup.appendCell(deepLTranslateKeyRow);
+        } else if (shouldShowDeepLxCustomApiRow()) {
+            cellGroup.appendCell(deepLxCustomApiRow);
         }
         cellGroup.appendCell(dividerTranslation);
 
@@ -1447,8 +1452,14 @@ public class NekoTranslatorSettingsActivity extends BaseNekoXSettingsActivity {
         return NyaConfig.translationProvider.Int() == Translator.providerDeepL;
     }
 
+    private boolean shouldShowDeepLxCustomApiRow() {
+        return NyaConfig.translationProvider.Int() == Translator.providerDeepLX;
+    }
+
     private void checkTranslationKeyRows() {
         boolean changed = false;
+        changed |= removeTranslationKeyRowIfHidden(deepLxCustomApiRow, shouldShowDeepLxCustomApiRow());
+        changed |= addTranslationKeyRowIfVisible(deepLxCustomApiRow, shouldShowDeepLxCustomApiRow());
         changed |= removeTranslationKeyRowIfHidden(googleCloudTranslateKeyRow, shouldShowGoogleCloudTranslateKeyRow());
         changed |= removeTranslationKeyRowIfHidden(deepLTranslateKeyRow, shouldShowDeepLTranslateKeyRow());
         changed |= addTranslationKeyRowIfVisible(googleCloudTranslateKeyRow, shouldShowGoogleCloudTranslateKeyRow());

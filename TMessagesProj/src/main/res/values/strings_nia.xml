@@ -701,6 +701,10 @@
     <string name="DisableProximityEvents">Disable Proximity Events</string>
     <string name="SelectBetween">Select Range</string>
     <string name="ProviderDeepLTranslate">DeepL Translate</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Volcengine Translate</string>
+    <string name="DeepLxCustomApi">DeepLX API URL</string>
+    <string name="DeepLXCustomApiNotice">Configure the URL of your DeepLX service, e.g. http://127.0.0.1:1188/translate</string>
     <string name="ProviderMicrosoftTranslator">Bing Translator</string>
     <string name="DontSendGreetingSticker">Disable Greeting Sticker</string>
     <string name="TakeGIFasVideo">Take GIF as Video</string>

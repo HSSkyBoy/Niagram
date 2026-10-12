@@ -1896,6 +1896,12 @@ object NyaConfig {
             ConfigItem.configTypeString,
             ""
         )
+    val deepLxCustomApi =
+        addConfig(
+            "DeepLxCustomApi",
+            ConfigItem.configTypeString,
+            ""
+        )
     val inputTextAnimations = addConfig("InputTextAnimations", ConfigItem.configTypeBool, false)
     val inputAnimationStrength = addConfig("InputAnimationStrength", ConfigItem.configTypeInt, 2)
 
