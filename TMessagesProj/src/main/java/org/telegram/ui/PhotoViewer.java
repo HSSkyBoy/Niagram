@@ -9162,7 +9162,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             setTextColor(0xffffffff);
             setHighlightColor(0x33ffffff);
             setGravity(Gravity.CENTER_VERTICAL | LayoutHelper.getAbsoluteGravityStart());
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, SharedConfig.fontSize);
             setOnClickListener((v) -> {
                 if (scrollView != null) {
                     scrollView.smoothScrollBy(0, dp(64));
