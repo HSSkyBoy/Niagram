@@ -7655,7 +7655,6 @@ public class ChatActivityEnterView extends FrameLayout implements
         }
 
         if (isIosInputAppearance()) {
-            // the iOS bubble lives on the container: dim only the icon, not the whole bubble
             audioVideoSendButton.setAlpha(audioVideoButtonContainerForbidden ? 0.5f : 1.0f);
             audioVideoButtonContainer.setAlpha(1.0f);
         } else {

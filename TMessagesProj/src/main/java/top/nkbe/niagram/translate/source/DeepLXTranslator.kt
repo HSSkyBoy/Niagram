@@ -15,10 +15,6 @@ import top.nkbe.niagram.utils.HttpClient
 import java.io.IOException
 import java.util.Locale
 
-/**
- * Self-hosted DeepLX service. The endpoint accepts
- * `{ "text", "source_lang", "target_lang" }` and answers with the result in `data`.
- */
 object DeepLXTranslator : Translator {
 
     private val httpClient = HttpClient.instance
