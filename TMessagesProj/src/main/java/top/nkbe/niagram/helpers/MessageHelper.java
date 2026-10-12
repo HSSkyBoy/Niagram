@@ -1321,6 +1321,14 @@ public class MessageHelper extends BaseController {
     }
 
     public boolean sendMessageAsCopy(MessageObject messageObject, MessageObject.GroupedMessages messageGroup, long targetDialogId, MessageObject replyTo, MessageObject replyToTopMsg, ChatActivity.ReplyQuote quote, boolean notify, int scheduleDate, int mode, String quickReplyShortcut, int quickReplyShortcutId, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams) {
+        return sendMessageAsCopy(messageObject, messageGroup, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, true);
+    }
+
+    /**
+     * @param tryReference first try to reference the media already on the server; if that is not
+     *                     possible or refused, download the media and send it as a local copy
+     */
+    private boolean sendMessageAsCopy(MessageObject messageObject, MessageObject.GroupedMessages messageGroup, long targetDialogId, MessageObject replyTo, MessageObject replyToTopMsg, ChatActivity.ReplyQuote quote, boolean notify, int scheduleDate, int mode, String quickReplyShortcut, int quickReplyShortcutId, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams, boolean tryReference) {
         if (messageObject == null || messageObject.messageOwner == null) {
             return false;
         }
@@ -1334,7 +1342,29 @@ public class MessageHelper extends BaseController {
             SendMessagesHelper.getInstance(currentAccount).sendSticker(messageObject.getDocument(), null, targetDialogId, null, null, replyTo, replyToTopMsg, null, quote, null, notify, scheduleDate, 0, false, null, sendMessageChatArguments, payStars, monoForumPeerId, suggestionParams);
             return true;
         }
+        if (tryReference && canTryReferenceSend(targetDialogId, quote, quickReplyShortcut, quickReplyShortcutId, payStars, suggestionParams) && CopyReferenceSender.canSendByReference(messageObject)) {
+            ArrayList<MessageObject> single = new ArrayList<>();
+            single.add(messageObject);
+            Runnable fallback = () -> downloadThen(single, () -> {
+                if (!sendMessageAsCopy(messageObject, messageGroup, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, false)) {
+                    toastOnUi(R.string.PleaseDownload);
+                }
+            });
+            if (CopyReferenceSender.sendByReference(currentAccount, single, targetDialogId, replyTo != null ? replyTo : replyToTopMsg, notify, scheduleDate, monoForumPeerId, fallback)) {
+                return true;
+            }
+        }
         String path = getPathToMessage(messageObject, currentAccount);
+        if (TextUtils.isEmpty(path) && tryReference && needsDownloadForCopy(messageObject)) {
+            ArrayList<MessageObject> single = new ArrayList<>();
+            single.add(messageObject);
+            downloadThen(single, () -> {
+                if (!sendMessageAsCopy(messageObject, messageGroup, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, false)) {
+                    toastOnUi(R.string.PleaseDownload);
+                }
+            });
+            return true;
+        }
         if (!TextUtils.isEmpty(path)) {
             if (messageObject.isRoundVideo()) {
                 VideoEditedInfo info = messageObject.videoEditedInfo != null ? messageObject.videoEditedInfo : new VideoEditedInfo();
@@ -1371,21 +1401,55 @@ public class MessageHelper extends BaseController {
 
 
     public boolean sendMessagesAsCopy(ArrayList<MessageObject> messages, long targetDialogId, MessageObject replyTo, MessageObject replyToTopMsg, ChatActivity.ReplyQuote quote, boolean notify, int scheduleDate, int mode, String quickReplyShortcut, int quickReplyShortcutId, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams) {
+        return sendMessagesAsCopy(messages, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, true);
+    }
+
+    /**
+     * @param tryReference first send what can be sent by referencing media on the server; whatever
+     *                     is refused or not referenceable is downloaded and sent as a local copy
+     */
+    private boolean sendMessagesAsCopy(ArrayList<MessageObject> messages, long targetDialogId, MessageObject replyTo, MessageObject replyToTopMsg, ChatActivity.ReplyQuote quote, boolean notify, int scheduleDate, int mode, String quickReplyShortcut, int quickReplyShortcutId, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams, boolean tryReference) {
         if (messages == null || messages.isEmpty()) {
             return false;
         }
         if (!canSendMessagesAsCopy(messages)) {
             return false;
         }
+        boolean sentAny = false;
+        if (tryReference && canTryReferenceSend(targetDialogId, quote, quickReplyShortcut, quickReplyShortcutId, payStars, suggestionParams)) {
+            ArrayList<MessageObject> remaining = new ArrayList<>(messages);
+            sendReferenceCapableMessages(remaining, targetDialogId, replyTo != null ? replyTo : replyToTopMsg, notify, scheduleDate, monoForumPeerId, refused -> downloadThen(refused, () -> {
+                if (!sendMessagesAsCopy(refused, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, false)) {
+                    toastOnUi(R.string.PleaseDownload);
+                }
+            }));
+            sentAny = remaining.size() < messages.size();
+            if (remaining.isEmpty()) {
+                return true;
+            }
+            messages = remaining;
+        }
+        ArrayList<MessageObject> missingFiles = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
             MessageObject messageObject = messages.get(i);
             boolean needsFile = messageObject != null && messageObject.messageOwner != null && !messageObject.isSticker() && !messageObject.isAnimatedSticker() && !messageObject.isAnimatedEmoji() &&
                     (messageObject.isPhoto() || messageObject.isVideo() || messageObject.isRoundVideo() || messageObject.getDocument() != null);
             if (needsFile && TextUtils.isEmpty(getPathToMessage(messageObject, currentAccount))) {
-                return false;
+                missingFiles.add(messageObject);
             }
         }
-        boolean sentAny = false;
+        if (!missingFiles.isEmpty()) {
+            if (!tryReference) {
+                return sentAny;
+            }
+            final ArrayList<MessageObject> pending = new ArrayList<>(messages);
+            downloadThen(missingFiles, () -> {
+                if (!sendMessagesAsCopy(pending, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, false)) {
+                    toastOnUi(R.string.PleaseDownload);
+                }
+            });
+            return true;
+        }
         long currentGroupId = 0;
         boolean currentInvertMedia = false;
         ArrayList<SendMessagesHelper.SendingMediaInfo> media = null;
@@ -1417,7 +1481,7 @@ public class MessageHelper extends BaseController {
                     media = null;
                     currentGroupId = 0;
                 }
-                if (sendMessageAsCopy(messageObject, null, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams)) {
+                if (sendMessageAsCopy(messageObject, null, targetDialogId, replyTo, replyToTopMsg, quote, notify, scheduleDate, mode, quickReplyShortcut, quickReplyShortcutId, payStars, monoForumPeerId, suggestionParams, false)) {
                     sentAny = true;
                 }
             }
@@ -1427,6 +1491,80 @@ public class MessageHelper extends BaseController {
             sentAny = true;
         }
         return sentAny;
+    }
+
+    private static boolean canTryReferenceSend(long targetDialogId, ChatActivity.ReplyQuote quote, String quickReplyShortcut, int quickReplyShortcutId, long payStars, MessageSuggestionParams suggestionParams) {
+        return quote == null && TextUtils.isEmpty(quickReplyShortcut) && quickReplyShortcutId == 0 && payStars == 0
+                && suggestionParams == null && !DialogObject.isEncryptedDialog(targetDialogId);
+    }
+
+    /**
+     * Sends every album / single message that can be referenced on the server and removes it from
+     * {@code messages}. {@code onRefused} gets the batch the server later refuses.
+     */
+    private void sendReferenceCapableMessages(ArrayList<MessageObject> messages, long targetDialogId, MessageObject replyTopMsg, boolean notify, int scheduleDate, long monoForumPeerId, Utilities.Callback<ArrayList<MessageObject>> onRefused) {
+        int index = 0;
+        while (index < messages.size()) {
+            MessageObject messageObject = messages.get(index);
+            long groupId = messageObject.getGroupIdForUse();
+            int groupEnd = index + 1;
+            while (groupId != 0 && groupEnd < messages.size() && messages.get(groupEnd).getGroupIdForUse() == groupId) {
+                groupEnd++;
+            }
+            ArrayList<MessageObject> batch = new ArrayList<>(messages.subList(index, groupEnd));
+            boolean capable = groupId != 0 ? CopyReferenceSender.canSendGroupByReference(batch) : CopyReferenceSender.canSendByReference(messageObject);
+            if (capable && CopyReferenceSender.sendByReference(currentAccount, batch, targetDialogId, replyTopMsg, notify, scheduleDate, monoForumPeerId, () -> onRefused.run(batch))) {
+                messages.subList(index, groupEnd).clear();
+                continue;
+            }
+            index = groupEnd;
+        }
+    }
+
+    /** Downloads the missing media of {@code messages} and runs {@code onReady}; failures also end up there. */
+    private void downloadThen(ArrayList<MessageObject> messages, Runnable onReady) {
+        HashSet<String> pendingFiles = new HashSet<>();
+        ArrayList<MessageObject> toDownload = new ArrayList<>();
+        for (int i = 0; i < messages.size(); i++) {
+            MessageObject msg = messages.get(i);
+            if (!needsDownloadForCopy(msg)) {
+                continue;
+            }
+            String fileName = getAttachFileNameForMessage(msg);
+            if (TextUtils.isEmpty(fileName)) {
+                continue;
+            }
+            pendingFiles.add(fileName);
+            toDownload.add(msg);
+        }
+        if (pendingFiles.isEmpty()) {
+            AndroidUtilities.runOnUIThread(onReady);
+            return;
+        }
+        toastOnUi(R.string.Downloading);
+        final NotificationCenter.NotificationCenterDelegate[] observer = new NotificationCenter.NotificationCenterDelegate[1];
+        observer[0] = (id, account, args) -> {
+            if (account != currentAccount || (id != NotificationCenter.fileLoaded && id != NotificationCenter.fileLoadFailed)) {
+                return;
+            }
+            String fileName = (String) args[0];
+            if (fileName != null && pendingFiles.remove(fileName) && pendingFiles.isEmpty()) {
+                NotificationCenter.getInstance(currentAccount).removeObserver(observer[0], NotificationCenter.fileLoaded);
+                NotificationCenter.getInstance(currentAccount).removeObserver(observer[0], NotificationCenter.fileLoadFailed);
+                onReady.run();
+            }
+        };
+        AndroidUtilities.runOnUIThread(() -> {
+            NotificationCenter.getInstance(currentAccount).addObserver(observer[0], NotificationCenter.fileLoaded);
+            NotificationCenter.getInstance(currentAccount).addObserver(observer[0], NotificationCenter.fileLoadFailed);
+            for (int i = 0; i < toDownload.size(); i++) {
+                startDownloadForMessage(toDownload.get(i));
+            }
+        });
+    }
+
+    private static void toastOnUi(int stringRes) {
+        AndroidUtilities.runOnUIThread(() -> android.widget.Toast.makeText(ApplicationLoader.applicationContext, LocaleController.getString(stringRes), android.widget.Toast.LENGTH_LONG).show());
     }
 
     public boolean canSendMessageAsCopy(MessageObject messageObject, MessageObject.GroupedMessages messageGroup) {
@@ -1615,10 +1753,13 @@ public class MessageHelper extends BaseController {
             return;
         }
 
+        // Media that can be referenced on the server needs no download; if the server refuses the
+        // reference, sendMessagesAsCopy falls back to downloading it in the background.
+        HashSet<Long> referenceCapableGroupIds = CopyReferenceSender.resolveFullyReferenceCapableGroupIds(messages);
         ArrayList<MessageObject> missingFiles = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
             MessageObject msg = messages.get(i);
-            if (needsDownloadForCopy(msg)) {
+            if (needsDownloadForCopy(msg) && !CopyReferenceSender.canRouteByReference(msg, referenceCapableGroupIds)) {
                 missingFiles.add(msg);
             }
         }
