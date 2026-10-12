@@ -867,4 +867,14 @@
     <string name="NekoAboutSectionDiagnostics">Diagnose</string>
     <string name="HideDrawerNightMode">Nachtmodus in menu verbergen</string>
     <string name="HideDrawerProxy">Proxy in menu verbergen</string>
+    <string name="AlwaysSendVideosInHD">Video\'s altijd in HD verzenden</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Volcengine-vertaler</string>
+    <string name="DeepLxCustomApi">DeepLX API-URL</string>
+    <string name="DeepLXCustomApiNotice">Stel de URL van je DeepLX-service in, bijvoorbeeld http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">Het mediabestand is niet meer beschikbaar</string>
+    <string name="HideChatHeaderVerifiedBadge">Verificatiebadge in de chatkop verbergen</string>
+    <string name="HideChatHeaderConnectionState">Verbindingsstatus in de chatkop verbergen</string>
+    <string name="HideFloatingDate">Zwevende datum verbergen</string>
+    <string name="HideAvatarTtlBadge">Timer voor automatisch verwijderen op avatars verbergen</string>
 </resources>

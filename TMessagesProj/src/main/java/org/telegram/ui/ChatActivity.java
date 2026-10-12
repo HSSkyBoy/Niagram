@@ -14594,7 +14594,7 @@ public class ChatActivity extends BaseFragment implements
     }
 
     private void showFloatingDateView(boolean scroll) {
-        if (floatingDateView == null || isQuickRepliesOrWelcomeMessagesMode()) {
+        if (floatingDateView == null || isQuickRepliesOrWelcomeMessagesMode() || NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
             return;
         }
         if (floatingDateView.getTag() == null) {

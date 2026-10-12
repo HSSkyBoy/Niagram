@@ -867,4 +867,14 @@
     <string name="NekoAboutSectionDiagnostics">التشخيص</string>
     <string name="HideDrawerNightMode">إخفاء الوضع الليلي في القائمة</string>
     <string name="HideDrawerProxy">إخفاء الوكيل في القائمة</string>
+    <string name="AlwaysSendVideosInHD">إرسال مقاطع الفيديو دائمًا بجودة HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">ترجمة Volcengine</string>
+    <string name="DeepLxCustomApi">عنوان API لـ DeepLX</string>
+    <string name="DeepLXCustomApiNotice">حدد عنوان خدمة DeepLX الخاصة بك، مثال: http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">ملف الوسائط لم يعد متاحًا</string>
+    <string name="HideChatHeaderVerifiedBadge">إخفاء شارة التوثيق في رأس المحادثة</string>
+    <string name="HideChatHeaderConnectionState">إخفاء حالة الاتصال في رأس المحادثة</string>
+    <string name="HideFloatingDate">إخفاء التاريخ العائم</string>
+    <string name="HideAvatarTtlBadge">إخفاء مؤقت الحذف التلقائي على الصور الرمزية</string>
 </resources>

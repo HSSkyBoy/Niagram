@@ -856,4 +856,14 @@
     <string name="ChatActivityNavbarTransparent">نوار ناوبری کاملاً شفاف در گفتگو</string>
     <string name="HideDrawerNightMode">مخفی کردن حالت شب در منو</string>
     <string name="HideDrawerProxy">مخفی کردن پروکسی در منو</string>
+    <string name="AlwaysSendVideosInHD">همیشه ویدیوها را با کیفیت HD ارسال کن</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">مترجم Volcengine</string>
+    <string name="DeepLxCustomApi">نشانی API ‏DeepLX</string>
+    <string name="DeepLXCustomApiNotice">نشانی سرویس DeepLX خود را وارد کنید، مثلاً http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">فایل رسانه دیگر در دسترس نیست</string>
+    <string name="HideChatHeaderVerifiedBadge">پنهان کردن نشان تأیید در سربرگ گفتگو</string>
+    <string name="HideChatHeaderConnectionState">پنهان کردن وضعیت اتصال در سربرگ گفتگو</string>
+    <string name="HideFloatingDate">پنهان کردن تاریخ شناور</string>
+    <string name="HideAvatarTtlBadge">پنهان کردن تایمر حذف خودکار روی آواتارها</string>
 </resources>

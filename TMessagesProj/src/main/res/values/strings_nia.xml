@@ -892,4 +892,8 @@
     <string name="NekoAboutSectionDiagnostics">Diagnostics</string>
     <string name="HideDrawerNightMode">Hide Night Mode in Menu</string>
     <string name="HideDrawerProxy">Hide Proxy in Menu</string>
+    <string name="HideChatHeaderVerifiedBadge">Hide verified badge in chat header</string>
+    <string name="HideChatHeaderConnectionState">Hide connection status in chat header</string>
+    <string name="HideFloatingDate">Hide floating date</string>
+    <string name="HideAvatarTtlBadge">Hide auto-delete timer on avatars</string>
 </resources>

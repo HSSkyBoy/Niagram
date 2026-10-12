@@ -869,4 +869,8 @@
     <string name="ImportAyuDBAlert">当前消息数据库将被替换。导入后应用将重启。</string>
     <string name="HideDrawerNightMode">隐藏菜单中的夜间模式</string>
     <string name="HideDrawerProxy">隐藏菜单中的代理</string>
+    <string name="HideChatHeaderVerifiedBadge">隐藏聊天标题栏的认证标志</string>
+    <string name="HideChatHeaderConnectionState">隐藏聊天标题栏的连接状态</string>
+    <string name="HideFloatingDate">隐藏悬浮日期</string>
+    <string name="HideAvatarTtlBadge">隐藏头像上的自动删除计时标志</string>
 </resources>

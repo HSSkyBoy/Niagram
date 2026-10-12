@@ -855,4 +855,14 @@
     <string name="PublicProxyCannotShare">Le proxy public intégré ne peut pas être partagé.</string>
     <string name="HideDrawerNightMode">Masquer le mode nuit dans le menu</string>
     <string name="HideDrawerProxy">Masquer le proxy dans le menu</string>
+    <string name="AlwaysSendVideosInHD">Toujours envoyer les vidéos en HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Traducteur Volcengine</string>
+    <string name="DeepLxCustomApi">URL de l\'API DeepLX</string>
+    <string name="DeepLXCustomApiNotice">Indiquez l\'URL de votre service DeepLX, par exemple http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">Le fichier multimédia n\'est plus disponible</string>
+    <string name="HideChatHeaderVerifiedBadge">Masquer le badge de vérification dans l\'en-tête de la discussion</string>
+    <string name="HideChatHeaderConnectionState">Masquer l\'état de connexion dans l\'en-tête de la discussion</string>
+    <string name="HideFloatingDate">Masquer la date flottante</string>
+    <string name="HideAvatarTtlBadge">Masquer le minuteur de suppression automatique sur les avatars</string>
 </resources>

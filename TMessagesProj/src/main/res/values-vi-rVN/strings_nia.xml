@@ -857,4 +857,14 @@
     <string name="ChatActivityNavbarTransparent">Thanh điều hướng trò chuyện trong suốt hoàn toàn</string>
     <string name="HideDrawerNightMode">Ẩn chế độ ban đêm trong menu</string>
     <string name="HideDrawerProxy">Ẩn proxy trong menu</string>
+    <string name="AlwaysSendVideosInHD">Luôn gửi video ở chất lượng HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Dịch Volcengine</string>
+    <string name="DeepLxCustomApi">URL API DeepLX</string>
+    <string name="DeepLXCustomApiNotice">Nhập URL dịch vụ DeepLX của bạn, ví dụ http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">Tệp phương tiện không còn khả dụng</string>
+    <string name="HideChatHeaderVerifiedBadge">Ẩn huy hiệu xác minh trên tiêu đề cuộc trò chuyện</string>
+    <string name="HideChatHeaderConnectionState">Ẩn trạng thái kết nối trên tiêu đề cuộc trò chuyện</string>
+    <string name="HideFloatingDate">Ẩn ngày nổi</string>
+    <string name="HideAvatarTtlBadge">Ẩn bộ đếm tự xóa trên ảnh đại diện</string>
 </resources>

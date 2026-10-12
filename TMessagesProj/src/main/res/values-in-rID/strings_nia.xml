@@ -856,4 +856,14 @@
     <string name="ChatActivityNavbarTransparent">Bilah Navigasi Obrolan Transparan Penuh</string>
     <string name="HideDrawerNightMode">Sembunyikan Mode Malam di Menu</string>
     <string name="HideDrawerProxy">Sembunyikan Proksi di Menu</string>
+    <string name="AlwaysSendVideosInHD">Selalu kirim video dalam HD</string>
+    <string name="ProviderDeepLXTranslate">DeepLX</string>
+    <string name="ProviderVolcengineTranslate">Penerjemah Volcengine</string>
+    <string name="DeepLxCustomApi">URL API DeepLX</string>
+    <string name="DeepLXCustomApiNotice">Atur URL layanan DeepLX Anda, contoh: http://127.0.0.1:1188/translate</string>
+    <string name="DeletedMediaFileMissing">Berkas media tidak lagi tersedia</string>
+    <string name="HideChatHeaderVerifiedBadge">Sembunyikan lencana verifikasi di header obrolan</string>
+    <string name="HideChatHeaderConnectionState">Sembunyikan status koneksi di header obrolan</string>
+    <string name="HideFloatingDate">Sembunyikan tanggal mengambang</string>
+    <string name="HideAvatarTtlBadge">Sembunyikan timer hapus otomatis pada avatar</string>
 </resources>
