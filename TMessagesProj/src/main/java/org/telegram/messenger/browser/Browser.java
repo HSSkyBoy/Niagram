@@ -476,16 +476,6 @@ public class Browser {
         return true;
     }
 
-    public static boolean isInstantViewOpen() {
-        BaseFragment fragment = LaunchActivity.getSafeLastFragment();
-        if (fragment != null && fragment.getParentLayout() instanceof ActionBarLayout) {
-            BaseFragment sheetFragment = ((ActionBarLayout) fragment.getParentLayout()).getSheetFragment();
-            if (sheetFragment != null && sheetFragment.getArticleViewer() != null)
-                return true;
-        }
-        return fragment != null && fragment.getArticleViewer() != null;
-    }
-
     public static boolean openInTelegramBrowser(Context context, String url, Browser.Progress progress) {
         if (LaunchActivity.instance != null) {
             BottomSheetTabs tabs = LaunchActivity.instance.getBottomSheetTabs();
