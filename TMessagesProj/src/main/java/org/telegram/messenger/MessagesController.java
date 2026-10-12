@@ -353,6 +353,7 @@ public class MessagesController extends BaseController implements NotificationCe
     private LongSparseArray<Long> lastWelcomeMessagesServerQueryTime = new LongSparseArray<>();
     private LongSparseArray<Long> lastSavedServerQueryTime = new LongSparseArray<>();
     private LongSparseArray<Long> lastServerQueryTime = new LongSparseArray<>();
+    private LongSparseArray<HashSet<Integer>> serverConfirmedMissingMessages = new LongSparseArray<>();
 
     private LongSparseArray<ArrayList<Integer>> reloadingMessages = new LongSparseArray<>();
 
@@ -6586,6 +6587,7 @@ public class MessagesController extends BaseController implements NotificationCe
         lastWelcomeMessagesServerQueryTime.clear();
         lastSavedServerQueryTime.clear();
         lastServerQueryTime.clear();
+        clearServerConfirmedMissingMessages();
         reloadingWebpages.clear();
         reloadingWebpagesPending.clear();
         reloadingScheduledWebpages.clear();
@@ -12165,6 +12167,62 @@ public class MessagesController extends BaseController implements NotificationCe
         return null;
     }
 
+    private boolean shouldRefillMissingAnchorMessage(boolean isCache, int mode, long threadMessageId, long mergeDialogId, int loadType, int maxId, ArrayList<TLRPC.Message> messages, long dialogId) {
+        if (!isCache || !isJumpToMessageWindowLoad(mode, threadMessageId, mergeDialogId, loadType, maxId)) {
+            return false;
+        }
+        if (SystemClock.elapsedRealtime() - lastServerQueryTime.get(dialogId, 0L) < 10 * 1000) {
+            return false;
+        }
+        return isAnchorMessageAbsentFromWindow(maxId, messages) && !isServerConfirmedMissingMessage(dialogId, maxId);
+    }
+
+    private boolean isJumpToMessageWindowLoad(int mode, long threadMessageId, long mergeDialogId, int loadType, int maxId) {
+        return mode == ChatActivity.MODE_DEFAULT && threadMessageId == 0 && mergeDialogId == 0 && loadType == LOAD_AROUND_MESSAGE && maxId > 0;
+    }
+
+    private boolean isAnchorMessageAbsentFromWindow(int maxId, ArrayList<TLRPC.Message> messages) {
+        if (messages.isEmpty()) {
+            return false;
+        }
+        int minResultId = Integer.MAX_VALUE;
+        int maxResultId = Integer.MIN_VALUE;
+        for (int a = 0, N = messages.size(); a < N; a++) {
+            int id = messages.get(a).id;
+            if (id <= 0) {
+                continue;
+            }
+            if (id == maxId) {
+                return false;
+            }
+            if (id < minResultId) {
+                minResultId = id;
+            }
+            if (id > maxResultId) {
+                maxResultId = id;
+            }
+        }
+        return minResultId < maxId && maxId < maxResultId;
+    }
+
+    private synchronized boolean isServerConfirmedMissingMessage(long dialogId, int messageId) {
+        HashSet<Integer> ids = serverConfirmedMissingMessages.get(dialogId);
+        return ids != null && ids.contains(messageId);
+    }
+
+    private synchronized void markServerConfirmedMissingMessage(long dialogId, int messageId) {
+        HashSet<Integer> ids = serverConfirmedMissingMessages.get(dialogId);
+        if (ids == null) {
+            ids = new HashSet<>();
+            serverConfirmedMissingMessages.put(dialogId, ids);
+        }
+        ids.add(messageId);
+    }
+
+    private synchronized void clearServerConfirmedMissingMessages() {
+        serverConfirmedMissingMessages.clear();
+    }
+
     public void processLoadedMessages(TLRPC.messages_Messages messagesRes, int resCount, long dialogId, long mergeDialogId, int count, int max_id, int offset_date, boolean isCache, int classGuid,
                                       int first_unread, int last_message_id, int unread_count, int last_date, int load_type, boolean isEnd, int mode, long threadMessageId, int loadIndex, boolean queryFromServer, int mentionsCount, boolean needProcess, boolean isTopic, Timer loaderLogger) {
         if (BuildVars.LOGS_ENABLED) {
@@ -12218,7 +12276,7 @@ public class MessagesController extends BaseController implements NotificationCe
         } else if (mode == ChatActivity.MODE_SAVED) {
             reload = resCount == 0 && (!isInitialLoading || (SystemClock.elapsedRealtime() - lastSavedServerQueryTime.get(threadMessageId, 0L)) > 60 * 1000 || isCache);
         } else {
-            reload = resCount == 0 && (!isInitialLoading || (SystemClock.elapsedRealtime() - lastServerQueryTime.get(dialogId, 0L)) > 60 * 1000 || (isCache && isTopic));
+            reload = shouldRefillMissingAnchorMessage(isCache, mode, threadMessageId, mergeDialogId, load_type, max_id, messagesRes.messages, dialogId) || resCount == 0 && (!isInitialLoading || (SystemClock.elapsedRealtime() - lastServerQueryTime.get(dialogId, 0L)) > 60 * 1000 || (isCache && isTopic));
         }
         if (!DialogObject.isEncryptedDialog(dialogId) && isCache && reload) {
             if (mode == ChatActivity.MODE_SCHEDULED) {
@@ -12285,6 +12343,10 @@ public class MessagesController extends BaseController implements NotificationCe
         }
         int size = messagesRes.messages.size();
         if (!isCache) {
+            if (isJumpToMessageWindowLoad(mode, threadMessageId, mergeDialogId, load_type, max_id)
+                    && isAnchorMessageAbsentFromWindow(max_id, messagesRes.messages)) {
+                markServerConfirmedMissingMessage(dialogId, max_id);
+            }
             Integer inboxValue = dialogs_read_inbox_max.get(dialogId);
             if (inboxValue == null) {
                 inboxValue = getMessagesStorage().getDialogReadMax(false, dialogId);
