@@ -60,9 +60,9 @@ import kotlinx.coroutines.Job;
 import kotlinx.coroutines.JobCancellationException;
 import top.nkbe.niagram.NekoXConfig;
 
-@RequiresApi(api = 28)
 public class PasskeysController {
 
+    @RequiresApi(api = 28)
     public static void create(Context context, int currentAccount, Utilities.Callback2<TL_account.Passkey, String> done) {
         if (!BuildVars.SUPPORTS_PASSKEYS) {
             done.run(null, "Passkeys not supported on this device");
@@ -188,6 +188,7 @@ public class PasskeysController {
         );
     }
 
+    @RequiresApi(api = 28)
     public static Runnable login(Context context, int currentAccount, boolean clickedButton, Utilities.Callback3<Long, TLRPC.auth_Authorization, String> done) {
         if (!BuildVars.SUPPORTS_PASSKEYS) {
             if (clickedButton) {
