@@ -1,15 +1,11 @@
 package org.telegram.ui.Wallet;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CancellationSignal;
-import android.os.Handler;
-import android.os.Looper;
-import android.hardware.fingerprint.FingerprintManager;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
@@ -105,7 +101,6 @@ public final class GramWalletStorageAuth {
         boolean credentialStarted;
         int credentialCode;
         CancellationSignal cancellation;
-        AlertDialog fingerprintDialog;
 
         void finish(String error) {
             if (latch.getCount() == 0) return;
@@ -117,7 +112,8 @@ public final class GramWalletStorageAuth {
             try {
                 if (credentialOnly) credentials();
                 else if (Build.VERSION.SDK_INT >= 30) modernBiometrics();
-                else fingerprints();
+                // FingerprintManager is gone from compileSdk 37; M-Q falls back to the device credential screen.
+                else credentials();
             } catch (Exception e) { FileLog.e(e); credentials(); }
         }
 
@@ -140,39 +136,6 @@ public final class GramWalletStorageAuth {
                             });
         }
 
-        // On M-Q, own the FingerprintManager callback rather than sharing AndroidX 1.1.0's
-        // activity ViewModel with BotBiometry. No Cipher crosses the framework/OEM boundary.
-        @SuppressWarnings("deprecation")
-        private void fingerprints() {
-            FingerprintManager manager = (FingerprintManager) activity.getSystemService(Context.FINGERPRINT_SERVICE);
-            if (manager == null || !manager.isHardwareDetected() || !manager.hasEnrolledFingerprints()) {
-                credentials();
-                return;
-            }
-            cancellation = new CancellationSignal();
-            fingerprintDialog = new AlertDialog.Builder(activity)
-                    .setTitle(LocaleController.getString(R.string.WalletUnlock))
-                    .setMessage(LocaleController.getString(R.string.WalletTouchFingerprint))
-                    .setNegativeButton(LocaleController.getString(R.string.Cancel), (dialog, which) -> finish("AUTH_CANCELED"))
-                    .setPositiveButton(LocaleController.getString(R.string.WalletUseDevicePasscode), (dialog, which) -> credentials())
-                    .setOnCancelListener(dialog -> finish("AUTH_CANCELED"))
-                    .show();
-            manager.authenticate(null, cancellation, 0, new FingerprintManager.AuthenticationCallback() {
-                @Override public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) { if (!credentialStarted) finish(null); }
-                @Override public void onAuthenticationFailed() {
-                    if (waiting() && fingerprintDialog != null) fingerprintDialog.setMessage(LocaleController.getString(R.string.WalletFingerprintRetry));
-                }
-                @Override public void onAuthenticationHelp(int code, CharSequence message) {
-                    if (waiting() && fingerprintDialog != null) fingerprintDialog.setMessage(message);
-                }
-                @Override public void onAuthenticationError(int code, CharSequence message) {
-                    if (!waiting() || credentialStarted) return;
-                    if (code == FingerprintManager.FINGERPRINT_ERROR_CANCELED) finish("AUTH_CANCELED");
-                    else credentials();
-                }
-            }, new Handler(Looper.getMainLooper()));
-        }
-
         private boolean waiting() { return !expired && latch.getCount() != 0; }
 
         @SuppressWarnings("deprecation")
@@ -193,8 +156,6 @@ public final class GramWalletStorageAuth {
 
         private void stopBiometrics() {
             try { if (cancellation != null) cancellation.cancel(); } catch (Exception e) { FileLog.e(e); }
-            try { if (fingerprintDialog != null) fingerprintDialog.dismiss(); } catch (Exception e) { FileLog.e(e); }
-            fingerprintDialog = null;
         }
 
     }
