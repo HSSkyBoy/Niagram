@@ -3898,21 +3898,13 @@ public class ChatActivity extends BaseFragment implements
             if (chatActivity != null && chatActivity.getDialogId() == UserObject.VERIFY) {
                 return true;
             }
-            return chatActivity == null || !(selectedView != null && selectedView.getMessageObject() != null && selectedView.getMessageObject().messageOwner != null);
-            /*return chatActivity == null || !(
-                chatActivity.getDialogId() < 0 && chatActivity.getMessagesController().isPeerNoForwards(chatActivity.getDialogId()) ||
-                selectedView != null && selectedView.getMessageObject() != null && (selectedView.getMessageObject().messageOwner != null && selectedView.getMessageObject().messageOwner.noforwards)
-            );*/
-        }
-
-        @Override
-        protected void onQuoteClick(MessageObject messageObject, int start, int end, CharSequence text) {
-            if (messageObject == null) {
-                return;
+            if (top.nkbe.niagram.config.NyaConfig.INSTANCE.getAllowCopyProtectedContent().Bool()) {
+                return true;
             }
-            if (chatActivity != null) {
-                end = Math.min(end, start + chatActivity.getMessagesController().quoteLengthMax);
-                if (messageObject.getGroupId() != 0) {
+            return chatActivity == null || !(
+                !DialogObject.isEncryptedDialog(chatActivity.getDialogId()) && chatActivity.isPeerNoForwards() ||
+                selectedView != null && selectedView.getMessageObject() != null && (selectedView.getMessageObject().messageOwner != null && selectedView.getMessageObject().messageOwner.noforwards)
+            );
                     MessageObject.GroupedMessages group = chatActivity.getGroup(messageObject.getGroupId());
                     if (group != null && !group.isDocuments) {
                         messageObject = group.captionMessage;
