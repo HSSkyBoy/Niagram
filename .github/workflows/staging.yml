@@ -39,6 +39,9 @@ jobs:
         with:
           fetch-depth: 1
           submodules: recursive
+      - name: Apply native patches
+        working-directory: TMessagesProj/jni
+        run: ./patches/tgcalls.sh
       - name: Set up JDK
         uses: actions/setup-java@v6
         with:
