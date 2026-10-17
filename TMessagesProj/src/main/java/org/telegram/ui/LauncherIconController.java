@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.R;
+import org.telegram.messenger.UserConfig;
 
 public class LauncherIconController {
     public static void tryFixLauncherIconIfNeeded() {
@@ -44,6 +46,11 @@ public class LauncherIconController {
         }
         if (LaunchActivity.instance != null) {
             LaunchActivity.instance.updateTaskDescription();
+        }
+        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            if (UserConfig.getInstance(a).isClientActivated()) {
+                MediaDataController.getInstance(a).buildShortcuts();
+            }
         }
     }
 

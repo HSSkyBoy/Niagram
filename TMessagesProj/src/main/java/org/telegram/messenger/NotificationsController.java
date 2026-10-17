@@ -80,6 +80,7 @@ import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.Forum.ForumUtilities;
 import org.telegram.ui.Components.spoilers.SpoilerEffect;
 import org.telegram.ui.LaunchActivity;
+import org.telegram.ui.LauncherIconController;
 import org.telegram.ui.PopupNotificationActivity;
 import org.telegram.ui.Stories.recorder.StoryEntry;
 import org.telegram.ui.Wallet.GramWallet;
@@ -3699,6 +3700,7 @@ public class NotificationsController extends BaseController implements Notificat
                     .setLongLabel(name)
                     .setIntent(new Intent(Intent.ACTION_DEFAULT))
                     .setIntent(shortcutIntent)
+                    .setActivity(LauncherIconController.getCurrentIcon().getComponentName(ApplicationLoader.applicationContext))
                     .setLongLived(true)
                     .setLocusId(new LocusIdCompat(id));
 
@@ -5600,6 +5602,7 @@ public class NotificationsController extends BaseController implements Notificat
             }
 
             Intent intent = new Intent(ApplicationLoader.applicationContext, LaunchActivity.class);
+            intent.setComponent(LauncherIconController.getCurrentIcon().getComponentName(ApplicationLoader.applicationContext));
             intent.setAction("com.tmessages.openchat" + Math.random() + Integer.MAX_VALUE);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -5915,7 +5918,7 @@ public class NotificationsController extends BaseController implements Notificat
 
     public static Person.Builder loadRoundAvatar(long dialogId, File avatar, Person.Builder personBuilder) {
         if (dialogId == UserObject.OAUTH) {
-            personBuilder.setIcon(IconCompat.createWithResource(ApplicationLoader.applicationContext, R.drawable.ic_launcher_dr));
+            personBuilder.setIcon(IconCompat.createWithResource(ApplicationLoader.applicationContext, LauncherIconController.getCurrentIcon().iconRes));
             return personBuilder;
         }
         if (avatar != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

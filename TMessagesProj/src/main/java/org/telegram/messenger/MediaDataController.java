@@ -46,6 +46,8 @@ import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
+import org.telegram.ui.LauncherIconController;
+
 import com.android.billingclient.api.ProductDetails;
 
 import org.telegram.SQLite.SQLiteCursor;
@@ -5107,11 +5109,13 @@ public class MediaDataController extends BaseController {
                 }
 
                 Intent intent = new Intent(ApplicationLoader.applicationContext, LaunchActivity.class);
+                intent.setComponent(LauncherIconController.getCurrentIcon().getComponentName(ApplicationLoader.applicationContext));
                 intent.setAction("new_dialog");
                 ArrayList<ShortcutInfoCompat> arrayList = new ArrayList<>();
                 ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(ApplicationLoader.applicationContext, "compose")
                         .setShortLabel(LocaleController.getString(R.string.NewConversationShortcut))
                         .setLongLabel(LocaleController.getString(R.string.NewConversationShortcut))
+                        .setActivity(LauncherIconController.getCurrentIcon().getComponentName(ApplicationLoader.applicationContext))
                         .setIcon(IconCompat.createWithResource(ApplicationLoader.applicationContext, R.drawable.shortcut_compose))
                         .setRank(0)
                         .setIntent(intent)
@@ -5211,6 +5215,7 @@ public class MediaDataController extends BaseController {
                     ShortcutInfoCompat.Builder builder = new ShortcutInfoCompat.Builder(ApplicationLoader.applicationContext, id)
                             .setShortLabel(name)
                             .setLongLabel(name)
+                            .setActivity(LauncherIconController.getCurrentIcon().getComponentName(ApplicationLoader.applicationContext))
                             .setRank(1 + a)
                             .setIntent(shortcutIntent);
                     if (SharedConfig.directShare) {
