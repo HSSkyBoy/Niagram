@@ -490,6 +490,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         flagSecureReason.attach();
 
         super.onCreate(savedInstanceState);
+        updateTaskDescription();
         if (Build.VERSION.SDK_INT >= 24) {
             AndroidUtilities.isInMultiwindow = isInMultiWindowMode();
         }
@@ -9451,23 +9452,31 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             int color = Theme.getColor(Theme.key_actionBarDefault) | 0xff000000;
             LauncherIconController.LauncherIcon icon = LauncherIconController.getCurrentIcon();
             int iconRes = icon != null ? icon.iconRes : R.mipmap.icon_9_launcher;
-            if (Build.VERSION.SDK_INT >= 28) {
-                setTaskDescription(new ActivityManager.TaskDescription(null, iconRes, color));
-            } else {
-                Bitmap bitmap = null;
-                Drawable drawable = ContextCompat.getDrawable(this, iconRes);
-                if (drawable instanceof BitmapDrawable) {
-                    bitmap = ((BitmapDrawable) drawable).getBitmap();
-                } else if (drawable != null) {
-                    bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth() > 0 ? drawable.getIntrinsicWidth() : AndroidUtilities.dp(48),
-                            drawable.getIntrinsicHeight() > 0 ? drawable.getIntrinsicHeight() : AndroidUtilities.dp(48),
-                            Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(bitmap);
-                    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                    drawable.draw(canvas);
-                }
-                setTaskDescription(new ActivityManager.TaskDescription(null, bitmap, color));
+            Bitmap bitmap = null;
+            Drawable drawable = ContextCompat.getDrawable(this, iconRes);
+            if (drawable instanceof BitmapDrawable) {
+                bitmap = ((BitmapDrawable) drawable).getBitmap();
+            } else if (drawable != null) {
+                int width = drawable.getIntrinsicWidth() > 0 ? drawable.getIntrinsicWidth() : AndroidUtilities.dp(48);
+                int height = drawable.getIntrinsicHeight() > 0 ? drawable.getIntrinsicHeight() : AndroidUtilities.dp(48);
+                bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
             }
+            if (Build.VERSION.SDK_INT >= 33) {
+                try {
+                    ActivityManager.TaskDescription.Builder builder = new ActivityManager.TaskDescription.Builder()
+                            .setPrimaryColor(color);
+                    if (bitmap != null) {
+                        builder.setIcon(android.graphics.drawable.Icon.createWithBitmap(bitmap));
+                    }
+                    setTaskDescription(builder.build());
+                    return;
+                } catch (Throwable ignore) {
+                }
+            }
+            setTaskDescription(new ActivityManager.TaskDescription(null, bitmap, color));
         } catch (Throwable ignore) {
 
         }
