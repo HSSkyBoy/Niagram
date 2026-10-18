@@ -5174,11 +5174,6 @@ public class ChatActivity extends BaseFragment implements
 
         contentView.setOccupyStatusBar(!inBubbleMode && !isInsideContainer && !inPreviewMode);
 
-        actionBar.setupGlass(
-            glassBackgroundDrawableFactory,
-            BlurredBackgroundProviderImpl.topPanelChatActivity(themeDelegate),
-            ChatObject.isForum(currentChat));
-
         if (isTitleCentered()) {
             avatarContainer.setActionBar(actionBar);
             actionBar.setChatAvatarContainer2(avatarContainer);
@@ -5197,6 +5192,11 @@ public class ChatActivity extends BaseFragment implements
                 avatarContainer.setActionBar(actionBar);
             }
         }
+
+        actionBar.setupGlass(
+            glassBackgroundDrawableFactory,
+            BlurredBackgroundProviderImpl.topPanelChatActivity(themeDelegate),
+            ChatObject.isForum(currentChat));
 
         chatInputViewsContainer = new ChatInputViewsContainer(context);
         chatInputViewsContainer.setClipChildren(false);

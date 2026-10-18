@@ -203,6 +203,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     private boolean glassMode;
     private boolean glassOnlyBack;
     private boolean glassModeIsForum;
+    private boolean isForum;
 
     private ChatAvatarContainer chatAvatarContainer;
 
@@ -212,6 +213,19 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
 
     public void setChatAvatarContainer(ChatAvatarContainer chatAvatarContainer) {
         this.chatAvatarContainer = chatAvatarContainer;
+        updateGlassRadius();
+    }
+
+    private void updateGlassRadius() {
+        if (glassDrawable == null) {
+            return;
+        }
+        glassModeIsForum = isForum && !isCentered();
+        if (glassModeIsForum) {
+            glassDrawable.setRadius(dp(18.33f), dp(23), dp(23), dp(18.33f));
+        } else {
+            glassDrawable.setRadius(dp(23));
+        }
     }
 
     public void setupGlass(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider) {
@@ -223,17 +237,13 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
                            boolean isForum) {
         setBackground(null);
         setClipChildren(false);
+        this.isForum = isForum;
         glassMode = true;
-        glassModeIsForum = isForum && !isCentered();
 
         glassDrawable = factory.create(this)
             .setColorProvider(colorProvider)
             .setPadding(dp(6));
-        if (isForum && !isCentered()) {
-            glassDrawable.setRadius(dp(18.33f), dp(23), dp(23), dp(18.33f));
-        } else {
-            glassDrawable.setRadius(dp(23));
-        }
+        updateGlassRadius();
 
 
         glassDrawableBack = factory.create(this)
@@ -2630,6 +2640,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
 
     public void setChatAvatarContainer2(ChatAvatarContainer chatAvatarContainer) {
         this.chatAvatarContainer2 = chatAvatarContainer;
+        updateGlassRadius();
     }
 
     public int getBackPillGrowth() {
@@ -2637,7 +2648,9 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     }
 
     private boolean isCentered() {
-        return (NyaConfig.INSTANCE.getCenterActionBarTitle().Bool() && NyaConfig.INSTANCE.getCenterActionBarTitleType().Int() != 3) || (chatAvatarContainer2 != null && chatAvatarContainer2.isCentered());
+        return (NyaConfig.INSTANCE.getCenterActionBarTitle().Bool() && NyaConfig.INSTANCE.getCenterActionBarTitleType().Int() != 3)
+            || (chatAvatarContainer2 != null && chatAvatarContainer2.isCentered())
+            || (chatAvatarContainer != null && chatAvatarContainer.isCentered());
     }
 
     // --- Spring Animation ---
