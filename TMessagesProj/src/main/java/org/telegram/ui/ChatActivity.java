@@ -7728,9 +7728,12 @@ public class ChatActivity extends BaseFragment implements
         floatingDateView.setAlpha(0.0f);
         floatingDateView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         floatingDateView.setInvalidateColors(true);
+        if (NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
+            floatingDateView.setVisibility(View.GONE);
+        }
         contentView.addView(floatingDateView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 4, 0, 0));
         floatingDateView.setOnActionClickListener(view -> {
-            if (floatingDateView.getAlpha() == 0 || actionBar.isActionModeShowed() || isReport()) {
+            if (floatingDateView.getAlpha() == 0 || actionBar.isActionModeShowed() || isReport() || NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
                 return;
             }
             Calendar calendar = Calendar.getInstance();
@@ -17539,8 +17542,17 @@ public class ChatActivity extends BaseFragment implements
             } else {
                 floatingDateViewOffset = 0;
             }
-            if (isQuickRepliesOrWelcomeMessagesMode()) {
+            if (isQuickRepliesOrWelcomeMessagesMode() || NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
                 showFloatingView = false;
+                if (floatingDateView.getTag() != null || floatingDateView.getAlpha() != 0 || floatingDateView.getVisibility() != View.GONE) {
+                    if (floatingDateAnimation != null) {
+                        floatingDateAnimation.cancel();
+                        floatingDateAnimation = null;
+                    }
+                    floatingDateView.setTag(null);
+                    floatingDateView.setAlpha(0);
+                    floatingDateView.setVisibility(View.GONE);
+                }
             }
             if (showFloatingView) {
                 if (floatingDateAnimation != null) {
@@ -17553,6 +17565,7 @@ public class ChatActivity extends BaseFragment implements
                 if (floatingDateView.getAlpha() != 1.0f) {
                     floatingDateView.setAlpha(1.0f);
                 }
+                floatingDateView.setVisibility(View.VISIBLE);
                 currentFloatingDateOnScreen = true;
             }
         } else {
@@ -18717,6 +18730,9 @@ public class ChatActivity extends BaseFragment implements
 
         @Override
         protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
+            if (child == floatingDateView && NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
+                return false;
+            }
             if ((scrimView != null || messageEnterTransitionContainer.isRunning()) && (child == sideControlsButtonsLayout || child == floatingDateView || child == floatingTopicSeparator || child == fireworksOverlay || child == quickShareSelectorOverlay || child == gifHintTextView || child == emojiHintTextView || child == undoView || child == topUndoView)) {
                 return false;
             }
@@ -19309,7 +19325,7 @@ public class ChatActivity extends BaseFragment implements
                 if (mentionContainer == null || mentionContainer.getVisibility() != View.VISIBLE) {
                     super.drawChild(canvas, sideControlsButtonsLayout, SystemClock.uptimeMillis());
                 }
-                if (floatingDateView != null && floatingDateView.getTag() != null) {
+                if (floatingDateView != null && floatingDateView.getTag() != null && !NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
                     super.drawChild(canvas, floatingDateView, SystemClock.uptimeMillis());
                 }
                 if (floatingTopicSeparator != null && floatingTopicSeparator.getTag() != null) {
@@ -31481,6 +31497,15 @@ public class ChatActivity extends BaseFragment implements
     public void onResume() {
         super.onResume();
         cachedIsGestureNavigation = AndroidUtil.isGestureNavigation(getContext());
+        if (floatingDateView != null && NyaConfig.INSTANCE.getHideFloatingDate().Bool()) {
+            if (floatingDateAnimation != null) {
+                floatingDateAnimation.cancel();
+                floatingDateAnimation = null;
+            }
+            floatingDateView.setTag(null);
+            floatingDateView.setAlpha(0);
+            floatingDateView.setVisibility(View.GONE);
+        }
         checkShowBlur(false);
         activityResumeTime = System.currentTimeMillis();
         if (openImport && getSendMessagesHelper().getImportingHistory(dialog_id) != null) {
