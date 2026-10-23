@@ -137,8 +137,6 @@
 -keep class okhttp3.internal.idn.IdnaMappingTable { *; }
 -keep class okhttp3.internal.idn.IdnaMappingTableInstanceKt{ *; }
 
-# Keep all classes of Apache Commons
--keep class org.apache.commons.text.** { *; }
 -dontwarn org.apache.commons.text.**
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
