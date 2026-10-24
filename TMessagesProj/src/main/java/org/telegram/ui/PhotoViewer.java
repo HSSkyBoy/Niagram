@@ -4874,10 +4874,12 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             final Rect oldInsets = new Rect(insets);
             final int oldBottomNavigationBarInset = bottomNavigationBarInset;
             final Insets r = AndroidUtilities.getDefaultWindowInsets(newInsetsCompat, false);
+            // don't reserve space for a navigation bar hidden in fullscreen, so landscape video can use it
+            final int bottom = newInsetsCompat.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()).bottom;
             final Insets tappableInsets = newInsetsCompat.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.tappableElement());
 
-            insets.set(r.left, r.top, r.right, r.bottom);
-            bottomNavigationBarInset = Math.min(r.bottom, tappableInsets.bottom);
+            insets.set(r.left, r.top, r.right, bottom);
+            bottomNavigationBarInset = Math.min(bottom, tappableInsets.bottom);
 
             int newTopInset = insets.top;
             if (!oldInsets.equals(insets) || oldBottomNavigationBarInset != bottomNavigationBarInset) {
