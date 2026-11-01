@@ -1,4 +1,4 @@
-package top.nkbe.niagram.helpers.remote;
+﻿package top.nkbe.niagram.helpers.remote;
 
 import android.os.Build;
 import android.text.TextUtils;
@@ -38,8 +38,8 @@ public class UpdateHelper extends BaseRemoteHelper {
     public static final int UPDATE_CHANNEL_BETA = 2;
 
     public static final String TELEGRAM_BETA_CHANNEL_USERNAME = "NiagramX";
-    public static final String GITHUB_RELEASE_API_URL = "https://api.github.com/repos/HSSkyBoy/NiagramX/releases/latest";
-    public static final String GITHUB_RELEASE_API_FALLBACK = "https://api.github.com/repos/HSSkyBoy/Nigram/releases/latest";
+    public static final String GITHUB_RELEASE_API_URL = "https://api.github.com/repos/Nk-Be/NiagramX/releases/latest";
+    public static final String GITHUB_RELEASE_API_FALLBACK = "https://api.github.com/repos/Nk-Be/Nigram/releases/latest";
 
     private static final Pattern APK_FILENAME_PATTERN = Pattern.compile(
             ".*?v?([0-9.]+)(?:-([a-f0-9]+))?(?:[.(]([0-9]+)[.)])?-([a-zA-Z0-9_.-]+)\\.apk",

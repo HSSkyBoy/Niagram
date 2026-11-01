@@ -1,4 +1,4 @@
-package top.nkbe.niagram.helpers.remote;
+﻿package top.nkbe.niagram.helpers.remote;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -43,8 +43,8 @@ public class ApkDownloader {
 
     // 1. URL Domain validation
     private static final String[] GITHUB_RELEASE_PREFIXES = new String[] {
-            "https://github.com/HSSkyBoy/NiagramX/releases/",
-            "https://github.com/HSSkyBoy/Nigram/releases/"
+            "https://github.com/Nk-Be/NiagramX/releases/",
+            "https://github.com/Nk-Be/Nigram/releases/"
     };
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();

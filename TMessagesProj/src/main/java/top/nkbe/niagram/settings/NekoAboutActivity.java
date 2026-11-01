@@ -1,4 +1,4 @@
-package top.nkbe.niagram.settings;
+﻿package top.nkbe.niagram.settings;
 
 import static org.telegram.messenger.LocaleController.getString;
 
@@ -63,7 +63,7 @@ public class NekoAboutActivity extends BaseNekoSettingsActivity {
         } else if (position == translationRow) {
             Browser.openUrl(getParentActivity(), "https://crowdin.com/project/NagramX");
         } else if (position == sourceCodeRow) {
-            Browser.openUrl(getParentActivity(), "https://github.com/HSSkyBoy/NiagramX");
+            Browser.openUrl(getParentActivity(), "https://github.com/Nk-Be/NiagramX");
         } else if (position == datacenterStatusRow) {
             presentFragment(new DatacenterActivity(0));
         }
