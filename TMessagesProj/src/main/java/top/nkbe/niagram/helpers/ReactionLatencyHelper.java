@@ -193,7 +193,7 @@ public final class ReactionLatencyHelper {
             if (msg == null) {
                 continue;
             }
-            final long fromId = msg.getFromId();
+            final long fromId = msg.getFromChatId();
             if (fromId > 0 && !msg.isOutOwner()) {
                 changed |= markSpoke(account, dialogId, fromId);
             }
