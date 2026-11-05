@@ -1,4 +1,4 @@
-﻿package top.nkbe.niagram.settings;
+package top.nkbe.niagram.settings;
 
 import static org.telegram.messenger.LocaleController.getString;
 

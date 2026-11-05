@@ -1,4 +1,4 @@
-﻿package top.nkbe.niagram.helpers.remote;
+package top.nkbe.niagram.helpers.remote;
 
 import android.os.Build;
 import android.text.TextUtils;

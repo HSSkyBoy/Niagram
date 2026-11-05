@@ -1,4 +1,4 @@
-﻿# Niagram
+# Niagram
 
 [![Crowdin](https://badges.crowdin.net/NagramX/localized.svg)](https://crowdin.com/project/NagramX)
 [![GitHub Release](https://img.shields.io/github/v/release/Nk-Be/NiagramX?include_prereleases&style=flat-square)](https://github.com/Nk-Be/NiagramX/releases)

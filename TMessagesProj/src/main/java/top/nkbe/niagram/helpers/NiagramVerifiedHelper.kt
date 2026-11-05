@@ -1,4 +1,4 @@
-﻿package top.nkbe.niagram.helpers
+package top.nkbe.niagram.helpers
 
 import android.content.Context
 import android.graphics.PorterDuff
