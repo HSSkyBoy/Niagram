@@ -47,6 +47,17 @@
     <string name="ShowGroupMemberJoinDate">群組成員顯示入群時間</string>
     <string name="ShowGroupMemberJoinDateNotice">在群組成員功能表與個人資料頁中顯示成員加入群組的時間。</string>
     <string name="GroupMemberJoinDate">入群時間</string>
+    <string name="AutoReactionDetect">偵測自動反應用戶端</string>
+    <string name="AutoReactionDetectNotice">記錄群組成員對訊息做出反應的速度，並標記極速或連續秒回反應的成員。所有資料只保存在本機，不會回報任何內容。</string>
+    <string name="AutoReactionSuspected">疑似自動反應：連續 %1$d 次 &#8804;1s</string>
+    <string name="AutoReactionNormal">正常成員</string>
+    <string name="AutoReactionMinLatency">最短延遲</string>
+    <string name="AutoReactionAvgLatency">平均延遲</string>
+    <string name="AutoReactionZeroCount">0秒次數</string>
+    <string name="AutoReactionTimeline">最近反應軌跡 (實錘證據)</string>
+    <string name="AutoReactionNoData">暫無記錄到的反應資料</string>
+    <string name="AutoReactionReset">重置統計</string>
+    <string name="AutoReactionReport">自動反應檢測報告</string>
     <string name="TypeMessageHintUseGroupName">在輸入框中顯示群組名稱</string>
     <string name="HideBotButtonInInputField">隱藏輸入框中的機器人按鈕</string>
     <string name="ShowSendAsUnderMessageHint">在輸入提示下方顯示傳送身分</string>

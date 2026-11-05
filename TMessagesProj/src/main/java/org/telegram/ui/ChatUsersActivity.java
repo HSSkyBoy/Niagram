@@ -44,6 +44,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
 import top.nkbe.niagram.config.NyaConfig;
+import top.nkbe.niagram.helpers.ReactionLatencyHelper;
+import top.nkbe.niagram.ui.components.AutoReactionReportBottomSheet;
 import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.ChatObject;
@@ -1946,8 +1948,9 @@ public class ChatUsersActivity extends BaseFragment implements NotificationCente
 
             boolean result = allowSetAdmin || (ChatObject.canBlockUsers(currentChat) && canEditAdmin);
             boolean showJoinDate = NyaConfig.INSTANCE.getShowGroupMemberJoinDate().Bool() && joined != 0;
-            if (resultOnly || (!result && !showJoinDate)) {
-                return result || showJoinDate;
+            final ReactionLatencyHelper.Info reactionInfo = user != null && currentChat != null ? ReactionLatencyHelper.getInfo(currentAccount, -currentChat.id, user.id) : null;
+            if (resultOnly || (!result && !showJoinDate && reactionInfo == null)) {
+                return result || showJoinDate || reactionInfo != null;
             }
 
             Utilities.Callback<Integer> openRightsFor = action ->
@@ -1994,6 +1997,17 @@ public class ChatUsersActivity extends BaseFragment implements NotificationCente
             if (showJoinDate) {
                 if (result || user != null) options.addGap();
                 options.addText(LocaleController.formatJoined(joined), 13);
+            }
+            if (reactionInfo != null) {
+                if (result || user != null || showJoinDate) options.addGap();
+                String badge = reactionInfo.zeroCount > 0 ? "\u26A1 0s" : (reactionInfo.suspected ? "\uD83E\uDD16 " + reactionInfo.streak + "x \u22641s" : LocaleController.getString(R.string.AutoReactionNormal));
+                options.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport) + " (" + badge + ")", () -> {
+                    new AutoReactionReportBottomSheet(getParentActivity(), currentAccount, -currentChat.id, user, reactionInfo, getResourceProvider(), () -> {
+                        if (listView != null && listView.getAdapter() != null) {
+                            listView.getAdapter().notifyDataSetChanged();
+                        }
+                    }).show();
+                });
             }
             options.show();
         } else {
