@@ -7,9 +7,7 @@ import static org.telegram.ui.ChatActivity.OPTION_COPY_LINK;
 import static org.telegram.ui.ChatActivity.OPTION_DELETE;
 import static org.telegram.ui.ChatActivity.OPTION_EDIT;
 import static org.telegram.ui.ChatActivity.OPTION_FORWARD;
-import static org.telegram.ui.ChatActivity.OPTION_FORWARD_NO_QUOTE;
 import static org.telegram.ui.ChatActivity.OPTION_REPLY;
-import static org.telegram.ui.ChatActivity.OPTION_REPLY_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -37,6 +35,9 @@ import java.util.ArrayList;
 
 @SuppressLint("ViewConstructor")
 public final class QuickActions extends LinearLayout {
+
+    public static final int OPTION_FORWARD_NO_QUOTE = 2011;
+    public static final int OPTION_REPLY_PRIVATE = 2033;
 
     private final Theme.ResourcesProvider resourcesProvider;
     private View firstEnabledButton;

@@ -468,7 +468,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int nkbtn_translate = 2008;
     private final static int nkbtn_hide = 2009;
     private final static int nkbtn_savemessage = 2010;
-    private final static int nkbtn_forward_noquote = 2011;
+    public final static int nkbtn_forward_noquote = QuickActions.OPTION_FORWARD_NO_QUOTE;
     private final static int nkbtn_sharemessage = 2030;
 
     // chat click menu buttons
@@ -484,7 +484,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int nkbtn_copy_link_in_pm = 2025;
     private final static int nkbtn_repeatascopy = 2028;
     private final static int nkbtn_setReminder = 2029;
-    private final static int nkbtn_reply_private = 2033;
+    public final static int nkbtn_reply_private = QuickActions.OPTION_REPLY_PRIVATE;
     private final static int nkbtn_translate_llm = 2034;
     private final static int nkbtn_forward_nocaption = 2035;
     private final static int nkbtn_translateVoice = 2037;
