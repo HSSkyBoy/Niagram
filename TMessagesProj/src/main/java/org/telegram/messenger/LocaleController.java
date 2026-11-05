@@ -38,7 +38,6 @@ import androidx.annotation.StringRes;
 
 import org.telegram.utils.localization.Localization;
 import org.telegram.localization.LocalizationUtils;
-import org.telegram.localization.NamespaceLocalizationUtils;
 import org.telegram.messenger.time.FastDateFormat;
 import org.telegram.tgnet.Vector;
 import org.telegram.ui.Components.TypefaceSpan;
@@ -4629,14 +4628,6 @@ public class LocaleController {
     private @NonNull Localization localizationExternal = Localization.EMPTY;
     private int localizationExternalSize;
 
-    // Extra string namespaces (strings_<name>.xml) are packed into their own localization assets.
-    private void addNamespaceLocalizations(Localization.Builder builder, Locale locale) {
-        final String asset = NamespaceLocalizationUtils.getLocalizationAssetNia(locale);
-        if (asset != null) {
-            builder.addResLocalization(ApplicationLoader.applicationContext, asset);
-        }
-    }
-
     private void checkLocalizationInternal() {
         Locale currentLocale = this.currentLocale;
         boolean localeChanged = !Objects.equals(localizationInternalLastLocale, currentLocale);
@@ -4648,10 +4639,9 @@ public class LocaleController {
                 localeChanged = !Objects.equals(localizationInternalLastLocale, currentLocale);
                 if (localeChanged || localizationInternal == null) {
                     if (localizationInternalDefault == null) {
-                        final Localization.Builder defaultBuilder = new Localization.Builder()
-                            .addResLocalization(ApplicationLoader.applicationContext, LocalizationUtils.DEFAULT_LOCALIZATION);
-                        addNamespaceLocalizations(defaultBuilder, Locale.ENGLISH);
-                        localizationInternalDefault = defaultBuilder.build();
+                        localizationInternalDefault = new Localization.Builder()
+                            .addResLocalization(ApplicationLoader.applicationContext, LocalizationUtils.DEFAULT_LOCALIZATION)
+                            .build();
                     }
 
                     final String assetPath = LocalizationUtils.getLocalizationAsset(currentLocale);
@@ -4663,10 +4653,6 @@ public class LocaleController {
                             .addResLocalization(ApplicationLoader.applicationContext, assetPath)
                             .build();
                     }
-
-                    final Localization.Builder builder = new Localization.Builder().addLocalization(localizationInternal);
-                    addNamespaceLocalizations(builder, currentLocale);
-                    localizationInternal = builder.build();
 
                     localizationInternalLastLocale = currentLocale;
                 }
