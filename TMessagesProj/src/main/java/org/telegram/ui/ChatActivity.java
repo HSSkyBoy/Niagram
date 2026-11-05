@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This is the source code of Telegram for Android v. 5.x.x.
  * It is licensed under GNU GPL v. 2 or later.
  * You should have received a copy of the license in this archive (see LICENSE).
@@ -418,7 +418,7 @@ import top.nkbe.niagram.translate.TranslatorKt;
 import top.nkbe.niagram.ui.BookmarksActivity;
 import top.nkbe.niagram.ui.BottomBuilder;
 import top.nkbe.niagram.ui.MessageDetailsActivity;
-import top.nkbe.niagram.ui.components.GroupedIconsView;
+import top.nkbe.niagram.ui.components.QuickActions;
 import top.nkbe.niagram.utils.AlertUtil;
 import top.nkbe.niagram.utils.AndroidUtil;
 import top.nkbe.niagram.utils.ProxyUtil;
@@ -1177,6 +1177,7 @@ public class ChatActivity extends BaseFragment implements
     private int popupAnimationIndex = -1;
     private AnimatorSet scrimAnimatorSet;
     public ActionBarPopupWindow scrimPopupWindow;
+    private QuickActions quickActions;
     private boolean scrimPopupWindowHideDimOnDismiss = true;
     private int scrimPopupX, scrimPopupY;
     public ActionBarMenuSubItem[] scrimPopupWindowItems;
@@ -33799,15 +33800,21 @@ public class ChatActivity extends BaseFragment implements
                         popupLayout.addView(new ActionBarPopupWindow.GapView(contentView.getContext(), themeDelegate), LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 8));
                     }
                 }
+                if (showWelcomeMessageRevertOption(selectedObject)) {
+                    int deleteIndex = options.indexOf(OPTION_DELETE);
+                    if (deleteIndex >= 0) {
+                        icons.remove(deleteIndex);
+                        items.remove(deleteIndex);
+                        options.remove(deleteIndex);
+                    }
+                }
+                quickActions = NyaConfig.INSTANCE.getGroupedMessageMenu().Bool() && selectedObject != null
+                    ? QuickActions.create(getParentActivity(), selectedObject, icons, items, options, OPTION_COPY_PHOTO, this.lastMessageMenuStatus.allowReplyPm, this::processSelectedOption, themeDelegate)
+                    : null;
                 scrimPopupWindowItems = new ActionBarMenuSubItem[items.size()];
-                final boolean hasGroupedIcons = GroupedIconsView.useGroupedIcons();
                 for (int a = 0, N = items.size(); a < N; a++) {
                     final Integer option = options.get(a);
-                    if (option == OPTION_DELETE && showWelcomeMessageRevertOption(selectedObject)) {
-                        continue;
-                    }
-
-                    ActionBarMenuSubItem cell = new ActionBarMenuSubItem(getParentActivity(), a == 0, a == N - 1 && !hasGroupedIcons, themeDelegate);
+                    ActionBarMenuSubItem cell = new ActionBarMenuSubItem(getParentActivity(), a == 0, a == N - 1 && quickActions == null, themeDelegate);
                     cell.setMinimumWidth(AndroidUtilities.dp(200));
                     cell.setTextAndIcon(items.get(a), icons.get(a));
 
@@ -34092,11 +34099,8 @@ public class ChatActivity extends BaseFragment implements
                     popupLayout.addView(layout);
                 }
 
-                if (GroupedIconsView.useGroupedIcons()) {
-                    popupLayout.addView(new ActionBarPopupWindow.GapView(contentView.getContext(), themeDelegate), LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 8));
-
-                    var groupedIconsView = new GroupedIconsView(getContext(), ChatActivity.this, selectedObject, this.lastMessageMenuStatus.allowReply, this.lastMessageMenuStatus.allowReplyPm, this.lastMessageMenuStatus.allowEdit, this.lastMessageMenuStatus.allowDelete, this.lastMessageMenuStatus.allowForward, this.lastMessageMenuStatus.allowCopy, this.lastMessageMenuStatus.allowCopyPhoto, this.lastMessageMenuStatus.allowCopyLink, this.lastMessageMenuStatus.allowCopyLinkPm);
-                    popupLayout.addView(groupedIconsView.linearLayout);
+                if (quickActions != null) {
+                    quickActions.addTo(popupLayout);
                 }
 
             }
@@ -34461,10 +34465,11 @@ public class ChatActivity extends BaseFragment implements
                     finalReactionsLayout.startEnterAnimation(true);
                 }
                 AndroidUtilities.runOnUIThread(() -> {
-                    if (scrimPopupWindowItems != null && scrimPopupWindowItems.length > 0 && scrimPopupWindowItems[0] != null) {
-                        scrimPopupWindowItems[0].requestFocus();
-                        scrimPopupWindowItems[0].performAccessibilityAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null);
-                        scrimPopupWindowItems[0].sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+                    View focusTarget = quickActions != null && quickActions.getFirstEnabledButton() != null ? quickActions.getFirstEnabledButton() : (scrimPopupWindowItems != null && scrimPopupWindowItems.length > 0 ? scrimPopupWindowItems[0] : null);
+                    if (focusTarget != null) {
+                        focusTarget.requestFocus();
+                        focusTarget.performAccessibilityAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null);
+                        focusTarget.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
                     }
                 }, 420);
             };
@@ -49281,11 +49286,9 @@ public class ChatActivity extends BaseFragment implements
         if (type == MESSAGE_TYPE_INVALID) {
             if ((selectedObject.type == MessageObject.TYPE_TEXT || selectedObject.type == MessageObject.TYPE_ARTICLE || selectedObject.isAnimatedEmoji() || selectedObject.isAnimatedEmojiStickers() || getMessageCaption(selectedObject, selectedObjectGroup) != null) && (!noforwardsOrPaidMedia || isEphemeral) && !message.isExpiredStory()) {
                 allowCopy = true;
-                if (!GroupedIconsView.useGroupedIcons()) {
-                    items.add(getString(R.string.Copy));
-                    options.add(OPTION_COPY);
-                    icons.add(R.drawable.msg_copy);
-                }
+                items.add(getString(R.string.Copy));
+                options.add(OPTION_COPY);
+                icons.add(R.drawable.msg_copy);
             }
             items.add(LocaleController.getString(R.string.CancelSending));
             options.add(OPTION_CANCEL_SENDING);
@@ -49296,20 +49299,16 @@ public class ChatActivity extends BaseFragment implements
             icons.add(R.drawable.msg_retry);
 
             allowDelete = true;
-            if (!GroupedIconsView.useGroupedIcons()) {
-                items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
-                options.add(OPTION_DELETE);
-                icons.add(deleteIconRes);
-            }
+            items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
+            options.add(OPTION_DELETE);
+            icons.add(deleteIconRes);
         } else if (type == MESSAGE_TYPE_SERVICE) {
             if (currentChat != null) {
                 if ((allowChatActions || isEphemeralFromBot) && (primaryMessage == null || !primaryMessage.isWelcomeMessage()) && !isInsideContainer && chatMode != MODE_WELCOME_MESSAGES) {
                     allowReply = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Reply));
-                        options.add(OPTION_REPLY);
-                        icons.add(R.drawable.menu_reply);
-                    }
+                    items.add(LocaleController.getString(R.string.Reply));
+                    options.add(OPTION_REPLY);
+                    icons.add(R.drawable.menu_reply);
                 }
                 if (!isThreadChat() && chatMode != MODE_SCHEDULED && primaryMessage != null && primaryMessage.hasReplies() && currentChat.megagroup && primaryMessage.canViewThread()) {
                     items.add(LocaleController.formatPluralString("ViewReplies", primaryMessage.getRepliesCount()));
@@ -49337,11 +49336,9 @@ public class ChatActivity extends BaseFragment implements
                 }*/
                 if (message.canEditMessage(currentChat) && message.type != MessageObject.TYPE_POLL || chatMode == MODE_WELCOME_MESSAGES) {
                     allowEdit = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Edit));
-                        options.add(OPTION_EDIT);
-                        icons.add(R.drawable.msg_edit);
-                    }
+                    items.add(LocaleController.getString(R.string.Edit));
+                    options.add(OPTION_EDIT);
+                    icons.add(R.drawable.msg_edit);
                 }
                 if (ChatObject.isMonoForum(currentChat) && selectedObject.getGroupId() == 0 && selectedObjectGroup == null && message != null && message.messageOwner != null && message.messageOwner.suggested_post == null && message.messageOwner.action == null) {
                     items.add(LocaleController.getString(R.string.EditOfferAdd));
@@ -49362,11 +49359,9 @@ public class ChatActivity extends BaseFragment implements
             } else {
                 if (selectedObject.getId() > 0 && (allowChatActions || isEphemeralFromBot) && (primaryMessage == null || !primaryMessage.isWelcomeMessage()) && !isInsideContainer && chatMode != MODE_WELCOME_MESSAGES) {
                     allowReply = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Reply));
-                        options.add(OPTION_REPLY);
-                        icons.add(R.drawable.menu_reply);
-                    }
+                    items.add(LocaleController.getString(R.string.Reply));
+                    options.add(OPTION_REPLY);
+                    icons.add(R.drawable.menu_reply);
                 }
             }
 
@@ -49384,11 +49379,9 @@ public class ChatActivity extends BaseFragment implements
             }
             if (message.canDeleteMessage(chatMode == MODE_SCHEDULED, currentChat) && (threadMessageObjects == null || !threadMessageObjects.contains(message)) && !(message != null && message.messageOwner != null && message.messageOwner.action instanceof TLRPC.TL_messageActionTopicCreate)) {
                 allowDelete = true;
-                if (!GroupedIconsView.useGroupedIcons()) {
-                    items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
-                    options.add(OPTION_DELETE);
-                    icons.add(deleteIconRes);
-                }
+                items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
+                options.add(OPTION_DELETE);
+                icons.add(deleteIconRes);
             }
             boolean allowViewHistory = currentChat != null && chatMode == 0 && !currentChat.broadcast && !(threadMessageObjects != null && threadMessageObjects.contains(message));
             if (allowViewHistory && NyaConfig.showViewHistory.Bool()) {
@@ -49403,18 +49396,14 @@ public class ChatActivity extends BaseFragment implements
             icons.add(R.drawable.msg_retry);
             if (!noforwardsOrPaidMedia || isEphemeral) {
                 allowCopy = true;
-                if (!GroupedIconsView.useGroupedIcons()) {
-                    items.add(LocaleController.getString(R.string.Copy));
-                    options.add(OPTION_COPY);
-                    icons.add(R.drawable.msg_copy);
-                }
+                items.add(LocaleController.getString(R.string.Copy));
+                options.add(OPTION_COPY);
+                icons.add(R.drawable.msg_copy);
             }
             allowDelete = true;
-            if (!GroupedIconsView.useGroupedIcons()) {
-                items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
-                options.add(OPTION_DELETE);
-                icons.add(deleteIconRes);
-            }
+            items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
+            options.add(OPTION_DELETE);
+            icons.add(deleteIconRes);
         } else {
             if (currentEncryptedChat == null) {
                 if (!selectedObject.isPaidSuggestedPostProtected() && chatMode == MODE_SCHEDULED) {
@@ -49435,11 +49424,9 @@ public class ChatActivity extends BaseFragment implements
                 }
                 if (((allowChatActions || isEphemeralFromBot) || !noforwardsOrPaidMedia && ChatObject.isChannelAndNotMegaGroup(currentChat) && !selectedObject.isSponsored() && selectedObject.contentType == 0 && chatMode == MODE_DEFAULT) && !isInsideContainer && (primaryMessage == null || !primaryMessage.isWelcomeMessage()) && chatMode != MODE_WELCOME_MESSAGES && !isAyuDeleted) {
                     allowReply = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Reply));
-                        options.add(OPTION_REPLY);
-                        icons.add(R.drawable.menu_reply);
-                    }
+                    items.add(LocaleController.getString(R.string.Reply));
+                    options.add(OPTION_REPLY);
+                    icons.add(R.drawable.menu_reply);
                 }
                 if (!noforwardsOrPaidMedia && !selectedObject.isSponsored() && selectedObject.contentType == 0 && chatMode == MODE_DEFAULT && !isInsideContainer && currentChat != null && currentUser == null && selectedObject.messageOwner.peer_id.user_id == 0 && selectedObject.messageOwner.from_id.user_id > 0 && selectedObject.messageOwner.from_id.user_id != getUserConfig().getClientUserId() && !isAyuDeleted) {
                     allowReplyPm = true;
@@ -49451,11 +49438,9 @@ public class ChatActivity extends BaseFragment implements
                 }
                 if ((selectedObject.type == MessageObject.TYPE_TEXT || selectedObject.type == MessageObject.TYPE_ARTICLE || selectedObject.isDice() || selectedObject.isAnimatedEmoji() || selectedObject.isAnimatedEmojiStickers() || getMessageCaption(selectedObject, selectedObjectGroup) != null) && (!noforwardsOrPaidMedia || isEphemeral) && !selectedObject.sponsoredCanReport) {
                     allowCopy = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Copy));
-                        options.add(OPTION_COPY);
-                        icons.add(R.drawable.msg_copy);
-                    }
+                    items.add(LocaleController.getString(R.string.Copy));
+                    options.add(OPTION_COPY);
+                    icons.add(R.drawable.msg_copy);
                 }
                 if (!isThreadChat() && chatMode != MODE_SCHEDULED && currentChat != null && primaryMessage != null && (currentChat.has_link || primaryMessage.hasReplies()) && currentChat.megagroup && primaryMessage.canViewThread()) {
                     if (primaryMessage.hasReplies()) {
@@ -49472,11 +49457,7 @@ public class ChatActivity extends BaseFragment implements
                 }
                 if (!isEphemeral && !selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && ChatObject.isChannel(currentChat) && !ChatObject.isMonoForum(currentChat) && selectedObject.getDialogId() != mergeDialogId && !selectedObject.isAyuDeleted()) {
                     allowCopyLink = true;
-                    if (
-                        (!GroupedIconsView.useGroupedIcons() && (NyaConfig.INSTANCE.getShowCopyLink().Bool() || selectedObject.isAnyKindOfSticker() || selectedObject.isPoll()))
-                        ||
-                        (GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyLink().Bool() && ((!isMessageTextEmpty || hasCaption) && selectedObject.isPhoto() && !selectedObject.isWebpage() || (canDeleteMessage && (!isMessageTextEmpty || selectedObject.isPhoto() || isStaticSticker))))
-                    ) {
+                    if (NyaConfig.INSTANCE.getShowCopyLink().Bool() || selectedObject.isAnyKindOfSticker() || selectedObject.isPoll()) {
                         items.add(LocaleController.getString(R.string.CopyLink));
                         options.add(OPTION_COPY_LINK);
                         icons.add(R.drawable.msg_link);
@@ -49484,11 +49465,7 @@ public class ChatActivity extends BaseFragment implements
                 }
                 if (!selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && currentUser != null && selectedObject.getDialogId() != mergeDialogId) {
                     allowCopyLinkPm = true;
-                    if (
-                        (!GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyLink().Bool())
-                        ||
-                        (GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyLink().Bool() && (!isMessageTextEmpty && !selectedObject.isPhoto() || selectedObject.isPhoto() && !selectedObject.needDrawBluredPreview() || isStaticSticker))
-                    ) {
+                    if (NyaConfig.INSTANCE.getShowCopyLink().Bool()) {
                         items.add(getString(R.string.CopyLink));
                         options.add(nkbtn_copy_link_in_pm);
                         icons.add(R.drawable.msg_link);
@@ -49631,20 +49608,12 @@ public class ChatActivity extends BaseFragment implements
                                 options.add(OPTION_SAVE_TO_GALLERY);
                                 icons.add(R.drawable.msg_gallery);
                                 allowCopyPhoto = true;
-                                if (
-                                    (!GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyPhoto().Bool())
-                                    ||
-                                    (GroupedIconsView.useGroupedIcons() && (!isMessageTextEmpty || hasCaption) && canDeleteMessage && NyaConfig.INSTANCE.getShowCopyPhoto().Bool())
-                                ) {
+                                if (NyaConfig.INSTANCE.getShowCopyPhoto().Bool()) {
                                     items.add(LocaleController.getString(R.string.CopyPhoto));
                                     options.add(OPTION_COPY_PHOTO);
                                     icons.add(R.drawable.msg_copy_photo);
                                 }
-                                if (
-                                    (!GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyAsSticker().Bool())
-                                    ||
-                                    (GroupedIconsView.useGroupedIcons() && (!isMessageTextEmpty || hasCaption) && canDeleteMessage && NyaConfig.INSTANCE.getShowCopyAsSticker().Bool())
-                                ) {
+                                if (NyaConfig.INSTANCE.getShowCopyAsSticker().Bool()) {
                                     items.add(LocaleController.getString(R.string.CopyPhotoAsSticker));
                                     options.add(OPTION_COPY_PHOTO_AS_STICKER);
                                     icons.add(R.drawable.msg_copy_photo);
@@ -49731,11 +49700,9 @@ public class ChatActivity extends BaseFragment implements
                             icons.add(R.drawable.msg_gallery);
                             if (!selectedObject.isVideoSticker()) {
                                 allowCopyPhoto = true;
-                                if (!GroupedIconsView.useGroupedIcons()) {
-                                    items.add(getString(R.string.CopySticker));
-                                    icons.add(R.drawable.msg_copy_photo);
-                                    options.add(OPTION_COPY_PHOTO);
-                                }
+                                items.add(getString(R.string.CopySticker));
+                                icons.add(R.drawable.msg_copy_photo);
+                                options.add(OPTION_COPY_PHOTO);
                             }
                         }
                         if (NyaConfig.INSTANCE.getShowAddToStickers().Bool()) {
@@ -49815,11 +49782,9 @@ public class ChatActivity extends BaseFragment implements
                     && message.type != MessageObject.TYPE_GIFT_STARS;
                 if (canForward) {
                     allowForward = true;
-                    if (!GroupedIconsView.useGroupedIcons() || allowEdit) {
-                        items.add(LocaleController.getString(R.string.Forward));
-                        options.add(OPTION_FORWARD);
-                        icons.add(NyaConfig.INSTANCE.getShowNoQuoteForward().Bool() ? R.drawable.msg_forward : R.drawable.msg_forward_noquote);
-                    }
+                    items.add(LocaleController.getString(R.string.Forward));
+                    options.add(OPTION_FORWARD);
+                    icons.add(NyaConfig.INSTANCE.getShowNoQuoteForward().Bool() ? R.drawable.msg_forward : R.drawable.msg_forward_noquote);
                 }
                 // --- NagramX Start ---
                 if (chatMode != MODE_SCHEDULED) {
@@ -49957,7 +49922,7 @@ public class ChatActivity extends BaseFragment implements
                     options.add(OPTION_TRANSLATE);
                     icons.add(R.drawable.msg_translate);
                 }*/
-                if (!GroupedIconsView.useGroupedIcons() && (allowEdit || chatMode == MODE_WELCOME_MESSAGES)) {
+                if (allowEdit || chatMode == MODE_WELCOME_MESSAGES) {
                     items.add(LocaleController.getString(R.string.Edit));
                     options.add(OPTION_EDIT);
                     icons.add(R.drawable.msg_edit);
@@ -49991,28 +49956,22 @@ public class ChatActivity extends BaseFragment implements
                 }
                 if (message.canDeleteMessage(chatMode == MODE_SCHEDULED, currentChat) && (threadMessageObjects == null || !threadMessageObjects.contains(message))) {
                     allowDelete = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
-                        options.add(OPTION_DELETE);
-                        icons.add(deleteIconRes);
-                    }
+                    items.add(LocaleController.getString(chatMode == MODE_SAVED && threadMessageId != getUserConfig().getClientUserId() ? R.string.Remove : R.string.Delete));
+                    options.add(OPTION_DELETE);
+                    icons.add(deleteIconRes);
                 }
             } else { // currentEncryptedChat == null END
                 if ((allowChatActions || isEphemeralFromBot) && (primaryMessage == null || !primaryMessage.isWelcomeMessage()) && !isInsideContainer && chatMode != MODE_WELCOME_MESSAGES) {
                     allowReply = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Reply));
-                        options.add(OPTION_REPLY);
-                        icons.add(R.drawable.menu_reply);
-                    }
+                    items.add(LocaleController.getString(R.string.Reply));
+                    options.add(OPTION_REPLY);
+                    icons.add(R.drawable.menu_reply);
                 }
                 if ((selectedObject.type == MessageObject.TYPE_TEXT || selectedObject.type == MessageObject.TYPE_ARTICLE || selectedObject.isAnimatedEmoji() || selectedObject.isAnimatedEmojiStickers() || getMessageCaption(selectedObject, selectedObjectGroup) != null) && (!noforwardsOrPaidMedia || isEphemeral)) {
                     allowCopy = true;
-                    if (!GroupedIconsView.useGroupedIcons()) {
-                        items.add(LocaleController.getString(R.string.Copy));
-                        options.add(OPTION_COPY);
-                        icons.add(R.drawable.msg_copy);
-                    }
+                    items.add(LocaleController.getString(R.string.Copy));
+                    options.add(OPTION_COPY);
+                    icons.add(R.drawable.msg_copy);
                 }
                 if (!isThreadChat() && chatMode != MODE_SCHEDULED && currentChat != null && primaryMessage != null && (currentChat.has_link || primaryMessage.hasReplies()) && currentChat.megagroup && primaryMessage.canViewThread()) {
                     if (primaryMessage.hasReplies()) {
@@ -50059,20 +50018,12 @@ public class ChatActivity extends BaseFragment implements
                         options.add(OPTION_SAVE_TO_GALLERY);
                         icons.add(R.drawable.msg_gallery);
                         allowCopyPhoto = true;
-                        if (
-                            (!GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyPhoto().Bool())
-                            ||
-                            (GroupedIconsView.useGroupedIcons() && (!isMessageTextEmpty || hasCaption) && canDeleteMessage && NyaConfig.INSTANCE.getShowCopyPhoto().Bool())
-                        ) {
+                        if (NyaConfig.INSTANCE.getShowCopyPhoto().Bool()) {
                             items.add(LocaleController.getString(R.string.CopyPhoto));
                             options.add(OPTION_COPY_PHOTO);
                             icons.add(R.drawable.msg_copy_photo);
                         }
-                        if (
-                            (!GroupedIconsView.useGroupedIcons() && NyaConfig.INSTANCE.getShowCopyAsSticker().Bool())
-                            ||
-                            (GroupedIconsView.useGroupedIcons() && (!isMessageTextEmpty || hasCaption) && canDeleteMessage && NyaConfig.INSTANCE.getShowCopyAsSticker().Bool())
-                        ) {
+                        if (NyaConfig.INSTANCE.getShowCopyAsSticker().Bool()) {
                             items.add(LocaleController.getString(R.string.CopyPhotoAsSticker));
                             options.add(OPTION_COPY_PHOTO_AS_STICKER);
                             icons.add(R.drawable.msg_copy_photo);
@@ -50905,6 +50856,7 @@ public class ChatActivity extends BaseFragment implements
             scrimPopupWindow = null;
             menuDeleteItem = null;
             scrimPopupWindowItems = null;
+            quickActions = null;
             chatLayoutManager.setCanScrollVertically(true);
             dimBehindView(false);
             if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
