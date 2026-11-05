@@ -3907,6 +3907,16 @@ public class ChatActivity extends BaseFragment implements
                 !DialogObject.isEncryptedDialog(chatActivity.getDialogId()) && chatActivity.isPeerNoForwards() ||
                 selectedView != null && selectedView.getMessageObject() != null && (selectedView.getMessageObject().messageOwner != null && selectedView.getMessageObject().messageOwner.noforwards)
             );
+        }
+
+        @Override
+        protected void onQuoteClick(MessageObject messageObject, int start, int end, CharSequence text) {
+            if (messageObject == null) {
+                return;
+            }
+            if (chatActivity != null) {
+                end = Math.min(end, start + chatActivity.getMessagesController().quoteLengthMax);
+                if (messageObject.getGroupId() != 0) {
                     MessageObject.GroupedMessages group = chatActivity.getGroup(messageObject.getGroupId());
                     if (group != null && !group.isDocuments) {
                         messageObject = group.captionMessage;
