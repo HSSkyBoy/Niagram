@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.wearable.Wearable;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -309,17 +308,9 @@ public class WearAuthSheet {
                 button.setLoading(false);
                 return;
             }
-            Wearable.getMessageClient(ctx)
-                .sendMessage(session.originNodeId, PATH_ANSWER, payload)
-                .addOnSuccessListener(id -> {
-                    FileLog.d("wear-auth: /answer delivered to " + session.originNodeId);
-                    button.setLoading(false);
-                    showEmojis(selectedAccount[0], session.emojis);
-                })
-                .addOnFailureListener(e -> {
-                    FileLog.e("wear-auth: /answer send failed: " + e.getMessage());
-                    button.setLoading(false);
-                });
+            FileLog.d("wear-auth: wearable disabled");
+            button.setLoading(false);
+            showEmojis(selectedAccount[0], session.emojis);
         });
 
         currentSheet = sheet;
@@ -416,18 +407,10 @@ public class WearAuthSheet {
                             .showForError(e.getMessage());
                         return;
                     }
-                    Wearable.getMessageClient(ctx)
-                        .sendMessage(session.originNodeId, PATH_TOKEN, wire)
-                        .addOnSuccessListener(id -> {
-                            FileLog.d("wear-auth: /token delivered to " + session.originNodeId);
-                            button.setLoading(false);
-                            currentSession = null;
-                            cancel();
-                        })
-                        .addOnFailureListener(e -> {
-                            FileLog.e("wear-auth: /token send failed: " + e.getMessage());
-                            button.setLoading(false);
-                        });
+                    FileLog.d("wear-auth: wearable disabled");
+                    button.setLoading(false);
+                    currentSession = null;
+                    cancel();
                     sheet.dismiss();
                 } else if (err != null) {
                     BulletinFactory.of(sheet.topBulletinContainer, sheet.getResourcesProvider())
