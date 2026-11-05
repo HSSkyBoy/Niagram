@@ -300,18 +300,15 @@ public class FileLoadOperation {
     }
 
     private void updateParams() {
-        int boostMode = NyaConfig.enhancedFileLoader.Int();
-        boolean isExperimental = MessagesController.getInstance(currentAccount).getfileExperimentalParams;
-        if ((preloadPrefixSize > 0 || isExperimental || boostMode > NyaConfig.ENHANCED_LOADER_OFF) && !forceSmallChunk) {
-            if (boostMode == NyaConfig.ENHANCED_LOADER_EXTREME || (boostMode == NyaConfig.ENHANCED_LOADER_OFF && isExperimental)) {
-                downloadChunkSizeBig = 1024 * 512;
-                maxDownloadRequests = 8;
-                maxDownloadRequestsBig = 8;
-            } else {
-                downloadChunkSizeBig = 1024 * 256;
-                maxDownloadRequests = 6;
-                maxDownloadRequestsBig = 6;
-            }
+        int speedBoost = NyaConfig.enhancedFileLoader.Int();
+        if (speedBoost == NyaConfig.ENHANCED_LOADER_EXTREME && !forceSmallChunk) {
+            downloadChunkSizeBig = 1024 * 1024;
+            maxDownloadRequests = 12;
+            maxDownloadRequestsBig = 12;
+        } else if ((speedBoost == NyaConfig.ENHANCED_LOADER_BALANCED || preloadPrefixSize > 0 || MessagesController.getInstance(currentAccount).getfileExperimentalParams) && !forceSmallChunk) {
+            downloadChunkSizeBig = 1024 * 512;
+            maxDownloadRequests = 8;
+            maxDownloadRequestsBig = 8;
         } else {
             downloadChunkSizeBig = 1024 * 128;
             maxDownloadRequests = 4;
@@ -1193,6 +1190,12 @@ public class FileLoadOperation {
                             for (int a = 0; a < count; a++) {
                                 long start = filePartsStream.readLong();
                                 long end = filePartsStream.readLong();
+                                while (start % currentDownloadChunkSize != 0) {
+                                    currentDownloadChunkSize /= 2;
+                                    if (useDownloadByteBudget) {
+                                        currentMaxDownloadRequests *= 2;
+                                    }
+                                }
                                 notLoadedBytesRanges.add(new Range(start, end));
                                 notRequestedBytesRanges.add(new Range(start, end));
                             }
@@ -2473,7 +2476,7 @@ public class FileLoadOperation {
 
             if (!isPreloadVideoOperation && supportsPreloading && preloadStream != null && preloadedBytesRanges != null) {
                 PreloadRange range = preloadedBytesRanges.get(requestInfo.offset);
-                if (range != null) {
+                if (range != null && (range.length == currentDownloadChunkSize || requestInfo.offset + range.length == totalBytesCount)) {
                     requestInfo.response = new TLRPC.TL_upload_file();
                     try {
                         if (BuildVars.DEBUG_VERSION && range.length > Integer.MAX_VALUE) {
