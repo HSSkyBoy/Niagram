@@ -6336,7 +6336,13 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                             if (error == null) {
                                 BulletinFactory.of(fragment).createSimpleBulletin(R.raw.done, LocaleController.getString(R.string.YourVersionIsLatestNax)).show();
                             } else {
-                                AlertsCreator.createSimpleAlert(this, getString(R.string.ErrorOccurred) + "\n" + error).show();
+                                String errPrefix;
+                                try {
+                                    errPrefix = LocaleController.getString(R.string.ErrorOccurred);
+                                } catch (Throwable t) {
+                                    errPrefix = "An error occurred.";
+                                }
+                                AlertsCreator.createSimpleAlert(this, errPrefix + "\n" + error).show();
                             }
                         }
                     }
