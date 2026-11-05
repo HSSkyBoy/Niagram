@@ -64,7 +64,7 @@ import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.IconCompat;
 
-import com.google.common.collect.Lists;
+
 
 import org.telegram.messenger.support.LongSparseIntArray;
 import org.telegram.messenger.utils.tlutils.TLKeyboardHelper;
@@ -1186,7 +1186,7 @@ public class NotificationsController extends BaseController implements Notificat
                     if (now > expire_date) continue;
                     AndroidUtilities.runOnUIThread(() -> {
                         final LongSparseArray<ArrayList<Integer>> deletedMessages = new LongSparseArray<>();
-                        deletedMessages.put(0, Lists.newArrayList(msg_id));
+                        deletedMessages.put(0, new ArrayList<>(Collections.singletonList(msg_id)));
                         removeDeletedMessagesFromNotifications(deletedMessages, false);
                     }, (expire_date - now) * 1000L);
                 }

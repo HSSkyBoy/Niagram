@@ -41,7 +41,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 //import com.google.mlkit.common.model.RemoteModelManager;
 //import com.google.mlkit.nl.translate.TranslateLanguage;
 //import com.google.mlkit.nl.translate.TranslateRemoteModel;
@@ -584,7 +584,7 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
                     connection.setRequestProperty("Content-Type", "application/json");
 
                     StringBuilder textBuilder = new StringBuilder();
-                    try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charsets.UTF_8))) {
+                    try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                         int c = 0;
                         while ((c = reader.read()) != -1) {
                             textBuilder.append((char) c);

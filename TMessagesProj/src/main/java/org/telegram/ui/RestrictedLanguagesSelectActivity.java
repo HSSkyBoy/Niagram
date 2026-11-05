@@ -23,7 +23,7 @@ import android.widget.FrameLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.common.collect.Sets;
+import java.util.Collections;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -79,7 +79,7 @@ public class RestrictedLanguagesSelectActivity extends BaseFragment implements N
             gotRestrictedLanguages = true;
         }
         if (restrictedLanguages == null) {
-            restrictedLanguages = Sets.newHashSet(LocaleController.getInstance().getCurrentLocaleInfo().pluralLangCode);
+            restrictedLanguages = new HashSet<>(Collections.singletonList(LocaleController.getInstance().getCurrentLocaleInfo().pluralLangCode));
         }
         return restrictedLanguages;
     }

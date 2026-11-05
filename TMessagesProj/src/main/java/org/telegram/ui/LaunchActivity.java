@@ -96,7 +96,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 
 import com.google.android.gms.common.api.Status;
-import com.google.common.primitives.Longs;
+
 // import com.google.firebase.appindexing.Action;
 // import com.google.firebase.appindexing.FirebaseUserActions;
 // import com.google.firebase.appindexing.builders.AssistActionBuilder;
@@ -9385,7 +9385,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     dids.add(dialogIds[i]);
                 }
             }
-            finalDialogIds = Longs.toArray(dids);
+            finalDialogIds = new long[dids.size()];
+            for (int i = 0; i < dids.size(); i++) {
+                finalDialogIds[i] = dids.get(i);
+            }
         } else {
             finalDialogIds = dialogIds;
         }

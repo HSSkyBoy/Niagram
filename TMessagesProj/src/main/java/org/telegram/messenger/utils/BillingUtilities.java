@@ -13,7 +13,7 @@ import androidx.media3.common.util.Util;
 import com.android.billingclient.api.AccountIdentifiers;
 import com.android.billingclient.api.Purchase;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 import org.telegram.messenger.AccountInstance;
@@ -46,7 +46,7 @@ public class BillingUtilities {
         try {
             Context ctx = ApplicationLoader.applicationContext;
             InputStream in = ctx.getAssets().open(CURRENCY_FILE);
-            JSONObject obj = new JSONObject(new String(Util.toByteArray(in), Charsets.UTF_8));
+            JSONObject obj = new JSONObject(new String(Util.toByteArray(in), StandardCharsets.UTF_8));
             Iterator<String> it = obj.keys();
             while (it.hasNext()) {
                 String key = it.next();
@@ -64,7 +64,7 @@ public class BillingUtilities {
             return;
         }
         try (InputStream in = ApplicationLoader.applicationContext.getAssets().open(CURRENCY_FILE)) {
-            JSONObject currencies = new JSONObject(new String(Util.toByteArray(in), Charsets.UTF_8));
+            JSONObject currencies = new JSONObject(new String(Util.toByteArray(in), StandardCharsets.UTF_8));
             for (TL_wallet.currencyRate rate : rates.rates) {
                 if (rate == null) {
                     continue;
@@ -112,10 +112,10 @@ public class BillingUtilities {
         String obfuscatedAccountId;
         if (accountInstance.getUserConfig().isClientActivated()) {
             long currentAccountId = accountInstance.getUserConfig().getClientUserId();
-            byte[] currentAccountIdBytes = String.valueOf(currentAccountId).getBytes(Charsets.UTF_8);
+            byte[] currentAccountIdBytes = String.valueOf(currentAccountId).getBytes(StandardCharsets.UTF_8);
             obfuscatedAccountId = Base64.encodeToString(currentAccountIdBytes, Base64.DEFAULT);
         } else {
-            byte[] currentAccountIdBytes = ("account-" + accountInstance.getCurrentAccount()).getBytes(Charsets.UTF_8);
+            byte[] currentAccountIdBytes = ("account-" + accountInstance.getCurrentAccount()).getBytes(StandardCharsets.UTF_8);
             obfuscatedAccountId = Base64.encodeToString(currentAccountIdBytes, Base64.DEFAULT);
         }
         return Pair.create(obfuscatedAccountId, savePurpose(paymentPurpose));
@@ -289,7 +289,7 @@ public class BillingUtilities {
             }
 
             byte[] obfuscatedAccountIdBytes = Base64.decode(obfuscatedAccountId, Base64.DEFAULT);
-            String obfuscatedAccountIdString = new String(obfuscatedAccountIdBytes, Charsets.UTF_8);
+            String obfuscatedAccountIdString = new String(obfuscatedAccountIdBytes, StandardCharsets.UTF_8);
             FileLog.d("Billing: Extract payload. obfuscatedAccountIdString=" + obfuscatedAccountIdString);
 
             AccountInstance acc;

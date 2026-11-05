@@ -15,7 +15,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-import com.google.common.primitives.Floats;
+
 import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -660,7 +660,12 @@ public class DualCameraView extends CameraView {
         if (isDual()) {
             float[] values = new float[9];
             getDualPosition().getValues(values);
-            edit.putString("dualmatrix", Floats.join(";", values));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < values.length; i++) {
+                if (i > 0) sb.append(';');
+                sb.append(values[i]);
+            }
+            edit.putString("dualmatrix", sb.toString());
         } else {
             edit.remove("dualmatrix");
         }
