@@ -395,6 +395,10 @@ interface Translator {
             locales.remove(firstLocale)
             locales.add(0, firstLocale)
 
+            if (NyaConfig.preferredTranslateTargetLangList.isEmpty()) {
+                NyaConfig.updatePreferredTranslateTargetLangList()
+            }
+
             // Get preferred languages and insert after first position
             val preferredLocales = NyaConfig.preferredTranslateTargetLangList.mapNotNull { lang ->
                 try {

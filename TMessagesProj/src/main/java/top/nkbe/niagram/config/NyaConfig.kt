@@ -1937,19 +1937,21 @@ object NyaConfig {
 
     val preferredTranslateTargetLangList = ArrayList<String>()
     fun updatePreferredTranslateTargetLangList() {
-        AndroidUtilities.runOnUIThread({
-            preferredTranslateTargetLangList.clear()
-            val str = preferredTranslateTargetLang.String().trim()
-
-            if (str.isEmpty()) return@runOnUIThread
-
+        val str = preferredTranslateTargetLang.String().trim()
+        val list = ArrayList<String>()
+        if (str.isNotEmpty()) {
             val languages = str.replace('-', '_').split(",")
-            if (languages.isEmpty() || languages[0].trim().isEmpty()) return@runOnUIThread
-
-            languages.forEach { lang ->
-                preferredTranslateTargetLangList.add(lang.trim().lowercase())
+            for (lang in languages) {
+                val item = lang.trim().lowercase()
+                if (item.isNotEmpty()) {
+                    list.add(item)
+                }
             }
-        }, 1000)
+        }
+        synchronized(preferredTranslateTargetLangList) {
+            preferredTranslateTargetLangList.clear()
+            preferredTranslateTargetLangList.addAll(list)
+        }
     }
 
     private fun getIgnoreMutedCountLegacy(): Int {
