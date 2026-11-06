@@ -38,6 +38,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ChatActivity;
 import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.BackupImageView;
+import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.ProfileActivity;
 import org.telegram.ui.TopicsFragment;
@@ -51,6 +52,136 @@ public class BackButtonMenuRecent {
 
     private static final SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekorecentdialogs", Context.MODE_PRIVATE);
     private static final SparseArray<LinkedList<Long>> recentDialogs = new SparseArray<>();
+
+
+    public static void addMenu(BaseFragment fragment, ItemOptions o) {
+        if (fragment == null || o == null) return;
+        final int currentAccount = fragment.getCurrentAccount();
+        final LinkedList<Long> dialogs = getRecentDialogs(currentAccount);
+        if (dialogs.isEmpty()) {
+            return;
+        }
+        final Context context = fragment.getParentActivity();
+        if (context == null) return;
+
+        final ItemOptions sub = o.makeSwipeback();
+        sub.add(R.drawable.ic_ab_back, getString(R.string.Back), o::closeSwipeback);
+        sub.addGap();
+
+        int added = 0;
+        for (Long dialogId : dialogs) {
+            if (dialogId == null) continue;
+            final TLRPC.Chat chat;
+            final TLRPC.User user;
+            if (dialogId < 0) {
+                chat = MessagesController.getInstance(currentAccount).getChat(-dialogId);
+                user = null;
+            } else {
+                chat = null;
+                user = MessagesController.getInstance(currentAccount).getUser(dialogId);
+            }
+            if (chat == null && user == null) {
+                continue;
+            }
+
+            FrameLayout cell = new FrameLayout(context);
+            cell.setMinimumWidth(dp(220));
+
+            BackupImageView imageView = new BackupImageView(context);
+            imageView.setRoundRadius(chat != null && chat.forum ? dp(8) : dp(16));
+            cell.addView(imageView, LayoutHelper.createFrameRelatively(32, 32, Gravity.START | Gravity.CENTER_VERTICAL, 14, 0, 0, 0));
+
+            TextView titleView = new TextView(context);
+            titleView.setLines(1);
+            titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+            titleView.setTextColor(Theme.getColor(Theme.key_actionBarDefaultSubmenuItem, fragment.getResourceProvider()));
+            titleView.setEllipsize(TextUtils.TruncateAt.END);
+            cell.addView(titleView, LayoutHelper.createFrameRelatively(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.START | Gravity.CENTER_VERTICAL, 56, 0, 14, 0));
+
+            AvatarDrawable avatarDrawable = new AvatarDrawable();
+            avatarDrawable.setScaleSize(.8f);
+            Drawable thumb = avatarDrawable;
+
+            if (chat != null) {
+                avatarDrawable.setInfo(chat);
+                if (chat.photo != null && chat.photo.strippedBitmap != null) {
+                    thumb = chat.photo.strippedBitmap;
+                }
+                imageView.setImage(ImageLocation.getForChat(chat, ImageLocation.TYPE_SMALL), "50_50", thumb, chat);
+                titleView.setText(Emoji.replaceEmoji(chat.title, titleView.getPaint().getFontMetricsInt(), false));
+            } else {
+                String name;
+                if (user.photo != null && user.photo.strippedBitmap != null) {
+                    thumb = user.photo.strippedBitmap;
+                }
+                if (UserObject.isReplyUser(user)) {
+                    name = getString(R.string.RepliesTitle);
+                    avatarDrawable.setAvatarType(AvatarDrawable.AVATAR_TYPE_REPLIES);
+                    imageView.setImageDrawable(avatarDrawable);
+                } else if (UserObject.isDeleted(user)) {
+                    name = getString(R.string.HiddenName);
+                    avatarDrawable.setInfo(user);
+                    imageView.setImage(ImageLocation.getForUser(user, ImageLocation.TYPE_SMALL), "50_50", avatarDrawable, user);
+                } else {
+                    name = UserObject.getUserName(user);
+                    avatarDrawable.setInfo(user);
+                    imageView.setImage(ImageLocation.getForUser(user, ImageLocation.TYPE_SMALL), "50_50", thumb, user);
+                }
+                titleView.setText(Emoji.replaceEmoji(name, titleView.getPaint().getFontMetricsInt(), false));
+            }
+
+            cell.setBackground(Theme.getSelectorDrawable(Theme.getColor(Theme.key_listSelector, fragment.getResourceProvider()), false));
+            cell.setOnClickListener(v -> {
+                o.dismiss();
+                Bundle bundle = new Bundle();
+                if (dialogId < 0) {
+                    bundle.putLong("chat_id", -dialogId);
+                    if (MessagesController.getInstance(currentAccount).isForum(dialogId)) {
+                        fragment.presentFragment(new TopicsFragment(bundle));
+                    } else {
+                        fragment.presentFragment(new ChatActivity(bundle));
+                    }
+                } else {
+                    bundle.putLong("user_id", dialogId);
+                    fragment.presentFragment(new ChatActivity(bundle));
+                }
+            });
+            cell.setOnLongClickListener(v -> {
+                o.dismiss();
+                Bundle bundle = new Bundle();
+                if (dialogId < 0) {
+                    bundle.putLong("chat_id", -dialogId);
+                } else {
+                    bundle.putLong("user_id", dialogId);
+                }
+                fragment.presentFragment(new ProfileActivity(bundle));
+                return true;
+            });
+
+            sub.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 44));
+            added++;
+        }
+
+        if (added > 0) {
+            sub.addGap();
+            sub.add(R.drawable.msg_clear, getString(R.string.ClearRecentChats), () -> {
+                new AlertDialog.Builder(context, fragment.getResourceProvider())
+                    .setTitle(getString(R.string.ClearRecentChats))
+                    .setMessage(getString(R.string.ClearRecentChatAlert))
+                    .setPositiveButton(getString(R.string.ClearButton).toUpperCase(), (dialogInterface, i) -> {
+                        clearRecentDialogs(currentAccount);
+                        o.dismiss();
+                    })
+                    .setNegativeButton(getString(R.string.Cancel), null)
+                    .makeRed(AlertDialog.BUTTON_POSITIVE)
+                    .show();
+            });
+
+            o.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> {
+                o.openSwipeback(sub);
+            });
+        }
+    }
 
     public static void show(int currentAccount, BaseFragment fragment, View backButton) {
         if (fragment == null) {

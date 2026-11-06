@@ -1362,10 +1362,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
     }
 
     private void addChatsMenuItems(ItemOptions o, View button) {
-        o.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> {
-            o.dismiss();
-            BackButtonMenuRecent.show(currentAccount, this, button);
-        });
+        BackButtonMenuRecent.addMenu(this, o);
         o.addGap();
         o.add(R.drawable.msg_archive, getString(R.string.ArchivedChats), () -> {
             Bundle args = new Bundle();
