@@ -1861,6 +1861,44 @@ public class ChatActivity extends BaseFragment implements
     private final static int shortcuts_statistics = 302;
     private final static int shortcuts_permissions = 303;
     private final static int shortcuts_members = 304;
+    private final static int shortcuts_auto_reaction = 305;
+
+    private void showAutoReactionReport(long userId) {
+        if (userId <= 0) {
+            return;
+        }
+        TLRPC.User user = getMessagesController().getUser(userId);
+        ReactionLatencyHelper.Info info = ReactionLatencyHelper.getInfo(currentAccount, dialog_id, userId);
+        new top.nkbe.niagram.ui.components.AutoReactionReportBottomSheet(
+            this, currentAccount, dialog_id, currentChat, user, info, getResourceProvider(), null
+        ).show();
+    }
+
+    private void deleteUserReactions(MessageObject msg, long userId, long mDialogId, int cMode) {
+        if (msg == null || userId <= 0) return;
+        final ArrayList<MessageObject> arrMessages = new ArrayList<>(1);
+        arrMessages.add(msg);
+        final org.telegram.tgnet.TLObject userOrChat = getMessagesController().getUserOrChat(userId);
+        final ArrayList<org.telegram.tgnet.TLObject> actionParticipants = new ArrayList<>(1);
+        actionParticipants.add(userOrChat);
+        final TLRPC.ChannelParticipant[] participants = new TLRPC.ChannelParticipant[1];
+        final TLRPC.TL_channels_getParticipant req = new TLRPC.TL_channels_getParticipant();
+        req.channel = MessagesController.getInputChannel(currentChat);
+        req.participant = MessagesController.getInputPeer(userOrChat);
+        getConnectionsManager().sendRequestTyped(req, AndroidUtilities::runOnUIThread, (res, err) -> {
+            if (res != null) {
+                getMessagesController().putUsers(res.users, false);
+                getMessagesController().putChats(res.chats, false);
+                participants[0] = res.participant;
+            }
+            new DeleteMessagesBottomSheet(this, currentChat,
+                arrMessages, actionParticipants, participants,
+                mDialogId, (int) getTopicId(),
+                cMode, true, () -> {}).show();
+        });
+        closeMenu();
+    }
+
 
     RecyclerListView.OnItemLongClickListenerExtended onItemLongClickListener = new RecyclerListView.OnItemLongClickListenerExtended() {
         @Override
@@ -5046,6 +5084,9 @@ public class ChatActivity extends BaseFragment implements
             hideTitleItem = NyaConfig.INSTANCE.getChatMenuItemHideTitle().Bool() ? headerItem.lazilyAddSubItem(nkheaderbtn_hide_title, R.drawable.hide_title, getString(R.string.HideTitle)) : null;
             if (NyaConfig.INSTANCE.getChatMenuItemViewDeleted().Bool() && NyaConfig.INSTANCE.getEnableSaveDeletedMessages().Bool()) headerItem.lazilyAddSubItem(nkbtn_viewDeleted, R.drawable.msg_view_file, getString(R.string.ViewDeleted));
             if (NyaConfig.INSTANCE.getChatMenuItemClearDeleted().Bool() && NyaConfig.INSTANCE.getEnableSaveDeletedMessages().Bool()) headerItem.lazilyAddSubItem(nkbtn_clearDeleted, R.drawable.msg_clear, getString(R.string.ClearDeleted));
+            if (ReactionLatencyHelper.isEnabled() && currentChat != null && !ChatObject.isChannelAndNotMegaGroup(currentChat)) {
+                headerItem.lazilyAddSubItem(shortcuts_auto_reaction, R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionMonitor));
+            }
             if (dialog_id != 0) {
                 boolean isLocked = top.nkbe.niagram.helpers.ChatLockManager.isChatLocked(currentAccount, dialog_id);
                 if (NyaConfig.INSTANCE.getChatMenuItemLockChat().Bool() || isLocked) {
@@ -33180,6 +33221,16 @@ public class ChatActivity extends BaseFragment implements
                                 }
                                 ReactedUsersListView v = new ReactedUsersListView(container.getContext(), themeDelegate, currentAccount, message, reactionCount, false, true)
                                         .setSeenUsers(reactedView.getSeenUsers())
+                                        .setOnProfileLongSelectedListener((view, userId, messagePeerReaction) -> {
+                                            if (userId == getUserConfig().getClientUserId()) {
+                                                return;
+                                            }
+                                            if (ReactionLatencyHelper.isEnabled()) {
+                                                closeMenu();
+                                                showAutoReactionReport(userId);
+                                            }
+                                        })
+
                                         .setOnCustomEmojiSelectedListener((reactedUsersListView1, customEmojiStickerSets) -> {
                                             if (getParentActivity() == null || getContext() == null) return;
                                             final EmojiPacksAlert alert = new EmojiPacksAlert(ChatActivity.this, getParentActivity(), themeDelegate, customEmojiStickerSets) {
@@ -33300,7 +33351,27 @@ public class ChatActivity extends BaseFragment implements
                                     closeMenu();
                                 })
                                 .setOnProfileLongSelectedListener((view, userId, messagePeerReaction) -> {
-                                    if (messagePeerReaction == null || messagePeerReaction.reaction == null || userId == getUserConfig().getClientUserId() || !canDeleteReactions) {
+                                    if (userId == getUserConfig().getClientUserId()) {
+                                        return;
+                                    }
+                                    if (ReactionLatencyHelper.isEnabled() && !canDeleteReactions) {
+                                        closeMenu();
+                                        showAutoReactionReport(userId);
+                                        return;
+                                    }
+                                    if (messagePeerReaction == null || messagePeerReaction.reaction == null || !canDeleteReactions) {
+                                        return;
+                                    }
+                                    if (ReactionLatencyHelper.isEnabled()) {
+                                        ItemOptions options = ItemOptions.makeOptions(ChatActivity.this, view);
+                                        options.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport), () -> {
+                                            closeMenu();
+                                            showAutoReactionReport(userId);
+                                        });
+                                        options.add(R.drawable.msg_delete, LocaleController.getString(R.string.Delete), () -> {
+                                            deleteUserReactions(primaryMessage, userId, mergeDialogId, chatMode);
+                                        });
+                                        options.show();
                                         return;
                                     }
 
@@ -47284,6 +47355,10 @@ public class ChatActivity extends BaseFragment implements
             } catch (Exception e) {
                 AlertUtil.showToast(e);
             }
+        } else if (id == shortcuts_auto_reaction) {
+            if (currentChat != null) {
+                new top.nkbe.niagram.ui.components.AutoReactionListBottomSheet(this, currentAccount, -currentChat.id, currentChat, getResourceProvider()).show();
+            }
         } else if (id == shortcuts_administrators || id == shortcuts_permissions || id == shortcuts_members) {
             Bundle args = new Bundle();
             args.putLong("chat_id", currentChat.id);
@@ -48846,7 +48921,27 @@ public class ChatActivity extends BaseFragment implements
                         presentFragment(fragment);
                         closeMenu();
                     }).setOnProfileLongSelectedListener((view, userId, messagePeerReaction) -> {
-                        if (messagePeerReaction == null || messagePeerReaction.reaction == null || userId == getUserConfig().getClientUserId() || !canDeleteReactions) {
+                        if (userId == getUserConfig().getClientUserId()) {
+                            return;
+                        }
+                        if (ReactionLatencyHelper.isEnabled() && !canDeleteReactions) {
+                            closeMenu();
+                            showAutoReactionReport(userId);
+                            return;
+                        }
+                        if (messagePeerReaction == null || messagePeerReaction.reaction == null || !canDeleteReactions) {
+                            return;
+                        }
+                        if (ReactionLatencyHelper.isEnabled()) {
+                            ItemOptions options = ItemOptions.makeOptions(ChatActivity.this, view);
+                            options.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport), () -> {
+                                closeMenu();
+                                showAutoReactionReport(userId);
+                            });
+                            options.add(R.drawable.msg_delete, LocaleController.getString(R.string.Delete), () -> {
+                                deleteUserReactions(messageObject, userId, mergeDialogId, chatMode);
+                            });
+                            options.show();
                             return;
                         }
 

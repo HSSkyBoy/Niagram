@@ -1,8 +1,12 @@
 package top.nkbe.niagram.helpers;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.widget.TextView;
 
+import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.FileLog;
@@ -11,29 +15,35 @@ import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.ui.ActionBar.AlertDialog;
+import org.telegram.ui.ActionBar.BaseFragment;
+import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Components.BulletinFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import top.nkbe.niagram.config.NyaConfig;
 
 /**
  * Tracks reaction latency to detect automated reactions / auto-reaction bots.
- * High-accuracy detection with 0s instant detection and detailed reaction reports.
+ * Real-time per-reaction timing with streak, emoji, and average latency detection.
  */
 public final class ReactionLatencyHelper {
 
-    public static final int FAST_SECONDS = 1;
+    public static final int FAST_SECONDS = 3;
     public static final int SUSPECT_STREAK = 3;
     public static final int RELAPSE_STREAK = 5;
 
-    private static final int WINDOW = 20;
+    private static final int WINDOW = 30;
     private static final int MAX_ENTRIES = 2000;
     private static final int SAVE_DELAY_MS = 5000;
     private static final String PREFS = "reaction_latency";
@@ -56,11 +66,13 @@ public final class ReactionLatencyHelper {
         public final int messageId;
         public final int latency;
         public final long timestamp;
+        public final String emoji;
 
-        public Sample(int messageId, int latency, long timestamp) {
+        public Sample(int messageId, int latency, long timestamp, String emoji) {
             this.messageId = messageId;
             this.latency = latency;
             this.timestamp = timestamp;
+            this.emoji = emoji != null ? emoji : "";
         }
     }
 
@@ -76,19 +88,37 @@ public final class ReactionLatencyHelper {
         public final int total;
         public final int minLatency;
         public final float avgLatency;
+        public final int sameEmojiStreak;
+        public final String lastEmoji;
         public final boolean confirmedAuto;
         public final boolean suspected;
+        public final String reason;
         public final List<Sample> samples;
 
-        public Info(int streak, int zeroCount, int total, int minLatency, float avgLatency, boolean confirmedAuto, boolean suspected, List<Sample> samples) {
+        public Info(int streak, int zeroCount, int total, int minLatency, float avgLatency,
+                    int sameEmojiStreak, String lastEmoji, boolean confirmedAuto, boolean suspected,
+                    String reason, List<Sample> samples) {
             this.streak = streak;
             this.zeroCount = zeroCount;
             this.total = total;
             this.minLatency = minLatency;
             this.avgLatency = avgLatency;
+            this.sameEmojiStreak = sameEmojiStreak;
+            this.lastEmoji = lastEmoji != null ? lastEmoji : "";
             this.confirmedAuto = confirmedAuto;
             this.suspected = suspected;
+            this.reason = reason != null ? reason : "";
             this.samples = samples != null ? Collections.unmodifiableList(new ArrayList<>(samples)) : Collections.emptyList();
+        }
+    }
+
+    public static final class MemberReactionStat {
+        public final long userId;
+        public final Info info;
+
+        public MemberReactionStat(long userId, Info info) {
+            this.userId = userId;
+            this.info = info;
         }
     }
 
@@ -131,7 +161,8 @@ public final class ReactionLatencyHelper {
             if (user != null && user.bot) {
                 continue;
             }
-            changed |= addSample(account, dialogId, userId, messageId, latency, reaction.date * 1000L);
+            final String emoji = extractEmoji(reaction.reaction);
+            changed |= addSample(account, dialogId, userId, messageId, latency, reaction.date * 1000L, emoji);
         }
         if (changed) {
             scheduleSave();
@@ -175,7 +206,8 @@ public final class ReactionLatencyHelper {
                 if (user != null && user.bot) {
                     continue;
                 }
-                changed |= addSample(account, dialogId, userId, messageId, latency, reaction.date * 1000L);
+                final String emoji = extractEmoji(reaction.reaction);
+                changed |= addSample(account, dialogId, userId, messageId, latency, reaction.date * 1000L, emoji);
             }
         }
         if (changed) {
@@ -214,6 +246,8 @@ public final class ReactionLatencyHelper {
                 return null;
             }
             final int streak = trailingFastStreak(entry);
+            final int sameEmojiStreak = trailingSameEmojiStreak(entry);
+            final String lastEmoji = entry.samples.get(entry.samples.size() - 1).emoji;
             final int zeroCount = entry.zeroLatencyCount;
             final int total = entry.samples.size();
             int min = Integer.MAX_VALUE;
@@ -225,21 +259,71 @@ public final class ReactionLatencyHelper {
                 sum += s.latency;
             }
             float avg = total > 0 ? (float) sum / total : 0f;
-            boolean confirmed = zeroCount >= 1 || streak >= SUSPECT_STREAK;
-            boolean suspected = confirmed || (streak >= (entry.level > 0 ? RELAPSE_STREAK : SUSPECT_STREAK));
-            return new Info(streak, zeroCount, total, min == Integer.MAX_VALUE ? 0 : min, avg, confirmed, suspected, entry.samples);
+
+            boolean suspected = false;
+            String reason = "";
+
+            if (zeroCount > 0) {
+                suspected = true;
+                reason = "0s 秒回 (" + zeroCount + "次)";
+            } else if (total >= 3 && avg <= 3.0f) {
+                suspected = true;
+                if (sameEmojiStreak >= 3 && !TextUtils.isEmpty(lastEmoji)) {
+                    reason = String.format(Locale.US, "均速 %.1fs · 連續 %d次 %s", avg, sameEmojiStreak, lastEmoji);
+                } else {
+                    reason = String.format(Locale.US, "均速 %.1fs (≤3s)", avg);
+                }
+            } else if (sameEmojiStreak >= 3 && (avg <= 5.0f || streak >= 2)) {
+                suspected = true;
+                reason = "連續 " + sameEmojiStreak + "次 " + lastEmoji;
+            } else if (streak >= SUSPECT_STREAK) {
+                suspected = true;
+                reason = "連續 " + streak + "次 ≤3s";
+            }
+
+            boolean confirmed = zeroCount >= 1 || (total >= 5 && avg <= 2.5f) || streak >= 5;
+
+            return new Info(streak, zeroCount, total, min == Integer.MAX_VALUE ? 0 : min, avg,
+                    sameEmojiStreak, lastEmoji, confirmed, suspected, reason, entry.samples);
         }
     }
 
-    public static String getSuspectBadge(int account, long dialogId, long userId) {
-        final Info info = getInfo(account, dialogId, userId);
-        if (info == null || !info.suspected) {
-            return null;
+    public static List<MemberReactionStat> getGroupMembers(int account, long dialogId) {
+        if (!isEnabled()) {
+            return Collections.emptyList();
         }
-        if (info.zeroCount > 0) {
-            return "⚡ 0s";
+        final List<MemberReactionStat> list = new ArrayList<>();
+        synchronized (LOCK) {
+            ensureLoaded();
+            final String prefix = account + ":" + dialogId + ":";
+            for (Map.Entry<String, UserEntry> e : entries.entrySet()) {
+                if (e.getKey().startsWith(prefix)) {
+                    final String userIdStr = e.getKey().substring(prefix.length());
+                    try {
+                        long uid = Long.parseLong(userIdStr);
+                        Info info = getInfo(account, dialogId, uid);
+                        if (info != null && !info.samples.isEmpty()) {
+                            list.add(new MemberReactionStat(uid, info));
+                        }
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
         }
-        return "🤖 " + info.streak + "x ≤1s";
+        Collections.sort(list, (a, b) -> {
+            if (a.info.suspected != b.info.suspected) {
+                return a.info.suspected ? -1 : 1;
+            }
+            if (a.info.suspected) {
+                if (a.info.zeroCount != b.info.zeroCount) {
+                    return Integer.compare(b.info.zeroCount, a.info.zeroCount);
+                }
+            }
+            int cmp = Integer.compare(b.info.total, a.info.total);
+            if (cmp != 0) return cmp;
+            return Float.compare(a.info.avgLatency, b.info.avgLatency);
+        });
+        return list;
     }
 
     public static void clearMember(int account, long dialogId, long userId) {
@@ -250,6 +334,70 @@ public final class ReactionLatencyHelper {
         scheduleSave();
     }
 
+    public static void clearGroup(int account, long dialogId) {
+        synchronized (LOCK) {
+            ensureLoaded();
+            final String prefix = account + ":" + dialogId + ":";
+            for (Iterator<Map.Entry<String, UserEntry>> it = entries.entrySet().iterator(); it.hasNext(); ) {
+                if (it.next().getKey().startsWith(prefix)) {
+                    it.remove();
+                }
+            }
+        }
+        scheduleSave();
+    }
+
+    public static void banUserWithConfirmation(BaseFragment fragment, TLRPC.Chat currentChat, TLRPC.User targetUser, Runnable onBanned) {
+        if (fragment == null || fragment.getParentActivity() == null || currentChat == null || targetUser == null) {
+            return;
+        }
+        final int account = fragment.getCurrentAccount();
+        final long selfId = UserConfig.getInstance(account).getClientUserId();
+        if (targetUser.id == selfId) {
+            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.ActionNotAllowed)).show();
+            return;
+        }
+        if (currentChat.creator && targetUser.id == currentChat.id) {
+            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.ActionNotAllowed)).show();
+            return;
+        }
+        if (!ChatObject.canBlockUsers(currentChat)) {
+            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.ChannelRightsNoAdmin)).show();
+            return;
+        }
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getParentActivity(), fragment.getResourceProvider());
+        builder.setTitle(LocaleController.getString(R.string.KickFromGroup));
+        String userName = UserObject.getUserName(targetUser);
+        builder.setMessage(LocaleController.formatString(R.string.AutoReactionBanConfirm, userName));
+        builder.setPositiveButton(LocaleController.getString(R.string.KickFromGroup), (dialog, which) -> {
+            fragment.getMessagesController().deleteParticipantFromChat(currentChat.id, targetUser, null, false, false);
+            clearMember(account, -currentChat.id, targetUser.id);
+            if (BulletinFactory.canShowBulletin(fragment)) {
+                BulletinFactory.createRemoveFromChatBulletin(fragment, targetUser, currentChat.title).show();
+            }
+            if (onBanned != null) {
+                onBanned.run();
+            }
+        });
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        final TextView button = (TextView) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setTextColor(Theme.getColor(Theme.key_text_RedBold, fragment.getResourceProvider()));
+        }
+    }
+
+    private static String extractEmoji(TLRPC.Reaction reaction) {
+        if (reaction instanceof TLRPC.TL_reactionEmoji) {
+            return ((TLRPC.TL_reactionEmoji) reaction).emoticon;
+        } else if (reaction instanceof TLRPC.TL_reactionCustomEmoji) {
+            return "★";
+        }
+        return "";
+    }
+
     private static boolean isTrackedGroup(int account, long dialogId) {
         if (dialogId >= 0) {
             return false;
@@ -258,7 +406,7 @@ public final class ReactionLatencyHelper {
         return chat != null && !(ChatObject.isChannel(chat) && !chat.megagroup);
     }
 
-    private static boolean addSample(int account, long dialogId, long userId, int messageId, int latency, long timestamp) {
+    private static boolean addSample(int account, long dialogId, long userId, int messageId, int latency, long timestamp, String emoji) {
         synchronized (LOCK) {
             ensureLoaded();
             final String k = key(account, dialogId, userId);
@@ -275,7 +423,7 @@ public final class ReactionLatencyHelper {
             if (latency == 0) {
                 entry.zeroLatencyCount++;
             }
-            entry.samples.add(new Sample(messageId, latency, timestamp));
+            entry.samples.add(new Sample(messageId, latency, timestamp, emoji));
             Collections.sort(entry.samples, (a, b) -> Integer.compare(a.messageId, b.messageId));
             while (entry.samples.size() > WINDOW) {
                 Sample removed = entry.samples.remove(0);
@@ -317,6 +465,21 @@ public final class ReactionLatencyHelper {
         return streak;
     }
 
+    private static int trailingSameEmojiStreak(UserEntry entry) {
+        if (entry.samples.isEmpty()) return 0;
+        final String target = entry.samples.get(entry.samples.size() - 1).emoji;
+        if (TextUtils.isEmpty(target)) return 0;
+        int streak = 0;
+        for (int i = entry.samples.size() - 1; i >= 0; i--) {
+            if (target.equals(entry.samples.get(i).emoji)) {
+                streak++;
+            } else {
+                break;
+            }
+        }
+        return streak;
+    }
+
     private static String key(int account, long dialogId, long userId) {
         return account + ":" + dialogId + ":" + userId;
     }
@@ -347,13 +510,13 @@ public final class ReactionLatencyHelper {
                                 int mid = Integer.parseInt(parts[0]);
                                 int lat = Integer.parseInt(parts[1]);
                                 long ts = parts.length >= 3 ? Long.parseLong(parts[2]) : System.currentTimeMillis();
-                                entry.samples.add(new Sample(mid, lat, ts));
+                                String emoji = parts.length >= 4 ? parts[3] : "";
+                                entry.samples.add(new Sample(mid, lat, ts, emoji));
                             }
                         }
                     }
                     entries.put(head[0], entry);
                 } catch (Exception e) {
-                    // Skip corrupt line, don't wipe out everything
                     FileLog.e(e);
                 }
             }
@@ -392,7 +555,7 @@ public final class ReactionLatencyHelper {
                         builder.append(';');
                     }
                     final Sample s = entry.samples.get(i);
-                    builder.append(s.messageId).append(',').append(s.latency).append(',').append(s.timestamp);
+                    builder.append(s.messageId).append(',').append(s.latency).append(',').append(s.timestamp).append(',').append(s.emoji != null ? s.emoji : "");
                 }
             }
         }

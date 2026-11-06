@@ -4,23 +4,24 @@ import static org.telegram.messenger.AndroidUtilities.dp;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
+import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AvatarDrawable;
@@ -35,20 +36,25 @@ import top.nkbe.niagram.helpers.ReactionLatencyHelper;
 
 public class AutoReactionReportBottomSheet extends BottomSheet {
 
+    private final BaseFragment fragment;
     private final int currentAccount;
     private final long dialogId;
+    private final TLRPC.Chat currentChat;
     private final TLRPC.User user;
     private final ReactionLatencyHelper.Info info;
     private final Runnable onReset;
 
-    public AutoReactionReportBottomSheet(Context context, int currentAccount, long dialogId, TLRPC.User user, ReactionLatencyHelper.Info info, Theme.ResourcesProvider resourcesProvider, Runnable onReset) {
-        super(context, false, resourcesProvider);
+    public AutoReactionReportBottomSheet(BaseFragment fragment, int currentAccount, long dialogId, TLRPC.Chat currentChat, TLRPC.User user, ReactionLatencyHelper.Info info, Theme.ResourcesProvider resourcesProvider, Runnable onReset) {
+        super(fragment != null ? fragment.getParentActivity() : null, false, resourcesProvider);
+        this.fragment = fragment;
         this.currentAccount = currentAccount;
         this.dialogId = dialogId;
+        this.currentChat = currentChat;
         this.user = user;
         this.info = info;
         this.onReset = onReset;
 
+        Context context = getContext();
         fixNavigationBar(getThemedColor(Theme.key_dialogBackground));
 
         LinearLayout container = new LinearLayout(context);
@@ -86,12 +92,9 @@ public class AutoReactionReportBottomSheet extends BottomSheet {
         TextView riskBadge = new TextView(context);
         riskBadge.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         riskBadge.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
-        if (info != null && info.zeroCount > 0) {
-            riskBadge.setText(LocaleController.formatString(R.string.AutoReactionSuspected, info.streak));
+        if (info != null && info.suspected) {
+            riskBadge.setText(LocaleController.formatString(R.string.AutoReactionSuspected, info.reason));
             riskBadge.setTextColor(Color.parseColor("#FF5252"));
-        } else if (info != null && info.suspected) {
-            riskBadge.setText(LocaleController.formatString(R.string.AutoReactionSuspected, info.streak));
-            riskBadge.setTextColor(Color.parseColor("#FFA726"));
         } else {
             riskBadge.setText(LocaleController.getString(R.string.AutoReactionNormal));
             riskBadge.setTextColor(Color.parseColor("#66BB6A"));
@@ -147,17 +150,39 @@ public class AutoReactionReportBottomSheet extends BottomSheet {
         container.addView(scrollView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, dp(160), 0, 0, 0, 16));
 
         // Bottom Action Buttons
+        boolean canBan = false;
+        if (fragment != null && currentChat != null && user != null) {
+            long selfId = UserConfig.getInstance(currentAccount).getClientUserId();
+            canBan = ChatObject.canBlockUsers(currentChat) && user.id != selfId && !(currentChat.creator && user.id == currentChat.id);
+        }
+
         LinearLayout buttonsLayout = new LinearLayout(context);
         buttonsLayout.setOrientation(LinearLayout.HORIZONTAL);
-        buttonsLayout.setWeightSum(2);
+        buttonsLayout.setWeightSum(canBan ? 3 : 2);
+
+        if (canBan) {
+            TextView banBtn = new TextView(context);
+            banBtn.setText(LocaleController.getString(R.string.AutoReactionBanMember));
+            banBtn.setGravity(Gravity.CENTER);
+            banBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            banBtn.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
+            banBtn.setTextColor(Color.parseColor("#FF5252"));
+            banBtn.setBackground(Theme.createSimpleSelectorRoundRectDrawable(dp(8), Color.TRANSPARENT, Color.parseColor("#33FF5252")));
+            banBtn.setPadding(0, dp(10), 0, dp(10));
+            banBtn.setOnClickListener(v -> {
+                dismiss();
+                ReactionLatencyHelper.banUserWithConfirmation(fragment, currentChat, user, onReset);
+            });
+            buttonsLayout.addView(banBtn, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f, 0, 0, 6, 0));
+        }
 
         TextView resetBtn = new TextView(context);
         resetBtn.setText(LocaleController.getString(R.string.AutoReactionReset));
         resetBtn.setGravity(Gravity.CENTER);
         resetBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         resetBtn.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
-        resetBtn.setTextColor(Color.parseColor("#FF5252"));
-        resetBtn.setBackground(Theme.createSimpleSelectorRoundRectDrawable(dp(8), Color.TRANSPARENT, Color.parseColor("#33FF5252")));
+        resetBtn.setTextColor(getThemedColor(Theme.key_dialogTextGray2));
+        resetBtn.setBackground(Theme.createSimpleSelectorRoundRectDrawable(dp(8), Color.TRANSPARENT, Color.parseColor("#1A888888")));
         resetBtn.setPadding(0, dp(10), 0, dp(10));
         resetBtn.setOnClickListener(v -> {
             if (user != null) {
@@ -179,7 +204,7 @@ public class AutoReactionReportBottomSheet extends BottomSheet {
         closeBtn.setBackground(Theme.createSimpleSelectorRoundRectDrawable(dp(8), Color.TRANSPARENT, getThemedColor(Theme.key_dialogButtonSelector)));
         closeBtn.setPadding(0, dp(10), 0, dp(10));
         closeBtn.setOnClickListener(v -> dismiss());
-        buttonsLayout.addView(closeBtn, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f, 6, 0, 0, 0));
+        buttonsLayout.addView(closeBtn, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f));
 
         container.addView(buttonsLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
 
@@ -221,6 +246,14 @@ public class AutoReactionReportBottomSheet extends BottomSheet {
         timeView.setTextColor(getThemedColor(Theme.key_dialogTextGray2));
         row.addView(timeView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT));
 
+        if (!TextUtils.isEmpty(sample.emoji)) {
+            TextView emojiView = new TextView(context);
+            emojiView.setText(Emoji.replaceEmoji(sample.emoji, emojiView.getPaint().getFontMetricsInt(), false));
+            emojiView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+            emojiView.setPadding(dp(8), 0, 0, 0);
+            row.addView(emojiView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT));
+        }
+
         TextView msgView = new TextView(context);
         msgView.setText("  #" + sample.messageId);
         msgView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
@@ -228,19 +261,20 @@ public class AutoReactionReportBottomSheet extends BottomSheet {
         row.addView(msgView, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f));
 
         TextView tagView = new TextView(context);
-        tagView.setText(sample.latency + "s");
         tagView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 11);
         tagView.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
         tagView.setPadding(dp(6), dp(2), dp(6), dp(2));
 
         if (sample.latency == 0) {
-            tagView.setText("\u26A1 0s");
+            tagView.setText("⚡ 0s");
             tagView.setTextColor(Color.parseColor("#FF5252"));
             tagView.setBackground(Theme.createRoundRectDrawable(dp(4), Color.parseColor("#33FF5252")));
-        } else if (sample.latency <= 1) {
+        } else if (sample.latency <= 3) {
+            tagView.setText(sample.latency + "s");
             tagView.setTextColor(Color.parseColor("#FFA726"));
             tagView.setBackground(Theme.createRoundRectDrawable(dp(4), Color.parseColor("#33FFA726")));
         } else {
+            tagView.setText(sample.latency + "s");
             tagView.setTextColor(getThemedColor(Theme.key_dialogTextGray2));
             tagView.setBackground(Theme.createRoundRectDrawable(dp(4), Color.parseColor("#1A888888")));
         }
