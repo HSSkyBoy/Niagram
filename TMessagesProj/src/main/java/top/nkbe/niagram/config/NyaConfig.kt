@@ -627,6 +627,12 @@ object NyaConfig {
             ConfigItem.configTypeInt,
             0
         )
+    val preferOriginalQuality =
+        addConfig(
+            "PreferOriginalQuality",
+            ConfigItem.configTypeBool,
+            false
+        )
     val disableBotOpenButton =
         addConfig(
             "DisableBotOpenButton",

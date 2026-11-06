@@ -547,6 +547,7 @@
     <string name="DefaultHlsVideoQualityHigh">高畫質 (1080p+)</string>
     <string name="DefaultHlsVideoQualityMedium">中畫質 (720p)</string>
     <string name="DefaultHlsVideoQualityLow">低畫質 (480p)</string>
+    <string name="PreferOriginalQuality">優先使用原始畫質</string>
 
     <!-- Ban by ID in ChatUsersActivity -->
     <string name="NiaBanById">依使用者 ID 封鎖</string>

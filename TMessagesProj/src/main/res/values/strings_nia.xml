@@ -562,6 +562,7 @@
     <string name="DefaultHlsVideoQualityHigh">High Quality (1080p+)</string>
     <string name="DefaultHlsVideoQualityMedium">Medium Quality (720p)</string>
     <string name="DefaultHlsVideoQualityLow">Low Quality (480p)</string>
+    <string name="PreferOriginalQuality">Prefer Original Quality</string>
 
     <!-- Ban by ID in ChatUsersActivity -->
     <string name="NiaBanById">Ban by User ID</string>

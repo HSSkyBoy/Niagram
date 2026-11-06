@@ -86,6 +86,7 @@ public class DataSettingsActivity extends BaseFragment {
     private int usageSection2Row;
     private int streamSectionRow;
     private int enableStreamRow;
+    private int preferOriginalQualityRow;
     private int enableCacheStreamRow;
     private int enableAllStreamRow;
     private int enableMkvRow;
@@ -182,13 +183,9 @@ public class DataSettingsActivity extends BaseFragment {
 //        autoplaySectionRow = rowCount++;
         streamSectionRow = rowCount++;
         enableStreamRow = rowCount++;
-        if (true || BuildVars.DEBUG_VERSION) {
-            enableMkvRow = rowCount++;
-            enableAllStreamRow = rowCount++;
-        } else {
-            enableAllStreamRow = -1;
-            enableMkvRow = -1;
-        }
+        preferOriginalQualityRow = rowCount++;
+        enableMkvRow = rowCount++;
+        enableAllStreamRow = rowCount++;
         enableAllStreamInfoRow = rowCount++;
 
         enableCacheStreamRow = -1;//rowCount++;
@@ -556,6 +553,9 @@ public class DataSettingsActivity extends BaseFragment {
                 SharedConfig.toggleStreamMedia();
                 TextCheckCell textCheckCell = (TextCheckCell) view;
                 textCheckCell.setChecked(SharedConfig.streamMedia);
+            } else if (position == preferOriginalQualityRow) {
+                boolean val = NyaConfig.INSTANCE.getPreferOriginalQuality().toggleConfigBool();
+                ((TextCheckCell) view).setChecked(val);
             } else if (position == enableAllStreamRow) {
                 SharedConfig.toggleStreamAllVideo();
                 TextCheckCell textCheckCell = (TextCheckCell) view;
@@ -753,7 +753,9 @@ public class DataSettingsActivity extends BaseFragment {
                 case 3: {
                     TextCheckCell checkCell = (TextCheckCell) holder.itemView;
                     if (position == enableStreamRow) {
-                        checkCell.setTextAndCheck(LocaleController.getString(R.string.EnableStreaming), SharedConfig.streamMedia, enableAllStreamRow != -1);
+                        checkCell.setTextAndCheck(LocaleController.getString(R.string.EnableStreaming), SharedConfig.streamMedia, true);
+                    } else if (position == preferOriginalQualityRow) {
+                        checkCell.setTextAndCheck(LocaleController.getString(R.string.PreferOriginalQuality), NyaConfig.INSTANCE.getPreferOriginalQuality().Bool(), true);
                     } else if (position == enableCacheStreamRow) {
                         //checkCell.setTextAndCheck(LocaleController.getString(R.string.CacheStreamFile), SharedConfig.saveStreamMedia, true);
                     } else if (position == enableMkvRow) {
@@ -872,6 +874,8 @@ public class DataSettingsActivity extends BaseFragment {
                     checkCell.setChecked(SharedConfig.saveStreamMedia);
                 } else if (position == enableStreamRow) {
                     checkCell.setChecked(SharedConfig.streamMedia);
+                } else if (position == preferOriginalQualityRow) {
+                    checkCell.setChecked(NyaConfig.INSTANCE.getPreferOriginalQuality().Bool());
                 } else if (position == enableAllStreamRow) {
                     checkCell.setChecked(SharedConfig.streamAllVideo);
                 } else if (position == enableMkvRow) {
@@ -886,7 +890,7 @@ public class DataSettingsActivity extends BaseFragment {
 
         public boolean isRowEnabled(int position) {
             return position == mobileRow || position == roamingRow || position == wifiRow || position == storageUsageRow || position == useLessDataForCallsRow || position == dataUsageRow || position == proxyRow || position == clearDraftsRow ||
-                    position == enableCacheStreamRow || position == enableStreamRow || position == enableAllStreamRow || position == enableMkvRow || position == quickRepliesRow || position == autoplayVideoRow || position == autoplayGifsRow ||
+                    position == enableCacheStreamRow || position == enableStreamRow || position == preferOriginalQualityRow || position == enableAllStreamRow || position == enableMkvRow || position == quickRepliesRow || position == autoplayVideoRow || position == autoplayGifsRow ||
                     position == storageNumRow || position == saveToGalleryGroupsRow || position == saveToGalleryPeerRow || position == saveToGalleryChannelsRow || position == resetDownloadRow;
         }
 
@@ -932,7 +936,7 @@ public class DataSettingsActivity extends BaseFragment {
                 return 0;
             } else if (position == mediaDownloadSectionRow || position == streamSectionRow || position == callsSectionRow || position == usageSectionRow || position == proxySectionRow || position == autoplayHeaderRow || position == saveToGallerySectionRow) {
                 return 2;
-            } else if (position == enableCacheStreamRow || position == enableStreamRow || position == enableAllStreamRow || position == enableMkvRow || position == autoplayGifsRow || position == autoplayVideoRow) {
+            } else if (position == enableCacheStreamRow || position == enableStreamRow || position == preferOriginalQualityRow || position == enableAllStreamRow || position == enableMkvRow || position == autoplayGifsRow || position == autoplayVideoRow) {
                 return 3;
             } else if (position == enableAllStreamInfoRow) {
                 return 4;

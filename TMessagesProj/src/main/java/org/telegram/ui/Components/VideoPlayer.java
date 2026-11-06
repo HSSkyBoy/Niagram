@@ -496,7 +496,14 @@ public class VideoPlayer implements Player.Listener, VideoListener, AnalyticsLis
     public static Quality getSavedQuality(ArrayList<Quality> qualities, long did, int mid) {
         final SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("media_saved_pos", Activity.MODE_PRIVATE);
         final String setting = preferences.getString(did + "_" + mid + "q2", "");
-        if (TextUtils.isEmpty(setting)) return null;
+        if (TextUtils.isEmpty(setting)) {
+            if (NyaConfig.INSTANCE.getPreferOriginalQuality().Bool() || NyaConfig.INSTANCE.getDefaultHlsVideoQuality().Int() == 1) {
+                for (Quality q : qualities) {
+                    if (q.original) return q;
+                }
+            }
+            return null;
+        }
         for (Quality q : qualities) {
             final String idx = q.width + "x" + q.height + (q.original ? "s" : "");
             if (TextUtils.equals(setting, idx)) return q;
@@ -1010,7 +1017,7 @@ public class VideoPlayer implements Player.Listener, VideoListener, AnalyticsLis
         }
         for (final Quality q : qualities) {
             for (final VideoUri v : q.uris) {
-                if (v.original && v.isCached())
+                if (v.original && (v.isCached() || NyaConfig.INSTANCE.getPreferOriginalQuality().Bool() || NyaConfig.INSTANCE.getDefaultHlsVideoQuality().Int() == 1))
                     return v;
             }
         }
