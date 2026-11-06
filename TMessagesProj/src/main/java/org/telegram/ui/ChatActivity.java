@@ -33363,15 +33363,15 @@ public class ChatActivity extends BaseFragment implements
                                         return;
                                     }
                                     if (ReactionLatencyHelper.isEnabled()) {
-                                        ItemOptions options = ItemOptions.makeOptions(ChatActivity.this, view);
-                                        options.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport), () -> {
+                                        ItemOptions itemOptions = ItemOptions.makeOptions(ChatActivity.this, view);
+                                        itemOptions.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport), () -> {
                                             closeMenu();
                                             showAutoReactionReport(userId);
                                         });
-                                        options.add(R.drawable.msg_delete, LocaleController.getString(R.string.Delete), () -> {
+                                        itemOptions.add(R.drawable.msg_delete, LocaleController.getString(R.string.Delete), () -> {
                                             deleteUserReactions(primaryMessage, userId, mergeDialogId, chatMode);
                                         });
-                                        options.show();
+                                        itemOptions.show();
                                         return;
                                     }
 
@@ -48933,15 +48933,15 @@ public class ChatActivity extends BaseFragment implements
                             return;
                         }
                         if (ReactionLatencyHelper.isEnabled()) {
-                            ItemOptions options = ItemOptions.makeOptions(ChatActivity.this, view);
-                            options.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport), () -> {
+                            ItemOptions itemOptions = ItemOptions.makeOptions(ChatActivity.this, view);
+                            itemOptions.add(R.drawable.msg_fave, LocaleController.getString(R.string.AutoReactionReport), () -> {
                                 closeMenu();
                                 showAutoReactionReport(userId);
                             });
-                            options.add(R.drawable.msg_delete, LocaleController.getString(R.string.Delete), () -> {
+                            itemOptions.add(R.drawable.msg_delete, LocaleController.getString(R.string.Delete), () -> {
                                 deleteUserReactions(messageObject, userId, mergeDialogId, chatMode);
                             });
-                            options.show();
+                            itemOptions.show();
                             return;
                         }
 

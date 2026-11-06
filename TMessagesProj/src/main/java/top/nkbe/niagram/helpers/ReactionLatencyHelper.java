@@ -354,15 +354,15 @@ public final class ReactionLatencyHelper {
         final int account = fragment.getCurrentAccount();
         final long selfId = UserConfig.getInstance(account).getClientUserId();
         if (targetUser.id == selfId) {
-            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.ActionNotAllowed)).show();
+            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.UserRestricted)).show();
             return;
         }
         if (currentChat.creator && targetUser.id == currentChat.id) {
-            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.ActionNotAllowed)).show();
+            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.UserRestricted)).show();
             return;
         }
         if (!ChatObject.canBlockUsers(currentChat)) {
-            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.ChannelRightsNoAdmin)).show();
+            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.UserRestricted)).show();
             return;
         }
 
