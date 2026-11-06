@@ -852,9 +852,20 @@ public class FileLoadOperation {
                 totalBytesCount > 0 && key == null && !encryptFile && !isPreloadVideoOperation && preloadPrefixSize == 0;
         if (useDownloadByteBudget) {
             boolean premium = UserConfig.getInstance(currentAccount).isPremium();
-            downloadConnectionsCount = premium ? ConnectionsManager.DownloadConnectionsCount : 2;
-            int byteBudget = (premium ? 16 : 2) * 1024 * 1024;
-            currentMaxDownloadRequests = byteBudget / currentDownloadChunkSize;
+            int speedBoost = NyaConfig.enhancedFileLoader.Int();
+            if (speedBoost == NyaConfig.ENHANCED_LOADER_EXTREME) {
+                downloadConnectionsCount = ConnectionsManager.DownloadConnectionsCount;
+                int byteBudget = 16 * 1024 * 1024;
+                currentMaxDownloadRequests = byteBudget / currentDownloadChunkSize;
+            } else if (speedBoost == NyaConfig.ENHANCED_LOADER_BALANCED) {
+                downloadConnectionsCount = Math.min(ConnectionsManager.DownloadConnectionsCount, 6);
+                int byteBudget = 8 * 1024 * 1024;
+                currentMaxDownloadRequests = byteBudget / currentDownloadChunkSize;
+            } else {
+                downloadConnectionsCount = premium ? ConnectionsManager.DownloadConnectionsCount : 2;
+                int byteBudget = (premium ? 16 : 2) * 1024 * 1024;
+                currentMaxDownloadRequests = byteBudget / currentDownloadChunkSize;
+            }
         }
     }
 
