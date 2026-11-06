@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.util.Base64
 import android.util.Pair
 import androidx.core.content.edit
-import com.radolyn.ayugram.utils.AyuGhostUtils
+import top.nkbe.niagram.ayu.utils.AyuGhostUtils
 import org.telegram.messenger.AndroidUtilities
 import org.telegram.messenger.ApplicationLoader
 import org.telegram.messenger.BuildVars

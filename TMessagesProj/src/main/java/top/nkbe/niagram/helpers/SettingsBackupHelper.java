@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.radolyn.ayugram.messages.AyuSavePreferences;
-import com.radolyn.ayugram.utils.AyuGhostPreferences;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.utils.AyuGhostPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;

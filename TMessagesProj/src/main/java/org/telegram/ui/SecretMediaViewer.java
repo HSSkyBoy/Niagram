@@ -115,7 +115,7 @@ import java.util.Locale;
 import top.nkbe.niagram.config.NyaConfig;
 import top.nkbe.niagram.helpers.MessageHelper;
 
-import com.radolyn.ayugram.proprietary.AyuMessageUtils;
+import top.nkbe.niagram.ayu.proprietary.AyuMessageUtils;
 
 public class SecretMediaViewer implements NotificationCenter.NotificationCenterDelegate, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 

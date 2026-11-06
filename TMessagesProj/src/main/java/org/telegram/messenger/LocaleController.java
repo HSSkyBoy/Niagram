@@ -68,7 +68,7 @@ import java.util.TimeZone;
 
 import top.nkbe.niagram.config.NyaConfig;
 import top.nkbe.niagram.shamsicalendar.PersianDate;
-import com.radolyn.ayugram.utils.LastSeenHelper;
+import top.nkbe.niagram.ayu.utils.LastSeenHelper;
 
 public class LocaleController {
 

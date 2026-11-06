@@ -85,7 +85,7 @@ import androidx.media3.extractor.jpeg.XmpMotionPhotoDescriptionParser;
 import org.telegram.ui.AspectRatioFrameLayout;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
-import com.radolyn.ayugram.AyuConstants;
+import top.nkbe.niagram.ayu.AyuConstants;
 
 import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.messenger.chromecast.ChromecastController;

@@ -18,7 +18,7 @@ import android.view.ViewParent;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.radolyn.ayugram.database.entities.EditedMessage;
+import top.nkbe.niagram.ayu.database.entities.EditedMessage;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.utils.code.highlight.CodeHighlighting;

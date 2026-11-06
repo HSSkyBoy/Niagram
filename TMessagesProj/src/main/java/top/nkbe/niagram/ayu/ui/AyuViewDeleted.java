@@ -1,0 +1,1541 @@
+package top.nkbe.niagram.ayu.ui;
+
+import static org.telegram.messenger.AndroidUtilities.dp;
+import static org.telegram.messenger.LocaleController.getString;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.database.entities.DeletedMessageFull;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.proprietary.AyuMessageUtils;
+import top.nkbe.niagram.ayu.utils.AyuFileLocation;
+
+import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.DialogObject;
+import org.telegram.messenger.FileLoader;
+import org.telegram.messenger.FileLog;
+import org.telegram.messenger.ImageLoader;
+import org.telegram.messenger.ImageLocation;
+import org.telegram.messenger.MediaController;
+import org.telegram.messenger.MessageObject;
+import org.telegram.messenger.MessagesController;
+import org.telegram.messenger.NotificationCenter;
+import org.telegram.messenger.R;
+import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.Utilities;
+import org.telegram.tgnet.TLRPC;
+import org.telegram.ui.ActionBar.ActionBar;
+import org.telegram.ui.ActionBar.ActionBarMenu;
+import org.telegram.ui.ActionBar.ActionBarMenuItem;
+import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
+import org.telegram.ui.ActionBar.ActionBarPopupWindow;
+import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Cells.ChatActionCell;
+import org.telegram.ui.Cells.ChatMessageCell;
+import org.telegram.ui.ChatActivity;
+import org.telegram.ui.Components.Bulletin;
+import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.Components.ChatScrimPopupContainerLayout;
+import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.Components.RecyclerListView;
+import org.telegram.ui.Components.SizeNotifierFrameLayout;
+import org.telegram.ui.Components.blur3.BlurredBackgroundDrawableViewFactory;
+import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundColorProviderThemed;
+import org.telegram.ui.Components.blur3.source.BlurredBackgroundSourceColor;
+import org.telegram.ui.Components.chat.layouts.ChatActivitySideControlsButtonsLayout;
+import org.telegram.ui.Components.inset.WindowInsetsStateHolder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import kotlin.Unit;
+import top.nkbe.niagram.helpers.MessageHelper;
+import top.nkbe.niagram.llm.LlmConfig;
+import top.nkbe.niagram.translate.Translator;
+import top.nkbe.niagram.ui.MessageDetailsActivity;
+import top.nkbe.niagram.ui.NekoDelegateFragment;
+import top.nkbe.niagram.ui.cells.NekoMessageCell;
+
+public class AyuViewDeleted extends NekoDelegateFragment {
+    private static final int OPTION_SHOW_IN_CHAT = 1;
+    private static final int OPTION_DELETE_FROM_DATABASE = 2;
+    private static final int OPTION_COPY = 3;
+    private static final int OPTION_COPY_PHOTO = 4;
+    private static final int OPTION_COPY_PHOTO_AS_STICKER = 5;
+    private static final int OPTION_DETAILS = 6;
+    private static final int OPTION_SAVE_TO_GALLERY = 7;
+    private static final int OPTION_SAVE_TO_DOWNLOADS = 8;
+    private static final int OPTION_TRANSLATE = 9;
+    private final long dialogId;
+    private final boolean isEncrypted;
+    private final ArrayList<DeletedMessageFull> deletedMessages = new ArrayList<>();
+    private final ArrayList<DeletedMessageFull> filteredMessages = new ArrayList<>();
+    private final ArrayList<MessageObject> messageObjects = new ArrayList<>();
+    private final SparseArray<DeletedMessageFull> messageIdMap = new SparseArray<>();
+    private final int pageSize = 50;
+    private final int pageSizeEncrypted = Integer.MAX_VALUE;
+    private int rowCount;
+    private RecyclerListView listView;
+    private LinearLayoutManager layoutManager;
+    private ChatActivitySideControlsButtonsLayout sideControlsButtonsLayout;
+    private boolean pagedownButtonManuallyHidden;
+    private boolean loading;
+    private boolean noMoreOlder;
+    private int oldestId = Integer.MAX_VALUE;
+    private ActionBarPopupWindow scrimPopupWindow;
+    private ChatActionCell floatingDateView;
+    private TextView emptyView;
+    private Runnable showEmptyViewRunnable;
+    private ActionBarMenuItem searchItem;
+    private String searchQuery = "";
+    private AnimatorSet floatingDateAnimation;
+    private boolean scrollingFloatingDate;
+    private final Runnable updateFloatingDateRunnable = this::updateFloatingDateView;
+    private final WindowInsetsStateHolder windowInsetsStateHolder = new WindowInsetsStateHolder(this::checkInsets);
+    private static final long PHOTO_SIZE_LOAD_TIMEOUT_MS = 25_000L;
+    private static final long PHOTO_SAVE_TOTAL_TIMEOUT_MS = 90_000L;
+    private static final int STRIPPED_PHOTO_JPEG_QUALITY = 95;
+    private final SparseArray<DeletedPhotoSave> activePhotoSaves = new SparseArray<>();
+
+    public AyuViewDeleted(long dialogId) {
+        this.dialogId = dialogId;
+        this.isEncrypted = DialogObject.isEncryptedDialog(dialogId);
+    }
+
+    private void checkInsets() {
+        if (listView != null) {
+            applyMessageListNavigationBarInset(listView, windowInsetsStateHolder.getCurrentNavigationBarInset());
+        }
+        updatePagedownButtonPosition();
+    }
+
+    @Override
+    protected int getBulletinBottomOffset() {
+        return windowInsetsStateHolder.getCurrentNavigationBarInset();
+    }
+
+    private void updatePagedownButtonPosition() {
+        if (sideControlsButtonsLayout == null) {
+            return;
+        }
+        ViewGroup.LayoutParams lp = sideControlsButtonsLayout.getLayoutParams();
+        if (!(lp instanceof ViewGroup.MarginLayoutParams params)) {
+            return;
+        }
+        int bottomMargin = windowInsetsStateHolder.getCurrentNavigationBarInset() + dp(16);
+        if (params.bottomMargin != bottomMargin) {
+            params.bottomMargin = bottomMargin;
+            sideControlsButtonsLayout.setLayoutParams(params);
+        }
+    }
+
+    private void updatePagedownButtonVisibility(boolean animated) {
+        if (sideControlsButtonsLayout == null || listView == null) {
+            return;
+        }
+        boolean canScrollDown = rowCount > 0 && listView.canScrollVertically(1);
+        if (!canScrollDown) {
+            pagedownButtonManuallyHidden = false;
+        }
+        boolean show = canScrollDown && !pagedownButtonManuallyHidden;
+        sideControlsButtonsLayout.showButton(ChatActivitySideControlsButtonsLayout.BUTTON_PAGE_DOWN, show, animated);
+    }
+
+    private void onPageDownClicked() {
+        if (listView == null || rowCount <= 0) {
+            return;
+        }
+        pagedownButtonManuallyHidden = true;
+        updatePagedownButtonVisibility(true);
+        listView.smoothScrollToPosition(rowCount - 1);
+    }
+
+    private final RecyclerView.OnScrollListener listScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                pagedownButtonManuallyHidden = false;
+                scrollingFloatingDate = true;
+                updateFloatingDateView();
+                showFloatingDateView();
+            } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                pagedownButtonManuallyHidden = false;
+                scrollingFloatingDate = false;
+                hideFloatingDateView(true);
+            }
+            updatePagedownButtonVisibility(true);
+            updateVisibleMessageCells();
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            if (!loading && !noMoreOlder) {
+                int first = layoutManager.findFirstVisibleItemPosition();
+                if (first <= 2 && !isEncrypted) {
+                    loadOlder();
+                }
+            }
+            updateFloatingDateView();
+            updatePagedownButtonVisibility(true);
+            updateVisibleMessageCells();
+        }
+    };
+
+    private static boolean hasContent(DeletedMessageFull messageFull) {
+        return messageFull != null && messageFull.message != null && (!TextUtils.isEmpty(messageFull.message.text) || !TextUtils.isEmpty(messageFull.message.mediaPath) || messageFull.message.documentSerialized != null);
+    }
+
+    private void updateVisibleMessageCells() {
+        if (listView != null) {
+            updateVisibleChatMessageCells(listView);
+        }
+    }
+
+    private void reloadDeletedMessages(Runnable onComplete) {
+        long userId = getUserConfig().getClientUserId();
+        Utilities.globalQueue.postRunnable(() -> {
+            List<DeletedMessageFull> latest = AyuMessagesController.getInstance().getLatestMessages(userId, dialogId, isEncrypted ? pageSizeEncrypted : pageSize);
+            if (latest == null) {
+                latest = new ArrayList<>();
+            }
+            if (!isEncrypted) {
+                Collections.reverse(latest);
+            }
+            ArrayList<DeletedMessageFull> filtered = new ArrayList<>(latest.size());
+            for (DeletedMessageFull m : latest) {
+                if (hasContent(m)) {
+                    filtered.add(m);
+                }
+            }
+            AndroidUtilities.runOnUIThread(() -> {
+                deletedMessages.clear();
+                messageIdMap.clear();
+                deletedMessages.addAll(filtered);
+                for (int i = 0; i < filtered.size(); i++) {
+                    DeletedMessageFull m = filtered.get(i);
+                    messageIdMap.put(m.message.messageId, m);
+                }
+                applySearchFilter();
+                if (!deletedMessages.isEmpty()) {
+                    oldestId = deletedMessages.get(0).message.messageId;
+                }
+                if (onComplete != null) {
+                    onComplete.run();
+                }
+            });
+        });
+    }
+
+    private void updateDeletedMessages(ArrayList<Integer> messageIds) {
+        if (messageIds.isEmpty()) {
+            return;
+        }
+        long userId = getUserConfig().getClientUserId();
+        Utilities.globalQueue.postRunnable(() -> {
+            List<DeletedMessageFull> loaded = AyuMessagesController.getInstance().getMessagesByIds(userId, dialogId, messageIds);
+            SparseArray<DeletedMessageFull> loadedById = new SparseArray<>();
+            ArrayList<DeletedMessageFull> added = new ArrayList<>(loaded == null ? 0 : loaded.size());
+            if (loaded != null) {
+                for (DeletedMessageFull message : loaded) {
+                    loadedById.put(message.message.messageId, message);
+                    if (hasContent(message)) {
+                        added.add(message);
+                    }
+                }
+            }
+            AndroidUtilities.runOnUIThread(() -> {
+                if (listView == null || listView.getAdapter() == null) {
+                    return;
+                }
+                boolean wasAtBottom = !listView.canScrollVertically(1);
+                RecyclerView.Adapter<?> adapter = listView.getAdapter();
+                boolean changed = false;
+                for (int messageId : messageIds) {
+                    if (loadedById.indexOfKey(messageId) >= 0) {
+                        continue;
+                    }
+                    DeletedMessageFull removed = messageIdMap.get(messageId);
+                    if (removed == null) {
+                        continue;
+                    }
+                    int position = filteredMessages.indexOf(removed);
+                    if (position >= 0) {
+                        filteredMessages.remove(position);
+                        messageObjects.remove(position);
+                        rowCount = filteredMessages.size();
+                        adapter.notifyItemRemoved(position);
+                    }
+                    deletedMessages.remove(removed);
+                    messageIdMap.remove(messageId);
+                    invalidateCachedReplyReferences(messageId);
+                    changed = true;
+                }
+
+                ArrayList<DeletedMessageFull> inserted = new ArrayList<>(added.size());
+                for (DeletedMessageFull message : added) {
+                    int messageId = message.message.messageId;
+                    if (messageIdMap.get(messageId) != null) {
+                        continue;
+                    }
+                    deletedMessages.add(findInsertPosition(deletedMessages, messageId), message);
+                    messageIdMap.put(messageId, message);
+                    inserted.add(message);
+                }
+                if (!inserted.isEmpty()) {
+                    changed = true;
+                }
+                if (!changed) {
+                    return;
+                }
+
+                for (DeletedMessageFull message : inserted) {
+                    if (!matchesSearch(message)) {
+                        continue;
+                    }
+                    int position = findInsertPosition(filteredMessages, message.message.messageId);
+                    filteredMessages.add(position, message);
+                    messageObjects.add(position, createMessageObject(message, true));
+                    rowCount = filteredMessages.size();
+                    adapter.notifyItemInserted(position);
+                }
+                if (!inserted.isEmpty()) {
+                    for (int i = 0; i < messageObjects.size(); i++) {
+                        MessageObject messageObject = messageObjects.get(i);
+                        DeletedMessageFull full = filteredMessages.get(i);
+                        if (messageObject == null || messageObject.replyMessageObject != null || full.message.replyMessageId == 0 || messageIdMap.get(full.message.replyMessageId) == null) {
+                            continue;
+                        }
+                        messageObjects.set(i, createMessageObject(full, true));
+                        adapter.notifyItemChanged(i);
+                    }
+                }
+                updateEmptyView();
+                if (wasAtBottom && rowCount > 0) {
+                    listView.scrollToPosition(rowCount - 1);
+                }
+                listView.post(() -> {
+                    updatePagedownButtonVisibility(false);
+                    updateVisibleMessageCells();
+                });
+            });
+        });
+    }
+
+    private int findInsertPosition(List<DeletedMessageFull> messages, int messageId) {
+        int low = 0;
+        int high = messages.size();
+        while (low < high) {
+            int middle = (low + high) >>> 1;
+            int middleId = messages.get(middle).message.messageId;
+            if (isEncrypted ? middleId > messageId : middleId < messageId) {
+                low = middle + 1;
+            } else {
+                high = middle;
+            }
+        }
+        return low;
+    }
+
+    @Override
+    public View createView(Context context) {
+        var peer = getMessagesController().getUserOrChat(dialogId);
+        String name = switch (peer) {
+            case null -> getString(R.string.ViewDeleted);
+            case TLRPC.User user -> user.first_name;
+            case TLRPC.Chat chat -> chat.title;
+            default -> getString(R.string.ViewDeleted);
+        };
+
+        actionBar.setBackButtonImage(R.drawable.ic_ab_back);
+        actionBar.setAllowOverlayTitle(true);
+        actionBar.setTitle(name);
+        updateActionBarCount();
+        actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
+            @Override
+            public void onItemClick(int id) {
+                if (id == -1) {
+                    finishFragment();
+                }
+            }
+        });
+
+        ActionBarMenu menu = actionBar.createMenu();
+        searchItem = menu.addItem(0, R.drawable.outline_header_search).setIsSearchField(true);
+        searchItem.setSearchPaddingStart(12);
+        searchItem.setSearchFieldHint(getString(R.string.Search));
+        searchItem.setActionBarMenuItemSearchListener(new ActionBarMenuItem.ActionBarMenuItemSearchListener() {
+            @Override
+            public void onSearchExpand() {
+                searchItem.getSearchField().setText(searchQuery);
+                searchItem.getSearchField().setSelection(searchItem.getSearchField().length());
+            }
+
+            @Override
+            public void onSearchCollapse() {
+                searchQuery = "";
+                applySearchFilter();
+            }
+
+            @Override
+            public void onTextChanged(EditText editText) {
+                String newQuery = editText.getText().toString();
+                if (!TextUtils.equals(searchQuery, newQuery)) {
+                    searchQuery = newQuery;
+                    applySearchFilter();
+                }
+            }
+
+            @Override
+            public void onSearchPressed(EditText editText) {
+                searchQuery = editText.getText().toString();
+                applySearchFilter();
+            }
+        });
+
+        SizeNotifierFrameLayout frameLayout = new ScrimFrameLayout(context) {
+            @Override
+            protected boolean isActionBarVisible() {
+                return false;
+            }
+
+            @Override
+            protected boolean isStatusBarVisible() {
+                return false;
+            }
+
+            @Override
+            protected boolean useRootView() {
+                return false;
+            }
+        };
+
+        fragmentView = frameLayout;
+        frameLayout.setOccupyStatusBar(false);
+        frameLayout.setBackgroundImage(Theme.getCachedWallpaper(), Theme.isWallpaperMotion());
+        ViewCompat.setOnApplyWindowInsetsListener(fragmentView, (v, insets) -> {
+            windowInsetsStateHolder.setInsets(insets);
+            return WindowInsetsCompat.CONSUMED;
+        });
+        int actionBarOffset = getGlassActionBarOffset();
+
+        listView = new RecyclerListView(context);
+        listView.setLayoutAnimation(null);
+
+        layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        layoutManager.setStackFromEnd(true);
+
+        listView.setLayoutManager(layoutManager);
+        listView.setVerticalScrollBarEnabled(true);
+        listView.setAdapter(new ListAdapter(context, UserConfig.selectedAccount));
+        setupMessageListItemAnimator(listView);
+        listView.setSelectorType(9);
+        listView.setSelectorDrawableColor(0);
+        applyGlassMessageListPadding(listView, 0);
+        frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
+
+        listView.setOnItemClickListener((view, position, x, y) -> {
+            if (view instanceof NekoMessageCell) {
+                createMenu(view, x, y, position);
+            }
+        });
+        listView.addOnScrollListener(listScrollListener);
+
+        floatingDateView = new ChatActionCell(context) {
+            @Override
+            public boolean isFloating() {
+                return true;
+            }
+        };
+        floatingDateView.setCustomDate((int) (System.currentTimeMillis() / 1000), false, false);
+        floatingDateView.setAlpha(0.0f);
+        floatingDateView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        floatingDateView.setInvalidateColors(true);
+        frameLayout.addView(floatingDateView, LayoutHelper.createFrameMarginPx(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, actionBarOffset + dp(4), 0, 0));
+
+        emptyView = new AppCompatTextView(context) {
+            @Override
+            protected void onDraw(Canvas canvas) {
+                Theme.applyServiceShaderMatrix(getMeasuredWidth(), frameLayout.getBackgroundSizeY(), getX(), getY());
+                Paint backgroundPaint = getThemedPaint(Theme.key_paint_chatActionBackground);
+                AndroidUtilities.rectTmp.set(0, 0, getWidth(), getHeight());
+                canvas.drawRoundRect(AndroidUtilities.rectTmp, dp(30), dp(30), backgroundPaint);
+                if (Theme.hasGradientService()) {
+                    canvas.drawRoundRect(AndroidUtilities.rectTmp, dp(30), dp(30), Theme.getThemePaint(Theme.key_paint_chatActionBackgroundDarken, getResourceProvider()));
+                }
+                super.onDraw(canvas);
+            }
+        };
+        emptyView.setText(getString(R.string.NoMessages));
+        emptyView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        emptyView.setTypeface(AndroidUtilities.bold());
+        emptyView.setTextColor(Theme.getColor(Theme.key_chat_serviceText, getResourceProvider()));
+        emptyView.setGravity(Gravity.CENTER);
+        emptyView.setVisibility(View.GONE);
+        emptyView.setPadding(dp(20), dp(4), dp(20), dp(6));
+        frameLayout.addView(emptyView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
+
+        BlurredBackgroundSourceColor pagedownSourceColor = new BlurredBackgroundSourceColor();
+        pagedownSourceColor.setColor(Color.TRANSPARENT);
+        BlurredBackgroundDrawableViewFactory pagedownBackgroundDrawableFactory = new BlurredBackgroundDrawableViewFactory(pagedownSourceColor);
+        BlurredBackgroundColorProviderThemed pagedownColorProvider = new BlurredBackgroundColorProviderThemed(getResourceProvider(), Theme.key_chat_messagePanelBackground);
+        sideControlsButtonsLayout = new ChatActivitySideControlsButtonsLayout(context, getResourceProvider(), pagedownColorProvider, pagedownBackgroundDrawableFactory);
+        sideControlsButtonsLayout.setOnClickListener((buttonId, v) -> {
+            if (buttonId == ChatActivitySideControlsButtonsLayout.BUTTON_PAGE_DOWN) {
+                onPageDownClicked();
+            }
+        });
+        frameLayout.addView(sideControlsButtonsLayout, LayoutHelper.createFrame(57, 300, Gravity.RIGHT | Gravity.BOTTOM, 0, 0, 0, 16));
+        updatePagedownButtonPosition();
+
+        listView.post(updateFloatingDateRunnable);
+
+        reloadDeletedMessages(() -> {
+            if (rowCount > 0 && listView != null) {
+                listView.scrollToPosition(rowCount - 1);
+                listView.post(this::updateVisibleMessageCells);
+            }
+            updatePagedownButtonVisibility(false);
+        });
+
+        setupGlassActionBar(frameLayout, listView);
+        return fragmentView;
+    }
+
+    private void loadOlder() {
+        if (loading) return;
+        loading = true;
+        long userId = getUserConfig().getClientUserId();
+        int currentOldestId = oldestId;
+
+        int firstPos = layoutManager.findFirstVisibleItemPosition();
+        View firstView = layoutManager.findViewByPosition(firstPos);
+        int top = firstView != null ? firstView.getTop() : 0;
+        DeletedMessageFull anchorMessage = firstPos >= 0 && firstPos < filteredMessages.size() ? filteredMessages.get(firstPos) : null;
+
+        Utilities.globalQueue.postRunnable(() -> {
+            List<DeletedMessageFull> olderDesc = AyuMessagesController.getInstance().getOlderMessagesBefore(userId, dialogId, currentOldestId, isEncrypted ? pageSizeEncrypted : pageSize);
+            if (olderDesc == null || olderDesc.isEmpty()) {
+                AndroidUtilities.runOnUIThread(() -> {
+                    noMoreOlder = true;
+                    loading = false;
+                });
+                return;
+            }
+
+            Collections.reverse(olderDesc);
+            List<DeletedMessageFull> older = new ArrayList<>(olderDesc.size());
+            for (DeletedMessageFull m : olderDesc) {
+                if (hasContent(m)) {
+                    older.add(m);
+                }
+            }
+
+            int newOldestId = older.isEmpty() ? olderDesc.get(0).message.messageId : older.get(0).message.messageId;
+
+            AndroidUtilities.runOnUIThread(() -> {
+                ArrayList<DeletedMessageFull> uniqueOlder = new ArrayList<>(older.size());
+                for (DeletedMessageFull message : older) {
+                    if (messageIdMap.get(message.message.messageId) == null) {
+                        uniqueOlder.add(message);
+                    }
+                }
+                for (DeletedMessageFull message : uniqueOlder) {
+                    deletedMessages.add(findInsertPosition(deletedMessages, message.message.messageId), message);
+                    messageIdMap.put(message.message.messageId, message);
+                }
+                oldestId = newOldestId;
+
+                if (TextUtils.isEmpty(searchQuery)) {
+                    RecyclerView.Adapter<?> adapter = listView == null ? null : listView.getAdapter();
+                    for (DeletedMessageFull message : uniqueOlder) {
+                        int position = findInsertPosition(filteredMessages, message.message.messageId);
+                        filteredMessages.add(position, message);
+                        messageObjects.add(position, createMessageObject(message, true));
+                        rowCount = filteredMessages.size();
+                        if (adapter != null) {
+                            adapter.notifyItemInserted(position);
+                        }
+                    }
+                    updateActionBarCount();
+                    updateEmptyView();
+                } else {
+                    applySearchFilter();
+                }
+
+                if (layoutManager != null) {
+                    int anchorPosition = anchorMessage == null ? RecyclerView.NO_POSITION : filteredMessages.indexOf(anchorMessage);
+                    if (anchorPosition != RecyclerView.NO_POSITION) {
+                        layoutManager.scrollToPositionWithOffset(anchorPosition, top);
+                    }
+                }
+                loading = false;
+
+                if (!TextUtils.isEmpty(searchQuery)) updateActionBarCount();
+                updatePagedownButtonVisibility(false);
+                AndroidUtilities.runOnUIThread(updateFloatingDateRunnable);
+                updateVisibleMessageCells();
+            });
+        });
+    }
+
+    @Override
+    public boolean onFragmentCreate() {
+        super.onFragmentCreate();
+
+        NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+        NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION);
+        NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, NotificationCenter.voiceTranscriptionUpdate);
+        NotificationCenter.getInstance(getCurrentAccount()).addObserver(this, NotificationCenter.fileLoaded);
+        NotificationCenter.getInstance(getCurrentAccount()).addObserver(this, NotificationCenter.fileLoadFailed);
+
+        return true;
+    }
+
+    @Override
+    public void onFragmentDestroy() {
+        super.onFragmentDestroy();
+
+        cancelActivePhotoSaves();
+        NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+        NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION);
+        NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, NotificationCenter.voiceTranscriptionUpdate);
+        NotificationCenter.getInstance(getCurrentAccount()).removeObserver(this, NotificationCenter.fileLoaded);
+        NotificationCenter.getInstance(getCurrentAccount()).removeObserver(this, NotificationCenter.fileLoadFailed);
+        if (scrimPopupWindow != null) {
+            scrimPopupWindow.dismiss();
+            scrimPopupWindow = null;
+        }
+
+        if (floatingDateAnimation != null) {
+            floatingDateAnimation.cancel();
+            floatingDateAnimation = null;
+        }
+
+        if (showEmptyViewRunnable != null) {
+            AndroidUtilities.cancelRunOnUIThread(showEmptyViewRunnable);
+            showEmptyViewRunnable = null;
+        }
+
+        AndroidUtilities.cancelRunOnUIThread(updateFloatingDateRunnable);
+
+        if (listView != null) {
+            listView.removeCallbacks(updateFloatingDateRunnable);
+            listView.removeOnScrollListener(listScrollListener);
+            listView.setAdapter(null);
+        }
+
+        if (searchItem != null) {
+            searchItem.setActionBarMenuItemSearchListener(null);
+            searchItem = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (fragmentView instanceof SizeNotifierFrameLayout) {
+            ((SizeNotifierFrameLayout) fragmentView).onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (fragmentView instanceof SizeNotifierFrameLayout) {
+            ((SizeNotifierFrameLayout) fragmentView).onPause();
+        }
+
+        if (scrimPopupWindow != null) {
+            scrimPopupWindow.dismiss();
+            scrimPopupWindow = null;
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @SuppressWarnings("unchecked")
+    @Override
+    public void didReceivedNotification(int id, int account, Object... args) {
+        if (id == AyuConstants.MESSAGES_DELETED_NOTIFICATION) {
+            long did = (long) args[0];
+            if (did == dialogId) {
+                ArrayList<Integer> messageIds = new ArrayList<>((ArrayList<Integer>) args[1]);
+                AndroidUtilities.runOnUIThread(() -> {
+                    updateDeletedMessages(messageIds);
+                    updateActionBarCount();
+                }, 500);
+            }
+        } else if (id == AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION) {
+            try {
+                Utilities.globalQueue.postRunnable(() -> {
+                    File file = (File) args[1];
+                    AyuMessageUtils.saveDownloadedMedia(file);
+                });
+            } catch (Exception e) {
+                FileLog.e(e);
+            }
+        } else if (id == NotificationCenter.voiceTranscriptionUpdate) {
+            handleVoiceTranscriptionUpdate(args);
+        } else if (id == NotificationCenter.fileLoaded || id == NotificationCenter.fileLoadFailed) {
+            handlePhotoSaveFileNotification(id, args);
+        }
+    }
+
+    private final class DeletedPhotoSave {
+        final MessageObject message;
+        final TLRPC.Photo photo;
+        final ArrayList<TLRPC.PhotoSize> candidates;
+        final long deadlineMillis;
+        final int notificationId;
+        final Runnable sizeTimeoutRunnable;
+        int candidateIndex;
+        TLRPC.PhotoSize activeSize;
+        String activeFileName;
+        boolean cancelled;
+        boolean finished;
+
+        DeletedPhotoSave(MessageObject messageObject, TLRPC.Photo photoObject, ArrayList<TLRPC.PhotoSize> sizes, long deadline, int notifId) {
+            message = messageObject;
+            photo = photoObject;
+            candidates = sizes;
+            deadlineMillis = deadline;
+            notificationId = notifId;
+            sizeTimeoutRunnable = () -> advanceDeletedPhotoSave(this);
+        }
+    }
+
+    private static ArrayList<TLRPC.PhotoSize> collectDownloadablePhotoSizes(TLRPC.Photo photo) {
+        ArrayList<TLRPC.PhotoSize> sizes = new ArrayList<>();
+        if (photo == null || photo.sizes == null) {
+            return sizes;
+        }
+        for (int a = 0, N = photo.sizes.size(); a < N; a++) {
+            TLRPC.PhotoSize size = photo.sizes.get(a);
+            if (size.location != null && !(size.location instanceof TLRPC.TL_fileLocationUnavailable) && !(size.location instanceof AyuFileLocation) && size.w > 0 && size.h > 0) {
+                sizes.add(size);
+            }
+        }
+        sizes.sort((left, right) -> Long.compare(right.w * 1L * right.h, left.w * 1L * left.h));
+        return sizes;
+    }
+
+    private void startDeletedPhotoSave(MessageObject msg) {
+        if (activePhotoSaves.get(msg.getId()) != null) {
+            return;
+        }
+        TLRPC.Photo photo = msg.getPhoto();
+        ArrayList<TLRPC.PhotoSize> candidates = collectDownloadablePhotoSizes(photo);
+        int notificationId = top.nkbe.niagram.SaveToDownloadReceiver.createNotificationId();
+        DeletedPhotoSave save = new DeletedPhotoSave(msg, photo, candidates, System.currentTimeMillis() + PHOTO_SAVE_TOTAL_TIMEOUT_MS, notificationId);
+        activePhotoSaves.put(msg.getId(), save);
+        if (getParentActivity() != null) {
+            top.nkbe.niagram.SaveToDownloadReceiver.showNotification(getParentActivity(), notificationId, 1, () -> cancelDeletedPhotoSave(save));
+        }
+        advanceDeletedPhotoSave(save);
+    }
+
+    private void advanceDeletedPhotoSave(DeletedPhotoSave save) {
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        if (save.cancelled || save.finished) {
+            return;
+        }
+        if (save.activeSize != null && save.activeFileName != null) {
+            FileLoader.getInstance(getCurrentAccount()).cancelLoadFile(save.activeSize, false);
+            save.activeSize = null;
+            save.activeFileName = null;
+        }
+        if (System.currentTimeMillis() >= save.deadlineMillis || save.candidateIndex >= save.candidates.size()) {
+            saveStrippedPhotoFallback(save);
+            return;
+        }
+        TLRPC.PhotoSize size = save.candidates.get(save.candidateIndex++);
+        String fileName = FileLoader.getAttachFileName(size);
+        if (TextUtils.isEmpty(fileName)) {
+            advanceDeletedPhotoSave(save);
+            return;
+        }
+        File cached = FileLoader.getInstance(getCurrentAccount()).getPathToAttach(size, "jpg", false, true);
+        if (cached != null && cached.exists() && cached.length() > 0) {
+            finishDeletedPhotoSaveWithFile(save, cached, false);
+            return;
+        }
+        save.activeSize = size;
+        save.activeFileName = fileName;
+        AndroidUtilities.runOnUIThread(save.sizeTimeoutRunnable, PHOTO_SIZE_LOAD_TIMEOUT_MS);
+        FileLoader.getInstance(getCurrentAccount()).loadFile(ImageLocation.getForPhoto(size, save.photo), save.message, "jpg", FileLoader.PRIORITY_HIGH, save.message.shouldEncryptPhotoOrVideo() ? 2 : 0);
+    }
+
+    private void handlePhotoSaveFileNotification(int id, Object... args) {
+        if (args == null || args.length == 0 || !(args[0] instanceof String)) {
+            return;
+        }
+        String fileName = (String) args[0];
+        for (int i = activePhotoSaves.size() - 1; i >= 0; i--) {
+            DeletedPhotoSave save = activePhotoSaves.valueAt(i);
+            if (save.finished || save.cancelled || save.activeFileName == null || !fileName.equals(save.activeFileName)) {
+                continue;
+            }
+            TLRPC.PhotoSize loadedSize = save.activeSize;
+            save.activeSize = null;
+            save.activeFileName = null;
+            if (id == NotificationCenter.fileLoaded && loadedSize != null) {
+                File file = args.length > 1 && args[1] instanceof File ? (File) args[1] : FileLoader.getInstance(getCurrentAccount()).getPathToAttach(loadedSize, "jpg", false, true);
+                if (file != null && file.exists() && file.length() > 0) {
+                    finishDeletedPhotoSaveWithFile(save, file, false);
+                    continue;
+                }
+            }
+            advanceDeletedPhotoSave(save);
+        }
+    }
+
+    private void finishDeletedPhotoSaveWithFile(DeletedPhotoSave save, File file, boolean deleteSourceAfterSave) {
+        save.finished = true;
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        MessageObject msg = save.message;
+        MediaController.saveFile(msg, file.getPath(), getParentActivity(), 0, null, null, savedUri -> {
+            boolean wasSaved = savedUri != null;
+            if (deleteSourceAfterSave) {
+                file.delete();
+            }
+            top.nkbe.niagram.SaveToDownloadReceiver.cancelNotification(save.notificationId);
+            activePhotoSaves.remove(msg.getId());
+            if (save.cancelled || getParentActivity() == null) {
+                return;
+            }
+            if (wasSaved) {
+                BulletinFactory.of(this).createDownloadBulletin(BulletinFactory.FileType.PHOTO, getResourceProvider()).show();
+            } else {
+                BulletinFactory.of(this).createErrorBulletin(getString(R.string.DeletedMediaFileMissing), getResourceProvider()).show();
+            }
+        });
+    }
+
+    private void saveStrippedPhotoFallback(DeletedPhotoSave save) {
+        File stripped = decodeStrippedPhotoToFile(save.message.getId(), save.photo);
+        if (stripped != null) {
+            finishDeletedPhotoSaveWithFile(save, stripped, true);
+            return;
+        }
+        save.finished = true;
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        top.nkbe.niagram.SaveToDownloadReceiver.cancelNotification(save.notificationId);
+        activePhotoSaves.remove(save.message.getId());
+        if (getParentActivity() != null) {
+            BulletinFactory.of(this).createErrorBulletin(getString(R.string.DeletedMediaFileMissing), getResourceProvider()).show();
+        }
+    }
+
+    private File decodeStrippedPhotoToFile(int messageId, TLRPC.Photo photo) {
+        if (photo == null || photo.sizes == null) {
+            return null;
+        }
+        byte[] strippedBytes = null;
+        for (int a = 0, N = photo.sizes.size(); a < N; a++) {
+            TLRPC.PhotoSize size = photo.sizes.get(a);
+            if (size instanceof TLRPC.TL_photoStrippedSize && size.bytes != null && size.bytes.length > 0) {
+                strippedBytes = size.bytes;
+                break;
+            }
+        }
+        if (strippedBytes == null) {
+            return null;
+        }
+        Bitmap bitmap = ImageLoader.getStrippedPhotoBitmap(strippedBytes, null);
+        if (bitmap == null) {
+            return null;
+        }
+        File outputFile = new File(FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE), "stripped_" + messageId + "_" + System.currentTimeMillis() + ".jpg");
+        try (FileOutputStream stream = new FileOutputStream(outputFile)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, STRIPPED_PHOTO_JPEG_QUALITY, stream);
+            return outputFile;
+        } catch (Exception e) {
+            FileLog.e(e);
+            return null;
+        }
+    }
+
+    private void cancelDeletedPhotoSave(DeletedPhotoSave save) {
+        save.cancelled = true;
+        AndroidUtilities.cancelRunOnUIThread(save.sizeTimeoutRunnable);
+        if (save.activeSize != null && save.activeFileName != null) {
+            FileLoader.getInstance(getCurrentAccount()).cancelLoadFile(save.activeSize, false);
+            save.activeSize = null;
+            save.activeFileName = null;
+        }
+        top.nkbe.niagram.SaveToDownloadReceiver.cancelNotification(save.notificationId);
+        activePhotoSaves.remove(save.message.getId());
+    }
+
+    private void cancelActivePhotoSaves() {
+        for (int i = activePhotoSaves.size() - 1; i >= 0; i--) {
+            cancelDeletedPhotoSave(activePhotoSaves.valueAt(i));
+        }
+        activePhotoSaves.clear();
+    }
+
+    private void createMenu(View v, float x, float y, int position) {
+        final MessageObject msg = (v instanceof ChatMessageCell) ? ((ChatMessageCell) v).getMessageObject() : null;
+        if (msg == null || getParentActivity() == null) {
+            return;
+        }
+
+        ArrayList<CharSequence> items = new ArrayList<>();
+        ArrayList<Integer> options = new ArrayList<>();
+        ArrayList<Integer> icons = new ArrayList<>();
+
+        items.add(getString(R.string.ShowInChat));
+        icons.add(R.drawable.msg_openin);
+        options.add(OPTION_SHOW_IN_CHAT);
+
+        String textToCopy = msg.messageOwner != null ? msg.messageOwner.message : null;
+        if (textToCopy != null && !textToCopy.isEmpty()) {
+            items.add(getString(R.string.Copy));
+            icons.add(R.drawable.msg_copy);
+            options.add(OPTION_COPY);
+        }
+
+        boolean isStaticSticker = msg.isSticker() && !msg.isAnimatedSticker() && !msg.isVideoSticker();
+        if ((msg.isPhoto() || isStaticSticker) && !msg.needDrawBluredPreview()) {
+            if (msg.isPhoto()) {
+                items.add(getString(R.string.CopyPhoto));
+            } else {
+                items.add(getString(R.string.CopySticker));
+            }
+            icons.add(R.drawable.msg_copy_photo);
+            options.add(OPTION_COPY_PHOTO);
+
+            if (msg.isPhoto()) {
+                items.add(getString(R.string.CopyPhotoAsSticker));
+                icons.add(R.drawable.msg_copy_photo);
+                options.add(OPTION_COPY_PHOTO_AS_STICKER);
+            }
+        }
+
+        if ((msg.isPhoto() || msg.isVideo() || msg.isGif()) && !msg.needDrawBluredPreview()) {
+            items.add(getString(R.string.SaveToGallery));
+            icons.add(R.drawable.msg_gallery);
+            options.add(OPTION_SAVE_TO_GALLERY);
+        }
+
+        if (msg.isDocument() || msg.isMusic() || msg.isVoice()) {
+            items.add(msg.isMusic() ? getString(R.string.SaveToMusic) : getString(R.string.SaveToDownloads));
+            icons.add(R.drawable.msg_download);
+            options.add(OPTION_SAVE_TO_DOWNLOADS);
+        }
+
+        String textToTranslate = msg.messageOwner != null ? msg.messageOwner.message : null;
+        if (!TextUtils.isEmpty(textToTranslate) || msg.isPoll()) {
+            boolean translated = msg.messageOwner != null && (msg.messageOwner.translated || msg.messageOwner.translatedPoll != null);
+            items.add(getString(translated ? R.string.HideTranslation : R.string.Translate));
+            icons.add(LlmConfig.llmIsDefaultProvider() ? R.drawable.magic_stick_solar : R.drawable.ic_translate);
+            options.add(OPTION_TRANSLATE);
+        }
+
+        items.add(getString(R.string.Delete));
+        icons.add(R.drawable.msg_delete);
+        options.add(OPTION_DELETE_FROM_DATABASE);
+
+        items.add(getString(R.string.MessageDetails));
+        icons.add(R.drawable.msg_info);
+        options.add(OPTION_DETAILS);
+
+        ActionBarPopupWindow.ActionBarPopupWindowLayout popupLayout = new ActionBarPopupWindow.ActionBarPopupWindowLayout(getParentActivity(), R.drawable.popup_fixed_alert4, getResourceProvider(), 0);
+        popupLayout.setMinimumWidth(dp(200));
+        popupLayout.setBackgroundColor(getThemedColor(Theme.key_actionBarDefaultSubmenuBackground));
+
+        for (int a = 0, N = items.size(); a < N; ++a) {
+            ActionBarMenuSubItem cell = new ActionBarMenuSubItem(getParentActivity(), a == 0, a == N - 1, getResourceProvider());
+            cell.setMinimumWidth(dp(200));
+            cell.setTextAndIcon(items.get(a), icons.get(a));
+            final Integer option = options.get(a);
+            popupLayout.addView(cell);
+            final int pos = position;
+            cell.setOnClickListener(v1 -> {
+                if (option == OPTION_SHOW_IN_CHAT) {
+                    Bundle args = new Bundle();
+                    long did = msg.getDialogId();
+                    if (DialogObject.isEncryptedDialog(did)) {
+                        args.putInt("enc_id", DialogObject.getEncryptedChatId(did));
+                    } else if (DialogObject.isUserDialog(did)) {
+                        args.putLong("user_id", did);
+                    } else {
+                        TLRPC.Chat chat = getMessagesController().getChat(-did);
+                        if (chat != null && chat.migrated_to != null) {
+                            args.putLong("migrated_to", did);
+                            did = -chat.migrated_to.channel_id;
+                        }
+                        args.putLong("chat_id", -did);
+                    }
+                    args.putInt("message_id", msg.getId());
+                    NotificationCenter.getInstance(getCurrentAccount()).postNotificationName(NotificationCenter.closeChats);
+                    presentFragment(new ChatActivity(args), false, false);
+                } else if (option == OPTION_DELETE_FROM_DATABASE) {
+                    long userId = getUserConfig().getClientUserId();
+                    long dialogId = msg.getDialogId();
+                    int messageId = msg.getId();
+                    Utilities.globalQueue.postRunnable(() -> AyuMessagesController.getInstance().delete(userId, dialogId, messageId));
+                    if (pos >= 0 && pos < filteredMessages.size()) {
+                        DeletedMessageFull toRemove = filteredMessages.remove(pos);
+                        int removedMessageId = toRemove != null && toRemove.message != null ? toRemove.message.messageId : 0;
+                        if (pos < messageObjects.size()) {
+                            messageObjects.remove(pos);
+                        }
+                        deletedMessages.remove(toRemove);
+                        if (toRemove != null && toRemove.message != null) {
+                            messageIdMap.remove(toRemove.message.messageId);
+                        }
+                        rowCount = filteredMessages.size();
+                        if (!deletedMessages.isEmpty() && deletedMessages.get(0).message != null) {
+                            oldestId = deletedMessages.get(0).message.messageId;
+                        } else {
+                            oldestId = Integer.MAX_VALUE;
+                        }
+                        notifyMessageListItemRemoved(listView, pos);
+                        invalidateCachedReplyReferences(removedMessageId);
+                        updateActionBarCount();
+                        updateEmptyView(rowCount == 0);
+                        if (listView != null) {
+                            listView.post(() -> {
+                                updatePagedownButtonVisibility(false);
+                                updateVisibleMessageCells();
+                            });
+                        } else {
+                            updatePagedownButtonVisibility(false);
+                        }
+                    } else {
+                        reloadDeletedMessages(null);
+                        notifyAdapterDataChanged();
+                        updateActionBarCount();
+                    }
+                } else if (option == OPTION_COPY) {
+                    String text = msg.messageOwner != null ? msg.messageOwner.message : null;
+                    if (text != null && !text.isEmpty()) {
+                        AndroidUtilities.addToClipboard(text);
+                        BulletinFactory.of(this).createCopyBulletin(getString(R.string.MessageCopied)).show();
+                    }
+                } else if (option == OPTION_COPY_PHOTO) {
+                    MessageHelper.addMessageToClipboard(msg, () -> BulletinFactory.of(this).createCopyBulletin(getString(R.string.PhotoCopied)).show());
+                } else if (option == OPTION_COPY_PHOTO_AS_STICKER) {
+                    MessageHelper.addMessageToClipboardAsSticker(msg, () -> BulletinFactory.of(this).createCopyBulletin(getString(R.string.PhotoCopied)).show());
+                } else if (option == OPTION_SAVE_TO_GALLERY) {
+                    String path = null;
+                    if (!TextUtils.isEmpty(msg.messageOwner.attachPath)) {
+                        File temp = new File(msg.messageOwner.attachPath);
+                        if (temp.exists()) {
+                            path = msg.messageOwner.attachPath;
+                        }
+                    }
+                    if (TextUtils.isEmpty(path)) {
+                        File f = FileLoader.getInstance(getCurrentAccount()).getPathToMessage(msg.messageOwner);
+                        if (f != null && f.exists()) {
+                            path = f.getPath();
+                        }
+                    }
+                    if (!TextUtils.isEmpty(path)) {
+                        MediaController.saveFile(msg, path, getParentActivity(), msg.isVideo() ? 1 : 0, null, null, uri -> {
+                            if (getParentActivity() != null) {
+                                BulletinFactory.of(this).createDownloadBulletin(
+                                        msg.isVideo() ? BulletinFactory.FileType.VIDEO : BulletinFactory.FileType.PHOTO,
+                                        getResourceProvider()
+                                ).show();
+                            }
+                        });
+                    } else if (msg.isPhoto()) {
+                        startDeletedPhotoSave(msg);
+                    } else {
+                        BulletinFactory.of(this).createErrorBulletin(getString(R.string.DeletedMediaFileMissing), getResourceProvider()).show();
+                    }
+                } else if (option == OPTION_SAVE_TO_DOWNLOADS) {
+                    ArrayList<MessageObject> messageObjects = new ArrayList<>();
+                    messageObjects.add(msg);
+                    MediaController.saveFilesFromMessages(getParentActivity(), getAccountInstance(), messageObjects, (count) -> {
+                        if (count > 0) {
+                            BulletinFactory.of(this).createDownloadBulletin(
+                                    msg.isMusic() ? BulletinFactory.FileType.AUDIOS : BulletinFactory.FileType.UNKNOWNS,
+                                    count,
+                                    getResourceProvider()
+                            ).show();
+                        }
+                    });
+                } else if (option == OPTION_DETAILS) {
+                    presentFragment(new MessageDetailsActivity(msg, null));
+                } else if (option == OPTION_TRANSLATE) {
+                    toggleOrTranslate((ChatMessageCell) v, msg, null);
+                }
+                if (scrimPopupWindow != null) {
+                    scrimPopupWindow.dismiss();
+                }
+            });
+            if (option == OPTION_TRANSLATE) {
+                cell.setOnLongClickListener(v1 -> {
+                    if (msg.messageOwner != null && (msg.messageOwner.translated || msg.messageOwner.translatedPoll != null)) {
+                        return true;
+                    }
+                    Translator.showTargetLangSelect(cell, false, false, (locale) -> {
+                        if (scrimPopupWindow != null) {
+                            scrimPopupWindow.dismiss();
+                            scrimPopupWindow = null;
+                        }
+                        toggleOrTranslate((ChatMessageCell) v, msg, locale);
+                        return Unit.INSTANCE;
+                    });
+                    return true;
+                });
+            }
+        }
+
+        ChatScrimPopupContainerLayout scrimPopupContainerLayout = new ChatScrimPopupContainerLayout(fragmentView.getContext()) {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+                    closeMenu();
+                }
+                return super.dispatchKeyEvent(event);
+            }
+
+            @Override
+            public boolean dispatchTouchEvent(MotionEvent ev) {
+                boolean b = super.dispatchTouchEvent(ev);
+                if (ev.getAction() == MotionEvent.ACTION_DOWN && !b) {
+                    closeMenu();
+                }
+                return b;
+            }
+
+            private void closeMenu() {
+                if (scrimPopupWindow != null) {
+                    scrimPopupWindow.dismiss();
+                }
+            }
+        };
+        scrimPopupContainerLayout.addView(popupLayout, LayoutHelper.createLinearRelatively(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT, 0, 0, 0, 0));
+        scrimPopupContainerLayout.setPopupWindowLayout(popupLayout);
+
+        scrimPopupWindow = new ActionBarPopupWindow(scrimPopupContainerLayout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT) {
+            @Override
+            public void dismiss() {
+                super.dismiss();
+                if (scrimPopupWindow != this) {
+                    return;
+                }
+                Bulletin.hideVisible();
+                scrimPopupWindow = null;
+                dimBehindView(false);
+            }
+        };
+        scrimPopupWindow.setPauseNotifications(true);
+        scrimPopupWindow.setDismissAnimationDuration(220);
+        scrimPopupWindow.setOutsideTouchable(true);
+        scrimPopupWindow.setClippingEnabled(true);
+        scrimPopupWindow.setAnimationStyle(R.style.PopupContextAnimation);
+        scrimPopupWindow.setFocusable(true);
+        scrimPopupContainerLayout.measure(View.MeasureSpec.makeMeasureSpec(dp(1000), View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(dp(1000), View.MeasureSpec.AT_MOST));
+        scrimPopupWindow.setInputMethodMode(ActionBarPopupWindow.INPUT_METHOD_NOT_NEEDED);
+        scrimPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        scrimPopupWindow.getContentView().setFocusableInTouchMode(true);
+        popupLayout.setFitItems(true);
+
+        int[] listLocation = new int[2];
+        listView.getLocationInWindow(listLocation);
+
+        int popupX = listLocation[0] + v.getLeft() + (int) x - scrimPopupContainerLayout.getMeasuredWidth() - dp(28);
+        if (popupX < dp(6)) {
+            popupX = dp(6);
+        } else if (popupX > listView.getMeasuredWidth() - dp(6) - scrimPopupContainerLayout.getMeasuredWidth()) {
+            popupX = listView.getMeasuredWidth() - dp(6) - scrimPopupContainerLayout.getMeasuredWidth();
+        }
+
+        int height = scrimPopupContainerLayout.getMeasuredHeight();
+        int totalHeight = fragmentView.getHeight();
+        int popupTopBound = getGlassActionBarBottomInWindow() + dp(8);
+        int popupY;
+        if (height < totalHeight) {
+            popupY = listLocation[1] + v.getTop() + (int) y - height - dp(8);
+            if (popupY < popupTopBound) {
+                popupY = popupTopBound;
+            } else if (popupY > totalHeight - height - dp(8)) {
+                popupY = totalHeight - height - dp(8);
+            }
+        } else {
+            popupY = popupTopBound;
+        }
+
+        scrimPopupContainerLayout.setMaxHeight(totalHeight - popupY);
+        scrimPopupWindow.showAtLocation(listView, Gravity.LEFT | Gravity.TOP, popupX, popupY);
+        dimBehindView(v, true);
+    }
+
+    private void updateActionBarCount() {
+        if (actionBar == null) {
+            return;
+        }
+        long userId = getUserConfig().getClientUserId();
+        Utilities.globalQueue.postRunnable(() -> {
+            int count = AyuMessagesController.getInstance().getDeletedCount(userId, dialogId);
+            AndroidUtilities.runOnUIThread(() -> {
+                if (actionBar != null) {
+                    String label = getString(R.string.EventLogFilterDeletedMessages);
+                    actionBar.setSubtitle(label + " (" + count + ")");
+                }
+            });
+        });
+    }
+
+    private void updateFloatingDateView() {
+        if (floatingDateView == null || listView == null) {
+            return;
+        }
+        MessageObject messageObject = getTopVisibleMessageObject();
+        if (messageObject == null || messageObject.messageOwner == null) {
+            hideFloatingDateView(false);
+            return;
+        }
+        floatingDateView.setCustomDate(messageObject.messageOwner.date, false, true);
+        if (scrollingFloatingDate) {
+            showFloatingDateView();
+        }
+    }
+
+    private MessageObject getTopVisibleMessageObject() {
+        if (listView == null) {
+            return null;
+        }
+        MessageObject result = null;
+        int minTop = Integer.MAX_VALUE;
+        for (int i = 0, count = listView.getChildCount(); i < count; i++) {
+            View child = listView.getChildAt(i);
+            if (!(child instanceof ChatMessageCell)) {
+                continue;
+            }
+            int top = child.getTop();
+            if (top < minTop) {
+                minTop = top;
+                result = ((ChatMessageCell) child).getMessageObject();
+            }
+        }
+        return result;
+    }
+
+    private void showFloatingDateView() {
+        if (floatingDateView == null) {
+            return;
+        }
+        if (floatingDateAnimation != null) {
+            floatingDateAnimation.cancel();
+            floatingDateAnimation = null;
+        }
+        if (floatingDateView.getTag() != null) {
+            floatingDateView.setAlpha(1f);
+            return;
+        }
+        floatingDateView.setTag(1);
+        floatingDateAnimation = new AnimatorSet();
+        floatingDateAnimation.setDuration(150);
+        floatingDateAnimation.playTogether(ObjectAnimator.ofFloat(floatingDateView, View.ALPHA, 1f));
+        floatingDateAnimation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (animation == floatingDateAnimation) {
+                    floatingDateAnimation = null;
+                }
+            }
+        });
+        floatingDateAnimation.start();
+    }
+
+    private void hideFloatingDateView(boolean animated) {
+        if (floatingDateView == null || floatingDateView.getTag() == null) {
+            return;
+        }
+        floatingDateView.setTag(null);
+        if (floatingDateAnimation != null) {
+            floatingDateAnimation.cancel();
+            floatingDateAnimation = null;
+        }
+        if (animated) {
+            floatingDateAnimation = new AnimatorSet();
+            floatingDateAnimation.setDuration(150);
+            floatingDateAnimation.playTogether(ObjectAnimator.ofFloat(floatingDateView, View.ALPHA, 0f));
+            floatingDateAnimation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (animation == floatingDateAnimation) {
+                        floatingDateAnimation = null;
+                    }
+                }
+            });
+            floatingDateAnimation.setStartDelay(200);
+            floatingDateAnimation.start();
+        } else {
+            floatingDateView.setAlpha(0f);
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void notifyAdapterDataChanged() {
+        var adapter = listView == null ? null : listView.getAdapter();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void invalidateCachedReplyReferences(int removedMessageId) {
+        if (removedMessageId == 0 || messageObjects.isEmpty()) {
+            return;
+        }
+        RecyclerView.Adapter<?> adapter = listView == null ? null : listView.getAdapter();
+        for (int i = 0; i < messageObjects.size(); i++) {
+            MessageObject messageObject = messageObjects.get(i);
+            if (messageObject == null || messageObject.replyMessageObject == null || messageObject.replyMessageObject == messageObject) {
+                continue;
+            }
+            if (messageObject.replyMessageObject.getId() != removedMessageId) {
+                continue;
+            }
+            messageObject.replyMessageObject = null;
+            if (messageObject.messageOwner != null) {
+                messageObject.messageOwner.replyMessage = null;
+                if (messageObject.messageOwner.reply_to != null && messageObject.messageOwner.reply_to.reply_to_msg_id == removedMessageId) {
+                    messageObject.messageOwner.reply_to = null;
+                }
+            }
+            if (adapter != null && i < adapter.getItemCount()) {
+                adapter.notifyItemChanged(i);
+            }
+        }
+    }
+
+    private void applySearchFilter() {
+        filteredMessages.clear();
+        for (DeletedMessageFull full : deletedMessages) {
+            if (matchesSearch(full)) {
+                filteredMessages.add(full);
+            }
+        }
+        rowCount = filteredMessages.size();
+        rebuildMessageObjects();
+        notifyAdapterDataChanged();
+        updateActionBarCount();
+        updateEmptyView();
+        if (listView != null) {
+            listView.post(() -> {
+                updatePagedownButtonVisibility(false);
+                updateVisibleMessageCells();
+            });
+        } else {
+            updatePagedownButtonVisibility(false);
+        }
+    }
+
+    private boolean matchesSearch(DeletedMessageFull full) {
+        if (TextUtils.isEmpty(searchQuery)) {
+            return true;
+        }
+        String q = searchQuery.toLowerCase();
+        String text = full.message != null ? full.message.text : null;
+        if (!TextUtils.isEmpty(text) && text.toLowerCase().contains(q)) {
+            return true;
+        }
+        if (full.message != null && full.message.mediaPath != null && full.message.mediaPath.toLowerCase().contains(q)) {
+            return true;
+        }
+        return full.message != null && full.message.fwdName != null && full.message.fwdName.toLowerCase().contains(q);
+    }
+
+    private void updateEmptyView() {
+        updateEmptyView(false);
+    }
+
+    private void updateEmptyView(boolean delayIfEmpty) {
+        showEmptyViewRunnable = updateListEmptyView(() -> emptyView, () -> listView, rowCount == 0, delayIfEmpty, showEmptyViewRunnable, () -> showEmptyViewRunnable = null);
+    }
+
+    private class ListAdapter extends RecyclerListView.SelectionAdapter {
+        private final Context context;
+        private final int currentAccount;
+
+        public ListAdapter(Context context, int currentAccount) {
+            this.context = context;
+            this.currentAccount = currentAccount;
+        }
+
+        @Override
+        public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+            if (holder.itemView instanceof NekoMessageCell) {
+                ((NekoMessageCell) holder.itemView).setAyuDelegate(null);
+            }
+        }
+
+        @Override
+        public boolean isEnabled(RecyclerView.ViewHolder holder) {
+            return true;
+        }
+
+        @Override
+        public int getItemCount() {
+            return rowCount;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new RecyclerListView.Holder(new NekoMessageCell(context, currentAccount));
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (holder.getItemViewType() == 1) {
+                var cell = (NekoMessageCell) holder.itemView;
+                var deleted = filteredMessages.get(position);
+                MessageObject msg;
+                if (position >= 0 && position < messageObjects.size()) {
+                    msg = messageObjects.get(position);
+                    if (msg == null) {
+                        msg = createMessageObject(deleted, true);
+                        messageObjects.set(position, msg);
+                    }
+                } else {
+                    msg = createMessageObject(deleted, true);
+                }
+                msg.forceAvatar = !msg.isOutOwner();
+                cell.setAyuDelegate(AyuViewDeleted.this);
+                cell.setMessageObject(msg, null, false, false, false);
+                cell.setAlpha(1f);
+                cell.setId(position);
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position >= 0 && position < filteredMessages.size() ? 1 : 0;
+        }
+    }
+
+    private MessageObject createMessageObject(DeletedMessageFull deletedMessageFull, boolean resolveReply) {
+        int currentAccount = getCurrentAccount();
+        var base = deletedMessageFull.message;
+        var tl = new TLRPC.TL_message();
+        AyuMessageUtils.map(base, tl, currentAccount);
+        AyuMessageUtils.mapMedia(base, tl, currentAccount);
+
+        if (resolveReply && base.replyMessageId != 0) {
+            boolean found = false;
+            ArrayList<MessageObject> messages = MessagesController.getInstance(currentAccount).dialogMessage.get(base.dialogId);
+            if (messages != null) {
+                for (int i = 0; i < messages.size(); i++) {
+                    MessageObject m = messages.get(i);
+                    if (m.getId() == base.replyMessageId) {
+                        tl.replyMessage = m.messageOwner;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!found) {
+                DeletedMessageFull m = messageIdMap.get(base.replyMessageId);
+                if (m != null) {
+                    tl.replyMessage = createMessageObject(m, false).messageOwner;
+                }
+            }
+        }
+
+        tl.ayuDeleted = true;
+        return new MessageObject(getCurrentAccount(), tl, false, true);
+    }
+
+    private void rebuildMessageObjects() {
+        messageObjects.clear();
+        for (int i = 0; i < filteredMessages.size(); i++) {
+            messageObjects.add(createMessageObject(filteredMessages.get(i), true));
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void handleVoiceTranscriptionUpdate(Object... args) {
+        if (listView == null || listView.getAdapter() == null || messageObjects.isEmpty()) {
+            return;
+        }
+
+        MessageObject updated = args != null && args.length > 0 && args[0] instanceof MessageObject ? (MessageObject) args[0] : null;
+        long transcriptionId = 0;
+        String transcriptionText = null;
+        if (args != null && args.length > 1 && args[1] != null) {
+            transcriptionId = (Long) args[1];
+            transcriptionText = (String) args[2];
+        }
+
+        int indexToUpdate = -1;
+        for (int i = 0; i < messageObjects.size(); i++) {
+            MessageObject local = messageObjects.get(i);
+            if (local == null || local.messageOwner == null) {
+                continue;
+            }
+            if (updated == local) {
+                indexToUpdate = i;
+                break;
+            }
+            if (transcriptionId != 0 && local.messageOwner.voiceTranscriptionId == transcriptionId) {
+                indexToUpdate = i;
+                break;
+            }
+            if (updated != null && updated.getId() == local.getId() && updated.getDialogId() == local.getDialogId()) {
+                indexToUpdate = i;
+                break;
+            }
+        }
+
+        if (indexToUpdate >= 0) {
+            MessageObject local = messageObjects.get(indexToUpdate);
+            if (local != null && local.messageOwner != null) {
+                if (transcriptionText != null) {
+                    local.messageOwner.voiceTranscription = transcriptionText;
+                }
+                if (args.length > 3 && args[3] != null) {
+                    local.messageOwner.voiceTranscriptionOpen = (Boolean) args[3];
+                }
+                if (args.length > 4 && args[4] != null) {
+                    local.messageOwner.voiceTranscriptionFinal = (Boolean) args[4];
+                }
+            }
+            listView.getAdapter().notifyItemChanged(indexToUpdate);
+        } else {
+            listView.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+}

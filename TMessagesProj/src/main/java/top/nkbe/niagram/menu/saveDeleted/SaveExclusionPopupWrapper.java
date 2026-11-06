@@ -2,7 +2,7 @@ package top.nkbe.niagram.menu.saveDeleted;
 
 import static org.telegram.messenger.LocaleController.getString;
 
-import com.radolyn.ayugram.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
 
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;

@@ -2,7 +2,7 @@ package top.nkbe.niagram.menu.ghostmode;
 
 import static org.telegram.messenger.LocaleController.getString;
 
-import com.radolyn.ayugram.utils.AyuGhostPreferences;
+import top.nkbe.niagram.ayu.utils.AyuGhostPreferences;
 
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;

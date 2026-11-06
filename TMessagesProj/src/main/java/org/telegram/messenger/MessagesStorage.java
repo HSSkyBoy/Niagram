@@ -83,10 +83,10 @@ import top.nkbe.niagram.filters.AyuFilter;
 import top.nkbe.niagram.helpers.AppRestartHelper;
 import top.nkbe.niagram.helpers.MessageHelper;
 import top.nkbe.niagram.config.NyaConfig;
-import com.radolyn.ayugram.AyuConstants;
-import com.radolyn.ayugram.messages.AyuMessagesController;
-import com.radolyn.ayugram.messages.AyuSavePreferences;
-import com.radolyn.ayugram.proprietary.AyuMessageUtils;
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.proprietary.AyuMessageUtils;
 
 public class MessagesStorage extends BaseController {
 

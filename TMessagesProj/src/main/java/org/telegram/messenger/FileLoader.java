@@ -30,7 +30,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.radolyn.ayugram.utils.AyuFileLocation;
+import top.nkbe.niagram.ayu.utils.AyuFileLocation;
 
 public class FileLoader extends BaseController {
 

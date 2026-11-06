@@ -37,9 +37,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import top.nkbe.niagram.utils.AlertUtil;
 import top.nkbe.niagram.config.NyaConfig;
-import com.radolyn.ayugram.AyuConstants;
-import com.radolyn.ayugram.messages.AyuMessagesController;
-import com.radolyn.ayugram.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
 
 public class SecretChatHelper extends BaseController {
 

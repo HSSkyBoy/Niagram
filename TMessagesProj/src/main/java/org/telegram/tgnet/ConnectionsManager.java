@@ -23,7 +23,7 @@ import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter;
 // import com.google.android.play.core.integrity.IntegrityTokenRequest;
 // import com.google.android.play.core.integrity.IntegrityTokenResponse;
 
-import com.radolyn.ayugram.utils.AyuGhostUtils;
+import top.nkbe.niagram.ayu.utils.AyuGhostUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

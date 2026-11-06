@@ -14,9 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.radolyn.ayugram.AyuConstants;
-import com.radolyn.ayugram.database.AyuData;
-import com.radolyn.ayugram.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.database.AyuData;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;

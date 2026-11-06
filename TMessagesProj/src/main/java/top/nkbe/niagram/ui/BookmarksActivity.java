@@ -31,9 +31,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.radolyn.ayugram.database.entities.DeletedMessageFull;
-import com.radolyn.ayugram.messages.AyuMessagesController;
-import com.radolyn.ayugram.proprietary.AyuMessageUtils;
+import top.nkbe.niagram.ayu.database.entities.DeletedMessageFull;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.proprietary.AyuMessageUtils;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ChatObject;

@@ -184,10 +184,10 @@ import top.nkbe.niagram.helpers.PasscodeHelper;
 import top.nkbe.niagram.helpers.ScheduleTimeHelper;
 import top.nkbe.niagram.config.NyaConfig;
 
-import com.radolyn.ayugram.AyuConstants;
-import com.radolyn.ayugram.messages.AyuMessagesController;
-import com.radolyn.ayugram.messages.AyuSavePreferences;
-import com.radolyn.ayugram.utils.AyuState;
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.utils.AyuState;
 
 public class AlertsCreator {
     public final static int PERMISSIONS_REQUEST_TOP_ICON_SIZE = 72;

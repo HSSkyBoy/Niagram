@@ -150,11 +150,11 @@ import top.nkbe.niagram.utils.AlertUtil;
 import top.nkbe.niagram.config.NyaConfig;
 import xyz.nextalone.nagram.helper.LocalPremiumStatusHelper;
 
-import com.radolyn.ayugram.AyuConstants;
-import com.radolyn.ayugram.messages.AyuSavePreferences;
-import com.radolyn.ayugram.messages.AyuMessagesController;
-import com.radolyn.ayugram.utils.AyuState;
-import com.radolyn.ayugram.utils.LastSeenHelper;
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.utils.AyuState;
+import top.nkbe.niagram.ayu.utils.LastSeenHelper;
 
 public class MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 

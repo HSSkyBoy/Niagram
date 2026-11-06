@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.radolyn.ayugram.utils.AyuState;
+import top.nkbe.niagram.ayu.utils.AyuState;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BotWebViewVibrationEffect;

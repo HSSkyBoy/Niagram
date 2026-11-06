@@ -51,9 +51,9 @@ import androidx.annotation.UiThread;
 import androidx.collection.LongSparseArray;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 
-import com.radolyn.ayugram.utils.AyuGhostPreferences;
-import com.radolyn.ayugram.utils.AyuGhostUtils;
-import com.radolyn.ayugram.utils.AyuState;
+import top.nkbe.niagram.ayu.utils.AyuGhostPreferences;
+import top.nkbe.niagram.ayu.utils.AyuGhostUtils;
+import top.nkbe.niagram.ayu.utils.AyuState;
 
 import org.json.JSONObject;
 import org.telegram.messenger.audioinfo.AudioInfo;

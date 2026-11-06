@@ -139,20 +139,20 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.zxing.common.detector.MathUtils;
 
-import com.radolyn.ayugram.AyuConstants;
-import com.radolyn.ayugram.AyuUtils;
-import com.radolyn.ayugram.database.AyuData;
-import com.radolyn.ayugram.messages.AyuMessagesController;
-import com.radolyn.ayugram.messages.AyuSavePreferences;
-import com.radolyn.ayugram.proprietary.AyuHistoryHook;
-import com.radolyn.ayugram.proprietary.AyuMessageUtils;
-import com.radolyn.ayugram.ui.AyuMessageHistory;
-import com.radolyn.ayugram.ui.AyuViewDeleted;
-import com.radolyn.ayugram.ui.DummyView;
-import com.radolyn.ayugram.utils.AyuGhostPreferences;
-import com.radolyn.ayugram.utils.AyuGhostUtils;
-import com.radolyn.ayugram.utils.AyuState;
-import com.radolyn.ayugram.utils.LastSeenHelper;
+import top.nkbe.niagram.ayu.AyuConstants;
+import top.nkbe.niagram.ayu.AyuUtils;
+import top.nkbe.niagram.ayu.database.AyuData;
+import top.nkbe.niagram.ayu.messages.AyuMessagesController;
+import top.nkbe.niagram.ayu.messages.AyuSavePreferences;
+import top.nkbe.niagram.ayu.proprietary.AyuHistoryHook;
+import top.nkbe.niagram.ayu.proprietary.AyuMessageUtils;
+import top.nkbe.niagram.ayu.ui.AyuMessageHistory;
+import top.nkbe.niagram.ayu.ui.AyuViewDeleted;
+import top.nkbe.niagram.ayu.ui.DummyView;
+import top.nkbe.niagram.ayu.utils.AyuGhostPreferences;
+import top.nkbe.niagram.ayu.utils.AyuGhostUtils;
+import top.nkbe.niagram.ayu.utils.AyuState;
+import top.nkbe.niagram.ayu.utils.LastSeenHelper;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
