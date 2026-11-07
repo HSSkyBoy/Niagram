@@ -14005,7 +14005,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void showItemOptions() {
-        ItemOptions io = ItemOptions.makeOptions(this, optionsItem, true);
+        ItemOptions io = ItemOptions.makeOptions(this, optionsItem);
         io.setColors(getThemedColor(Theme.key_actionBarDefaultTitle), getThemedColor(Theme.key_actionBarDefaultTitle));
         if (Theme.getActiveTheme().isMonet()) {
             io.setSelectorColor(getThemedColor(Theme.key_dialogButtonSelector));
@@ -14138,7 +14138,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
             io.addGapIf(hideBottomNavigationBar && !NyaConfig.INSTANCE.getHideDividers().Bool());
             if (hideBottomNavigationBar) {
-                BackButtonMenuRecent.addMenu(this, io);
+                BackButtonMenuRecent.addMenu(this, io, optionsItem);
             }
             if (hideBottomNavigationBar && NyaConfig.INSTANCE.getHideArchive().Bool()) {
                 io.add(R.drawable.msg_archive, getString(R.string.ArchivedChats), () -> {

@@ -58,6 +58,10 @@ public class BackButtonMenuRecent {
 
 
     public static void addMenu(BaseFragment fragment, ItemOptions o) {
+        addMenu(fragment, o, null);
+    }
+
+    public static void addMenu(BaseFragment fragment, ItemOptions o, View anchor) {
         if (fragment == null || o == null) return;
         final int currentAccount = fragment.getCurrentAccount();
         final LinkedList<Long> dialogs = getRecentDialogs(currentAccount);
@@ -88,7 +92,7 @@ public class BackButtonMenuRecent {
         if (!canSwipeback) {
             o.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> {
                 o.dismiss();
-                show(currentAccount, fragment, o.getLayout());
+                show(currentAccount, fragment, anchor != null ? anchor : o.getLayout());
             });
             return;
         }

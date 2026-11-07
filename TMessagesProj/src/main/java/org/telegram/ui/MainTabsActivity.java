@@ -663,7 +663,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             return 0;
         });
 
-        ItemOptions o = ItemOptions.makeOptions(this, button, true);
+        ItemOptions o = ItemOptions.makeOptions(this, button);
         if (UserConfig.getActivatedAccountsCount() < UserConfig.MAX_ACCOUNT_COUNT) {
             o.add(R.drawable.msg_addbot, getString(R.string.AddAccount), () -> {
                 int freeAccounts = 0;
@@ -1354,7 +1354,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             return true;
         }
 
-        ItemOptions o = ItemOptions.makeOptions(this, button, true);
+        ItemOptions o = ItemOptions.makeOptions(this, button);
         addChatsMenuItems(o, button);
         setupPopupMenuStyle(o);
         o.show();
@@ -1362,7 +1362,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
     }
 
     private void addChatsMenuItems(ItemOptions o, View button) {
-        BackButtonMenuRecent.addMenu(this, o);
+        BackButtonMenuRecent.addMenu(this, o, button);
         o.addGap();
         o.add(R.drawable.msg_archive, getString(R.string.ArchivedChats), () -> {
             Bundle args = new Bundle();
