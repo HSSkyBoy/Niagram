@@ -14005,7 +14005,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void showItemOptions() {
-        ItemOptions io = ItemOptions.makeOptions(this, optionsItem);
+        ItemOptions io = ItemOptions.makeOptions(this, optionsItem, true);
         io.setColors(getThemedColor(Theme.key_actionBarDefaultTitle), getThemedColor(Theme.key_actionBarDefaultTitle));
         if (Theme.getActiveTheme().isMonet()) {
             io.setSelectorColor(getThemedColor(Theme.key_dialogButtonSelector));

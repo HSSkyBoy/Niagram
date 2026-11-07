@@ -25,11 +25,14 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.ImageLocation;
+import org.telegram.messenger.ChatObject;
+import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.SerializedData;
+import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBarPopupWindow;
 import org.telegram.ui.ActionBar.AlertDialog;
@@ -64,122 +67,100 @@ public class BackButtonMenuRecent {
         final Context context = fragment.getParentActivity();
         if (context == null) return;
 
+        final java.util.ArrayList<TLObject> peers = new java.util.ArrayList<>();
+        for (Long dialogId : dialogs) {
+            if (dialogId == null) continue;
+            TLObject peer = fragment.getMessagesController().getUserOrChat(dialogId);
+            if (peer != null) {
+                peers.add(peer);
+            }
+        }
+        if (peers.isEmpty()) {
+            return;
+        }
+
+        boolean canSwipeback = false;
+        if (o.getLayout() instanceof ActionBarPopupWindow.ActionBarPopupWindowLayout) {
+            ActionBarPopupWindow.ActionBarPopupWindowLayout popupLayout = (ActionBarPopupWindow.ActionBarPopupWindowLayout) o.getLayout();
+            canSwipeback = popupLayout.getSwipeBack() != null;
+        }
+
+        if (!canSwipeback) {
+            o.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> {
+                o.dismiss();
+                show(currentAccount, fragment, o.getLayout());
+            });
+            return;
+        }
+
         final ItemOptions sub = o.makeSwipeback();
         sub.add(R.drawable.ic_ab_back, getString(R.string.Back), o::closeSwipeback);
         sub.addGap();
 
-        int added = 0;
-        for (Long dialogId : dialogs) {
-            if (dialogId == null) continue;
-            final TLRPC.Chat chat;
-            final TLRPC.User user;
-            if (dialogId < 0) {
-                chat = MessagesController.getInstance(currentAccount).getChat(-dialogId);
-                user = null;
-            } else {
-                chat = null;
-                user = MessagesController.getInstance(currentAccount).getUser(dialogId);
-            }
-            if (chat == null && user == null) {
-                continue;
-            }
-
-            FrameLayout cell = new FrameLayout(context);
-            cell.setMinimumWidth(dp(220));
-
-            BackupImageView imageView = new BackupImageView(context);
-            imageView.setRoundRadius(chat != null && chat.forum ? dp(8) : dp(16));
-            cell.addView(imageView, LayoutHelper.createFrameRelatively(32, 32, Gravity.START | Gravity.CENTER_VERTICAL, 14, 0, 0, 0));
-
-            TextView titleView = new TextView(context);
-            titleView.setLines(1);
-            titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            titleView.setTextColor(Theme.getColor(Theme.key_actionBarDefaultSubmenuItem, fragment.getResourceProvider()));
-            titleView.setEllipsize(TextUtils.TruncateAt.END);
-            cell.addView(titleView, LayoutHelper.createFrameRelatively(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.START | Gravity.CENTER_VERTICAL, 56, 0, 14, 0));
-
-            AvatarDrawable avatarDrawable = new AvatarDrawable();
-            avatarDrawable.setScaleSize(.8f);
-            Drawable thumb = avatarDrawable;
-
-            if (chat != null) {
-                avatarDrawable.setInfo(chat);
-                if (chat.photo != null && chat.photo.strippedBitmap != null) {
-                    thumb = chat.photo.strippedBitmap;
-                }
-                imageView.setImage(ImageLocation.getForChat(chat, ImageLocation.TYPE_SMALL), "50_50", thumb, chat);
-                titleView.setText(Emoji.replaceEmoji(chat.title, titleView.getPaint().getFontMetricsInt(), false));
-            } else {
-                String name;
-                if (user.photo != null && user.photo.strippedBitmap != null) {
-                    thumb = user.photo.strippedBitmap;
-                }
-                if (UserObject.isReplyUser(user)) {
-                    name = getString(R.string.RepliesTitle);
-                    avatarDrawable.setAvatarType(AvatarDrawable.AVATAR_TYPE_REPLIES);
-                    imageView.setImageDrawable(avatarDrawable);
-                } else if (UserObject.isDeleted(user)) {
-                    name = getString(R.string.HiddenName);
-                    avatarDrawable.setInfo(user);
-                    imageView.setImage(ImageLocation.getForUser(user, ImageLocation.TYPE_SMALL), "50_50", avatarDrawable, user);
-                } else {
-                    name = UserObject.getUserName(user);
-                    avatarDrawable.setInfo(user);
-                    imageView.setImage(ImageLocation.getForUser(user, ImageLocation.TYPE_SMALL), "50_50", thumb, user);
-                }
-                titleView.setText(Emoji.replaceEmoji(name, titleView.getPaint().getFontMetricsInt(), false));
-            }
-
-            cell.setBackground(Theme.getSelectorDrawable(Theme.getColor(Theme.key_listSelector, fragment.getResourceProvider()), false));
-            cell.setOnClickListener(v -> {
+        final ItemOptions chats = ItemOptions.swipeback((ActionBarPopupWindow.ActionBarPopupWindowLayout) o.getLayout(), fragment.getResourceProvider());
+        for (TLObject peer : peers) {
+            final long dialogId = DialogObject.getDialogId(peer);
+            chats.addChat(peer, false, () -> {
                 o.dismiss();
-                Bundle bundle = new Bundle();
-                if (dialogId < 0) {
-                    bundle.putLong("chat_id", -dialogId);
-                    if (MessagesController.getInstance(currentAccount).isForum(dialogId)) {
-                        fragment.presentFragment(new TopicsFragment(bundle));
+                open(fragment, dialogId);
+            });
+            if (chats.getLastView() != null) {
+                chats.getLastView().setOnLongClickListener(v -> {
+                    o.dismiss();
+                    Bundle bundle = new Bundle();
+                    if (dialogId < 0) {
+                        bundle.putLong("chat_id", -dialogId);
                     } else {
-                        fragment.presentFragment(new ChatActivity(bundle));
+                        bundle.putLong("user_id", dialogId);
                     }
-                } else {
-                    bundle.putLong("user_id", dialogId);
-                    fragment.presentFragment(new ChatActivity(bundle));
-                }
-            });
-            cell.setOnLongClickListener(v -> {
-                o.dismiss();
-                Bundle bundle = new Bundle();
-                if (dialogId < 0) {
-                    bundle.putLong("chat_id", -dialogId);
-                } else {
-                    bundle.putLong("user_id", dialogId);
-                }
-                fragment.presentFragment(new ProfileActivity(bundle));
-                return true;
-            });
-
-            sub.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 44));
-            added++;
+                    fragment.presentFragment(new ProfileActivity(bundle));
+                    return true;
+                });
+            }
         }
 
-        if (added > 0) {
-            sub.addGap();
-            sub.add(R.drawable.msg_clear, getString(R.string.ClearRecentChats), () -> {
-                new AlertDialog.Builder(context, fragment.getResourceProvider())
-                    .setTitle(getString(R.string.ClearRecentChats))
-                    .setMessage(getString(R.string.ClearRecentChatAlert))
-                    .setPositiveButton(getString(R.string.ClearButton).toUpperCase(), (dialogInterface, i) -> {
-                        clearRecentDialogs(currentAccount);
-                        o.dismiss();
-                    })
-                    .setNegativeButton(getString(R.string.Cancel), null)
-                    .makeRed(AlertDialog.BUTTON_POSITIVE)
-                    .show();
-            });
+        android.widget.ScrollView scrollView = new android.widget.ScrollView(o.getContext());
+        scrollView.setVerticalScrollBarEnabled(false);
+        scrollView.addView(chats.getLinearLayout());
+        sub.addView(scrollView, LayoutHelper.createLinear(240, LayoutHelper.WRAP_CONTENT, 1f));
+        sub.addGap();
+        sub.add(R.drawable.msg_clear, getString(R.string.ClearRecentChats), () -> {
+            new AlertDialog.Builder(context, fragment.getResourceProvider())
+                .setTitle(getString(R.string.ClearRecentChats))
+                .setMessage(getString(R.string.ClearRecentChatAlert))
+                .setPositiveButton(getString(R.string.ClearButton).toUpperCase(), (dialogInterface, i) -> {
+                    clearRecentDialogs(currentAccount);
+                    o.dismiss();
+                })
+                .setNegativeButton(getString(R.string.Cancel), null)
+                .makeRed(AlertDialog.BUTTON_POSITIVE)
+                .show();
+        });
 
-            o.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> {
-                o.openSwipeback(sub);
-            });
+        o.add(R.drawable.menu_recent, getString(R.string.RecentChats), () -> o.openSwipeback(sub));
+    }
+
+    private static void open(BaseFragment fragment, long dialogId) {
+        if (fragment == null) return;
+        int currentAccount = fragment.getCurrentAccount();
+        MessagesController messagesController = fragment.getMessagesController();
+        TLRPC.Chat chat = messagesController.getChat(-dialogId);
+        if (chat != null && ChatObject.isForum(chat)) {
+            Bundle args = new Bundle();
+            args.putLong("chat_id", chat.id);
+            if (messagesController.isForum(dialogId)) {
+                fragment.presentFragment(new TopicsFragment(args));
+            } else {
+                fragment.presentFragment(new ChatActivity(args));
+            }
+        } else {
+            Bundle args = new Bundle();
+            if (dialogId < 0) {
+                args.putLong("chat_id", -dialogId);
+            } else {
+                args.putLong("user_id", dialogId);
+            }
+            fragment.presentFragment(new ChatActivity(args));
         }
     }
 
