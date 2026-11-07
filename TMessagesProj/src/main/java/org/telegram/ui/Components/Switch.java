@@ -44,10 +44,12 @@ import org.telegram.ui.Cells.BaseCell;
 
 import me.vkryl.android.animator.BoolAnimator;
 
-import top.nkbe.niagram.helpers.MonetHelper;
-import top.nkbe.niagram.config.NyaConfig;
+public class Switch extends View implements Theme.Colorable {
 
-public class Switch extends View {
+    @Override
+    public void updateColors() {
+        colorSet = 0; // the ripple color is re-read from the theme on the next press
+    }
     private final BoolAnimator animatorIconVisibility = new BoolAnimator(this, CubicBezierInterpolator.EASE_OUT_QUINT, 380L, true);
 
     public static final int SWITCH_STYLE_DEFAULT = 0;
