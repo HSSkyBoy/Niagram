@@ -165,6 +165,7 @@ import org.telegram.ui.ProfileActivity2;
 import org.telegram.ui.ProfileStoriesCollectionTabs;
 import org.telegram.ui.SelectStoriesBottomSheet;
 import org.telegram.ui.Stars.StarsController;
+import org.telegram.ui.Stories.recorder.HintView2;
 import org.telegram.ui.Stories.StoriesController;
 import org.telegram.ui.Stories.StoriesListPlaceProvider;
 import org.telegram.ui.Stories.UserListPoller;
@@ -268,6 +269,10 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
     private long topicId;
 
     private UndoView undoView;
+
+    private long getPlaylistTopicId() {
+        return ChatObject.isForum(profileActivity.getCurrentAccount(), dialog_id) ? topicId : 0;
+    }
 
     public boolean checkPinchToZoom(MotionEvent ev) {
         final int selectedType = mediaPages[0].selectedType;
@@ -1622,7 +1627,7 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
     private static boolean skipPhotos = false;
 
     final Delegate delegate;
-    private HintView fwdRestrictedHint;
+    private HintView2 fwdRestrictedHint;
     private Theme.ResourcesProvider resourcesProvider;
 
     private Runnable applyBulletin;
@@ -1760,7 +1765,7 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
                             MediaController.getInstance().setVoiceMessagesPlaylist(result ? sharedMediaData[MediaDataController.MEDIA_MUSIC].messages : null, false);
                             return result;
                         } else if (messageObject.isMusic()) {
-                            return MediaController.getInstance().setPlaylist(sharedMediaData[MediaDataController.MEDIA_MUSIC].messages, messageObject, mergeDialogId);
+                            return MediaController.getInstance().setPlaylist(sharedMediaData[MediaDataController.MEDIA_MUSIC].messages, messageObject, mergeDialogId, true, null, getPlaylistTopicId());
                         }
                         return false;
                     }
@@ -1963,311 +1968,6 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
             optionsSearchImageView.setVisibility(GONE);
             actionBar.addView(optionsSearchImageView, LayoutHelper.createFrame(48, 56, Gravity.RIGHT | Gravity.BOTTOM));
         }
-<<<<<<< HEAD
-        photoVideoOptionsItem.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int tab = getClosestTab();
-                boolean isStories = isAnyStoryPageType(tab);
-
-                final int currentAccount = profileActivity.getCurrentAccount();
-                final TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(dialog_id);
-                final boolean canEditStoryAlbums = getStoriesController().canEditStoryAlbums(dialog_id);
-
-                if (isStoryAlbumPageType(tab) && canEditStoryAlbums) {
-                    final StoryAlbumData data = storyAlbums_getByTabType(tab);
-                    if (data != null) {
-                        final int albumId = data.albumId;
-                        buildItemOptionsForStoryAlbumActionBar(profileActivity, photoVideoOptionsItem, did, albumId)
-                            .setOnTopOfScrim()
-                            .setDimAlpha(0)
-                            .show();
-
-                        return;
-                    }
-                }
-
-                if (tab == TAB_GIFTS) {
-                    final ProfileGiftsContainer.Page page = giftsContainer.getCurrentPage();
-                    final StarsController.GiftsList list = page.list;
-                    if (list == null) return;
-                    final boolean hiddenFilters = giftsContainer.canFilterHidden();
-
-                    final ItemOptions o = ItemOptions.makeOptions(profileActivity, photoVideoOptionsItem);
-                    final ActionBarMenuSubItem sorting;
-                    boolean gap = false;
-                    if (!list.isCollection) {
-                        sorting = o.add();
-                        gap = true;
-                    } else {
-                        sorting = null;
-                    }
-                    if (giftsContainer.canAdd()) {
-                        o.add(R.drawable.menu_folder_add, getString(R.string.Gift2NewCollection), () -> {
-                            giftsContainer.createCollection();
-                            o.dismiss();
-                        });
-                        gap = true;
-                    }
-                    if (giftsContainer.collections.isMine()) {
-                        if (!list.getPinned().isEmpty() || page.isCollection) {
-                            o.add(R.drawable.tabs_reorder, getString(R.string.Gift2Reorder), () -> {
-                                giftsContainer.setReordering(true);
-                                o.dismiss();
-                            });
-                        }
-                        gap = true;
-                    }
-                    if (gap) o.addGap();
-                    final ActionBarMenuSubItem unlimited = o.addChecked();
-                    unlimited.setText(getString(R.string.Gift2FilterUnlimited));
-                    final ActionBarMenuSubItem limited = o.addChecked();
-                    limited.setText(getString(R.string.Gift2FilterLimited));
-                    final ActionBarMenuSubItem upgradable = o.addChecked();
-                    upgradable.setText(getString(R.string.Gift2FilterUpgradable));
-                    final ActionBarMenuSubItem unique = o.addChecked();
-                    unique.setText(getString(R.string.Gift2FilterUnique));
-                    final ActionBarMenuSubItem displayed, hidden;
-                    if (hiddenFilters) {
-                        o.addGap();
-                        displayed = o.addChecked();
-                        displayed.setText(getString(R.string.Gift2FilterDisplayed));
-                        hidden = o.addChecked();
-                        hidden.setText(getString(R.string.Gift2FilterHidden));
-                    } else {
-                        displayed = null;
-                        hidden = null;
-                    }
-
-                    final Runnable update = () -> {
-                        if (sorting != null) {
-                            sorting.setTextAndIcon(getString(list.sort_by_date ? R.string.Gift2FilterSortByValue : R.string.Gift2FilterSortByDate), list.sort_by_date ? R.drawable.menu_sort_value : R.drawable.menu_sort_date);
-                        }
-
-                        unlimited.setChecked(list.isInclude_unlimited());
-                        limited.setChecked(list.isInclude_limited());
-                        upgradable.setChecked(list.isInclude_upgradable());
-                        unique.setChecked(list.isInclude_unique());
-
-                        if (hiddenFilters) {
-                            displayed.setChecked(list.isInclude_displayed());
-                            hidden.setChecked(list.isInclude_hidden());
-                        }
-                    };
-                    update.run();
-
-                    if (sorting != null) {
-                        sorting.setOnClickListener(v -> {
-                            list.sort_by_date = !list.sort_by_date;
-                            update.run();
-                            list.invalidate(true);
-                        });
-                    }
-                    ProfileGiftsContainer.setGiftFilterOptionsClickListeners(unlimited, list, update, StarsController.GiftsList.INCLUDE_TYPE_UNLIMITED_FLAG);
-                    ProfileGiftsContainer.setGiftFilterOptionsClickListeners(limited, list, update, StarsController.GiftsList.INCLUDE_TYPE_LIMITED_FLAG);
-                    ProfileGiftsContainer.setGiftFilterOptionsClickListeners(upgradable, list, update, StarsController.GiftsList.INCLUDE_TYPE_UPGRADABLE_FLAG);
-                    ProfileGiftsContainer.setGiftFilterOptionsClickListeners(unique, list, update, StarsController.GiftsList.INCLUDE_TYPE_UNIQUE_FLAG);
-                    if (hiddenFilters) {
-                        ProfileGiftsContainer.setGiftFilterOptionsClickListeners(displayed, list, update, StarsController.GiftsList.INCLUDE_VISIBILITY_DISPLAYED_FLAG);
-                        ProfileGiftsContainer.setGiftFilterOptionsClickListeners(hidden, list, update, StarsController.GiftsList.INCLUDE_VISIBILITY_HIDDEN_FLAG);
-                    }
-                    o
-                        .setOnTopOfScrim()
-                        .setDismissWithButtons(false)
-                        .setDimAlpha(0)
-                        .show();
-                    return;
-                }
-
-                if (tab == TAB_BOT_PREVIEWS && user != null && user.bot && user.bot_has_main_app && user.bot_can_edit && botPreviewsContainer != null) {
-                    ItemOptions.makeOptions(profileActivity, photoVideoOptionsItem)
-                        .addIf(botPreviewsContainer.getItemsCount() < profileActivity.getMessagesController().botPreviewMediasMax, R.drawable.msg_addbot, getString(R.string.ProfileBotAddPreview), () -> {
-                            StoryRecorder.getInstance(profileActivity.getParentActivity(), profileActivity.getCurrentAccount()).openBot(dialog_id, botPreviewsContainer.getCurrentLang(), null);
-                        })
-                        .addIf(botPreviewsContainer.getItemsCount() > 1 && !botPreviewsContainer.isSelectedAll(), R.drawable.tabs_reorder, getString(R.string.ProfileBotReorder), () -> {
-                            botPreviewsContainer.selectAll();
-                        })
-                        .addIf(botPreviewsContainer.getItemsCount() > 0, R.drawable.msg_select, getString(botPreviewsContainer.isSelectedAll() ? R.string.ProfileBotUnSelect : R.string.ProfileBotSelect), () -> {
-                            if (botPreviewsContainer.isSelectedAll()) {
-                                botPreviewsContainer.unselectAll();
-                            } else {
-                                botPreviewsContainer.selectAll();
-                            }
-                        })
-                        .addIf(!TextUtils.isEmpty(botPreviewsContainer.getCurrentLang()), R.drawable.msg_delete, LocaleController.formatString(R.string.ProfileBotRemoveLang, TranslateAlert2.languageName(botPreviewsContainer.getCurrentLang())), true, () -> {
-                            botPreviewsContainer.deleteLang(botPreviewsContainer.getCurrentLang());
-                        })
-                        .translate(0, -dp(52))
-                        .setDimAlpha(0)
-                        .show();
-                    return;
-                }
-                if (getSelectedTab() == TAB_SAVED_DIALOGS) {
-                    ItemOptions.makeOptions(profileActivity, photoVideoOptionsItem)
-                        .add(R.drawable.msg_discussion, getString(R.string.SavedViewAsMessages), () -> {
-                            profileActivity.getMessagesController().setSavedViewAs(false);
-                            Bundle args = new Bundle();
-                            args.putLong("user_id", profileActivity.getUserConfig().getClientUserId());
-                            profileActivity.presentFragment(new ChatActivity(args), true);
-                        })
-                        .addGap()
-                        .add(R.drawable.msg_home, getString(R.string.AddShortcut), () -> {
-                            try {
-                                profileActivity.getMediaDataController().installShortcut(profileActivity.getUserConfig().getClientUserId(), MediaDataController.SHORTCUT_TYPE_USER_OR_CHAT);
-                            } catch (Exception e) {
-                                FileLog.e(e);
-                            }
-                        })
-                        .add(R.drawable.msg_delete, getString(R.string.DeleteAll), () -> {
-                            TLRPC.User currentUser = profileActivity.getUserConfig().getCurrentUser();
-                            AlertsCreator.createClearOrDeleteDialogAlert(profileActivity, false, null, currentUser, false, true, false, true, (param) -> {
-                                profileActivity.finishFragment();
-                                if (profileActivity instanceof NotificationCenter.NotificationCenterDelegate) {
-                                    profileActivity.getNotificationCenter().removeObserver((NotificationCenter.NotificationCenterDelegate) profileActivity, NotificationCenter.closeChats);
-                                }
-                                profileActivity.getNotificationCenter().postNotificationName(NotificationCenter.closeChats);
-                                profileActivity.getNotificationCenter().postNotificationName(NotificationCenter.needDeleteDialog, dialog_id, currentUser, null, param);
-                                profileActivity.getMessagesController().setSavedViewAs(false);
-                            });
-                        })
-                        .translate(0, -dp(52))
-                        .setDimAlpha(0)
-                        .show();
-                    return;
-                }
-
-
-                ItemOptions options = ItemOptions.makeOptions(profileActivity, photoVideoOptionsItem);
-                if ((tab == TAB_STORIES || isStoryAlbumPageType(tab)) && canEditStoryAlbums) {
-                    options.add(R.drawable.menu_album_add, getString(R.string.StoriesAlbumAddAlbum), () -> {
-                        AlertsCreator.createStoriesAlbumEnterNameForCreate(getContext(), profileActivity, resourcesProvider, name -> getStoriesController().createAlbum(dialog_id, name, SharedMediaLayout.this::onStoryAlbumCreate));
-                        options.dismiss();
-                    });
-                    options.addGap();
-                }
-
-                addZoomInZoomOutItemOptions(options);
-
-                final boolean hasDifferentTypes = isStories || (sharedMediaData[0].hasPhotos && sharedMediaData[0].hasVideos) || !sharedMediaData[0].endReached[0] || !sharedMediaData[0].endReached[1] || !sharedMediaData[0].startReached;
-                if (!DialogObject.isEncryptedDialog(dialog_id)) {
-                    options.add(R.drawable.msg_calendar2, getString(R.string.Calendar), () -> {
-                        showMediaCalendar(tab, false);
-                        options.dismiss();
-                    });
-
-                    if (info != null && !isStoriesView()) {
-                        TLRPC.Chat chat = MessagesController.getInstance(profileActivity.getCurrentAccount()).getChat(info.id);
-                        if (chat != null && chat.admin_rights != null && chat.admin_rights.edit_stories) {
-                            options.add(R.drawable.msg_archive, getString(R.string.OpenChannelArchiveStories), () -> {
-                                Bundle args = new Bundle();
-                                args.putInt("type", MediaActivity.TYPE_ARCHIVED_CHANNEL_STORIES);
-                                args.putLong("dialog_id", -info.id);
-                                MediaActivity fragment = new MediaActivity(args, null);
-                                fragment.setChatInfo(info);
-                                profileActivity.presentFragment(fragment);
-
-                                options.dismiss();
-                            });
-                        }
-                    }
-
-                    if (hasDifferentTypes) {
-                        options.addGap();
-
-                        ActionBarMenuSubItem showPhotosItem = new ActionBarMenuSubItem(context, true, false, false, resourcesProvider);
-                        ActionBarMenuSubItem showVideosItem = new ActionBarMenuSubItem(context, true, false, true, resourcesProvider);
-
-                        showPhotosItem.setTextAndIcon(getString("MediaShowPhotos", R.string.MediaShowPhotos), 0);
-                        options.getLayout().addView(showPhotosItem);
-
-                        showVideosItem.setTextAndIcon(getString("MediaShowVideos", R.string.MediaShowVideos), 0);
-                        options.getLayout().addView(showVideosItem);
-
-                        if (isStories) {
-                            StoriesAdapter adapter = storyAlbums_getStoriesAdapterByTabType(tab);
-                            if (adapter != null && adapter.storiesList != null) {
-                                showPhotosItem.setChecked(adapter.storiesList.showPhotos());
-                                showVideosItem.setChecked(adapter.storiesList.showVideos());
-                            }
-                            showPhotosItem.setOnClickListener(v -> {
-                                if (changeTypeAnimation) {
-                                    return;
-                                }
-                                if (!showVideosItem.getCheckView().isChecked() && showPhotosItem.getCheckView().isChecked()) {
-                                    AndroidUtilities.shakeViewSpring(v, shiftDp = -shiftDp);
-                                    return;
-                                }
-                                showPhotosItem.getCheckView().setChecked(!showPhotosItem.getCheckView().isChecked(), true);
-                                if (adapter.storiesList == null) {
-                                    return;
-                                }
-                                adapter.storiesList.updateFilters(showPhotosItem.getCheckView().isChecked(), showVideosItem.getCheckView().isChecked());
-                            });
-                            showVideosItem.setOnClickListener(v -> {
-                                if (changeTypeAnimation) {
-                                    return;
-                                }
-                                if (!showPhotosItem.getCheckView().isChecked() && showVideosItem.getCheckView().isChecked()) {
-                                    AndroidUtilities.shakeViewSpring(v, shiftDp = -shiftDp);
-                                    return;
-                                }
-                                showVideosItem.getCheckView().setChecked(!showVideosItem.getCheckView().isChecked(), true);
-                                if (adapter.storiesList == null) {
-                                    return;
-                                }
-                                adapter.storiesList.updateFilters(showPhotosItem.getCheckView().isChecked(), showVideosItem.getCheckView().isChecked());
-                            });
-                        } else {
-                            showPhotosItem.setChecked(sharedMediaData[0].filterType == FILTER_PHOTOS_AND_VIDEOS || sharedMediaData[0].filterType == FILTER_PHOTOS_ONLY);
-                            showPhotosItem.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (changeTypeAnimation) {
-                                        return;
-                                    }
-                                    if (!showVideosItem.getCheckView().isChecked() && showPhotosItem.getCheckView().isChecked()) {
-                                        AndroidUtilities.shakeViewSpring(showPhotosItem, shiftDp = -shiftDp);
-                                        return;
-                                    }
-                                    showPhotosItem.setChecked(!showPhotosItem.getCheckView().isChecked());
-                                    if (showPhotosItem.getCheckView().isChecked() && showVideosItem.getCheckView().isChecked()) {
-                                        sharedMediaData[0].filterType = FILTER_PHOTOS_AND_VIDEOS;
-                                    } else {
-                                        sharedMediaData[0].filterType = FILTER_VIDEOS_ONLY;
-                                    }
-                                    changeMediaFilterType();
-                                }
-                            });
-                            showVideosItem.setChecked(sharedMediaData[0].filterType == FILTER_PHOTOS_AND_VIDEOS || sharedMediaData[0].filterType == FILTER_VIDEOS_ONLY);
-                            showVideosItem.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (changeTypeAnimation) {
-                                        return;
-                                    }
-                                    if (!showPhotosItem.getCheckView().isChecked() && showVideosItem.getCheckView().isChecked()) {
-                                        AndroidUtilities.shakeViewSpring(showVideosItem, shiftDp = -shiftDp);
-                                        return;
-                                    }
-                                    showVideosItem.setChecked(!showVideosItem.getCheckView().isChecked());
-                                    if (showPhotosItem.getCheckView().isChecked() && showVideosItem.getCheckView().isChecked()) {
-                                        sharedMediaData[0].filterType = FILTER_PHOTOS_AND_VIDEOS;
-                                    } else {
-                                        sharedMediaData[0].filterType = FILTER_PHOTOS_ONLY;
-                                    }
-                                    changeMediaFilterType();
-                                }
-                            });
-                        }
-                    }
-                }
-
-                options
-                    .setDismissWithButtons(false)
-                    .setOnTopOfScrim()
-                    .setDimAlpha(0)
-                    .show();
-=======
         // the options of the tabs: built once for the bubble of a simple header's pill and for the popup of the old one
         final OnClickListener optionsClickListener = view -> {
             final int tab = getClosestTab();
@@ -2275,7 +1975,6 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
             options.setDismissWithButtons(false);
             if (!fillOptions(tab, popupOptions(options))) {
                 return;
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))
             }
             if (tab == TAB_BOT_PREVIEWS || tab == TAB_SAVED_DIALOGS) {
                 options.translate(0, -dp(52));
@@ -3971,7 +3670,7 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
 //        return customTabs() ? 0 : (48 /*+ 42*/);
     }
 
-    public void setForwardRestrictedHint(HintView hintView) {
+    public void setForwardRestrictedHint(HintView2 hintView) {
         fwdRestrictedHint = hintView;
     }
 
@@ -6893,12 +6592,28 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
         }
     }
 
-    public void updateAdapters() {
-        for (MediaPage mediaPage : mediaPages) {
-            if (mediaPage != null && (mediaPage.listView.isComputingLayout() || mediaPage.animationSupportingListView.isComputingLayout())) {
-                post(this::updateAdapters);
-                return;
+    private boolean isComputingLayout() {
+        for (int a = 0; a < mediaPages.length; a++) {
+            if (mediaPages[a] == null) continue;
+            if (mediaPages[a].listView != null && mediaPages[a].listView.isComputingLayout()) {
+                return true;
             }
+            if (mediaPages[a].animationSupportingListView != null && mediaPages[a].animationSupportingListView.isComputingLayout()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateAdapters() {
+        if (isComputingLayout()) {
+            post(() -> {
+                if (isComputingLayout()) {
+                    return;
+                }
+                updateAdapters();
+            });
+            return;
         }
         if (photoVideoAdapter != null) {
             photoVideoAdapter.notifyDataSetChanged();
@@ -8326,7 +8041,7 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
                                     MediaController.getInstance().setVoiceMessagesPlaylist(result ? sharedMediaData[currentType].messages : null, false);
                                     return result;
                                 } else if (messageObject.isMusic()) {
-                                    return MediaController.getInstance().setPlaylist(sharedMediaData[currentType].messages, messageObject, mergeDialogId);
+                                    return MediaController.getInstance().setPlaylist(sharedMediaData[currentType].messages, messageObject, mergeDialogId, true, null, getPlaylistTopicId());
                                 }
                                 return false;
                             }
@@ -9642,7 +9357,7 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
                             }
                             return result;
                         } else if (messageObject.isMusic()) {
-                            return MediaController.getInstance().setPlaylist(searchResult, messageObject, mergeDialogId);
+                            return MediaController.getInstance().setPlaylist(searchResult, messageObject, mergeDialogId, true, null, getPlaylistTopicId());
                         }
                         return false;
                     }
