@@ -1138,7 +1138,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     blurredView.draw(canvas);
                 }
             }
-            if (!hasMainTabs && communityId == 0) {
+            if ((!hasMainTabs || NyaConfig.INSTANCE.getHideBottomNavigationBar().Bool()) && communityId == 0) {
                 AndroidUtilities.drawNavigationBarProtection(canvas, this, getThemedColor(Theme.key_windowBackgroundWhite), navigationBarHeight);
             }
             wasDrawn = true;
@@ -14247,7 +14247,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             iBlur3PositionActionBar.set(0, -additionalList, fragmentView.getMeasuredWidth(), lerp(actionBarHeight, actionBarHeightSearch, animatorSearchVisible.getFloatValue()) + additionalList );
 
             boolean hasBottomBlur = false;
-            if (hasMainTabs) {
+            if (hasMainTabs && !NyaConfig.INSTANCE.getHideBottomNavigationBar().Bool()) {
                 iBlur3PositionMainTabs.set(0, mainTabTop, fragmentView.getMeasuredWidth(), mainTabBottom);
                 iBlur3PositionMainTabs.inset(0, LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS) ? 0 : -dp(48));
 
