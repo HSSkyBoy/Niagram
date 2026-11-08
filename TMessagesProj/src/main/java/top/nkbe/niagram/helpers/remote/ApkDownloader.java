@@ -43,6 +43,7 @@ public class ApkDownloader {
 
     // 1. URL Domain validation
     private static final String[] GITHUB_RELEASE_PREFIXES = new String[] {
+            "https://github.com/nkbe918/Niagram/releases/",
             "https://github.com/Nk-Be/NiagramX/releases/",
             "https://github.com/Nk-Be/Nigram/releases/"
     };
