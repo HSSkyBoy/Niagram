@@ -170,6 +170,7 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
     private final AbstractConfigCell showGroupMemberJoinDateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowGroupMemberJoinDate(), getString(R.string.ShowGroupMemberJoinDateNotice)));
     private final AbstractConfigCell autoReactionDetectRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getAutoReactionDetect(), getString(R.string.AutoReactionDetectNotice)));
     private final AbstractConfigCell disableTrendingRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.disableTrending));
+    private final AbstractConfigCell hideFeaturedStickersAndEmojiRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.hideFeaturedStickersAndEmoji, getString(R.string.HideFeaturedStickersAndEmojiNotice)));
     private final AbstractConfigCell disableGlobalSearchRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.disableGlobalSearch));
     private final AbstractConfigCell disableZalgoSymbolsRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getZalgoFilter(), getString(R.string.ZalgoFilterNotice)));
     private final AbstractConfigCell showOnlineStatusRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowOnlineStatus(), getString(R.string.ShowOnlineStatusNotice)));

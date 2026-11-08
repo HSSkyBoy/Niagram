@@ -913,4 +913,6 @@
     <string name="HideChatHeaderConnectionState">Hide connection status in chat header</string>
     <string name="HideFloatingDate">Hide floating date</string>
     <string name="HideAvatarTtlBadge">Hide auto-delete timer on avatars</string>
+    <string name="HideFeaturedStickersAndEmoji">Hide Featured Stickers and Emoji</string>
+    <string name="HideFeaturedStickersAndEmojiNotice">Do not display featured or trending sticker packs and emoji sets in the picker.</string>
 </resources>

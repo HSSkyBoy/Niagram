@@ -940,4 +940,6 @@
     <string name="StyleMaterialDesign3">Material Design 3</string>
     <string name="PreferOriginalQuality">元の画質を優先</string>
     <string name="NekoX">NekoX</string>
+    <string name="HideFeaturedStickersAndEmoji">おすすめのステッカーと絵文字を非表示</string>
+    <string name="HideFeaturedStickersAndEmojiNotice">ピッカーにおすすめやトレンドのステッカーと絵文字セットを表示しません。</string>
 </resources>

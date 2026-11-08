@@ -934,4 +934,6 @@
     <string name="StyleMaterialDesign3">Material Design 3</string>
     <string name="PreferOriginalQuality">Предпочитать исходное качество</string>
     <string name="NekoX">NekoX</string>
+    <string name="HideFeaturedStickersAndEmoji">Скрыть популярные стикеры и эмодзи</string>
+    <string name="HideFeaturedStickersAndEmojiNotice">Не показывать популярные и рекомендуемые наборы стикеров и эмодзи.</string>
 </resources>

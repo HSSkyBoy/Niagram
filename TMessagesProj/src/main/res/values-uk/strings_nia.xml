@@ -904,4 +904,6 @@
     <string name="StyleMaterialDesign3">Material Design 3</string>
     <string name="PreferOriginalQuality">Надавати перевагу вихідній якості</string>
     <string name="NekoX">NekoX</string>
+    <string name="HideFeaturedStickersAndEmoji">Приховати популярні наліпки та емодзі</string>
+    <string name="HideFeaturedStickersAndEmojiNotice">Не показувати популярні та рекомендовані набори наліпок та емодзі.</string>
 </resources>

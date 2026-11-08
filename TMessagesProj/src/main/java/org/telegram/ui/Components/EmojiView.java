@@ -5676,6 +5676,7 @@ public class EmojiView extends FrameLayout implements
 
         SharedPreferences preferences = MessagesController.getEmojiSettings(currentAccount);
         featuredStickerSets.clear();
+        if (!NyaConfig.INSTANCE.getHideFeaturedStickersAndEmoji().Bool() && !NyaConfig.disableTrending.Bool()) {
         ArrayList<TLRPC.StickerSetCovered> featured = mediaDataController.getFeaturedStickerSets();
         for (int a = 0, N = featured.size(); a < N; a++) {
             TLRPC.StickerSetCovered set = featured.get(a);
@@ -5694,6 +5695,7 @@ public class EmojiView extends FrameLayout implements
             trendingStickersTabView.setContentDescription(getString(R.string.FeaturedStickers));
             trendingTabNum = stickersTabOffset;
             stickersTabOffset++;
+        }
         }
 
         if (!favouriteStickers.isEmpty()) {
@@ -7811,6 +7813,7 @@ public class EmojiView extends FrameLayout implements
                     }
                 }
             }
+            if (!NyaConfig.INSTANCE.getHideFeaturedStickersAndEmoji().Bool() && !NyaConfig.disableTrending.Bool()) {
             for (int i = 0; i < featuredEmojiSets.size(); ++i) {
                 TLRPC.StickerSetCovered set = featuredEmojiSets.get(i);
 //                if (!isPremium && !MessageObject.isPremiumEmojiPack(set) && mediaDataController.isStickerPackInstalled(set.set.id)) {
@@ -7846,6 +7849,7 @@ public class EmojiView extends FrameLayout implements
                 pack.expanded = expandedEmojiSets.contains(pack.set.id);
                 pack.featured = true;
                 emojipacksProcessed.add(pack);
+            }
             }
 
             if (emojiTabs != null) {
@@ -7923,7 +7927,7 @@ public class EmojiView extends FrameLayout implements
                 itemCount++;
                 rowHashCodes.add(-1);
             }
-            if (isPremium && allowAnimatedEmoji && featuredEmojiSets.size() > 0 && featuredEmojiSets.get(0).set != null && MessagesController.getEmojiSettings(currentAccount).getLong("emoji_featured_hidden", 0) != featuredEmojiSets.get(0).set.id && needEmojiSearch) {
+            if (!NyaConfig.INSTANCE.getHideFeaturedStickersAndEmoji().Bool() && !NyaConfig.disableTrending.Bool() && isPremium && allowAnimatedEmoji && featuredEmojiSets.size() > 0 && featuredEmojiSets.get(0).set != null && MessagesController.getEmojiSettings(currentAccount).getLong("emoji_featured_hidden", 0) != featuredEmojiSets.get(0).set.id && needEmojiSearch) {
                 trendingHeaderRow = itemCount++;
                 trendingRow = itemCount++;
                 recentlyUsedHeaderRow = itemCount++;
@@ -8000,11 +8004,13 @@ public class EmojiView extends FrameLayout implements
             final MediaDataController mediaDataController = MediaDataController.getInstance(currentAccount);
             ArrayList<TLRPC.StickerSetCovered> featured = mediaDataController.getFeaturedEmojiSets();
             featuredEmojiSets.clear();
+            if (!NyaConfig.INSTANCE.getHideFeaturedStickersAndEmoji().Bool() && !NyaConfig.disableTrending.Bool()) {
             for (int a = 0, N = featured.size(); a < N; a++) {
                 TLRPC.StickerSetCovered set = featured.get(a);
                 if (!mediaDataController.isStickerPackInstalled(set.set.id) || installedEmojiSets.contains(set.set.id)) {
                     featuredEmojiSets.add(set);
                 }
+            }
             }
 
             processEmoji(updateEmojipack);
