@@ -2942,6 +2942,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         messageEditTextContainer.addView(deleteRichDraftButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, emojiGravity, emojiLeftDp, 0, emojiRightDp, 0));
 
         if (isChat) {
+            final int chatMode = fragment != null ? fragment.getChatMode() : -1;
             attachLayout = new LinearLayout(context) {
                 @Override
                 public void setAlpha(float alpha) {
@@ -2972,24 +2973,11 @@ public class ChatActivityEnterView extends FrameLayout implements
                 ThemeBind.selectorBackground(notifyButton, Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
                 notifyButton.setVisibility(canWriteToChannel && (delegate == null || !delegate.hasScheduledMessages()) ? VISIBLE : GONE);
                 attachLayout.addView(notifyButton, LayoutHelper.createLinear(DEFAULT_HEIGHT, DEFAULT_HEIGHT));
-                notifyButton.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (fragment == null) return;
-                        silent = !silent;
-                        if (notifySilentDrawable == null) {
-                            notifySilentDrawable = new CrossOutDrawable(context, R.drawable.input_notify_on, Theme.key_glass_defaultIcon);
-                        }
-                        notifySilentDrawable.setCrossOut(silent, true);
-                        notifyButton.setImageDrawable(notifySilentDrawable);
-                        MessagesController.getNotificationsSettings(currentAccount).edit().putBoolean("silent_" + dialog_id, silent).commit();
-                        NotificationsController.getInstance(currentAccount).updateServerNotificationsSettings(dialog_id, fragment == null ? 0 : fragment.getTopicId());
-                        UndoView undoView = fragment.getUndoView();
-                        if (undoView != null) {
-                            undoView.showWithAction(0, !silent ? UndoView.ACTION_NOTIFY_ON : UndoView.ACTION_NOTIFY_OFF, null);
-                        }
-                        notifyButton.setContentDescription(silent ? getString("AccDescrChanSilentOn", R.string.AccDescrChanSilentOn) : getString("AccDescrChanSilentOff", R.string.AccDescrChanSilentOff));
-                        updateFieldHint(true);
+                notifyButton.setOnClickListener(v -> {
+                    if (fragment == null) return;
+                    silent = !silent;
+                    if (notifySilentDrawable == null) {
+                        notifySilentDrawable = new CrossOutDrawable(context, R.drawable.input_notify_on, Theme.key_glass_defaultIcon);
                     }
                     notifySilentDrawable.setCrossOut(silent, true);
                     notifyButton.setImageDrawable(notifySilentDrawable);
@@ -3001,8 +2989,8 @@ public class ChatActivityEnterView extends FrameLayout implements
                     }
                     notifyButton.setContentDescription(silent ? getString("AccDescrChanSilentOn", R.string.AccDescrChanSilentOn) : getString("AccDescrChanSilentOff", R.string.AccDescrChanSilentOff));
                     updateFieldHint(true);
-                }
-            });
+                });
+            }
 
             attachButton = new ImageView(context) {
                 @Override
@@ -8959,55 +8947,6 @@ public class ChatActivityEnterView extends FrameLayout implements
                     }
 
                     if (attachLayout != null) {
-                        runningAnimation2 = new AnimatorSet();
-                        ArrayList<Animator> animators = new ArrayList<>();
-                        animators.add(ObjectAnimator.ofFloat(attachLayout, ATTACH_LAYOUT_ALPHA, 0.0f));
-                        animators.add(ObjectAnimator.ofFloat(attachLayout, View.SCALE_X, 0.5f));
-                        if (attachButtonAnimator != null) {
-                            attachButtonAnimator.cancel();
-                            attachButtonAnimator = null;
-                        }
-                        if (sideButtons != null) {
-                            sideButtons.showButton(ChatActivitySideControlsButtonsLayout.BUTTON_ATTACH, captionNearAttach && !recordShown, true);
-                            if (attachButton != null) {
-                                animators.add(ObjectAnimator.ofFloat(attachButton, View.ALPHA, attachButtonAlpha = attachInInput ? 1.0f : 0.0f));
-                                animators.add(ObjectAnimator.ofFloat(attachButton, View.SCALE_X, attachInInput ? 1.0f : 0.5f));
-                                animators.add(ObjectAnimator.ofFloat(attachButton, View.SCALE_Y, attachInInput ? 1.0f : 0.5f));
-                            }
-                        } else if (attachButton != null) {
-                            animators.add(ObjectAnimator.ofFloat(attachButton, View.ALPHA, attachButtonAlpha = 0.0f));
-                            animators.add(ObjectAnimator.ofFloat(attachButton, View.SCALE_X, 0.5f));
-                            animators.add(ObjectAnimator.ofFloat(attachButton, View.SCALE_Y, 0.5f));
-                        }
-                        boolean hasScheduled = delegate != null && delegate.hasScheduledMessages();
-                        scheduleButtonHidden = true;
-                        if (scheduledButton != null) {
-                            scheduledButton.setScaleY(1.0f);
-                            if (hasScheduled) {
-                                scheduledButton.setTag(null);
-                                animators.add(ObjectAnimator.ofFloat(scheduledButton, View.ALPHA, 0.0f));
-                                animators.add(ObjectAnimator.ofFloat(scheduledButton, View.SCALE_X, 0.0f));
-                                animators.add(animateScheduledTranslationX(0));
-                            } else {
-                                scheduledButton.setAlpha(0.0f);
-                                scheduledButton.setScaleX(0.0f);
-                                scheduledButton.setTranslationX(0);
-                            }
-                        }
-                        runningAnimation2.playTogether(animators);
-                        runningAnimation2.setDuration(100);
-                        runningAnimation2.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                if (animation.equals(runningAnimation2)) {
-                                    attachLayout.setVisibility(GONE);
-                                    if (hasScheduled && scheduledButton != null) {
-                                        scheduledButton.setVisibility(GONE);
-                                    }
-                                    runningAnimation2 = null;
-                                }
-                            }
-
                         if ((!NyaConfig.useChatAttachMediaMenu.Bool() || isStories) && !(isStories && isIosButtonPlacement())) {
                             runningAnimation2 = new AnimatorSet();
                             ArrayList<Animator> animators = new ArrayList<>();
@@ -16268,7 +16207,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             starsPrice = price;
             messagesCount = count;
             if (price > 0) {
-                priceText.setText(StarsIntroActivity.replaceStars("猸愶笍" + LocaleController.formatNumber(price * Math.max(1, messagesCount), ','), spans), animated);
+                priceText.setText(StarsIntroActivity.replaceStars("\u2B50" + LocaleController.formatNumber(price * Math.max(1, messagesCount), ','), spans), animated);
             } else {
                 priceText.setText("", animated);
             }
@@ -16643,7 +16582,9 @@ public class ChatActivityEnterView extends FrameLayout implements
 
         public void updateColors() {
             int color = resolveSendIconColor(isNewDesignSendButton ? Color.WHITE : Theme.getColor(Theme.key_chat_messagePanelSend, resourcesProvider));
-
+            int c = Theme.getColor(Theme.key_glass_defaultIcon, resourcesProvider);
+            int inverseColor = Theme.getColor(Theme.key_chat_messagePanelVoicePressed, resourcesProvider);
+            if (color != drawableColor || c != inactiveDrawableColor || inverseColor != drawableInverseColor) {
                 drawableColor = color;
                 inactiveDrawableColor = c;
                 drawableInverseColor = inverseColor;
@@ -17106,4 +17047,360 @@ public class ChatActivityEnterView extends FrameLayout implements
         newFilters[oldFilters.length] = noNewLinesFilter;
         editText.setFilters(newFilters);
     }
+    public void updateFieldTextSize() {
+        if (messageEditText != null) {
+            int customSize = top.nkbe.niagram.config.NyaConfig.INSTANCE.getInputFieldTextSize().Int();
+            float size = customSize > 0 ? customSize : SharedConfig.fontSize;
+            messageEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size);
+            messageEditText.setCursorSize(dp(size + 2));
+            android.graphics.Typeface regularTf = top.nkbe.niagram.helpers.TypefaceHelper.getRegularTypeface();
+            if (regularTf != null) {
+                messageEditText.setTypeface(regularTf);
+            }
+        }
+    }
+
+
+    private void translateComment(Locale target) {
+        translateComment(target, 0);
+    }
+
+    private void translateComment(Locale target, int provider) {
+        if (messageEditText == null) return;
+
+        int start = messageEditText.getSelectionStart();
+        int end = messageEditText.getSelectionEnd();
+        CharSequence text = messageEditText.getText();
+        if (start != end) {
+            text = text.subSequence(start, end);
+        }
+
+        String origin = text.toString();
+        String llmContext = buildInputTranslationContext(provider);
+
+        if (llmContext != null) {
+            Translator.translateWithContext(target, origin, new ArrayList<>(), llmContext, provider, new Translator.Companion.TranslateCallBack2() {
+                final AtomicBoolean cancel = new AtomicBoolean();
+                AlertDialog status = AlertUtil.showProgress(parentActivity);
+
+                {
+                    status.setOnCancelListener((__) -> {
+                        cancel.set(true);
+                    });
+                    status.show();
+                }
+
+                @Override
+                public void onSuccess(@NotNull TLRPC.TL_textWithEntities finalText) {
+                    status.dismiss();
+                    String translation = finalText.text;
+                    if (start == end) messageEditText.replaceTextInternal(0, messageEditText.getText().length(), translation);
+                    else messageEditText.replaceTextInternal(start, end, translation);
+                }
+
+                @Override
+                public void onFailed(boolean unsupported, @NotNull String message) {
+                    status.dismiss();
+                    AlertUtil.showTransFailedDialog(parentActivity, unsupported, message, () -> {
+                        status = AlertUtil.showProgress(parentActivity);
+                        status.show();
+                        Translator.translateWithContext(target, origin, new ArrayList<>(), null, provider, this);
+                    });
+                }
+            });
+        } else {
+            Translator.translate(target, origin, provider, new Translator.Companion.TranslateCallBack() {
+
+                final AtomicBoolean cancel = new AtomicBoolean();
+                AlertDialog status = AlertUtil.showProgress(parentActivity);
+
+                {
+
+                    status.setOnCancelListener((__) -> {
+                        cancel.set(true);
+                    });
+
+                    status.show();
+
+                }
+
+                @Override
+                public void onSuccess(@NotNull String translation) {
+                    status.dismiss();
+                    if (start == end) messageEditText.replaceTextInternal(0, messageEditText.getText().length(), translation);
+                    else messageEditText.replaceTextInternal(start, end, translation);
+                }
+
+                @Override
+                public void onFailed(boolean unsupported, @NotNull String message) {
+                    status.dismiss();
+                    AlertUtil.showTransFailedDialog(parentActivity, unsupported, message, () -> {
+                        status = AlertUtil.showProgress(parentActivity);
+                        status.show();
+                        Translator.translate(target, origin, 0, this);
+                    });
+                }
+
+            });
+        }
+    }
+
+    @Nullable
+    private String buildInputTranslationContext(int provider) {
+        if (!NyaConfig.INSTANCE.getLlmUseContext().Bool()) {
+            return null;
+        }
+        int effectiveProvider = provider != 0 ? provider : NyaConfig.translationProvider.Int();
+        if (effectiveProvider != Translator.providerLLMTranslator) {
+            return null;
+        }
+        if (replyingMessageObject == null || replyingMessageObject.messageOwner == null) {
+            return null;
+        }
+
+        String replyText = replyingMessageObject.messageOwner.message;
+        if (TextUtils.isEmpty(replyText)) {
+            return null;
+        }
+        replyText = replyText.trim();
+        if (replyText.isEmpty()) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (parentFragment != null && dialog_id != 0) {
+            String dialogTitle = DialogObject.getName(currentAccount, dialog_id).trim();
+            if (!TextUtils.isEmpty(dialogTitle)) {
+                sb.append("Chat: ").append(dialogTitle).append("\n\n");
+            }
+        }
+        sb.append("Replying to message:\n").append(replyText);
+        return sb.toString();
+    }
+
+    private void showReplace() {
+        if (messageEditText == null) return;
+        int start = messageEditText.getSelectionStart();
+        int end = messageEditText.getSelectionEnd();
+        CharSequence text = messageEditText.getText();
+        if (start != end) {
+            text = text.subSequence(start, end);
+        }
+
+        BottomBuilder builder = new BottomBuilder(getContext());
+
+        builder.addTitle(getString(R.string.ReplaceText), true);
+
+        TextCheckCell regexCheckCell = builder.addCheckItem(getString(R.string.ReplaceRegex), false, false, null);
+        EditText fromField = builder.addEditText(getString(R.string.TextOrigin));
+        EditText toField = builder.addEditText(getString(R.string.TextReplace));
+
+        String finalText = text.toString();
+        builder.addButton(getString(R.string.TextReplace), true, it -> {
+            String originText = fromField.getText().toString();
+            String replaceText = toField.getText().toString();
+            if (originText.isEmpty()) {
+                AndroidUtil.showInputError(fromField);
+                return Unit.INSTANCE;
+            }
+            boolean useRegex = regexCheckCell.isChecked();
+            AlertDialog progress = AlertUtil.showProgress(getContext());
+            progress.show();
+            Utilities.globalQueue.postRunnable(() -> {
+                String replaced;
+                if (useRegex) {
+                    try {
+                        replaced = finalText.replaceAll(originText, replaceText);
+                    } catch (Exception e) {
+                        AndroidUtilities.runOnUIThread(progress::dismiss);
+                        AlertUtil.showToast(e);
+                        return;
+                    }
+                } else {
+                    replaced = finalText.replace(originText, replaceText);
+                }
+                AndroidUtilities.runOnUIThread(() -> {
+                    if (start == end) messageEditText.setText(replaced);
+                    else messageEditText.getText().replace(start, end, replaced);
+                    progress.dismiss();
+                    builder.dismiss();
+                });
+            });
+            return Unit.INSTANCE;
+        });
+        builder.addCancelButton();
+        builder.setOnShowListener(dialog -> {
+            fromField.setFocusable(true);
+            fromField.setFocusableInTouchMode(true);
+            fromField.requestFocus();
+            AndroidUtilities.runOnUIThread(() -> AndroidUtilities.showKeyboard(fromField), 200);
+        });
+        builder.show();
+    }
+
+    private void setImageDrawableWithAnimation(ImageView imageView, int fromRes, int targetRes, int duration) {
+        Drawable currentDrawable = imageView.getDrawable();
+
+        if (currentDrawable == null) {
+            imageView.setImageResource(targetRes);
+            return;
+        }
+
+        TransitionDrawable transitionDrawable = new TransitionDrawable(new Drawable[]{
+                parentActivity.getResources().getDrawable(fromRes),
+                parentActivity.getResources().getDrawable(targetRes)
+        });
+        transitionDrawable.setCrossFadeEnabled(true);
+
+        imageView.setImageDrawable(transitionDrawable);
+        imageView.post(() -> transitionDrawable.startTransition(duration));
+    }
+
+    private void checkAttachButton(boolean use, int duration) {
+        int fromRes;
+        int targetRes;
+
+        Object oldStatus = attachButton.getTag();
+        if (oldStatus != null) {
+            int osi = (int) oldStatus;
+            if (use && osi == 1) return;
+            if (!use & osi == 2) return;
+        }
+
+        isInInput = use;
+
+        if (duration == 0 && botButton != null) {
+            if (use) {
+                botButton.setVisibility(View.GONE);
+            } else if (checkBotButton()) {
+                updateBotButton(true);
+            }
+        }
+
+        if (use && suggestButton != null) {
+            suggestButton.setVisibility(GONE);
+        }
+
+        if (use) {
+            attachButton.setTag(1);
+
+            fromRes = R.drawable.input_attach;
+            targetRes = R.drawable.ic_ab_other;
+
+            attachButton.setOnClickListener(this::onMenuClick);
+            attachButton.setContentDescription(LocaleController.getString("AccDescrAttachButton", R.string.AccDescrChatAttachEnterMenu));
+            if (delegate != null)
+                delegate.onAttachButtonHidden();
+
+        } else {
+            attachButton.setTag(2);
+
+            fromRes = R.drawable.ic_ab_other;
+            targetRes = R.drawable.input_attach;
+
+            attachButton.setOnClickListener(v -> {
+                if (adjustPanLayoutHelper != null && adjustPanLayoutHelper.animationInProgress()) {
+                    return;
+                }
+                delegate.didPressAttachButton();
+            });
+            attachButton.setContentDescription(LocaleController.getString("AccDescrAttachButton", R.string.AccDescrAttachButton));
+        }
+        if (duration == 0) {
+            attachButton.setImageResource(targetRes);
+        } else {
+            setImageDrawableWithAnimation(attachButton, fromRes, targetRes, duration);
+        }
+        if (this.paidMessagesPrice > 0 && attachLayout != null) {
+            attachLayout.setTranslationX(-dp(24));
+        }
+        if (suggestButton != null && suggestButton.getVisibility() == GONE) {
+            final boolean show = messageEditText != null && TextUtils.isEmpty(messageEditText.getText());
+            if (show) {
+                suggestButton.setVisibility(VISIBLE);
+            }
+        }
+    }
+
+    private void updateIosLayoutSeeds() {
+        iosGapDp = isCompactInputSize() ? 2 : 8;
+        attachGravity = isIosButtonPlacement() ? (Gravity.BOTTOM | Gravity.LEFT) : (Gravity.BOTTOM | Gravity.RIGHT);
+        fieldLeftDp = isIosButtonPlacement() ? (IOS_LEFT_EDGE_MARGIN_DP + DEFAULT_HEIGHT + iosGapDp) : 52;
+        attachLayoutRightDp = isIosButtonPlacement() ? 0 : DEFAULT_HEIGHT;
+        emojiGravity = isIosButtonPlacement() ? (Gravity.BOTTOM | Gravity.RIGHT) : (Gravity.BOTTOM | Gravity.LEFT);
+        fieldRightDp = isIosButtonPlacement() ? (DEFAULT_HEIGHT + iosGapDp * 2) : (isChat ? 50 : 2);
+        emojiLeftDp = isIosButtonPlacement() ? 0 : 2;
+        emojiRightDp = isIosButtonPlacement() ? iosGapDp : 0;
+        aiButtonGravity = isIosButtonPlacement() ? (Gravity.TOP | Gravity.RIGHT) : (Gravity.TOP | Gravity.LEFT);
+        aiButtonRightMarginDp = isIosButtonPlacement() ? (DEFAULT_HEIGHT + iosGapDp) : 0;
+    }
+
+    private void updateFieldLeftIos() {
+        if (messageEditText == null) {
+            return;
+        }
+        if (!isIosButtonPlacement() && editingMessageObject != null && !editingMessageObject.needResendWhenEdit()) {
+            return;
+        }
+        int cursorDp = IOS_LEFT_EDGE_MARGIN_DP;
+        boolean hasLeftAttach = false;
+        if (attachButton != null && attachButton.getVisibility() == VISIBLE && (attachButton.getAlpha() > 0 || isAttachRestorePending)) {
+            setLeftMarginDp(attachButton, IOS_LEFT_EDGE_MARGIN_DP);
+            cursorDp += DEFAULT_HEIGHT + iosGapDp;
+            hasLeftAttach = true;
+        } else if (editingMessageObject != null) {
+            cursorDp += iosGapDp;
+        } else if (!isIosInputAppearance()) {
+            cursorDp += NO_ICON_TEXT_INSET_DP;
+        }
+        if (isIosInputAppearance() && !(isStories && isIosButtonPlacement() && hasLeftAttach)) {
+            cursorDp += CAPSULE_INSET_DP;
+        }
+        if (senderSelectView != null && (senderSelectView.getVisibility() == VISIBLE || isSenderSelectSlotReserved)) {
+            if (senderSelectView.getVisibility() == VISIBLE) {
+                setLeftMarginDp(senderSelectView, cursorDp);
+            }
+            cursorDp += SENDER_SELECT_WIDTH_DP + iosGapDp;
+        }
+        int attachGroupWidthDp = 0;
+        if (attachLayout != null && attachLayout.getVisibility() == VISIBLE) {
+            for (int i = 0; i < attachLayout.getChildCount(); i++) {
+                View child = attachLayout.getChildAt(i);
+                if (child.getVisibility() == VISIBLE && child.getAlpha() > 0) {
+                    attachGroupWidthDp += child == botButton ? BOT_BUTTON_WIDTH_DP : DEFAULT_HEIGHT;
+                }
+            }
+            if (attachGroupWidthDp > 0) {
+                setLeftMarginDp(attachLayout, cursorDp);
+                cursorDp += attachGroupWidthDp + iosGapDp;
+            }
+        }
+        if (botCommandsMenuButton != null && botCommandsMenuButton.getVisibility() == VISIBLE) {
+            int botCommandsWidthDp = botCommandsMenuButton.getMeasuredWidth() > 0
+                    ? Math.round(botCommandsMenuButton.getMeasuredWidth() / AndroidUtilities.density)
+                    : BOT_COMMANDS_MIN_WIDTH_DP;
+            setLeftMarginDp(botCommandsMenuButton, cursorDp);
+            cursorDp += botCommandsWidthDp + (isCompactInputSize() ? COMPACT_TEXT_INSET_DP : NO_ICON_TEXT_INSET_DP);
+        }
+        boolean hasInsideIcon = attachGroupWidthDp > 0
+                || (senderSelectView != null && (senderSelectView.getVisibility() == VISIBLE || isSenderSelectSlotReserved))
+                || (botCommandsMenuButton != null && botCommandsMenuButton.getVisibility() == VISIBLE);
+        if (isIosInputAppearance() && !hasInsideIcon) {
+            cursorDp += NO_ICON_TEXT_INSET_DP;
+        }
+        setLeftMarginDp(messageEditText, cursorDp);
+        if (richDraftPreview != null) {
+            setLeftMarginDp(richDraftPreview, cursorDp - 8);
+        }
+    }
+
+    private void setLeftMarginDp(View view, int leftMarginDp) {
+        MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
+        int leftMarginPx = dp(leftMarginDp);
+        if (layoutParams.leftMargin != leftMarginPx) {
+            layoutParams.leftMargin = leftMarginPx;
+            view.setLayoutParams(layoutParams);
+        }
+    }
+
 }

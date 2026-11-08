@@ -48,6 +48,7 @@ import org.telegram.ui.ChatActivity;
 import org.telegram.ui.ContentPreviewViewer;
 
 import java.util.ArrayList;
+import top.nkbe.niagram.config.NyaConfig;
 import java.util.Arrays;
 import java.util.HashSet;
 

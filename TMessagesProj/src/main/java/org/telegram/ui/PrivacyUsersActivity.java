@@ -8,6 +8,8 @@
 
 package org.telegram.ui;
 
+import static org.telegram.messenger.LocaleController.getString;
+
 import org.telegram.messenger.FileLog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;

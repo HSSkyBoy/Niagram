@@ -1395,4 +1395,84 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         keys.add(Theme.key_dialogBackground);
         keys.add(Theme.key_windowBackgroundWhite);
     }
+
+    private boolean processLongClick(View button, int index) {
+        if (index == INDEX_PROFILE) {
+            openAccountSelector(button);
+            return true;
+        }
+        if (index == INDEX_CONTACTS) {
+            return openContactsSelector(button);
+        }
+        if (index == INDEX_CALLS) {
+            return openCallsSelector(button);
+        }
+        if (index == INDEX_SETTINGS) {
+            ItemOptions o = ItemOptions.makeOptions(this, button);
+            if (NyaConfig.showGhostInDrawer.Bool()) {
+                final String msg = NyaConfig.isGhostModeActive()
+                    ? getString(R.string.DisableGhostMode)
+                    : getString(R.string.EnableGhostMode);
+                o.add(R.drawable.ayu_ghost, msg, () -> presentFragment(new GhostModeActivity()), () -> {
+                    final String toggleMsg = NyaConfig.isGhostModeActive()
+                        ? getString(R.string.GhostModeDisabled)
+                        : getString(R.string.GhostModeEnabled);
+                    NyaConfig.toggleGhostMode();
+                    BulletinFactory.of(contentView, resourceProvider).createSuccessBulletin(toggleMsg).show();
+                    NotificationCenter.getInstance(UserConfig.selectedAccount).postNotificationName(NotificationCenter.mainUserInfoChanged);
+                });
+                o.addGap();
+            }
+            o.add(R.drawable.msg_settings, getString(R.string.NekoSettings), () -> presentFragment(new NekoSettingsActivity()));
+            o.add(R.drawable.web_browser, getString(R.string.InappBrowser), () -> presentFragment(new WebBrowserSettings(null)), () -> BrowserUtils.openBrowserHome(currentAccount, null, true));
+            o.addGap();
+            o.add(R.drawable.msg_retry_solar, getString(R.string.RestartApp), () ->
+                AppRestartHelper.triggerRebirth(
+                    ApplicationLoader.applicationContext,
+                    new Intent(ApplicationLoader.applicationContext, LaunchActivity.class)
+                )
+            );
+            setupPopupMenuStyle(o);
+            o.show();
+            return true;
+        }
+        if (index != INDEX_CHATS) {
+            return false;
+        }
+        if (openFoldersSelector(button)) {
+            return true;
+        }
+
+        ItemOptions o = ItemOptions.makeOptions(this, button);
+        addChatsMenuItems(o, button);
+        setupPopupMenuStyle(o);
+        o.show();
+        return true;
+    }
+
+    private void addChatsMenuItems(ItemOptions o, View button) {
+        BackButtonMenuRecent.addMenu(this, o, button);
+        o.addGap();
+        o.add(R.drawable.msg_archive, getString(R.string.ArchivedChats), () -> {
+            Bundle args = new Bundle();
+            args.putInt("folderId", 1);
+            presentFragment(new DialogsActivity(args));
+        });
+        o.add(R.drawable.msg_saved, getString(R.string.SavedMessages), () -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
+            presentFragment(new ChatActivity(args));
+        });
+        if (NyaConfig.INSTANCE.getShowAddToBookmark().Bool()) {
+            o.add(R.drawable.msg_fave, getString(R.string.BookmarksManager), () -> presentFragment(new BookmarkManagerActivity()));
+        }
+    }
+
+    private void setupPopupMenuStyle(ItemOptions options) {
+        options.setBlur(true);
+        options.translate(0, -dp(4));
+        final ShapeDrawable bg = Theme.createRoundRectDrawable(dp(28), getThemedColor(Theme.key_windowBackgroundWhite));
+        bg.getPaint().setShadowLayer(dp(6), 0, dp(1), Theme.multAlpha(0xFF000000, 0.15f));
+        options.setScrimViewBackground(bg);
+    }
 }

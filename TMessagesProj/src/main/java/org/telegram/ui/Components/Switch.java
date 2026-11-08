@@ -38,6 +38,8 @@ import androidx.core.content.ContextCompat;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.R;
+import top.nkbe.niagram.config.NyaConfig;
+import top.nkbe.niagram.helpers.MonetHelper;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.BaseCell;

@@ -122,6 +122,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import org.telegram.ui.Components.FiltersListBottomSheet;
 import org.telegram.ui.Components.ScrimOptions;
 import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundColorProvider;
 import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundProvider;
@@ -363,7 +364,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import me.vkryl.android.animator.FactorAnimator;`r`nimport kotlin.Unit;
+import me.vkryl.android.animator.FactorAnimator;
+import kotlin.Unit;
 import me.vkryl.android.animator.BoolAnimator;
 import me.vkryl.core.reference.ReferenceList;
 

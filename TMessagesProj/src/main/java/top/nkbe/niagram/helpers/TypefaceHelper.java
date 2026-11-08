@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.LeadingMarginSpan;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -217,6 +218,10 @@ public class TypefaceHelper {
             default -> "sans-serif";
         };
         return Typeface.create(family, italic ? Typeface.ITALIC : Typeface.NORMAL);
+    }
+
+    public static boolean isCustomTitleEnabled() {
+        return NyaConfig.INSTANCE.getCustomTitleUserName().Bool() || !TextUtils.isEmpty(NyaConfig.INSTANCE.getCustomTitle().String());
     }
 
     public static SpannableStringBuilder getTitleText(int currentAccount) {

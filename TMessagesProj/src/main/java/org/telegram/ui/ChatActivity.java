@@ -575,6 +575,10 @@ public class ChatActivity extends BaseFragment implements
     private ActionBarMenu.LazyItem attachItem;
     private ActionBarMenuItem.Item savedChatsItem, savedChatsGap;
     private ActionBarMenuItem headerItem;
+    private ActionBarMenu.LazyItem editTextItem;
+    private boolean isEditTextItemVisibilitySuppressed;
+    private int editTextStart;
+    private int editTextEnd;
     protected ActionBarMenuItem searchItem;
     protected ActionBarMenuItem topicCreateItem;
     private ActionBarMenuItem topicsPanelItem;
@@ -1838,6 +1842,20 @@ public class ChatActivity extends BaseFragment implements
     private final static int bot_settings = 31;
     private final static int call = 32;
     private final static int video_call = 33;
+    private final static int text_bold = 50;
+    private final static int text_italic = 51;
+    private final static int text_mono = 52;
+    private final static int text_link = 53;
+    private final static int text_regular = 54;
+    private final static int text_strike = 55;
+    private final static int text_underline = 56;
+    private final static int text_spoiler = 57;
+    private final static int text_quote = 58;
+    private final static int text_date = 74;
+    private final static int text_mention = 157;
+    private final static int text_transalte = 158;
+    private final static int text_code = 159;
+    private final static int chat_menu_edit_text_options = 61;
 
     private final static int attach_photo = 0;
     private final static int attach_gallery = 1;
@@ -2153,7 +2171,7 @@ public class ChatActivity extends BaseFragment implements
         @Override
         public boolean hasDoubleTap(View view, int position) {
             if (isQuickRepliesOrWelcomeMessagesMode()) return false;
-            // A double tap over a widget is the widget's (dblclick, docs/sdk-v1.md 搂5.5): the reaction is outside it.
+            // A double tap over a widget is the widget's (dblclick, docs/sdk-v1.md �?.5): the reaction is outside it.
             if (view instanceof ChatMessageCell && ((ChatMessageCell) view).isWidgetPress()) return false;
             String reactionStringSetting = getMediaDataController().getDoubleTapReaction();
             TLRPC.TL_availableReaction reaction = getMediaDataController().getReactionsMap().get(reactionStringSetting);
@@ -2167,7 +2185,7 @@ public class ChatActivity extends BaseFragment implements
             if (!available) {
                 return false;
             }
-            MessageObject messageObject;
+            MessageObject message;
             if (view instanceof ChatMessageCell) {
                 message = ((ChatMessageCell) view).getPrimaryMessageObject();
             } else if (view instanceof ChatActionCell) {
@@ -2180,18 +2198,6 @@ public class ChatActivity extends BaseFragment implements
                 return false;
             }
             if (doubleTapAction == DoubleTap.DOUBLE_TAP_ACTION_SEND_REACTIONS || doubleTapAction == DoubleTap.DOUBLE_TAP_ACTION_SHOW_REACTIONS) {
-                String reactionStringSetting = getMediaDataController().getDoubleTapReaction();
-                TLRPC.TL_availableReaction reaction = getMediaDataController().getReactionsMap().get(reactionStringSetting);
-                if (reaction == null && (reactionStringSetting == null || !reactionStringSetting.startsWith("animated_"))) {
-                    return false;
-                }
-                boolean available = dialog_id >= 0;
-                if (!available && chatInfo != null) {
-                    available = ChatObject.reactionIsAvailable(chatInfo, reaction == null ? reactionStringSetting : reaction.reaction);
-                }
-                if (!available) {
-                    return false;
-                }
                 return message != null && !message.isDateObject && !message.isSending() && message.canSetReaction() && !message.isEditing() && !actionBar.isActionModeShowed() && !isSecretChat() && !isInScheduleMode() && !message.isSponsored() && !message.isAyuDeleted();
             } else {
                 if (!(view instanceof ChatMessageCell)) {
@@ -4204,7 +4210,7 @@ public class ChatActivity extends BaseFragment implements
                     ArrayList<Integer> toDeleteMessagesIds = new ArrayList<>();
                     MessageObject replyTo = getThreadMessage();
                     ArrayList<Character> suffice_en = new ArrayList(Arrays.asList(',', '.', '!', '?', ':', ';', '(', ')'));
-                    ArrayList<Character> suffice_zh = new ArrayList(Arrays.asList('，', '。', '！', '？', '：', '；', '（', '）'));
+                    ArrayList<Character> suffice_zh = new ArrayList(Arrays.asList('\uFF0C', '\u3002', '\uFF01', '\uFF1F', '\uFF1A', '\uFF1B', '\uFF08', '\uFF09'));
                     for (int a = 1; a >= 0; a--) {
                         ArrayList<Integer> ids = new ArrayList<>();
                         for (int b = 0; b < selectedMessagesCanCopyIds[a].size(); b++) {
@@ -4225,7 +4231,7 @@ public class ChatActivity extends BaseFragment implements
                                 if (!suffice_en.contains(str.charAt(str.length() - 1)) && !suffice_zh.contains(str.charAt(str.length() - 1))) {
                                     // add comma refer to language
                                     if (LocaleController.getInstance().getCurrentLocale().getLanguage().equals("zh")) {
-                                        str.append('，');
+                                        str.append('\uFF0C');
                                     } else {
                                         str.append(',');
                                     }
@@ -4476,6 +4482,61 @@ public class ChatActivity extends BaseFragment implements
                 } else if (id == call || id == video_call) {
                     if (currentUser != null && getParentActivity() != null) {
                         VoIPHelper.startCall(currentUser, id == video_call, userInfo != null && userInfo.video_calls_available, getParentActivity(), getMessagesController().getUserFull(currentUser.id), getAccountInstance());
+                    }
+                } else if (id == text_bold) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedBold();
+                    }
+                } else if (id == text_italic) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedItalic();
+                    }
+                } else if (id == text_spoiler) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedSpoiler();
+                    }
+                } else if (id == text_quote) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedQuote();
+                    }
+                } else if (id == text_mono) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedMono();
+                    }
+                } else if (id == text_code) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedCode();
+                    }
+                } else if (id == text_strike) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedStrike();
+                    }
+                } else if (id == text_underline) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedUnderline();
+                    }
+                } else if (id == text_date) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedDate();
+                    }
+                } else if (id == text_link) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedUrl();
+                    }
+                } else if (id == text_regular) {
+                    if (chatActivityEnterView != null && chatActivityEnterView.getEditField() != null) {
+                        chatActivityEnterView.getEditField().setSelectionOverride(editTextStart, editTextEnd);
+                        chatActivityEnterView.getEditField().makeSelectedRegular();
                     }
                 } else if (id == change_colors) {
                     showChatThemeBottomSheet();
@@ -5098,6 +5159,11 @@ public class ChatActivity extends BaseFragment implements
             attachItem.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
             attachItem.setVisibility(View.GONE);
         }
+
+        editTextItem = menu.lazilyAddItem(chat_menu_edit_text_options, R.drawable.ic_ab_other, themeDelegate);
+        editTextItem.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
+        editTextItem.setTag(null);
+        editTextItem.setVisibility(View.GONE);
 
         if (inPreviewMode) {
             if (headerItem != null) {
@@ -41819,6 +41885,7 @@ public class ChatActivity extends BaseFragment implements
             searchItem.setSearchFieldCaption(null);
             animatorSearchFieldVisibility.setValue(false, true);
             animatorSearchHashtagHistoryVisibility.setValue(false, true);
+            boolean showAttachItem = !isTitleCentered();
             if (chatActivityEnterView.hasText() && TextUtils.isEmpty(chatActivityEnterView.getSlowModeTimer()) && (currentChat == null || ChatObject.canSendPlain(currentChat)) && !isSidebarAttach()) {
                 if (headerItem != null) {
                     headerItem.setVisibility(View.GONE);
@@ -41878,7 +41945,7 @@ public class ChatActivity extends BaseFragment implements
             if (translateItem != null)
                 translateItem.setVisibility(View.VISIBLE);
             searchItemVisible = false;
-            // after the flag: with it still set the sidebar's button stays hidden and the ⋮ comes back in its place
+            // after the flag: with it still set the sidebar's button stays hidden and the �?comes back in its place
             updateTopicsPanelItem();
             getMediaDataController().clearFoundMessageObjects();
             if (searchType == SEARCH_CHANNEL_POSTS) {
@@ -48405,7 +48472,7 @@ public class ChatActivity extends BaseFragment implements
         } else if (span instanceof URLSpanReplacement) {
             String formattedUrl = Browser.formatUrlForDisplay(((URLSpanReplacement) span).getURL(), true);
             if (formattedUrl.length() > 204) {
-                formattedUrl = formattedUrl.substring(0, 204) + "…";
+                formattedUrl = formattedUrl.substring(0, 204) + "\u2026";
             }
             SpannableString s = new SpannableString(formattedUrl);
             s.setSpan(span, 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -48868,7 +48935,7 @@ public class ChatActivity extends BaseFragment implements
                     formattedUrl = formattedUrl.substring(4);
                 }
                 if (formattedUrl.length() > 204) {
-                    formattedUrl = formattedUrl.substring(0, 204) + "…";
+                formattedUrl = formattedUrl.substring(0, 204) + "\u2026";
                 }
                 final SpannableString s = new SpannableString(formattedUrl);
                 s.setSpan(link, 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -49842,7 +49909,6 @@ public class ChatActivity extends BaseFragment implements
                         icons.add(R.drawable.msg_link);
                     }
                 }
-                }
                 if (selectedObject != null && selectedObject.messageOwner != null && selectedObject.messageOwner.action == null && currentChat != null && currentChat.forum && !isTopic && selectedObject.messageOwner != null && selectedObject.messageOwner.reply_to != null && selectedObject.messageOwner.reply_to.forum_topic) {
                     items.add(LocaleController.getString(R.string.ViewInTopic));
                     options.add(OPTION_VIEW_IN_TOPIC);
@@ -50549,6 +50615,30 @@ public class ChatActivity extends BaseFragment implements
 
     private boolean showWelcomeMessageRevertOption(MessageObject messageObject) {
         return chatMode == MODE_DEFAULT && messageObject != null && messageObject.isWelcomeAnchored();
+    }
+
+    private boolean filledEditTextItemMenu = false;
+    private void checkEditTextItemMenu() {
+        if (filledEditTextItemMenu || editTextItem == null) {
+            return;
+        }
+
+        ActionBarMenuItem item = editTextItem.createView();
+        item.addSubItem(text_spoiler, LocaleController.getString(R.string.Spoiler));
+        if (chatMode == 0) {
+            item.addSubItem(text_quote, LocaleController.getString(R.string.Quote));
+        }
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder(LocaleController.getString(R.string.Bold));
+        stringBuilder.setSpan(new TypefaceSpan(AndroidUtilities.bold()), 0, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        item.addSubItem(text_bold, stringBuilder);
+        stringBuilder = new SpannableStringBuilder(LocaleController.getString(R.string.Italic));
+        stringBuilder.setSpan(new TypefaceSpan(AndroidUtilities.getTypeface("fonts/ritalic.ttf")), 0, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        item.addSubItem(text_italic, stringBuilder);
+        item.addSubItem(text_mono, LocaleController.getString(R.string.Mono));
+        item.addSubItem(text_strike, LocaleController.getString(R.string.Strike));
+        item.addSubItem(text_underline, LocaleController.getString(R.string.Underline));
+
+        filledEditTextItemMenu = true;
     }
 
     private boolean isTitleCentered() {

@@ -23,7 +23,8 @@ import com.google.android.gms.location.SettingsClient;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ILocationServiceProvider;
-import org.telegram.messenger.PushListenerController;`r`nimport java.util.HashMap;
+import org.telegram.messenger.PushListenerController;
+import java.util.HashMap;
 
 @SuppressLint("MissingPermission")
 public class GoogleLocationProvider implements ILocationServiceProvider {

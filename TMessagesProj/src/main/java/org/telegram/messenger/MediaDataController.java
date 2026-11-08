@@ -120,6 +120,10 @@ import top.nkbe.niagram.config.NyaConfig;
 
 @SuppressWarnings("unchecked")
 public class MediaDataController extends BaseController {
+    public int getMaxFaveStickersCount() {
+        return getUserConfig().isPremium() ? getMessagesController().stickersFavedLimitPremium : getMessagesController().stickersFavedLimitDefault;
+    }
+
     public final static String
             ATTACH_MENU_BOT_ANIMATED_ICON_KEY = "android_animated",
             ATTACH_MENU_BOT_ANIMATED_ICON_KEY_2 = "android_active_animated",
@@ -989,7 +993,7 @@ public class MediaDataController extends BaseController {
             if (remove) {
                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_STICKER, document, StickerSetBulletinLayout.TYPE_REMOVED_FROM_FAVORITES);
             } else {
-                boolean replace = !NyaConfig.unlimitedFavedStickers.Bool() && recentStickers[type].size() > (getUserConfig().isPremium() ? 10 : getMessagesController().maxFaveStickersCount);
+                boolean replace = !NyaConfig.unlimitedFavedStickers.Bool() && recentStickers[type].size() > getMaxFaveStickersCount();
                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_STICKER, document, replace ? StickerSetBulletinLayout.TYPE_REPLACED_TO_FAVORITES : StickerSetBulletinLayout.TYPE_ADDED_TO_FAVORITES);
             }
             if (!NyaConfig.unlimitedFavedStickers.Bool()) {
@@ -1012,7 +1016,7 @@ public class MediaDataController extends BaseController {
             } else {
                 AndroidUtilities.runOnUIThread(() -> getMediaDataController().loadRecents(MediaDataController.TYPE_FAVE, false, true, false));
             }
-            maxCount = NyaConfig.unlimitedFavedStickers.Bool() ? Integer.MAX_VALUE : getUserConfig().isPremium() ? 10 : getMessagesController().maxFaveStickersCount;
+            maxCount = NyaConfig.unlimitedFavedStickers.Bool() ? Integer.MAX_VALUE : getMaxFaveStickersCount();
         } else {
             if (type == TYPE_IMAGE && remove) {
                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_STICKER, document, StickerSetBulletinLayout.TYPE_REMOVED_FROM_RECENT);
@@ -2105,7 +2109,7 @@ public class MediaDataController extends BaseController {
                         if (type == TYPE_GREETINGS || type == TYPE_PREMIUM_STICKERS) {
                             maxCount = 200;
                         } else if (type == TYPE_FAVE) {
-                            maxCount = NyaConfig.unlimitedFavedStickers.Bool() ? Integer.MAX_VALUE : getUserConfig().isPremium() ? 10 : getMessagesController().maxFaveStickersCount;
+                            maxCount = NyaConfig.unlimitedFavedStickers.Bool() ? Integer.MAX_VALUE : getMaxFaveStickersCount();
                         } else {
                             maxCount = NyaConfig.maxRecentStickerCount.Int()/*getMessagesController().maxRecentStickersCount*/;
                         }

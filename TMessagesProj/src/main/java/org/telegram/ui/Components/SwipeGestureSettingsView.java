@@ -23,6 +23,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeBind;
+import top.nkbe.niagram.config.NyaConfig;
 
 public class SwipeGestureSettingsView extends FrameLayout implements Theme.Colorable {
 

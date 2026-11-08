@@ -146,6 +146,33 @@ import top.nkbe.niagram.config.NyaConfig;
 import top.nkbe.niagram.location.NekoLocation;
 
 public class LocationActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
+    /** The size of the glass of the map's buttons; their views are larger by the glass padding on each side. */
+    private static final int MAP_BUTTON_DP = 46;
+    private static final int MAP_BUTTON_PADDING_DP = 6;
+
+    /** The glass buttons of the map under the header, and the ones at its bottom: they fade out when the list comes up. */
+    private FrameLayout mapTopButtons;
+    private FrameLayout mapBottomButtons;
+    /** The list's sheet: frosted glass over the map, the map goes on under it. */
+    private org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable sheetGlass;
+    private final RectF sheetHandleRect = new RectF();
+    /** The top of the sheet in the list and on the screen. */
+    private int sheetTop;
+    /** How far the map goes on under the sheet, for its frosted glass; the map's centre stays above the sheet. */
+    private int mapExtraHeight;
+    /** The map's own view when it is a texture: the glass captures it as it is. */
+    @androidx.annotation.Nullable
+    private TextureView mapTexture;
+    /** A copy of the map's surface when the map is a GL surface, which the glass cannot capture. */
+    @androidx.annotation.Nullable
+    private MapGlassSnapshot mapSnapshot;
+    private final RectF captureRect = new RectF();
+    private final Paint captureFillPaint = new Paint();
+    /** From the end of the map's space in the list to the top edge of the list's sheet, which is drawn over the map. */
+    private int mapSheetTopOffset;
+    /** The rounding of the sheet's top, as the panel under the chat's keyboard. */
+    private static final int SHEET_RADIUS_DP = org.telegram.ui.Components.chat.ChatInputViewsContainer.INPUT_KEYBOARD_RADIUS;
+
 
     private ImageView locationButton;
     private TextView showAllButton;
@@ -1668,27 +1695,6 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
         }
     }
 
-<<<<<<< HEAD
-    private void showSearchPlacesButton(boolean show) {
-        if (locationType == 3) {
-            show = true;
-        }
-        if (show && searchAreaButton != null && searchAreaButton.getTag() == null) {
-            if (myLocation == null || userLocation == null || userLocation.distanceTo(myLocation) < 300) {
-                show = false;
-            }
-        }
-        if (searchAreaButton == null || show && searchAreaButton.getTag() != null || !show && searchAreaButton.getTag() == null) {
-            return;
-        }
-        searchAreaButton.setTag(show ? 1 : null);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(ObjectAnimator.ofFloat(searchAreaButton, View.TRANSLATION_X, show ? 0 : -dp(80)));
-        animatorSet.setDuration(180);
-        animatorSet.setInterpolator(CubicBezierInterpolator.EASE_OUT);
-        animatorSet.start();
-    }
-
     private TextView getAttributionOverlay(Context context) {
         attributionOverlay = new TextView(context);
         attributionOverlay.setText(Html.fromHtml("© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"));
@@ -1698,8 +1704,6 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
         return attributionOverlay;
     }
 
-=======
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))
     private Bitmap createUserBitmap(LiveLocation liveLocation) {
         Bitmap result = null;
         try {

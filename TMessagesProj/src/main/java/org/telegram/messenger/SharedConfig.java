@@ -347,6 +347,7 @@ public class SharedConfig {
     public static int emojiInteractionsHintCount;
     public static int dayNightThemeSwitchHintCount;
     public static int callEncryptionHintDisplayedCount;
+    public static boolean shadowsInSections;
     public static boolean debugViewMetrics;
     public static boolean photoHighQualityDefault;
     public static boolean photoLiveDefault;
@@ -764,6 +765,7 @@ public class SharedConfig {
             multipleReactionsPromoShowed = preferences.getBoolean("multipleReactionsPromoShowed", false);
             callEncryptionHintDisplayedCount = preferences.getInt("callEncryptionHintDisplayedCount", 0);
             debugVideoQualities = preferences.getBoolean("debugVideoQualities", false);
+            shadowsInSections = preferences.getBoolean("shadowsInSections", false);
             debugViewMetrics = preferences.getBoolean("debugViewMetrics", false);
             photoHighQualityDefault = preferences.getBoolean("photoHighQualityDefault", true);
             photoLiveDefault = preferences.getBoolean("photoLiveDefault", false);

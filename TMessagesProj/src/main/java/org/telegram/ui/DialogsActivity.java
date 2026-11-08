@@ -3555,10 +3555,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 logoDrawable.setColorFilter(lastLogoDrawableColor = getThemedColor(Theme.key_telegram_color_dialogsLogo), PorterDuff.Mode.MULTIPLY);
                 SpannableStringBuilder ssb = new SpannableStringBuilder(getString(R.string.AppName));
                 ssb.setSpan(new ImageSpan(logoDrawable), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                actionBar.setTitle(ssb, statusDrawable);
-            if (TypefaceHelper.isCustomTitleEnabled()) {
-                actionBar.setTitle(actionBarTitleNax = TypefaceHelper.getTitleText(currentAccount), statusDrawable);
-            }
+                actionBar.setTitle(actionBarTitleNax = ssb, statusDrawable);
+                if (TypefaceHelper.isCustomTitleEnabled()) {
+                    actionBar.setTitle(actionBarTitleNax = TypefaceHelper.getTitleText(currentAccount), statusDrawable);
+                }
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -12747,7 +12747,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (StoryRecorder.isVisible() || (getLastStoryViewer() != null && getLastStoryViewer().isFullyVisible())) {
             animated = false;
         }
-        boolean onlySelfStories = !isArchive() && getStoriesController().hasOnlySelfStories();
+        boolean onlySelfStories = !isArchive() && communityId == 0 && getStoriesController().hasOnlySelfStories();
         boolean newVisibility;
         if (communityId != 0) {
             newVisibility = false;
@@ -14779,5 +14779,28 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         keys.add(Theme.key_dialogButtonSelector);
         keys.add(Theme.key_actionBarDefaultSubmenuItem);
         keys.add(Theme.key_actionBarDefaultSubmenuBackground);
+    }
+
+    private void handleSelectAllDialogs() {
+        DialogsAdapter adapter = viewPages[0].dialogsAdapter;
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            Object item = adapter.getItem(i);
+            if (item instanceof TLRPC.Dialog dialog && !selectedDialogs.contains(dialog.id)) {
+                View view = null;
+                RecyclerView.ViewHolder holder = viewPages[0].listView.findViewHolderForAdapterPosition(i);
+                if (holder != null) {
+                    view = holder.itemView;
+                }
+                showOrUpdateActionMode(dialog.id, view);
+            }
+        }
+    }
+
+    private boolean shouldShowIdleSearchField() {
+        return !NyaConfig.INSTANCE.getHideDialogsSearchField().Bool();
+    }
+
+    private int getIdleSearchFieldHeight() {
+        return shouldShowIdleSearchField() ? dp(SEARCH_FIELD_HEIGHT) : 0;
     }
 }

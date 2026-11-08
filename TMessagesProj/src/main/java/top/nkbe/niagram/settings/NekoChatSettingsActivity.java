@@ -52,9 +52,9 @@ import org.telegram.ui.Components.UndoView;
 import org.telegram.ui.Components.blur3.BlurredBackgroundDrawableViewFactory;
 import org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable;
 import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundColorProviderThemed;
-import org.telegram.ui.Components.blur3.source.BlurredBackgroundSource;
-import org.telegram.ui.Components.blur3.source.BlurredBackgroundSourceColor;
-import org.telegram.ui.Components.blur3.source.BlurredBackgroundSourceWrapped;
+import org.telegram.utils.glass.source.GlassSource;
+import org.telegram.utils.glass.source.GlassSourceColor;
+import org.telegram.utils.glass.source.GlassSourceWrapped;
 import org.telegram.ui.Components.chat.WallpaperBitmapProvider;
 
 import java.util.ArrayList;
@@ -927,13 +927,13 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
             lastIsBlurEnabled = isBlurEnabled;
             lastIsLiquidGlassEnabled = isLiquidGlassEnabled;
 
-            BlurredBackgroundSource source;
+            GlassSource source;
             if (isBlurEnabled && wallpaper != null) {
                 source = wallpaperBitmapProvider.updateSourceFromBackgroundViewDrawable(wallpaper);
             } else {
-                source = new BlurredBackgroundSourceColor();
+                source = new GlassSourceColor();
             }
-            BlurredBackgroundSourceWrapped wrappedSource = new BlurredBackgroundSourceWrapped();
+            GlassSourceWrapped wrappedSource = new GlassSourceWrapped();
             wrappedSource.setSource(source);
             glassFactory = new BlurredBackgroundDrawableViewFactory(wrappedSource);
             colorProvider = new BlurredBackgroundColorProviderThemed(resourcesProvider, Theme.key_chat_messagePanelBackground);

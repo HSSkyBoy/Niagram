@@ -647,13 +647,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (listView.adapter != null) {
-            listView.adapter.update(false);
-        }
-    }
+
 
     private void setActionBarVisibilityFactor(float factor) {
         simpleActionBar.setTitlesAlpha(factor);
@@ -2401,6 +2395,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         layoutParams.bottomMargin += navigationBarHeight + additionNavigationBarHeight;
         contentView.addView(undoView, layoutParams);
         return undoView;
+    }
 
     @Override
     protected boolean useFadeDrawableForActionBar() {

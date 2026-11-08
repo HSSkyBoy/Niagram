@@ -417,7 +417,6 @@ public class AdminLogFilterAlert2 extends BottomSheetWithRecyclerListView {
         return !recyclerListView.canScrollVertically(-1);
     }
 
-<<<<<<< HEAD
     @Override
     protected void onPreDraw(Canvas canvas, int top, float progressToFullView) {
         super.onPreDraw(canvas, top, progressToFullView);
@@ -429,7 +428,8 @@ public class AdminLogFilterAlert2 extends BottomSheetWithRecyclerListView {
             return;
         }
         titleTextView.setTranslationX((actionBar.getMeasuredWidth() - titleTextView.getMeasuredWidth()) / 2f - titleTextView.getLeft());
-=======
+    }
+
     private int themedBackgroundColor;
 
     @Override
@@ -444,6 +444,5 @@ public class AdminLogFilterAlert2 extends BottomSheetWithRecyclerListView {
         } catch (Exception e) {
             FileLog.e(e);
         }
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))
     }
 }

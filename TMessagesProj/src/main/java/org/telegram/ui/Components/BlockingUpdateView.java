@@ -313,33 +313,13 @@ public class BlockingUpdateView extends FrameLayout implements NotificationCente
         } else {
             acceptTextView.setText(LocaleController.getString(R.string.Update));
         }
-<<<<<<< HEAD
-        NotificationCenter.getInstance(accountNum).addObserver(this, NotificationCenter.fileLoaded);
-        NotificationCenter.getInstance(accountNum).addObserver(this, NotificationCenter.fileLoadFailed);
-        NotificationCenter.getInstance(accountNum).addObserver(this, NotificationCenter.fileLoadProgressChanged);
+        NotificationCenter.getInstance(accountNum).addWeakObserver(this, NotificationCenter.fileLoaded);
+        NotificationCenter.getInstance(accountNum).addWeakObserver(this, NotificationCenter.fileLoadFailed);
+        NotificationCenter.getInstance(accountNum).addWeakObserver(this, NotificationCenter.fileLoadProgressChanged);
         if (check) {
             UpdateHelper.getInstance().checkNewVersionAvailable((response, error) -> AndroidUtilities.runOnUIThread(() -> {
                 if (response != null) {
                     if (!response.can_not_skip) {
-=======
-        NotificationCenter.getInstance(accountNum).addWeakObserver(this, NotificationCenter.fileLoaded);
-        NotificationCenter.getInstance(accountNum).addWeakObserver(this, NotificationCenter.fileLoadFailed);
-        NotificationCenter.getInstance(accountNum).addWeakObserver(this, NotificationCenter.fileLoadProgressChanged);
-        if (check && ApplicationLoader.isStandaloneBuild()) {
-            TLRPC.TL_help_getAppUpdate req = new TLRPC.TL_help_getAppUpdate();
-            try {
-                req.source = ApplicationLoader.applicationContext.getPackageManager().getInstallerPackageName(ApplicationLoader.applicationContext.getPackageName());
-            } catch (Exception ignore) {
-
-            }
-            if (req.source == null) {
-                req.source = "";
-            }
-            ConnectionsManager.getInstance(accountNum).sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
-                if (response instanceof TLRPC.TL_help_appUpdate) {
-                    final TLRPC.TL_help_appUpdate res = (TLRPC.TL_help_appUpdate) response;
-                    if (!res.can_not_skip) {
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))
                         setVisibility(GONE);
                         SharedConfig.pendingAppUpdate = null;
                         SharedConfig.saveConfig();

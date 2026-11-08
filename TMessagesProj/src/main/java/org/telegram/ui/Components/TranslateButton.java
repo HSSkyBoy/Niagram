@@ -421,6 +421,7 @@ public class TranslateButton extends FrameLayout implements Theme.Colorable {
             showCocoonAlert(getContext(), resourcesProvider);
         });
         popupLayout.addView(cocoonButton);
+        }
 
         popupWindow.setPauseNotifications(true);
         popupWindow.setDismissAnimationDuration(220);

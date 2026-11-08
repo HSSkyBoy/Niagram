@@ -25,7 +25,8 @@ import androidx.annotation.RequiresApi;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.Components.BulletinFactory;`r`nimport org.telegram.ui.ActionBar.ThemeBind;
+import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.ActionBar.ThemeBind;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.StickerImageView;
 

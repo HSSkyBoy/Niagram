@@ -1,5 +1,9 @@
 package org.telegram.ui.Components;
 
+import top.nkbe.niagram.helpers.PinnedElementsHelper;
+
+import top.nkbe.niagram.config.NyaConfig;
+
 import static org.telegram.messenger.AndroidUtilities.dp;
 
 import android.animation.Animator;

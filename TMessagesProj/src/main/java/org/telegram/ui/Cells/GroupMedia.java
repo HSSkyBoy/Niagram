@@ -857,7 +857,11 @@ public class GroupMedia {
         if (attached) return;
         attached = true;
         if (spoilerEffect != null) {
-            spoilerEffect.detach(cell);
+            if (spoilerEffect.destroyed) {
+                spoilerEffect = SpoilerEffect2.getInstance(cell);
+            } else {
+                spoilerEffect.attach(cell);
+            }
         }
         for (int i = 0; i < holders.size(); ++i) {
             holders.get(i).attach();
@@ -868,7 +872,7 @@ public class GroupMedia {
         if (!attached) return;
         attached = false;
         if (spoilerEffect != null) {
-            spoilerEffect.attach(cell);
+            spoilerEffect.detach(cell);
         }
         for (int i = 0; i < holders.size(); ++i) {
             holders.get(i).detach();

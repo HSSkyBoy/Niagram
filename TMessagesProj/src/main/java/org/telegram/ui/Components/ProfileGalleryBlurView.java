@@ -588,61 +588,6 @@ public class ProfileGalleryBlurView extends View {
         canvas.translate(0f, -scaledSize);
         canvas.scale(scale, scale);
         canvas.drawRenderNode(blurNode);
-<<<<<<< HEAD
-
-        captureActionsBlurRenderNode(width, avatarImageView, openingScale, croppedSize);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.S)
-    private void captureActionsBlurRenderNode(float width, ProfileActivity.AvatarImageView avatarImageView, float openingScale, float size) {
-        initActionsRenderNode();
-
-        if (!shouldBlurActions) {
-            if (actionsView != null) {
-                actionsView.drawingBlur(false);
-            }
-            if (suggestionView != null) {
-                suggestionView.drawingBlur(false);
-            }
-            if (musicView != null) {
-                musicView.drawingBlur(false);
-            }
-            return;
-        }
-
-        float outScale = 8f;
-        float scale = getRenderNodeScale() * openingScale * outScale;
-        actionsBlurNode.setPosition(0, 0, (int) Math.ceil(width / scale), (int) Math.ceil((size + actionSize) / scale));
-        RecordingCanvas recordingCanvas = actionsBlurNode.beginRecording();
-        recordingCanvas.scale(1f / outScale, 1f / outScale);
-        recordingCanvas.drawRenderNode(blurNode);
-        actionsBlurNode.endRecording();
-        actionsBlurNode.setAlpha(alpha.set(1f));
-
-        scale = width / actionsBlurNode.getWidth();
-        if (actionsView != null) {
-            if (avatarImageView != null) {
-                actionsView.drawingBlur(actionsBlurNode, avatarImageView, scale / openingScale, -size);
-            } else {
-                actionsView.drawingBlur(actionsBlurNode, null, scale, -size);
-            }
-        }
-        if (suggestionView != null) {
-            if (avatarImageView != null) {
-                suggestionView.drawingBlur(actionsBlurNode, avatarImageView, scale / openingScale, -size);
-            } else {
-                suggestionView.drawingBlur(actionsBlurNode, null, scale, -size);
-            }
-        }
-        if (musicView != null) {
-            if (avatarImageView != null) {
-                musicView.drawingBlur(actionsBlurNode, avatarImageView, scale / openingScale, -size + dp(22));
-            } else {
-                musicView.drawingBlur(actionsBlurNode, null, scale, -size + dp(22));
-            }
-        }
-=======
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))
     }
 
     private void drawOpeningImageRenderNode(

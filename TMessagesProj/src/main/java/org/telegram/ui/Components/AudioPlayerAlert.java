@@ -3677,9 +3677,6 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         });
         rightPaddingAnimator.start();
     }
-<<<<<<< HEAD
-}
-=======
 
     @Override
     public void onThemeColorsChanged() {
@@ -3800,4 +3797,3 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         keys.add(Theme.key_chat_inLoader);
     }
 }
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))

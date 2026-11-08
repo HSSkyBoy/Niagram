@@ -142,6 +142,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import me.vkryl.core.BitwiseUtils;
+import top.nkbe.niagram.helpers.MessageHelper;
+import top.nkbe.niagram.config.NyaConfig;
+import xyz.nextalone.nagram.helper.ForwardTextEdit;
 
 public class ShareAlert extends BottomSheet implements NotificationCenter.NotificationCenterDelegate {
 

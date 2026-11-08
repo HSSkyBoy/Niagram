@@ -127,6 +127,7 @@ public class ChatMessageTransitionParams {
     public boolean animateDrawingSideMenuEnabled;
 
     public boolean animateMessageText;
+    public boolean animateTranslationText;
     ArrayList<MessageObject.TextLayoutBlock> animateOutTextBlocks;
     public ArrayList<MessageObject.TextLayoutBlock> lastDrawingTextBlocks;
     private int lastDrawingTextWidth;
@@ -450,6 +451,7 @@ public class ChatMessageTransitionParams {
         }
 
         animateMessageText = false;
+        animateTranslationText = cell.currentMessageObject != null && cell.currentMessageObject.isTranslated() != lastDrawnTranslated;
         if (cell.currentMessageObject.textLayoutBlocks != lastDrawingTextBlocks) {
             boolean sameText = true;
             if (cell.currentMessageObject.textWidth != lastDrawingTextWidth && lastDrawingSideMenuEnabled != cell.isSideMenuEnabled) {
@@ -937,6 +939,7 @@ public class ChatMessageTransitionParams {
         oldProgress = 0f;
         newProgress = 1f;
         animateMessageText = false;
+        animateTranslationText = cell.currentMessageObject != null && cell.currentMessageObject.isTranslated() != lastDrawnTranslated;
         animateRichLayout = false;
         animateDrawingSideMenuEnabled = false;
         animateDrawNameLayout = false;

@@ -21,6 +21,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeBind;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.voip.CellFlickerDrawable;
+import top.nkbe.niagram.config.NyaConfig;
 
 public class StorageUsageView extends FrameLayout implements Theme.Colorable {
 

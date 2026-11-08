@@ -898,7 +898,7 @@ public class DataSettingsActivity extends BaseFragment {
 
         public boolean isRowEnabled(int position) {
             return position == mobileRow || position == roamingRow || position == wifiRow || position == storageUsageRow || position == useLessDataForCallsRow || position == dataUsageRow || position == proxyRow || position == clearDraftsRow ||
-                    position == enableCacheStreamRow || position == enableStreamRow || position == preferOriginalQualityRow || position == enableAllStreamRow || position == enableMkvRow || position == quickRepliesRow || position == autoplayVideoRow || position == autoplayGifsRow ||
+                    position == enableCacheStreamRow || position == enableStreamRow || position == preferOriginalQualityRow || position == enableAllStreamRow || position == enableMkvRow || position == autoplayVideoRow || position == autoplayGifsRow ||
                     position == storageNumRow || position == saveToGalleryGroupsRow || position == saveToGalleryPeerRow || position == saveToGalleryChannelsRow || position == resetDownloadRow;
         }
 

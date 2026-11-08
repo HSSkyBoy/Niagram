@@ -730,13 +730,9 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 
 	@Override
 	public View createView(Context context) {
-<<<<<<< HEAD
 		additionNavigationBarHeight = hasMainTabs ? dp(MainTabsHelper.getMainTabsHeightWithMargins()) : 0;
 		additionFloatingButtonOffset = hasMainTabs ? dp(MainTabsHelper.getMainTabsHeight() + MainTabsHelper.getMainTabsMargin()) : 0;
-
-=======
 		setHasOwnBackground(true);
->>>>>>> 55356b2a7b (update to 13.2.0 (7280))
 		if (!hasMainTabs) {
 			simpleActionBar.setBackButtonDrawable(new BackDrawable(false));
 		}
