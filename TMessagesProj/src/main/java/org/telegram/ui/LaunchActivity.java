@@ -452,6 +452,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getSplashScreen().setOnExitAnimationListener(android.window.SplashScreenView::remove);
+        }
         isActive = true;
         activeInstanceCount++;
         if (BuildVars.DEBUG_VERSION) {
