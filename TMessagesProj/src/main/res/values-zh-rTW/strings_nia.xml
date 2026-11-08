@@ -890,4 +890,6 @@
     <string name="HideAvatarTtlBadge">隱藏頭像上的自動刪除計時標誌</string>
     <string name="HideFeaturedStickersAndEmoji">隱藏推薦貼圖與表情</string>
     <string name="HideFeaturedStickersAndEmojiNotice">在選取器中不顯示熱門推薦的貼圖包與表情包。</string>
+    <string name="EnableSplashScreen">啟動動畫</string>
+    <string name="EnableSplashScreenDesc">在應用程式啟動時顯示開屏過渡動畫。關閉後可實現極致秒開。</string>
 </resources>

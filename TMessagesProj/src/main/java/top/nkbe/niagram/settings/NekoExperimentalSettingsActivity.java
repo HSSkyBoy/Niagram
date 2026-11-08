@@ -90,6 +90,7 @@ public class NekoExperimentalSettingsActivity extends BaseNekoXSettingsActivity 
                     getString(R.string.BackAnimationSpring),
             }, null));
     private final AbstractConfigCell springAnimationCrossfadeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getSpringAnimationCrossfade()));
+    private final AbstractConfigCell splashScreenRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.enableSplashScreen, getString(R.string.EnableSplashScreenDesc)));
     private final AbstractConfigCell localPremiumRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.localPremium));
     private final AbstractConfigCell unlimitedPinnedDialogsRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.unlimitedPinnedDialogs, getString(R.string.UnlimitedPinnedDialogsAbout)));
     private final AbstractConfigCell unlimitedFavedStickersRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.unlimitedFavedStickers, getString(R.string.UnlimitedFavoredStickersAbout)));

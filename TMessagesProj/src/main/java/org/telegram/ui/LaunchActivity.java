@@ -577,7 +577,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 setVisibility(GONE);
             }
         });
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && NyaConfig.enableSplashScreen.Bool()) {
             splashScreenView = new top.nkbe.niagram.ui.components.NiagramSplashScreenView(this);
             frameLayout.addView(splashScreenView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         }

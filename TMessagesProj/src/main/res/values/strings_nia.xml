@@ -915,4 +915,6 @@
     <string name="HideAvatarTtlBadge">Hide auto-delete timer on avatars</string>
     <string name="HideFeaturedStickersAndEmoji">Hide Featured Stickers and Emoji</string>
     <string name="HideFeaturedStickersAndEmojiNotice">Do not display featured or trending sticker packs and emoji sets in the picker.</string>
+    <string name="EnableSplashScreen">Splash Screen Animation</string>
+    <string name="EnableSplashScreenDesc">Display splash screen animation on startup.</string>
 </resources>

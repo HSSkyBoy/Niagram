@@ -831,6 +831,7 @@ object NyaConfig {
     @JvmField val mapDriftingFixForGoogleMaps = addConfig("mapDriftingFixForGoogleMaps", ConfigItem.configTypeBool, true)
 
     @JvmField val localPremium = addConfig("localPremium", ConfigItem.configTypeBool, false)
+    @JvmField val enableSplashScreen = addConfig("EnableSplashScreen", ConfigItem.configTypeBool, true)
 
     @JvmField val usePersianCalendar = addConfig("UsePersianCalendar", ConfigItem.configTypeBool, false)
     @JvmField val displayPersianCalendarByLatin = addConfig("DisplayPersianCalendarByLatin", ConfigItem.configTypeBool, false)
