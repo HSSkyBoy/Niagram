@@ -249,9 +249,9 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
         NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.currentUserPremiumStatusChanged);
     }
 
-    private int menu_other = 2;
-    private int menu_export = 3;
-    private int menu_import = 4;
+    private int menu_other = 102;
+    private int menu_export = 103;
+    private int menu_import = 104;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -283,7 +283,7 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
             }
         });
 
-        ActionBarMenu menu = actionBar.createMenu();
+        SimpleActionBarMenu menu = simpleActionBar.createMenu();
 
         ActionBarMenuItem otherItem = menu.addItem(menu_other, R.drawable.ic_ab_other);
 
@@ -1078,25 +1078,36 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
         if (which == menu_export) {
             exportStickers();
         } else if (which == menu_import) {
-            DocumentSelectActivity fragment = new DocumentSelectActivity(false);
-            fragment.setMaxSelectedFiles(1);
-            fragment.setAllowPhoto(false);
-            fragment.setDelegate(new DocumentSelectActivity.DocumentSelectActivityDelegate() {
-                @Override
-                public void didSelectFiles(DocumentSelectActivity activity, ArrayList<String> files, String caption, boolean notify, int scheduleDate) {
-                    activity.finishFragment();
-                    processStickersFile(new File(files.get(0)), false);
-                }
+            try {
+                if (Build.VERSION.SDK_INT >= 33) {
+                    openFilePicker();
+                } else {
+                    if (getParentActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        getParentActivity().requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, BasePermissionsActivity.REQUEST_CODE_EXTERNAL_STORAGE);
+                        return;
+                    }
+                    DocumentSelectActivity fragment = new DocumentSelectActivity(false);
+                    fragment.setMaxSelectedFiles(1);
+                    fragment.setAllowPhoto(false);
+                    fragment.setDelegate(new DocumentSelectActivity.DocumentSelectActivityDelegate() {
+                        @Override
+                        public void didSelectFiles(DocumentSelectActivity activity, ArrayList<String> files, String caption, boolean notify, int scheduleDate) {
+                            activity.finishFragment();
+                            processStickersFile(new File(files.get(0)), false);
+                        }
 
-                @Override
-                public void didSelectPhotos(ArrayList<SendMessagesHelper.SendingMediaInfo> photos, boolean notify, int scheduleDate) {
-                }
+                        @Override
+                        public void didSelectPhotos(ArrayList<SendMessagesHelper.SendingMediaInfo> photos, boolean notify, int scheduleDate) {
+                        }
 
-                @Override
-                public void startDocumentSelectActivity() {
+                        @Override
+                        public void startDocumentSelectActivity() {
+                        }
+                    });
+                    presentFragment(fragment);
                 }
-            });
-            presentFragment(fragment);
+            } catch (Throwable ignore) {
+            }
         }
     }
 
