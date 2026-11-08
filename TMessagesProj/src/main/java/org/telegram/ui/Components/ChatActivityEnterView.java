@@ -6099,6 +6099,9 @@ public class ChatActivityEnterView extends FrameLayout implements
         }
 
         private void send(InputContentInfoCompat inputContentInfo, boolean notify, int scheduleDate, int scheduleRepeatPeriod) {
+            if (delegate != null) {
+                delegate.beforeMessageSend(null, true, scheduleDate, 0);
+            }
             if (messageSendPreview != null) {
                 messageSendPreview.dismiss(true);
                 messageSendPreview = null;
@@ -6371,6 +6374,9 @@ public class ChatActivityEnterView extends FrameLayout implements
                     photos.add(info);
                     photoEntry.reset();
                     sending = true;
+                    if (delegate != null) {
+                        delegate.beforeMessageSend(null, notify, scheduleDate, 0);
+                    }
                     boolean updateStickersOrder = SendMessagesHelper.checkUpdateStickersOrder(info.caption);
                     SendMessagesHelper.prepareSendingMedia(accountInstance, photos, dialog_id, replyingMessageObject, getThreadMessage(), null, replyingQuote, false, false, editingMessageObject, notify, scheduleDate, scheduleRepeatPeriod, parentFragment == null ? 0 : parentFragment.getChatMode(), updateStickersOrder, null, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, 0, false, 0, getSendMonoForumPeerId(), parentFragment != null ? parentFragment.messageSuggestionParams : null);
                     if (delegate != null) {
@@ -8134,6 +8140,9 @@ public class ChatActivityEnterView extends FrameLayout implements
                 millisecondsRecorded = 0;
                 return;
             } else if (audioToSend != null) {
+                if (delegate != null) {
+                    delegate.beforeMessageSend(null, notify, scheduleDate, payStars);
+                }
                 MessageObject playing = MediaController.getInstance().getPlayingMessageObject();
                 if (playing != null && playing == audioToSendMessageObject) {
                     MediaController.getInstance().cleanupPlayer(true, true);
@@ -8210,30 +8219,36 @@ public class ChatActivityEnterView extends FrameLayout implements
             if (checkPremiumAnimatedEmoji(currentAccount, dialog_id, parentFragment, null, message)) {
                 return;
             }
-            if (processSendingText(message, notify, scheduleDate, scheduleRepeatPeriod, payStars)) {
-                if (delegate.hasForwardingMessages() || (scheduleDate != 0 && !isInScheduleMode()) || isInScheduleMode()) {
-                    if (messageEditText != null) {
-                        messageEditText.setText("");
-                    }
-                    if (delegate != null) {
-                        delegate.onMessageSend(message, notify, scheduleDate, scheduleRepeatPeriod, payStars);
-                    }
-                } else {
-                    messageTransitionIsRunning = false;
-                    AndroidUtilities.runOnUIThread(moveToSendStateRunnable = () -> {
-                        moveToSendStateRunnable = null;
-                        hideTopView(true);
+            if (!TextUtils.isEmpty(message)) {
+                if (delegate != null) {
+                    delegate.beforeMessageSend(message, notify, scheduleDate, payStars);
+                }
+                if (processSendingText(message, notify, scheduleDate, scheduleRepeatPeriod, payStars)) {
+                    if (delegate.hasForwardingMessages() || (scheduleDate != 0 && !isInScheduleMode()) || isInScheduleMode()) {
                         if (messageEditText != null) {
                             messageEditText.setText("");
                         }
                         if (delegate != null) {
                             delegate.onMessageSend(message, notify, scheduleDate, scheduleRepeatPeriod, payStars);
                         }
-                    }, 200);
+                    } else {
+                        messageTransitionIsRunning = false;
+                        AndroidUtilities.runOnUIThread(moveToSendStateRunnable = () -> {
+                            moveToSendStateRunnable = null;
+                            hideTopView(true);
+                            if (messageEditText != null) {
+                                messageEditText.setText("");
+                            }
+                            if (delegate != null) {
+                                delegate.onMessageSend(message, notify, scheduleDate, scheduleRepeatPeriod, payStars);
+                            }
+                        }, 200);
+                    }
+                    lastTypingTimeSend = 0;
                 }
-                lastTypingTimeSend = 0;
             } else if (forceShowSendButton) {
                 if (delegate != null) {
+                    delegate.beforeMessageSend(null, notify, scheduleDate, payStars);
                     delegate.onMessageSend(null, notify, scheduleDate, scheduleRepeatPeriod, payStars);
                 }
             }

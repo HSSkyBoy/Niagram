@@ -2736,7 +2736,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                     int result = 0;
                     if (NyaConfig.sendCommentAfterForward.Bool()) {
                         // send fwd message before comment.
-                        result = SendMessagesHelper.getInstance(currentAccount).sendMessage(sendingMessageObjects, key, !showSendersName,false, withSound, 0, replyTopMsg, video_timestamp, price == null ? 0 : price);
+                        result = SendMessagesHelper.getInstance(currentAccount).sendMessage(sendingMessageObjects, key, !showSendersName, false, withSound, 0, 0, replyTopMsg, video_timestamp, price == null ? 0 : price, monoForumPeerId, null);
                     }
                     // send comment message
                     if (frameLayout2.getTag() != null && commentTextView.length() > 0) {
