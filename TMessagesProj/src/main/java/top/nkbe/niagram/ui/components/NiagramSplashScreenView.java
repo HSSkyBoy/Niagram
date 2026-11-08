@@ -5,10 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.graphics.Outline;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.SystemClock;
@@ -37,7 +35,7 @@ public class NiagramSplashScreenView extends FrameLayout {
     private static final int ICON_SIZE_DP = 76;
     private static final int CARD_RADIUS_DP = 24;
     private static final int ICON_RADIUS_DP = 20;
-    private static final long MIN_DISPLAY_DURATION_MS = 800L;
+    private static final long MIN_DISPLAY_DURATION_MS = 850L;
     private static final long EXIT_DURATION_MS = 360L;
 
     private final FrameLayout iconCard;
@@ -49,7 +47,10 @@ public class NiagramSplashScreenView extends FrameLayout {
     private final TextView footerView;
 
     private final long startTime;
-    private boolean dismissed = false;
+    private boolean entranceStarted = false;
+    private boolean isReady = false;
+    private boolean exitScheduled = false;
+    private Runnable pendingDismissCallback;
 
     public NiagramSplashScreenView(Context context) {
         super(context);
@@ -58,10 +59,9 @@ public class NiagramSplashScreenView extends FrameLayout {
         setClickable(true);
         setFocusable(true);
 
-        int backgroundColor = Theme.getColor(Theme.key_windowBackgroundWhite);
+        boolean isDark = (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES || Theme.isCurrentThemeDark();
+        int backgroundColor = isDark ? 0xFF1F2732 : 0xFFFFFFFF;
         setBackgroundColor(backgroundColor);
-
-        boolean isDark = Theme.isCurrentThemeDark();
 
         centerLayout = new LinearLayout(context);
         centerLayout.setOrientation(LinearLayout.VERTICAL);
@@ -72,7 +72,7 @@ public class NiagramSplashScreenView extends FrameLayout {
         iconCard.setBackgroundColor(cardBgColor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            iconCard.setElevation(AndroidUtilities.dp(10));
+            iconCard.setElevation(AndroidUtilities.dp(12));
             iconCard.setOutlineProvider(new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
@@ -110,15 +110,14 @@ public class NiagramSplashScreenView extends FrameLayout {
         titleView.setText("Niagram");
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         titleView.setTypeface(AndroidUtilities.bold());
-        titleView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+        titleView.setTextColor(isDark ? 0xFFFFFFFF : 0xFF111111);
         titleView.setGravity(Gravity.CENTER);
-        textLayout.addView(titleView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 18, 0, 0));
+        textLayout.addView(titleView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 16, 0, 0));
 
         subtitleView = new TextView(context);
         subtitleView.setText("An enhanced, high-performance Telegram client");
         subtitleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        subtitleView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText));
-        subtitleView.setAlpha(0.7f);
+        subtitleView.setTextColor(isDark ? 0x8CFFFFFF : 0x8C000000);
         subtitleView.setGravity(Gravity.CENTER);
         textLayout.addView(subtitleView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 4, 0, 0));
 
@@ -129,7 +128,7 @@ public class NiagramSplashScreenView extends FrameLayout {
         footerView = new TextView(context);
         footerView.setText("Crafted for freedom, tuned for speed.");
         footerView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-        footerView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText));
+        footerView.setTextColor(isDark ? 0x59FFFFFF : 0x59000000);
         footerView.setAlpha(0f);
         footerView.setGravity(Gravity.CENTER);
         addView(footerView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 16, 0, 16, 36));
@@ -138,7 +137,7 @@ public class NiagramSplashScreenView extends FrameLayout {
         iconCard.setScaleY(0.72f);
         iconCard.setAlpha(0f);
 
-        post(this::startEntranceAnimation);
+        startEntranceAnimation();
     }
 
     private Drawable loadAppIcon(Context context) {
@@ -149,8 +148,17 @@ public class NiagramSplashScreenView extends FrameLayout {
         return drawable;
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!entranceStarted) {
+            startEntranceAnimation();
+        }
+    }
+
     private void startEntranceAnimation() {
-        if (dismissed) return;
+        if (entranceStarted) return;
+        entranceStarted = true;
 
         AnimatorSet cardSet = new AnimatorSet();
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(iconCard, View.SCALE_X, 0.72f, 1f);
@@ -158,16 +166,16 @@ public class NiagramSplashScreenView extends FrameLayout {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(iconCard, View.ALPHA, 0f, 1f);
 
         cardSet.playTogether(scaleX, scaleY, alpha);
-        cardSet.setDuration(420);
-        cardSet.setInterpolator(new OvershootInterpolator(1.35f));
+        cardSet.setDuration(360);
+        cardSet.setInterpolator(new OvershootInterpolator(1.25f));
 
         ObjectAnimator textAlpha = ObjectAnimator.ofFloat(textLayout, View.ALPHA, 0f, 1f);
-        textAlpha.setDuration(380);
+        textAlpha.setDuration(400);
         textAlpha.setStartDelay(180);
         textAlpha.setInterpolator(CubicBezierInterpolator.EASE_OUT);
 
-        ObjectAnimator footerAlpha = ObjectAnimator.ofFloat(footerView, View.ALPHA, 0f, 0.55f);
-        footerAlpha.setDuration(420);
+        ObjectAnimator footerAlpha = ObjectAnimator.ofFloat(footerView, View.ALPHA, 0f, 0.45f);
+        footerAlpha.setDuration(450);
         footerAlpha.setStartDelay(260);
         footerAlpha.setInterpolator(CubicBezierInterpolator.EASE_OUT);
 
@@ -177,31 +185,42 @@ public class NiagramSplashScreenView extends FrameLayout {
     }
 
     public void dismiss(Runnable onDismissed) {
-        if (dismissed) return;
-        dismissed = true;
+        this.pendingDismissCallback = onDismissed;
+        if (isReady) return;
+        isReady = true;
+
+        if (!entranceStarted) {
+            startEntranceAnimation();
+        }
 
         long elapsed = SystemClock.elapsedRealtime() - startTime;
         long remaining = Math.max(0, MIN_DISPLAY_DURATION_MS - elapsed);
 
-        postDelayed(() -> {
-            animate()
-                .scaleX(1.05f)
-                .scaleY(1.05f)
-                .alpha(0f)
-                .setDuration(EXIT_DURATION_MS)
-                .setInterpolator(CubicBezierInterpolator.EASE_OUT_QUINT)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if (getParent() instanceof ViewGroup) {
-                            ((ViewGroup) getParent()).removeView(NiagramSplashScreenView.this);
-                        }
-                        if (onDismissed != null) {
-                            onDismissed.run();
-                        }
+        postDelayed(this::startExitAnimation, remaining);
+    }
+
+    private void startExitAnimation() {
+        if (exitScheduled) return;
+        exitScheduled = true;
+
+        animate()
+            .scaleX(1.05f)
+            .scaleY(1.05f)
+            .alpha(0f)
+            .setDuration(EXIT_DURATION_MS)
+            .setInterpolator(CubicBezierInterpolator.EASE_OUT)
+            .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (getParent() instanceof ViewGroup) {
+                        ((ViewGroup) getParent()).removeView(NiagramSplashScreenView.this);
                     }
-                })
-                .start();
-        }, remaining);
+                    if (pendingDismissCallback != null) {
+                        pendingDismissCallback.run();
+                        pendingDismissCallback = null;
+                    }
+                }
+            })
+            .start();
     }
 }
