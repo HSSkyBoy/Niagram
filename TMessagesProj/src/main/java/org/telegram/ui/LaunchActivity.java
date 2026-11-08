@@ -347,6 +347,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     private Dialog proxyErrorDialog;
     private SelectAnimatedEmojiDialog.SelectAnimatedEmojiDialogWindow selectAnimatedEmojiDialog;
     private View rippleAbove;
+    private top.nkbe.niagram.ui.components.NiagramSplashScreenView splashScreenView;
     public Dialog getVisibleDialog() {
         for (int i = visibleDialogs.size() - 1; i >= 0; --i) {
             Dialog dialog = visibleDialogs.get(i);
@@ -587,6 +588,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 setVisibility(GONE);
             }
         });
+        if (savedInstanceState == null) {
+            splashScreenView = new top.nkbe.niagram.ui.components.NiagramSplashScreenView(this);
+            frameLayout.addView(splashScreenView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        }
         setupActionBarLayout();
         drawerLayoutContainer.setParentActionBarLayout(actionBarLayout);
         actionBarLayout.setDrawerLayoutContainer(drawerLayoutContainer);
@@ -1472,6 +1477,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     public void showPasscodeActivity(boolean fingerprint, boolean animated, int x, int y, Runnable onShow, Runnable onStart) {
         if (drawerLayoutContainer == null || isFinishing()) {
             return;
+        }
+        if (splashScreenView != null) {
+            splashScreenView.dismiss(() -> splashScreenView = null);
         }
         if (passcodeDialog == null) {
             passcodeDialog = new PasscodeViewDialog(this);
@@ -7178,6 +7186,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     @Override
     protected void onDestroy() {
+        if (splashScreenView != null) {
+            if (splashScreenView.getParent() instanceof ViewGroup) {
+                ((ViewGroup) splashScreenView.getParent()).removeView(splashScreenView);
+            }
+            splashScreenView = null;
+        }
         GramWalletStorageAuth.onActivityDestroyed(this);
         isActive = false;
         activeInstanceCount--;
@@ -7323,6 +7337,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         checkFreeDiscSpace(0);
         MediaController.checkGallery();
         onPasscodeResume();
+        if (splashScreenView != null) {
+            splashScreenView.dismiss(() -> splashScreenView = null);
+        }
         if (passcodeDialog == null || passcodeDialog.passcodeView.getVisibility() != View.VISIBLE) {
             actionBarLayout.onResume();
             if (AndroidUtilities.isTablet()) {

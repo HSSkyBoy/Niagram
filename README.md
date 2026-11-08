@@ -34,7 +34,7 @@ An enhanced, high-performance Telegram client variant based on [Nagram](https://
 Official releases and beta builds can be obtained from:
 
 - **Beta Builds**: [Telegram Channel (@NiagramX)](https://t.me/NiagramX)
-- **Stable Releases**: [GitHub Releases](https://github.com/Nk-Be/NiagramX/releases)
+- **Stable Releases**: [GitHub Releases](https://github.com/Nk-Be/Niagram/releases)
 
 ### Verify APK Signature
 
@@ -60,7 +60,7 @@ Official release packages are signed with the official certificate:
 
 ```bash
 # Clone repository with all submodules
-git clone --recursive --shallow-submodules https://github.com/Nk-Be/NiagramX.git Niagram
+git clone --recursive --shallow-submodules https://github.com/Nk-Be/Niagram.git Niagram
 cd Niagram
 
 # If submodules were not initialized during clone
