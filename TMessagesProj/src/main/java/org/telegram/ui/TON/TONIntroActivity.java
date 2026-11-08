@@ -863,7 +863,7 @@ public class TONIntroActivity extends GradientHeaderActivity implements Notifica
 
             headerView.subtitleView.setText(AndroidUtilities.replaceTags(getString(R.string.FragmentAddFunds)));
             headerView.subtitleView.setMaxWidth(HintView2.cutInFancyHalf(headerView.subtitleView.getText(), headerView.subtitleView.getPaint()));
-            actionBar.setTitle(getTitle());
+            if (actionBar != null) { actionBar.setTitle(getTitle()); }
 
             footerView = new FrameLayout(context);
 

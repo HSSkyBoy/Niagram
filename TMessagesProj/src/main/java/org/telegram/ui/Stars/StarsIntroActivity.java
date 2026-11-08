@@ -2778,7 +2778,7 @@ public class StarsIntroActivity extends GradientHeaderActivity implements Notifi
             setBackgroundColorKey(Theme.key_windowBackgroundWhite);
             fixNavigationBarKey(Theme.key_windowBackgroundWhite);
 
-            actionBar.setTitle(getTitle());
+            if (actionBar != null) { actionBar.setTitle(getTitle()); }
 
             footerView = new FrameLayout(context);
             LinkSpanDrawable.LinksTextView footerTextView = new LinkSpanDrawable.LinksTextView(context, resourcesProvider);
@@ -3056,7 +3056,7 @@ public class StarsIntroActivity extends GradientHeaderActivity implements Notifi
                 headerView.subtitleView.setText(AndroidUtilities.replaceTags(str));
                 headerView.subtitleView.setMaxWidth(HintView2.cutInFancyHalf(headerView.subtitleView.getText(), headerView.subtitleView.getPaint()));
             }
-            actionBar.setTitle(getTitle());
+            if (actionBar != null) { actionBar.setTitle(getTitle()); }
 
             footerView = new FrameLayout(context);
             LinkSpanDrawable.LinksTextView footerTextView = new LinkSpanDrawable.LinksTextView(context, resourcesProvider);
@@ -3346,7 +3346,7 @@ public class StarsIntroActivity extends GradientHeaderActivity implements Notifi
                 )
             );
             headerView.subtitleView.setMaxWidth(HintView2.cutInFancyHalf(headerView.subtitleView.getText(), headerView.subtitleView.getPaint()) + 1);
-            actionBar.setTitle(getTitle());
+            if (actionBar != null) { actionBar.setTitle(getTitle()); }
 
             AvatarDrawable avatarDrawable = new AvatarDrawable();
             avatarDrawable.setInfo(user);
