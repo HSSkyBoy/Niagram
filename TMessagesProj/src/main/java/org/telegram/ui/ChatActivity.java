@@ -14728,13 +14728,23 @@ public class ChatActivity extends BaseFragment implements
     }
 
     private void showSlowModeHint(View view, boolean show, CharSequence time) {
-        if (getParentActivity() == null || fragmentView == null || !show && (slowModeHint == null || !slowModeHint.isShowing())) {
+        if (getParentActivity() == null || fragmentView == null) {
+            return;
+        }
+        if (!show) {
+            if (slowModeHint != null && slowModeHint.isShowing()) {
+                slowModeHint.hide();
+            }
+            return;
+        }
+        if (slowModeHint == null) {
+            slowModeHint = addGlassHint(HintView2.DIRECTION_BOTTOM, 250, false, -1);
+        }
+        if (slowModeHint == null) {
             return;
         }
         slowModeHint.setText(AndroidUtilities.replaceTags(LocaleController.formatString("SlowModeHint", R.string.SlowModeHint, time)));
-        if (show) {
-            slowModeHint.showForView(view, true);
-        }
+        slowModeHint.showForView(view, true);
     }
 
     public void showTimerHint() {
