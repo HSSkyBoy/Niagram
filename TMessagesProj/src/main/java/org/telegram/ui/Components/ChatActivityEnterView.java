@@ -3003,7 +3003,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             ThemeBind.colorFilter(attachButton, Theme.key_glass_defaultIcon, resourcesProvider, PorterDuff.Mode.MULTIPLY);
             attachButton.setImageResource(R.drawable.msg_input_attach2);
             ThemeBind.selectorBackground(attachButton, Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
-            messageEditTextContainer.addView(attachButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.BOTTOM | Gravity.RIGHT));
+            messageEditTextContainer.addView(attachButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, attachGravity, 0, 0, 0, 0));
             attachButton.setOnClickListener(v -> {
                 if (adjustPanLayoutHelper != null && adjustPanLayoutHelper.animationInProgress() || attachLayoutPaddingAlpha == 0f) {
                     return;
@@ -5158,7 +5158,6 @@ public class ChatActivityEnterView extends FrameLayout implements
     @Override
     protected void onDraw(Canvas canvas) {
         drawBackground(canvas, true);
-        drawIosFieldPill(canvas);
     }
 
     public void drawBackground(Canvas canvas, boolean withComposeShadowDrawable) {
@@ -5197,14 +5196,25 @@ public class ChatActivityEnterView extends FrameLayout implements
         }
         View outsideLeftButton = (!isStories && isIosButtonPlacement() && attachButton != null) ? attachButton
                 : (!isStories && !isIosButtonPlacement() && emojiButton != null) ? emojiButton : null;
-        int pillLeft = (outsideLeftButton != null && outsideLeftButton.getVisibility() == VISIBLE && outsideLeftButton.getAlpha() > 0) ? outsideLeftButton.getRight() + dp(iosGapDp) : 0;
+        int pillLeft = 0;
+        int maxRight = messageEditTextContainer.getWidth() - dp(iosGapDp);
+        if (outsideLeftButton != null && outsideLeftButton.getVisibility() == VISIBLE && outsideLeftButton.getAlpha() > 0) {
+            if (outsideLeftButton.getLeft() < messageEditTextContainer.getWidth() / 2) {
+                pillLeft = outsideLeftButton.getRight() + dp(iosGapDp);
+            }
+        }
         if (pillLeft == 0 && !isStories && recordedAudioPanel != null && recordDeleteImageView != null
                 && recordedAudioPanel.getVisibility() == VISIBLE && recordedAudioPanel.getAlpha() > 0) {
-            pillLeft = recordDeleteImageView.getRight() + dp(iosGapDp);
+            if (recordDeleteImageView.getLeft() < messageEditTextContainer.getWidth() / 2) {
+                pillLeft = recordDeleteImageView.getRight() + dp(iosGapDp);
+            }
+        }
+        if (pillLeft >= maxRight) {
+            pillLeft = 0;
         }
         canvas.save();
         canvas.translate(textFieldContainer.getLeft() + messageEditTextContainer.getLeft(), textFieldContainer.getTop() + messageEditTextContainer.getTop());
-        fieldPillDrawable.setBounds(pillLeft, 0, messageEditTextContainer.getWidth() - dp(iosGapDp), messageEditTextContainer.getHeight());
+        fieldPillDrawable.setBounds(pillLeft, 0, maxRight, messageEditTextContainer.getHeight());
         fieldPillDrawable.draw(canvas);
         canvas.restore();
     }
@@ -15864,6 +15874,7 @@ public class ChatActivityEnterView extends FrameLayout implements
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
+        drawIosFieldPill(canvas);
         if (emojiView == null || emojiView.getVisibility() != View.VISIBLE || emojiView.getStickersExpandOffset() == 0) {
             super.dispatchDraw(canvas);
         } else {
@@ -17392,6 +17403,21 @@ public class ChatActivityEnterView extends FrameLayout implements
         emojiRightDp = isIosButtonPlacement() ? iosGapDp : 0;
         aiButtonGravity = isIosButtonPlacement() ? (Gravity.TOP | Gravity.RIGHT) : (Gravity.TOP | Gravity.LEFT);
         aiButtonRightMarginDp = isIosButtonPlacement() ? (DEFAULT_HEIGHT + iosGapDp) : 0;
+
+        if (attachButton != null) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) attachButton.getLayoutParams();
+            if (lp != null && lp.gravity != attachGravity) {
+                lp.gravity = attachGravity;
+                attachButton.setLayoutParams(lp);
+            }
+        }
+        if (emojiButton != null) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) emojiButton.getLayoutParams();
+            if (lp != null && lp.gravity != emojiGravity) {
+                lp.gravity = emojiGravity;
+                emojiButton.setLayoutParams(lp);
+            }
+        }
     }
 
     private void updateFieldLeftIos() {
@@ -17404,6 +17430,11 @@ public class ChatActivityEnterView extends FrameLayout implements
         int cursorDp = IOS_LEFT_EDGE_MARGIN_DP;
         boolean hasLeftAttach = false;
         if (attachButton != null && attachButton.getVisibility() == VISIBLE && (attachButton.getAlpha() > 0 || isAttachRestorePending)) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) attachButton.getLayoutParams();
+            if (lp != null && lp.gravity != attachGravity) {
+                lp.gravity = attachGravity;
+                attachButton.setLayoutParams(lp);
+            }
             setLeftMarginDp(attachButton, IOS_LEFT_EDGE_MARGIN_DP);
             cursorDp += DEFAULT_HEIGHT + iosGapDp;
             hasLeftAttach = true;
