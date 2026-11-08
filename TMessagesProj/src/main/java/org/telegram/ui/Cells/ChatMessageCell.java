@@ -15729,17 +15729,9 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 }
             }
         }
-        timeString = timeString(currentMessageObject, messageObject, edited, currentMessagesGroup != null ? currentMessagesGroup.getMaxEditDate() : messageObject.messageOwner.edit_date);
-        if (currentMessageObject.messageOwner.video_processing_pending) {
-            timeString = formatString(R.string.ScheduledTimeApprox, timeString);
-        }
-        if (NyaConfig.INSTANCE.getShowMessageID().Bool() && messageObject.messageOwner != null/* && (isChat || isMegagroup || ChatObject.isChannel(currentChat))*/) {
-            if (!(timeString instanceof SpannableStringBuilder)) {
-                timeString = new SpannableStringBuilder(timeString);
-            }
-            ((SpannableStringBuilder) timeString).append(" | ").append(String.valueOf(messageObject.messageOwner.id));
-        }
+        boolean showAyuDeletedMark = ayuDeleted && shouldShowAyuDeletedMark(currentMessageObject);
         boolean showBookmarkInTime = false;
+        int senderNameColor = 0;
         if (NyaConfig.INSTANCE.getShowAddToBookmark().Bool()) {
             boolean groupHasBookmark = false;
             if (currentMessagesGroup != null && currentMessagesGroup.messages != null && currentMessagesGroup.messages.size() > 1) {
@@ -15754,7 +15746,33 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             }
             boolean isBookmarked = BookmarksHelper.isBookmarked(currentAccount, messageObject.getDialogId(), messageObject.getId());
             showBookmarkInTime = groupHasBookmark || (isBookmarked && (!shouldDrawNameLayoutForMessage(messageObject) || isSideMenuEnabled));
+            if (showBookmarkInTime) {
+                senderNameColor = getSenderNameColor(isBookmarked);
+            }
             drawBookmarkInTime = showBookmarkInTime;
+        }
+        final int editedDate = edited && currentMessagesGroup != null ? currentMessagesGroup.getMaxEditDate() : messageObject.messageOwner.edit_date;
+        if (edited && !showAyuDeletedMark) {
+            timeString = TimeStringHelper.createEditedString(currentMessageObject, translated, showBookmarkInTime, senderNameColor, editedDate);
+        } else if (!edited && showAyuDeletedMark) {
+            timeString = TimeStringHelper.createDeletedString(currentMessageObject, edited, translated, showBookmarkInTime, senderNameColor);
+        } else if (edited && showAyuDeletedMark) {
+            timeString = TimeStringHelper.createDeletedString(currentMessageObject, edited, translated, showBookmarkInTime, senderNameColor, editedDate);
+        } else if (translated) {
+            timeString = TimeStringHelper.createTranslatedString(currentMessageObject, false, showBookmarkInTime, senderNameColor);
+        } else if (showBookmarkInTime) {
+            timeString = TimeStringHelper.createBookmarkedString(currentMessageObject, senderNameColor);
+        } else {
+            timeString = timeString(currentMessageObject, messageObject, edited, editedDate);
+        }
+        if (currentMessageObject.messageOwner.video_processing_pending) {
+            timeString = formatString(R.string.ScheduledTimeApprox, timeString);
+        }
+        if (NyaConfig.INSTANCE.getShowMessageID().Bool() && messageObject.messageOwner != null/* && (isChat || isMegagroup || ChatObject.isChannel(currentChat))*/) {
+            if (!(timeString instanceof SpannableStringBuilder)) {
+                timeString = new SpannableStringBuilder(timeString);
+            }
+            ((SpannableStringBuilder) timeString).append(" | ").append(String.valueOf(messageObject.messageOwner.id));
         }
 
         SpannableStringBuilder currentTimeStringBuilder = new SpannableStringBuilder(timeString);
