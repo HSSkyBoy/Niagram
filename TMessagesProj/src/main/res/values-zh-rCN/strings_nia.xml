@@ -497,6 +497,7 @@
     <string name="StorageSettings">存储</string>
     <string name="MainTabsSettingsHeader">主标签页</string>
     <string name="MainTabsHideTitles">隐藏标题</string>
+    <string name="MainTabsLiquidGlass">液态玻璃效果</string>
     <string name="MainTabsHideContacts">隐藏联系人标签页</string>
     <string name="PasscodeShowMessagePreviewWhenLocked">显示消息预览</string>
     <string name="PasscodeShowMessagePreviewWhenLockedAbout">密码锁启用时仍显示通知内容。</string>

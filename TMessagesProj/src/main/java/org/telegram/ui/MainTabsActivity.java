@@ -418,7 +418,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             iBlur3SourceTabFrosted != null ? iBlur3SourceTabFrosted : iBlur3SourceColor,
             iBlur3SourceColor);
         iBlur3FactoryGlass.setSourceRootView(viewPositionWatcher, contentView);
-        iBlur3FactoryGlass.setLiquidGlassEffectAllowed(true);
+        iBlur3FactoryGlass.setLiquidGlassEffectAllowed(NyaConfig.INSTANCE.getMainTabsLiquidGlass().Bool());
 
         tabsViewBackground = iBlur3FactoryGlass.create(tabsView, BlurredBackgroundProviderImpl.mainTabs(resourceProvider));
         tabsViewBackground.setRadius(dp(MainTabsHelper.getMainTabsHeight() / 2f));

@@ -450,6 +450,7 @@
     <string name="StorageSettings">Хранилище</string>
     <string name="MainTabsSettingsHeader">Основные вкладки</string>
     <string name="MainTabsHideTitles">Скрыть заголовки</string>
+    <string name="MainTabsLiquidGlass">Эффект жидкого стекла</string>
     <string name="MainTabsHideContacts">Скрыть вкладку «Контакты»</string>
     <string name="PasscodeShowMessagePreviewWhenLocked">Предпросмотр сообщений</string>
     <string name="PasscodeShowMessagePreviewWhenLockedAbout">Отображает содержимое уведомлений даже при включённой блокировке паролем.</string>

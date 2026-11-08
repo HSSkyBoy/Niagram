@@ -1866,6 +1866,12 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val mainTabsLiquidGlass =
+        addConfig(
+            "MainTabsLiquidGlass",
+            ConfigItem.configTypeBool,
+            true
+        )
     val mainTabsHideContacts =
         addConfig(
             "MainTabsHideContacts",

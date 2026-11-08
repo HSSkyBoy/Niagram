@@ -270,6 +270,7 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
     private final AbstractConfigCell headerMainTabs = cellGroup.appendCell(new ConfigCellHeader(getString(R.string.MainTabsSettingsHeader)));
     private final AbstractConfigCell hideTitlesRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getMainTabsHideTitles()));
     private final AbstractConfigCell hideContactsRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getMainTabsHideContacts()));
+    private final AbstractConfigCell mainTabsLiquidGlassRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getMainTabsLiquidGlass()));
     private final AbstractConfigCell hideBottomNavigationBarRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideBottomNavigationBar()));
     private final AbstractConfigCell dividerMainTabs = cellGroup.appendCell(new ConfigCellDivider());
 
@@ -422,6 +423,8 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
             } else if (key.equals(NyaConfig.INSTANCE.getMainTabsHideTitles().getKey())) {
                 parentLayout.rebuildFragments(0);
             } else if (key.equals(NyaConfig.INSTANCE.getMainTabsHideContacts().getKey())) {
+                parentLayout.rebuildFragments(0);
+            } else if (key.equals(NyaConfig.INSTANCE.getMainTabsLiquidGlass().getKey())) {
                 parentLayout.rebuildFragments(0);
             } else if (key.equals(NyaConfig.INSTANCE.getHideBottomNavigationBar().getKey())) {
                 checkMainTabsRows();
@@ -785,14 +788,26 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
                 listAdapter.notifyItemInserted(index);
                 changed = true;
             }
-            if (!cellGroup.rows.contains(hideTitlesRow)) {
+            if (!cellGroup.rows.contains(mainTabsLiquidGlassRow)) {
                 int index = cellGroup.rows.indexOf(hideContactsRow);
+                cellGroup.rows.add(index, mainTabsLiquidGlassRow);
+                listAdapter.notifyItemInserted(index);
+                changed = true;
+            }
+            if (!cellGroup.rows.contains(hideTitlesRow)) {
+                int index = cellGroup.rows.indexOf(mainTabsLiquidGlassRow);
                 cellGroup.rows.add(index, hideTitlesRow);
                 listAdapter.notifyItemInserted(index);
                 changed = true;
             }
         } else {
-            int rowIndex = cellGroup.rows.indexOf(hideContactsRow);
+            int rowIndex = cellGroup.rows.indexOf(mainTabsLiquidGlassRow);
+            if (rowIndex != -1) {
+                cellGroup.rows.remove(mainTabsLiquidGlassRow);
+                listAdapter.notifyItemRemoved(rowIndex);
+                changed = true;
+            }
+            rowIndex = cellGroup.rows.indexOf(hideContactsRow);
             if (rowIndex != -1) {
                 cellGroup.rows.remove(hideContactsRow);
                 listAdapter.notifyItemRemoved(rowIndex);

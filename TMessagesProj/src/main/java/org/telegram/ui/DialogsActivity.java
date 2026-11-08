@@ -14249,14 +14249,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             boolean hasBottomBlur = false;
             if (hasMainTabs && !NyaConfig.INSTANCE.getHideBottomNavigationBar().Bool()) {
                 iBlur3PositionMainTabs.set(0, mainTabTop, fragmentView.getMeasuredWidth(), mainTabBottom);
-                iBlur3PositionMainTabs.inset(0, LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS) ? 0 : -dp(48));
+                iBlur3PositionMainTabs.inset(0, (LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS) && NyaConfig.INSTANCE.getMainTabsLiquidGlass().Bool()) ? 0 : -dp(48));
 
                 hasBottomBlur = true;
             } else if (commentView != null && chatInputViewsContainer != null) {
                 iBlur3PositionMainTabs.set(0,
                     fragmentView.getMeasuredHeight() - calculateListViewPaddingBottom(),
                     fragmentView.getMeasuredWidth(), fragmentView.getMeasuredHeight());
-                iBlur3PositionMainTabs.inset(0, LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS) ? 0 : -dp(48));
+                iBlur3PositionMainTabs.inset(0, (LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS) && NyaConfig.INSTANCE.getMainTabsLiquidGlass().Bool()) ? 0 : -dp(48));
 
                 hasBottomBlur = true;
             }

@@ -438,6 +438,7 @@
     <string name="StorageSettings">Сховище</string>
     <string name="MainTabsSettingsHeader">Основні вкладки</string>
     <string name="MainTabsHideTitles">Приховати заголовки</string>
+    <string name="MainTabsLiquidGlass">Ефект рідкого скла</string>
     <string name="MainTabsHideContacts">Приховати вкладку «Контакти»</string>
     <string name="PasscodeShowMessagePreviewWhenLocked">Показувати попередній перегляд повідомлень</string>
     <string name="PasscodeShowMessagePreviewWhenLockedAbout">Показувати вміст сповіщень навіть під час блокування паролем.</string>
