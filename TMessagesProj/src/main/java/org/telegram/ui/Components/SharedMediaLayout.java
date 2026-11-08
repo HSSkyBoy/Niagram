@@ -11006,6 +11006,7 @@ public class SharedMediaLayout extends FrameLayout implements NotificationCenter
 
         @Override
         public int getItemCount() {
+            xyz.nextalone.nagram.ui.SharedMediaLayoutPatch.ensureSelfParticipant(delegate.getCurrentChat(), chatInfo, sortedUsers, profileActivity == null ? UserConfig.selectedAccount : profileActivity.getCurrentAccount(), this);
             if (chatInfo != null && chatInfo.participants.participants.isEmpty()) {
                 return 1;
             }
