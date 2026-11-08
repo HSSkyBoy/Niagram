@@ -39,6 +39,7 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MessageObject;
+import top.nkbe.niagram.helpers.MessageHelper;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.browser.Browser;
@@ -939,7 +940,7 @@ class ChatMessageLinkPreview {
                         }
                     } else if (cell.drawPhotoImage && (cell.documentAttachType == cell.DOCUMENT_ATTACH_TYPE_GIF || cell.documentAttachType == cell.DOCUMENT_ATTACH_TYPE_VIDEO || authorLayout == null && cell.titleLayout == null && cell.descriptionLayout == null && cell.siteNameLayout == null)) {
                         if (cell.delegate != null) {
-                            cell.delegate.didPressImage(cell, cell.lastTouchX, cell.lastTouchY, true);
+                            cell.delegate.didPressImage(cell, cell.lastTouchX, cell.lastTouchY, false);
                         }
                     } else if (cell.currentMessageObject != null && !cell.currentMessageObject.preview) {
                         TLRPC.WebPage webPage = MessageObject.getMedia(cell.currentMessageObject.messageOwner).webpage;
@@ -949,7 +950,15 @@ class ChatMessageLinkPreview {
                             }
                         } else if (webPage != null) {
                             if (cell.delegate != null) {
-                                cell.delegate.didPressWebPage(cell, webPage, webPage.url, MessageObject.getMedia(cell.currentMessageObject.messageOwner).safe);
+                                if (cell.drawPhotoImage && (cell.photoImage.isInsideImage(x, y) || cell.photoImage.isInsideImage(cell.lastTouchX, cell.lastTouchY))) {
+                                    cell.delegate.didPressImage(cell, cell.lastTouchX, cell.lastTouchY, false);
+                                } else {
+                                    if (webPage.type != null && webPage.type.equals("document") && !TextUtils.isEmpty(MessageHelper.getPathToMessage(cell.currentMessageObject))) {
+                                        cell.delegate.didPressImage(cell, cell.lastTouchX, cell.lastTouchY, false);
+                                    } else {
+                                        cell.delegate.didPressWebPage(cell, webPage, webPage.url, MessageObject.getMedia(cell.currentMessageObject.messageOwner).safe);
+                                    }
+                                }
                             } else {
                                 Browser.openUrl(cell.getContext(), webPage.url);
                             }
@@ -1024,7 +1033,15 @@ class ChatMessageLinkPreview {
                                 cell.playSoundEffect(SoundEffectConstants.CLICK);
                             } else if (webPage != null) {
                                 if (cell.delegate != null) {
-                                    cell.delegate.didPressWebPage(cell, webPage, webPage.url, MessageObject.getMedia(cell.currentMessageObject.messageOwner).safe);
+                                    if (cell.drawPhotoImage && (cell.photoImage.isInsideImage(x, y) || cell.photoImage.isInsideImage(cell.lastTouchX, cell.lastTouchY))) {
+                                        cell.delegate.didPressImage(cell, cell.lastTouchX, cell.lastTouchY, false);
+                                    } else {
+                                        if (webPage.type != null && webPage.type.equals("document") && !TextUtils.isEmpty(MessageHelper.getPathToMessage(cell.currentMessageObject))) {
+                                            cell.delegate.didPressImage(cell, cell.lastTouchX, cell.lastTouchY, false);
+                                        } else {
+                                            cell.delegate.didPressWebPage(cell, webPage, webPage.url, MessageObject.getMedia(cell.currentMessageObject.messageOwner).safe);
+                                        }
+                                    }
                                 } else {
                                     Browser.openUrl(cell.getContext(), webPage.url);
                                 }
