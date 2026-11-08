@@ -1,4 +1,4 @@
-﻿package top.nkbe.niagram.ui.components;
+package top.nkbe.niagram.ui.components;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
