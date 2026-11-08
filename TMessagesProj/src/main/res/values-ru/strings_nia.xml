@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="N_Config">Настройки Neo</string>
+    <string name="N_Config">Neo-Настройки</string>
     <string name="CombineMessage">Объединить сообщения</string>
     <string name="TextStyle">Стиль текста</string>
     <string name="NoiseSuppressAndVoiceEnhance">Улучшение голоса</string>
@@ -225,7 +225,7 @@
     <string name="Other">Другое</string>
     <string name="RestartApp">Перезапустить приложение</string>
     <string name="ResetSettings">Сброс настроек</string>
-    <string name="ResetSettingsAlert">Вы уверены, что хотите сбросить все «Настройки Neo»?</string>
+    <string name="ResetSettingsAlert">Вы уверены, что хотите сбросить все «Neo-Настройки»?</string>
     <string name="DontAutoPlayNextVoice">Не воспроизводить следующее голосовое сообщение автоматически</string>
     <string name="SaveToChatSubfolder">Сохранять вложения по названию чатов</string>
     <string name="MessageColoredBackground">Красочные фоны сообщений</string>
@@ -518,7 +518,7 @@
     <string name="InputAnimationStrongest">Максимальная</string>
 
     <!-- Legacy Nekogram Strings -->
-    <string name="NekoSettings">Настройки Neo</string>
+    <string name="NekoSettings">Neo-Настройки</string>
     <string name="IPv6">Предпочитать IPv6</string>
     <string name="MessageMenu">Меню сообщений</string>
     <string name="HidePhone">Скрыть номер телефона</string>
@@ -673,14 +673,14 @@
     <string name="ClearRecentChats">Очистить недавние чаты</string>
     <string name="ClearRecentChatAlert">Вы хотите очистить недавние чаты?</string>
     <string name="CloudConfig">Облачные настройки</string>
-    <string name="CloudConfigDesc">Сохраните ваши «Настройки Neo» в облаке Telegram.</string>
+    <string name="CloudConfigDesc">Сохраните ваши «Neo-Настройки» в облаке Telegram.</string>
     <string name="CloudConfigSyncDate">Последняя синхронизация: %1$s, облако: %2$s</string>
     <string name="CloudConfigSyncDateNever">никогда</string>
     <string name="CloudConfigSync">Синхронизировать с облаком</string>
     <string name="CloudConfigRestore">Восстановить из облака</string>
     <string name="CloudConfigSyncing">Синхронизация…</string>
     <string name="CloudConfigAutoSync">Автосинхронизация</string>
-    <string name="CloudConfigAutoSyncDesc">Автоматическая синхронизация с облаком после изменений в «Настройках Neo».</string>
+    <string name="CloudConfigAutoSyncDesc">Автоматическая синхронизация с облаком после изменений в «Neo-Настройках».</string>
     <string name="CloudConfigSyncFailed">Не удалось синхронизировать настройки с облаком</string>
     <string name="CloudConfigRestoreFailed">Не удалось восстановить настройки из облака</string>
     <string name="CopyCallback">Копировать данные обратного вызова</string>
@@ -898,4 +898,39 @@
     <string name="HideChatHeaderConnectionState">Скрыть статус подключения в заголовке чата</string>
     <string name="HideFloatingDate">Скрыть плавающую дату</string>
     <string name="HideAvatarTtlBadge">Скрыть таймер автоудаления на аватарах</string>
+    <string name="AutoReactionDetect">Обнаружение авто-реакций</string>
+    <string name="AutoReactionDetectNotice">Отслеживает скорость реакций участников группы на сообщения и отмечает тех, кто реагирует мгновенно. Все данные хранятся только на этом устройстве.</string>
+    <string name="AutoReactionSuspected">Подозрение на авто-реакцию (%1$s)</string>
+    <string name="AutoReactionNormal">Обычно</string>
+    <string name="AutoReactionMinLatency">Мин. задержка</string>
+    <string name="AutoReactionAvgLatency">Средняя задержка</string>
+    <string name="AutoReactionZeroCount">0 с: %1$d раз</string>
+    <string name="AutoReactionTimeline">История реакций</string>
+    <string name="AutoReactionNoData">Данные о реакциях пока не записаны</string>
+    <string name="AutoReactionReset">Сбросить статистику</string>
+    <string name="AutoReactionReport">Отчет об авто-реакциях</string>
+    <string name="AutoReactionMonitor">Мониторинг реакций</string>
+    <string name="AutoReactionBanMember">Заблокировать участника</string>
+    <string name="AutoReactionBanConfirm">Вы уверены, что хотите заблокировать и удалить %1$s из группы?</string>
+    <string name="AutoReactionMemberCount">Записано участников: %1$d</string>
+    <string name="PushServiceTypeFCM">Google FCM</string>
+    <string name="PushServiceTypeUnified">UnifiedPush</string>
+    <string name="PushServiceTypeMicroG">microG</string>
+    <string name="Pangu">Pangu (пробелы между CJK и латиницей)</string>
+    <string name="NiagramX">Niagram</string>
+    <string name="LlmApiUrlHint">https://api.openai.com/v1</string>
+    <string name="LlmApiUrlDefault">https://generativelanguage.googleapis.com/v1beta/openai</string>
+    <string name="LlmModelNameDefault">gemini-flash-latest</string>
+    <string name="LlmProviderOpenAIModel">gpt-5.6-luna</string>
+    <string name="LlmProviderGeminiModel">gemini-flash-lite-latest</string>
+    <string name="LlmProviderGroqModel">openai/gpt-oss-120b</string>
+    <string name="LlmProviderDeepSeekModel">deepseek-v4-flash</string>
+    <string name="LlmProviderXAIModel"></string>
+    <string name="LlmProviderCerebrasModel">gpt-oss-120b</string>
+    <string name="LlmProviderOllamaCloudModel">gemma4:31b</string>
+    <string name="LlmProviderOpenRouterModel">openrouter/free</string>
+    <string name="LlmProviderVercelAIGatewayModel">google/gemma-4-31b-it</string>
+    <string name="StyleMaterialDesign3">Material Design 3</string>
+    <string name="PreferOriginalQuality">Предпочитать исходное качество</string>
+    <string name="NekoX">NekoX</string>
 </resources>

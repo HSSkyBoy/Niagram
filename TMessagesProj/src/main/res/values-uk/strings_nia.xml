@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="N_Config">Налаштування Neo</string>
+    <string name="N_Config">Neo-Налаштування</string>
     <string name="CombineMessage">Об\'єднати повідомлення</string>
     <string name="TextStyle">Стиль тексту</string>
     <string name="NoiseSuppressAndVoiceEnhance">Покращення голосу</string>
@@ -216,7 +216,7 @@
     <string name="Other">Інше</string>
     <string name="RestartApp">Перезапустити застосунок</string>
     <string name="ResetSettings">Скидання налаштувань</string>
-    <string name="ResetSettingsAlert">Ви дійсно бажаєте скинути всі налаштування Neo?</string>
+    <string name="ResetSettingsAlert">Ви дійсно бажаєте скинути всі «Neo-Налаштування»?</string>
     <string name="DontAutoPlayNextVoice">Не відтворювати наступне голосове повідомлення</string>
     <string name="SaveToChatSubfolder">Зберігати вкладення за назвою чату</string>
     <string name="MessageColoredBackground">Кольорове тло повідомлень</string>
@@ -506,7 +506,7 @@
     <string name="InputAnimationStrongest">Найсильніша</string>
 
     <!-- Legacy Nekogram Strings -->
-    <string name="NekoSettings">Налаштування Neo</string>
+    <string name="NekoSettings">Neo-Налаштування</string>
     <string name="IPv6">Надавати перевагу IPv6</string>
     <string name="MessageMenu">Меню повідомлень</string>
     <string name="HidePhone">Приховати номер телефону</string>
@@ -660,7 +660,7 @@
     <string name="ClearRecentChats">Очистити недавні чати</string>
     <string name="ClearRecentChatAlert">Ви хочете очистити останні чати?</string>
     <string name="CloudConfig">Хмарні налаштування</string>
-    <string name="CloudConfigDesc">Збережіть свої налаштування Neo у хмарі Telegram.</string>
+    <string name="CloudConfigDesc">Збережіть свої «Neo-Налаштування» у хмарі Telegram.</string>
     <string name="CloudConfigSyncDate">Остання синхронізація: %1$s, хмара: %2$s</string>
     <string name="CloudConfigSyncDateNever">ніколи</string>
     <string name="CloudConfigSync">Синхронізувати до хмари</string>
@@ -868,4 +868,39 @@
     <string name="HideChatHeaderConnectionState">Приховати статус підключення в заголовку чату</string>
     <string name="HideFloatingDate">Приховати плаваючу дату</string>
     <string name="HideAvatarTtlBadge">Приховати таймер автовидалення на аватарах</string>
+    <string name="AutoReactionDetect">Виявлення авто-реакцій</string>
+    <string name="AutoReactionDetectNotice">Відстежує швидкість реакцій учасників групи на повідомлення та позначає тих, хто реагує миттєво. Усі дані зберігаються лише на цьому пристрої.</string>
+    <string name="AutoReactionSuspected">Підозра на авто-реакцію (%1$s)</string>
+    <string name="AutoReactionNormal">Звичайно</string>
+    <string name="AutoReactionMinLatency">Мін. затримка</string>
+    <string name="AutoReactionAvgLatency">Середня затримка</string>
+    <string name="AutoReactionZeroCount">0 с: %1$d раз</string>
+    <string name="AutoReactionTimeline">Історія реакцій</string>
+    <string name="AutoReactionNoData">Дані про реакції ще не записані</string>
+    <string name="AutoReactionReset">Скинути статистику</string>
+    <string name="AutoReactionReport">Звіт про авто-реакції</string>
+    <string name="AutoReactionMonitor">Моніторинг реакцій</string>
+    <string name="AutoReactionBanMember">Заблокувати учасника</string>
+    <string name="AutoReactionBanConfirm">Ви впевнені, що хочете заблокувати та видалити %1$s з групи?</string>
+    <string name="AutoReactionMemberCount">Записано учасників: %1$d</string>
+    <string name="PushServiceTypeFCM">Google FCM</string>
+    <string name="PushServiceTypeUnified">UnifiedPush</string>
+    <string name="PushServiceTypeMicroG">microG</string>
+    <string name="Pangu">Pangu (пробіли між CJK та латиницею)</string>
+    <string name="NiagramX">Niagram</string>
+    <string name="LlmApiUrlHint">https://api.openai.com/v1</string>
+    <string name="LlmApiUrlDefault">https://generativelanguage.googleapis.com/v1beta/openai</string>
+    <string name="LlmModelNameDefault">gemini-flash-latest</string>
+    <string name="LlmProviderOpenAIModel">gpt-5.6-luna</string>
+    <string name="LlmProviderGeminiModel">gemini-flash-lite-latest</string>
+    <string name="LlmProviderGroqModel">openai/gpt-oss-120b</string>
+    <string name="LlmProviderDeepSeekModel">deepseek-v4-flash</string>
+    <string name="LlmProviderXAIModel"></string>
+    <string name="LlmProviderCerebrasModel">gpt-oss-120b</string>
+    <string name="LlmProviderOllamaCloudModel">gemma4:31b</string>
+    <string name="LlmProviderOpenRouterModel">openrouter/free</string>
+    <string name="LlmProviderVercelAIGatewayModel">google/gemma-4-31b-it</string>
+    <string name="StyleMaterialDesign3">Material Design 3</string>
+    <string name="PreferOriginalQuality">Надавати перевагу вихідній якості</string>
+    <string name="NekoX">NekoX</string>
 </resources>

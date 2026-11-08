@@ -87,14 +87,20 @@ abstract class GenerateLocalizationUtilsJavaTask : DefaultTask() {
                 java.appendLine()
                 java.appendLine("        switch (language) {")
 
+                val tagsByLanguage = sortedMapOf<String, String>()
                 for (tag in languageTags) {
-                    if (!tag.contains('-')) {
-                        java.append("            case \"")
-                        java.append(escapeJavaString(tag))
-                        java.append("\": return \"")
-                        java.append(getLocalizationAssetName(tag))
-                        java.appendLine("\";")
+                    val lang = tag.substringBefore('-')
+                    if (!tagsByLanguage.containsKey(lang) || tag == lang) {
+                        tagsByLanguage[lang] = tag
                     }
+                }
+
+                for ((lang, tag) in tagsByLanguage) {
+                    java.append("            case \"")
+                    java.append(escapeJavaString(lang))
+                    java.append("\": return \"")
+                    java.append(getLocalizationAssetName(tag))
+                    java.appendLine("\";")
                 }
 
                 java.appendLine("            default: return null;")
