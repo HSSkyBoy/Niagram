@@ -8362,8 +8362,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             localeDialog = showAlertDialog(builder);
             SharedPreferences preferences = MessagesController.getGlobalMainSettings();
             Set<String> showedLangs = new HashSet<>(preferences.getStringSet("language_showed3", new HashSet<>()));
+            String previousShowedLang = preferences.getString("language_showed2", "");
+            if (!TextUtils.isEmpty(previousShowedLang)) {
+                showedLangs.add(previousShowedLang);
+            }
             showedLangs.add(systemLang);
-            preferences.edit().putStringSet("language_showed3", showedLangs).commit();
+            preferences.edit().putString("language_showed2", systemLang).putStringSet("language_showed3", showedLangs).apply();
         } catch (Exception e) {
             FileLog.e(e);
         }
@@ -8399,11 +8403,18 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             SharedPreferences preferences = MessagesController.getGlobalMainSettings();
             Set<String> showedLangs = preferences.getStringSet("language_showed3", null);
             final String systemLang = MessagesController.getInstance(currentAccount).suggestedLangCode;
-            if (!force && showedLangs != null && showedLangs.contains(systemLang)) {
-                if (BuildVars.LOGS_ENABLED) {
-                    FileLog.d("alert already showed for " + systemLang);
+            if (!force) {
+                if (showedLangs != null && showedLangs.contains(systemLang)) {
+                    if (BuildVars.LOGS_ENABLED) {
+                        FileLog.d("alert already showed for " + systemLang);
+                    }
+                    return;
                 }
-                return;
+                final LocaleController.LocaleInfo currentInfo = LocaleController.getInstance().getCurrentLocaleInfo();
+                if (preferences.getString("language", null) != null
+                        || currentInfo != null && (currentInfo.isUnofficial() || currentInfo.isLocal())) {
+                    return;
+                }
             }
 
             final LocaleController.LocaleInfo[] infos = new LocaleController.LocaleInfo[2];
