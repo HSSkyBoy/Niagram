@@ -891,5 +891,11 @@
     <string name="HideFeaturedStickersAndEmoji">隱藏推薦貼圖與表情</string>
     <string name="HideFeaturedStickersAndEmojiNotice">在選取器中不顯示熱門推薦的貼圖包與表情包。</string>
     <string name="EnableSplashScreen">啟動動畫</string>
-    <string name="EnableSplashScreenDesc">在應用程式啟動時顯示開屏過渡動畫。關閉後可實現極致秒開。</string>
+    <string name="EnableSplashScreenDesc">在應用程式啟動時顯示開屏過渡動畫。</string>
+    <string name="HideBotSubtitle">隱藏機器人副標題</string>
+    <string name="HideBotSubtitleNotice">在聊天標題列中隱藏機器人名稱下方的 "bot" 副標題。</string>
+    <string name="HideBotInfo">隱藏機器人介紹卡片</string>
+    <string name="HideBotInfoNotice">在機器人對話中隱藏 "這個機器人能做什麼？" 提示卡片。</string>
+    <string name="HideBotInfoMedia">隱藏機器人介紹中的媒體</string>
+    <string name="HideBotInfoMediaNotice">僅隱藏機器人介紹卡片中的圖片或影片，保留文字描述。</string>
 </resources>

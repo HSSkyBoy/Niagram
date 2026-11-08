@@ -917,4 +917,10 @@
     <string name="HideFeaturedStickersAndEmojiNotice">Do not display featured or trending sticker packs and emoji sets in the picker.</string>
     <string name="EnableSplashScreen">Splash Screen Animation</string>
     <string name="EnableSplashScreenDesc">Display splash screen animation on startup.</string>
+    <string name="HideBotSubtitle">Hide "bot" Subtitle</string>
+    <string name="HideBotSubtitleNotice">Hide the "bot" subtitle below the bot name in the chat header.</string>
+    <string name="HideBotInfo">Hide Bot Introduction Card</string>
+    <string name="HideBotInfoNotice">Hide the "What can this bot do?" introduction card in bot chats.</string>
+    <string name="HideBotInfoMedia">Hide Media in Bot Introduction</string>
+    <string name="HideBotInfoMediaNotice">Only hide photos and videos in the bot introduction card while keeping the text description.</string>
 </resources>

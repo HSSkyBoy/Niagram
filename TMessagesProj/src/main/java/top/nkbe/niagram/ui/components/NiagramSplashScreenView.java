@@ -35,7 +35,7 @@ public class NiagramSplashScreenView extends FrameLayout {
     private static final int ICON_SIZE_DP = 76;
     private static final int CARD_RADIUS_DP = 24;
     private static final int ICON_RADIUS_DP = 20;
-    private static final long MIN_DISPLAY_DURATION_MS = 850L;
+    private static final long MIN_DISPLAY_DURATION_MS = 870L;
     private static final long EXIT_DURATION_MS = 360L;
 
     private final FrameLayout iconCard;

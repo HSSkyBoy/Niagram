@@ -893,5 +893,11 @@
     <string name="HideFeaturedStickersAndEmoji">隐藏推荐贴纸与表情</string>
     <string name="HideFeaturedStickersAndEmojiNotice">在选择器中不展示热门推荐的贴纸包与表情包。</string>
     <string name="EnableSplashScreen">启动动画</string>
-    <string name="EnableSplashScreenDesc">在应用启动时展示开屏过渡动画。关闭后可实现极速秒开。</string>
+    <string name="EnableSplashScreenDesc">在应用启动时展示开屏过渡动画。</string>
+    <string name="HideBotSubtitle">隐藏机器人副标题</string>
+    <string name="HideBotSubtitleNotice">在聊天标题栏中隐藏机器人名称下方的 "bot" 副标题。</string>
+    <string name="HideBotInfo">隐藏机器人介绍卡片</string>
+    <string name="HideBotInfoNotice">在机器人对话中隐藏 "这个机器人能做什么？" 提示卡片。</string>
+    <string name="HideBotInfoMedia">隐藏机器人介绍中的媒体</string>
+    <string name="HideBotInfoMediaNotice">仅隐藏机器人介绍卡片中的图片或视频，保留文字描述。</string>
 </resources>

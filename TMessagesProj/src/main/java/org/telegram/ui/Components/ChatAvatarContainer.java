@@ -1342,6 +1342,12 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
             }
             titleTextView.setTranslationY(0.0f);
             return;
+        } else if (user != null && user.bot && NyaConfig.INSTANCE.getHideBotSubtitle().Bool()) {
+            if (getSubtitleTextView() != null && getSubtitleTextView().getVisibility() != GONE) {
+                getSubtitleTextView().setVisibility(GONE);
+            }
+            titleTextView.setTranslationY(0.0f);
+            return;
         } else {
             if (getSubtitleTextView() != null && getSubtitleTextView().getVisibility() != VISIBLE) {
                 getSubtitleTextView().setVisibility(VISIBLE);

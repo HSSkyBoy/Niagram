@@ -40209,7 +40209,7 @@ public class ChatActivity extends BaseFragment implements
                         }
                     }
                     userInfoRow = rowCount++;
-                } else if ((UserObject.isReplyUser(currentUser) || currentUser != null && currentUser.bot && !MessagesController.isSupportUser(currentUser) && chatMode == MODE_DEFAULT) && endReached[0]) {
+                } else if ((UserObject.isReplyUser(currentUser) || currentUser != null && currentUser.bot && !NyaConfig.INSTANCE.getHideBotInfo().Bool() && !MessagesController.isSupportUser(currentUser) && chatMode == MODE_DEFAULT) && endReached[0]) {
                     botInfoRow = rowCount++;
                 }
 
@@ -40234,7 +40234,7 @@ public class ChatActivity extends BaseFragment implements
 
                 if (currentUser != null && !UserObject.isBot(currentUser) && !UserObject.isReplyUser(currentUser) && !UserInfoCell.isEmpty(getMessagesController().getPeerSettings(currentUser.id)) && !MessagesController.isSupportUser(currentUser) && chatMode == MODE_DEFAULT) {
                     userInfoRow = rowCount++;
-                } else if (UserObject.isReplyUser(currentUser) || currentUser != null && currentUser.bot && !MessagesController.isSupportUser(currentUser) && chatMode == MODE_DEFAULT) {
+                } else if (UserObject.isReplyUser(currentUser) || currentUser != null && currentUser.bot && !NyaConfig.INSTANCE.getHideBotInfo().Bool() && !MessagesController.isSupportUser(currentUser) && chatMode == MODE_DEFAULT) {
                     botInfoRow = rowCount++;
                 }
             }
@@ -40711,7 +40711,7 @@ public class ChatActivity extends BaseFragment implements
                         true,
                         currentUser == null ? 0 : currentUser.id,
                         mBotInfo != null ? mBotInfo.description : null,
-                        mBotInfo != null ? mBotInfo.description_document != null ? mBotInfo.description_document : mBotInfo.description_photo : null,
+                        mBotInfo != null && !NyaConfig.INSTANCE.getHideBotInfoMedia().Bool() ? mBotInfo.description_document != null ? mBotInfo.description_document : mBotInfo.description_photo : null,
                         mBotInfo,
                         setup ? DialogObject.getName(currentAccount, userInfo.bot_manager_id) : null
                     );

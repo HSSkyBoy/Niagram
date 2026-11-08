@@ -137,6 +137,9 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
     private final AbstractConfigCell headerChats = cellGroup.appendCell(new ConfigCellHeader(getString(R.string.Chat)));
     private final AbstractConfigCell hideChatHeaderVerifiedBadgeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideChatHeaderVerifiedBadge()));
     private final AbstractConfigCell hideChatHeaderConnectionStateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideChatHeaderConnectionState()));
+    private final AbstractConfigCell hideBotSubtitleRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideBotSubtitle(), getString(R.string.HideBotSubtitleNotice)));
+    private final AbstractConfigCell hideBotInfoRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideBotInfo(), getString(R.string.HideBotInfoNotice)));
+    private final AbstractConfigCell hideBotInfoMediaRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideBotInfoMedia(), getString(R.string.HideBotInfoMediaNotice)));
     private final AbstractConfigCell hideFloatingDateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideFloatingDate()));
     private final AbstractConfigCell emojiSetsRow = cellGroup.appendCell(new ConfigCellCustom("EmojiSets", ConfigCellCustom.CUSTOM_ITEM_EmojiSet, true));
     private final AbstractConfigCell premiumElementsToggleRow = cellGroup.appendCell(new ConfigCellTextCheck2("PremiumElements", getString(R.string.PremiumElements), new ArrayList<>() {{

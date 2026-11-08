@@ -1758,6 +1758,24 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val hideBotSubtitle =
+        addConfig(
+            "HideBotSubtitle",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideBotInfo =
+        addConfig(
+            "HideBotInfo",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideBotInfoMedia =
+        addConfig(
+            "HideBotInfoMedia",
+            ConfigItem.configTypeBool,
+            false
+        )
     val keepTranslatorPreferences =
         addConfig(
             "KeepTranslatorPreferences",
