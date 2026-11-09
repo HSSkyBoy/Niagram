@@ -5247,6 +5247,9 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 if (lastTime != currentProgress) {
                     lastTime = currentProgress;
                     String timeString = AndroidUtilities.formatShortDuration(currentProgress, (int) duration);
+                    if (documentAttach != null) {
+                        timeString = String.format("%s \u2022 %s", timeString, AndroidUtilities.formatFileSize(documentAttach.size));
+                    }
                     int timeWidth = (int) Math.ceil(Theme.chat_audioTimePaint.measureText(timeString));
                     durationLayout = new StaticLayout(timeString, Theme.chat_audioTimePaint, timeWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
                 }
@@ -11388,7 +11391,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 }
             }
             String durationString = AndroidUtilities.formatShortDuration((int) duration, (int) duration);
-            durationString = String.format("%s, %s", durationString, AndroidUtilities.formatFileSize(documentAttach.size));
+            durationString = String.format("%s \u2022 %s", durationString, AndroidUtilities.formatFileSize(documentAttach.size));
             int durationWidth = (int) Math.ceil(Theme.chat_audioTimePaint.measureText(durationString));
             widthBeforeNewTimeLine = backgroundWidth - dp(10 + 76) - durationWidth;
             availableTimeWidth = backgroundWidth - dp(28);
