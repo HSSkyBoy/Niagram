@@ -2787,7 +2787,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 if (isIosInputAppearance()) {
                     if (child == doneButton) {
                         drawIosBubble(canvas, doneBubbleDrawable, child);
-                    } else if (!isIosButtonPlacement() && child == aiButton) {
+                    } else if (child == aiButton) {
                         drawIosBubble(canvas, aiBubbleDrawable, child);
                     } else if (child == richButton) {
                         drawIosBubble(canvas, richBubbleDrawable, child);
@@ -3019,7 +3019,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         aiButton.setScaleType(ImageView.ScaleType.CENTER);
         ThemeBind.colorFilter(aiButton, Theme.key_glass_defaultIcon, resourcesProvider, PorterDuff.Mode.MULTIPLY);
         ThemeBind.selectorBackground(aiButton, Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP, dp(16)), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
-        textFieldContainer.addView(aiButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.TOP | Gravity.LEFT, 0, 1, 0, 0));
+        textFieldContainer.addView(aiButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.TOP | Gravity.RIGHT, 0, 1, 0, 0));
         aiButton.setContentDescription(getString(R.string.AIEditor));
         ScaleStateListAnimator.apply(aiButton);
         aiButton.setOnClickListener(v -> {
@@ -3080,6 +3080,8 @@ public class ChatActivityEnterView extends FrameLayout implements
         aiButton.setAlpha(0.0f);
         aiButton.setScaleX(0.6f);
         aiButton.setScaleY(0.6f);
+        aiButton.setClickable(false);
+        aiButton.setEnabled(false);
 
         richButton = new ImageView(context);
         richButton.setImageResource(R.drawable.iv_fullscreen);
@@ -6839,6 +6841,21 @@ public class ChatActivityEnterView extends FrameLayout implements
         updateFieldRight(lastAttachVisible);
     }
 
+    private void updateAiButtonPosition() {
+        if (aiButton != null) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) aiButton.getLayoutParams();
+            if (lp != null) {
+                int rightMargin = shownRichButton ? dp(DEFAULT_HEIGHT) : 0;
+                if (lp.rightMargin != rightMargin || lp.gravity != (Gravity.TOP | Gravity.RIGHT)) {
+                    lp.gravity = Gravity.TOP | Gravity.RIGHT;
+                    lp.rightMargin = rightMargin;
+                    lp.leftMargin = 0;
+                    aiButton.setLayoutParams(lp);
+                }
+            }
+        }
+    }
+
     private boolean shownAiButton;
     private void showAiButton(boolean show_) {
         final boolean show = (show_ || richDraftActive) && parentFragment != null && !parentFragment.isSecretChat();
@@ -6848,7 +6865,15 @@ public class ChatActivityEnterView extends FrameLayout implements
             MessagesController.getInstance(currentAccount).getTonesController().load();
         }
         shownAiButton = show;
-        aiButton.setVisibility(View.VISIBLE);
+        updateAiButtonPosition();
+        if (!show) {
+            aiButton.setClickable(false);
+            aiButton.setEnabled(false);
+        } else {
+            aiButton.setVisibility(View.VISIBLE);
+            aiButton.setClickable(true);
+            aiButton.setEnabled(true);
+        }
         aiButton.animate()
             .alpha(show ? 1.0f : 0.0f)
             .scaleX(show ? 1.0f : 0.6f)
@@ -6876,7 +6901,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 aiHint.setMultilineText(true);
                 aiHint.setText(getString(R.string.AIEditorHint));
                 setHintGlass(aiHint);
-                aiHint.setJointPx(0f, aiButton.getWidth() / 2f + dp(4));
+                aiHint.setJointPx(1f, -(aiButton.getWidth() / 2f + (shownRichButton ? dp(DEFAULT_HEIGHT) : 0)));
                 addView(aiHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 200, Gravity.TOP, 0, -200 + 4, 0, 0));
                 aiHint.setOnHiddenListener(() -> removeView(thisHint));
                 aiHint.setDuration(4000L);
@@ -6899,7 +6924,15 @@ public class ChatActivityEnterView extends FrameLayout implements
 
         if (shownRichButton == show) return;
         shownRichButton = show;
-        richButton.setVisibility(View.VISIBLE);
+        updateAiButtonPosition();
+        if (!show) {
+            richButton.setClickable(false);
+            richButton.setEnabled(false);
+        } else {
+            richButton.setVisibility(View.VISIBLE);
+            richButton.setClickable(true);
+            richButton.setEnabled(true);
+        }
         richButton.animate()
             .alpha(show ? 1.0f : 0.0f)
             .scaleX(show ? 1.0f : 0.6f)
@@ -15773,7 +15806,13 @@ public class ChatActivityEnterView extends FrameLayout implements
             if (Math.abs(delta) >= dp(12)) {
                 for (int i = 0; i < 2; ++i) {
                     final View view = i == 0 ? aiButton : richButton;
+                    final boolean shown = i == 0 ? shownAiButton : shownRichButton;
                     if (view.getVisibility() != VISIBLE) continue;
+                    if (!shown) {
+                        view.animate().cancel();
+                        view.setVisibility(GONE);
+                        continue;
+                    }
                     view.animate().cancel();
                     view.setTranslationY(view.getTranslationY() + delta);
                     view.animate()
