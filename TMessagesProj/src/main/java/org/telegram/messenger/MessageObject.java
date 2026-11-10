@@ -3937,6 +3937,8 @@ public class MessageObject {
                 generateCaption();
             }
             return replyUpdated || true;
+        } else if (messageOwner != null && messageOwner.translated && !isPoll() && !isRich()) {
+            messageOwner.translated = false;
         }
         return replyUpdated || false;
     }

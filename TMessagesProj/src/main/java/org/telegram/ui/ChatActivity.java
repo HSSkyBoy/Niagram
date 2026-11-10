@@ -26705,7 +26705,7 @@ public class ChatActivity extends BaseFragment implements
         } else if (id == NotificationCenter.messageTranslated) {
             final MessageObject messageObject = (MessageObject) args[0];
             final boolean summary = args.length > 1 && (boolean) args[1];
-            if (getDialogId() != messageObject.getDialogId()) {
+            if (getDialogId() != messageObject.getDialogId() && (mergeDialogId == 0 || mergeDialogId != messageObject.getDialogId())) {
                 return;
             }
             updateMessageTranslation(messageObject, summary);
@@ -26714,7 +26714,7 @@ public class ChatActivity extends BaseFragment implements
             }
         } else if (id == NotificationCenter.messageTranslating) {
             MessageObject messageObject = (MessageObject) args[0];
-            if (getDialogId() != messageObject.getDialogId()) {
+            if (getDialogId() != messageObject.getDialogId() && (mergeDialogId == 0 || mergeDialogId != messageObject.getDialogId())) {
                 return;
             }
             if (chatListView == null || chatAdapter == null) {
@@ -27128,9 +27128,12 @@ public class ChatActivity extends BaseFragment implements
             return false;
         }
         boolean updated = false;
+        boolean updatedTargetInList = false;
         ArrayList<Integer> lazyUpdaterList = new ArrayList<>();
         for (MessageObject pinnedMessageObject : pinnedMessageObjects.values()) {
-            if (pinnedMessageObject != null && pinnedMessageObject.getId() == messageObject.getId()) {
+            if (pinnedMessageObject != null && pinnedMessageObject.getId() == messageObject.getId() && pinnedMessageObject.getDialogId() == messageObject.getDialogId()) {
+                pinnedMessageObject.messageOwner.translated = messageObject.messageOwner.translated;
+                pinnedMessageObject.messageOwner.translatedMessage = messageObject.messageOwner.translatedMessage;
                 pinnedMessageObject.messageOwner.translatedText = messageObject.messageOwner.translatedText;
                 pinnedMessageObject.messageOwner.translatedToLanguage = messageObject.messageOwner.translatedToLanguage;
                 if (pinnedMessageObject.updateTranslation(true)) {
@@ -27140,33 +27143,34 @@ public class ChatActivity extends BaseFragment implements
                 }
             }
         }
-        if (chatListView == null) {
-            return updated;
-        }
-        ArrayList<Long> groupChecked = new ArrayList<>();
-        for (int i = 0; i < chatListView.getChildCount(); ++i) {
-            View child = chatListView.getChildAt(i);
-            if (child instanceof ChatMessageCell) {
-                ChatMessageCell cell = (ChatMessageCell) child;
-                MessageObject cellMessageObject = cell.getMessageObject();
-                if (cellMessageObject == null) {
-                    continue;
-                }
-                boolean update = lazyUpdaterList.contains(cellMessageObject.getId());
-                if (cellMessageObject.getId() == messageObject.getId()) {
-                    cellMessageObject.messageOwner.translatedText = messageObject.messageOwner.translatedText;
-                    cellMessageObject.messageOwner.translatedToLanguage = messageObject.messageOwner.translatedToLanguage;
-                    cellMessageObject.messageOwner.summaryText = messageObject.messageOwner.summaryText;
-                    cellMessageObject.messageOwner.translatedSummaryText = messageObject.messageOwner.translatedSummaryText;
-                    cellMessageObject.messageOwner.translatedSummaryLanguage = messageObject.messageOwner.translatedSummaryLanguage;
-                    if (cellMessageObject.updateTranslation(false)) {
-                        update = true;
-                        ArrayList<Integer> dependentMessages = replyMessageOwners.get(cellMessageObject.getId());
-                        if (dependentMessages != null) {
-                            updateMessagesReplyTranslation(dependentMessages, messageObject);
+        if (chatListView != null) {
+            ArrayList<Long> groupChecked = new ArrayList<>();
+            for (int i = 0; i < chatListView.getChildCount(); ++i) {
+                View child = chatListView.getChildAt(i);
+                if (child instanceof ChatMessageCell) {
+                    ChatMessageCell cell = (ChatMessageCell) child;
+                    MessageObject cellMessageObject = cell.getMessageObject();
+                    if (cellMessageObject == null) {
+                        continue;
+                    }
+                    boolean update = lazyUpdaterList.contains(cellMessageObject.getId());
+                    if (cellMessageObject.getId() == messageObject.getId() && cellMessageObject.getDialogId() == messageObject.getDialogId()) {
+                        cellMessageObject.messageOwner.translated = messageObject.messageOwner.translated;
+                        cellMessageObject.messageOwner.translatedMessage = messageObject.messageOwner.translatedMessage;
+                        cellMessageObject.messageOwner.translatedText = messageObject.messageOwner.translatedText;
+                        cellMessageObject.messageOwner.translatedToLanguage = messageObject.messageOwner.translatedToLanguage;
+                        cellMessageObject.messageOwner.summaryText = messageObject.messageOwner.summaryText;
+                        cellMessageObject.messageOwner.translatedSummaryText = messageObject.messageOwner.translatedSummaryText;
+                        cellMessageObject.messageOwner.translatedSummaryLanguage = messageObject.messageOwner.translatedSummaryLanguage;
+                        if (cellMessageObject.updateTranslation(false)) {
+                            update = true;
+                            updatedTargetInList = true;
+                            ArrayList<Integer> dependentMessages = replyMessageOwners.get(cellMessageObject.getId());
+                            if (dependentMessages != null) {
+                                updateMessagesReplyTranslation(dependentMessages, messageObject);
+                            }
                         }
                     }
-                }
                 MessageObject.GroupedMessages group = groupedMessagesMap.get(messageObject.getGroupId());
                 if (group != null && !groupChecked.contains(group.groupId)) {
                     for (int j = 0; j < group.messages.size(); ++j) {
@@ -27210,6 +27214,24 @@ public class ChatActivity extends BaseFragment implements
                     updated = true;
                 }
             }
+        }
+        }
+        int dictIndex = mergeDialogId != 0 && messageObject.getDialogId() == mergeDialogId ? 1 : 0;
+        MessageObject dictMessageObject = messagesDict[dictIndex].get(messageObject.getId());
+        if (dictMessageObject != null && dictMessageObject != messageObject && dictMessageObject.getDialogId() == messageObject.getDialogId()) {
+            dictMessageObject.messageOwner.translated = messageObject.messageOwner.translated;
+            dictMessageObject.messageOwner.translatedMessage = messageObject.messageOwner.translatedMessage;
+            dictMessageObject.messageOwner.translatedText = messageObject.messageOwner.translatedText;
+            dictMessageObject.messageOwner.translatedToLanguage = messageObject.messageOwner.translatedToLanguage;
+            dictMessageObject.messageOwner.summaryText = messageObject.messageOwner.summaryText;
+            dictMessageObject.messageOwner.translatedSummaryText = messageObject.messageOwner.translatedSummaryText;
+            dictMessageObject.messageOwner.translatedSummaryLanguage = messageObject.messageOwner.translatedSummaryLanguage;
+            if (dictMessageObject.updateTranslation(false)) {
+                updated = true;
+            }
+        }
+        if (!updatedTargetInList && messageObject.updateTranslation(false)) {
+            updated = true;
         }
         return updated;
     }
