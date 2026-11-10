@@ -438,6 +438,7 @@ import top.nkbe.niagram.config.NyaConfig;
 import xyz.nextalone.nagram.ToggleResult;
 import xyz.nextalone.nagram.helper.BookmarksHelper;
 import xyz.nextalone.nagram.helper.DoubleTap;
+import xyz.nextalone.nagram.helper.ForwardTextEdit;
 
 @SuppressWarnings("unchecked")
 public class ChatActivity extends BaseFragment implements
@@ -16522,9 +16523,48 @@ public class ChatActivity extends BaseFragment implements
                 if (messagePreviewParams.forwardMessages != null) {
                     messagePreviewParams.forwardMessages.getSelectedMessages(messagesToForward);
                 }
-                forwardMessages(messagesToForward, messagePreviewParams.hideForwardSendersName, messagePreviewParams.hideCaption, notify, scheduleDate != 0 && scheduleDate != 0x7ffffffe ? scheduleDate + 1 : scheduleDate, payStars);
+                int finalScheduleDate = scheduleDate != 0 && scheduleDate != 0x7ffffffe ? scheduleDate + 1 : scheduleDate;
+                if (messagePreviewParams.hasEditedForwardText()) {
+                    MessageObject editableMessage = ForwardTextEdit.getEditableMessage(messagesToForward);
+                    if (editableMessage != null) {
+                        String editedText = messagePreviewParams.hideCaption && !ForwardTextEdit.isTextOnlyMessage(editableMessage)
+                                ? ""
+                                : messagePreviewParams.editedForwardText;
+                        ArrayList<TLRPC.MessageEntity> editedEntities = messagePreviewParams.hideCaption && !ForwardTextEdit.isTextOnlyMessage(editableMessage)
+                                ? null
+                                : messagePreviewParams.editedForwardEntities;
+                        sendEditedForwardMessages(messagesToForward, editableMessage, editedText, editedEntities, notify, finalScheduleDate, payStars);
+                        messagePreviewParams = null;
+                        return;
+                    }
+                }
+                forwardMessages(messagesToForward, messagePreviewParams.hideForwardSendersName, messagePreviewParams.hideCaption, notify, finalScheduleDate, payStars);
             // }
             messagePreviewParams = null;
+        }
+    }
+
+    private void sendEditedForwardMessages(ArrayList<MessageObject> messagesToForward, MessageObject editableMessage, String editedText, ArrayList<TLRPC.MessageEntity> editedEntities, boolean notify, int scheduleDate, long payStars) {
+        if (messagesToForward == null || messagesToForward.isEmpty() || !checkSlowModeAlert()) {
+            return;
+        }
+        if ((scheduleDate != 0) == (chatMode == MODE_SCHEDULED)) {
+            waitingForSendingMessageLoad = true;
+            if (chatAdapter != null) {
+                chatAdapter.checkRemoveBotForumRowsStartThreadRow(true);
+            }
+        }
+        MessageObject replyTo = getThreadMessage();
+        boolean sent = ForwardTextEdit.withEditedText(editableMessage, editedText, editedEntities, () ->
+                getMessageHelper().sendMessagesAsCopy(messagesToForward, dialog_id, replyTo, getThreadMessage(), replyingQuote, notify, scheduleDate, chatMode, quickReplyShortcut, getQuickReplyId(), payStars, getSendMonoForumPeerId(), getSendMessageSuggestionParams()));
+        if (!sent) {
+            waitingForSendingMessageLoad = false;
+            BulletinFactory.of(this).createErrorBulletin(getString(R.string.PleaseDownload), themeDelegate).show();
+        } else {
+            AndroidUtilities.runOnUIThread(() -> {
+                waitingForSendingMessageLoad = false;
+                hideFieldPanel(true);
+            });
         }
     }
 
@@ -17089,7 +17129,18 @@ public class ChatActivity extends BaseFragment implements
                 }
                 replyNameTextView.setText(text);
 
-                if (messagePreviewParams != null && messagePreviewParams.hideForwardSendersName) {
+                if (messagePreviewParams != null && messagePreviewParams.hasEditedForwardText()) {
+                    CharSequence mess = new SpannableStringBuilder(messagePreviewParams.editedForwardText);
+                    if (mess.length() > 150) {
+                        mess = mess.subSequence(0, 150);
+                    }
+                    mess = Emoji.replaceEmoji(mess, replyObjectTextView.getPaint().getFontMetricsInt(), false);
+                    if (mess instanceof Spannable) {
+                        MediaDataController.addTextStyleRuns(messagePreviewParams.editedForwardEntities, messagePreviewParams.editedForwardText, (Spannable) mess);
+                        mess = MessageObject.replaceAnimatedEmoji(mess, messagePreviewParams.editedForwardEntities, replyObjectTextView.getPaint().getFontMetricsInt());
+                    }
+                    replyObjectTextView.setText(TextUtils.isEmpty(mess) ? LocaleController.getString(R.string.HiddenSendersNameDescription) : mess);
+                } else if (messagePreviewParams != null && messagePreviewParams.hideForwardSendersName) {
                     replyObjectTextView.setText(LocaleController.getString(R.string.HiddenSendersNameDescription));
                 } else {
                     if ((type == -1 || type == MessageObject.TYPE_TEXT || type == MessageObject.TYPE_DATE || type == MessageObject.TYPE_ACTION_PHOTO || type == MessageObject.TYPE_EMOJIS) && (messageObjectsToForward.size() == 1 && messageObjectsToForward.get(0).messageText != null)) {

@@ -182,6 +182,20 @@ public class MessagePreviewParams {
     public boolean hideCaption;
     public boolean willSeeSenders;
 
+    public String editedForwardText;
+    public ArrayList<TLRPC.MessageEntity> editedForwardEntities;
+    public int editedForwardMessageId;
+
+    public boolean hasEditedForwardText() {
+        return editedForwardText != null;
+    }
+
+    public void setEditedForwardText(int messageId, String text, ArrayList<TLRPC.MessageEntity> entities) {
+        this.editedForwardMessageId = messageId;
+        this.editedForwardText = text;
+        this.editedForwardEntities = entities;
+    }
+
     public boolean singleLink;
     public boolean hasMedia;
     public boolean isVideo;
@@ -395,10 +409,20 @@ public class MessagePreviewParams {
         multipleUsers = false;
 
         if (forwardMessages != null) {
+            if (this.forwardMessages != null && this.forwardMessages.messages != forwardMessages) {
+                editedForwardText = null;
+                editedForwardEntities = null;
+                editedForwardMessageId = 0;
+            }
             ArrayList<String> hiddenSendersName = new ArrayList<>();
             for (int i = 0; i < forwardMessages.size(); ++i) {
                 MessageObject messageObject = forwardMessages.get(i);
-                if (!TextUtils.isEmpty(messageObject.caption)) {
+                boolean isEditedCarrier = hasEditedForwardText() && (editedForwardMessageId == 0 || editedForwardMessageId == messageObject.getId());
+                if (isEditedCarrier) {
+                    if (!TextUtils.isEmpty(editedForwardText) && (messageObject.isPhoto() || messageObject.isVideo() || messageObject.isRoundVideo() || messageObject.getDocument() != null || !TextUtils.isEmpty(messageObject.caption))) {
+                        hasCaption = true;
+                    }
+                } else if (!TextUtils.isEmpty(messageObject.caption)) {
                     hasCaption = true;
                 }
                 if (!isSecret) {
@@ -438,6 +462,9 @@ public class MessagePreviewParams {
             }
         } else {
             this.forwardMessages = null;
+            editedForwardText = null;
+            editedForwardEntities = null;
+            editedForwardMessageId = 0;
         }
     }
 
@@ -457,14 +484,21 @@ public class MessagePreviewParams {
         message.grouped_id = messageObject.messageOwner.grouped_id;
         message.peer_id = messageObject.messageOwner.peer_id;
         message.from_id = messageObject.messageOwner.from_id;
-        message.message = messageObject.messageOwner.message;
+        if (msgtype == 0 && editedForwardText != null && (editedForwardMessageId == 0 || editedForwardMessageId == messageObject.getId())) {
+            message.message = editedForwardText;
+            if (editedForwardEntities != null) {
+                message.entities.addAll(editedForwardEntities);
+            }
+        } else {
+            message.message = messageObject.messageOwner.message;
+            if (messageObject.messageOwner.entities != null) {
+                message.entities.addAll(messageObject.messageOwner.entities);
+            }
+        }
         message.rich_message = messageObject.messageOwner.rich_message;
         message.media = messageObject.messageOwner.media;
         message.action = messageObject.messageOwner.action;
         message.edit_date = 0;
-        if (messageObject.messageOwner.entities != null) {
-            message.entities.addAll(messageObject.messageOwner.entities);
-        }
 
         message.out = out == null ? messageObject.messageOwner.out : out;
         if (message.out) {

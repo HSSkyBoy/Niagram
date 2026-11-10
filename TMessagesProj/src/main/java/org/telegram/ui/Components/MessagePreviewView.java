@@ -10,6 +10,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Outline;
@@ -21,11 +22,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Editable;
 import android.text.StaticLayout;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.URLSpan;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,11 +46,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatMessageSharedResources;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessagePreviewParams;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
@@ -61,6 +66,7 @@ import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
 import org.telegram.ui.ActionBar.ActionBarPopupWindow;
+import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeBind;
 import org.telegram.ui.Cells.ChatMessageCell;
@@ -74,6 +80,9 @@ import org.telegram.ui.PremiumPreviewFragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import top.nkbe.niagram.config.NyaConfig;
+import xyz.nextalone.nagram.helper.ForwardTextEdit;
 
 public class MessagePreviewView extends FrameLayout {
 
@@ -120,6 +129,9 @@ public class MessagePreviewView extends FrameLayout {
         ActionBarMenuSubItem quoteButton, clearQuoteButton;
         ActionBarMenuSubItem replyAnotherChatButton, quoteAnotherChatButton;
         ActionBarMenuSubItem deleteReplyButton;
+        ActionBarMenuSubItem editForwardTextButton;
+        ToggleButton forwardSendersNameButton;
+        ToggleButton forwardCaptionButton;
         ToggleButton changePositionBtn;
         FrameLayout changeSizeBtnContainer;
         ToggleButton changeSizeBtn;
@@ -717,6 +729,7 @@ public class MessagePreviewView extends FrameLayout {
                         chatMessageCell.setChecked(newSelected, newSelected, true);
                     }
 
+                    updateEditForwardTextButtonVisibility();
                     updateSubtitle(true);
                 }
             });
@@ -1015,7 +1028,7 @@ public class MessagePreviewView extends FrameLayout {
                 }
                 final boolean canHideSenderName = _canHideSenderName;
 
-                ToggleButton sendersNameButton = new ToggleButton(
+                ToggleButton sendersNameButton = forwardSendersNameButton = new ToggleButton(
                     context,
                     R.raw.name_hide, messagePreviewParams.multipleUsers ? LocaleController.getString(R.string.ShowSenderNames) : LocaleController.getString(R.string.ShowSendersName),
                     R.raw.name_show, messagePreviewParams.multipleUsers ? LocaleController.getString(R.string.HideSenderNames) : LocaleController.getString(R.string.HideSendersName),
@@ -1025,7 +1038,7 @@ public class MessagePreviewView extends FrameLayout {
 
                 final ToggleButton captionButton;
                 if (messagePreviewParams.hasCaption) {
-                    captionButton = new ToggleButton(
+                    captionButton = forwardCaptionButton = new ToggleButton(
                         context,
                         R.raw.caption_hide, LocaleController.getString(R.string.ShowCaption),
                         R.raw.caption_show, LocaleController.getString(R.string.HideCaption),
@@ -1034,7 +1047,20 @@ public class MessagePreviewView extends FrameLayout {
                     captionButton.setState(messagePreviewParams.hideCaption, false);
                     menu.addView(captionButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
                 } else {
-                    captionButton = null;
+                    captionButton = forwardCaptionButton = null;
+                }
+
+                if (NyaConfig.INSTANCE.getShowForwardTextEdit().Bool()) {
+                    editForwardTextButton = new ActionBarMenuSubItem(context, true, false, resourcesProvider);
+                    editForwardTextButton.setTextAndIcon(LocaleController.getString(R.string.AccDescrForwardTextEdit), R.drawable.msg_edit);
+                    editForwardTextButton.setOnClickListener(view -> {
+                        MessageObject editableMessage = getEditableForwardMessage();
+                        if (editableMessage != null) {
+                            showForwardTextEditDialog(context, editableMessage);
+                        }
+                    });
+                    menu.addView(editForwardTextButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
+                    updateEditForwardTextButtonVisibility();
                 }
 
                 ActionBarMenuSubItem changeRecipientView = new ActionBarMenuSubItem(context, true, false, resourcesProvider);
@@ -1061,6 +1087,12 @@ public class MessagePreviewView extends FrameLayout {
 
                 sendersNameButton.setState(messagePreviewParams.hideForwardSendersName, false);
                 sendersNameButton.setOnClickListener(view -> {
+                    if (messagePreviewParams.hasEditedForwardText() && messagePreviewParams.hideForwardSendersName) {
+                        BulletinFactory.of(MessagePreviewView.this, resourcesProvider)
+                            .createSimpleBulletin(R.raw.info, LocaleController.getString(R.string.ForwardTextCopyNotice))
+                            .show();
+                        return;
+                    }
                     if (!canHideSenderName) {
                         BulletinFactory.of(MessagePreviewView.this, resourcesProvider)
                             .createSimpleBulletin(R.raw.star_premium_2, replaceSingleTag(LocaleController.getString(R.string.ForwardHideSenderNamePremium), () -> {
@@ -1095,7 +1127,7 @@ public class MessagePreviewView extends FrameLayout {
                                 returnSendersNames = true;
                             }
                         } else {
-                            if (returnSendersNames) {
+                            if (returnSendersNames && !messagePreviewParams.hasEditedForwardText()) {
                                 messagePreviewParams.hideForwardSendersName = false;
                             }
                             returnSendersNames = false;
@@ -1261,6 +1293,138 @@ public class MessagePreviewView extends FrameLayout {
 
         private void showQuoteLengthError() {
             BulletinFactory.of(MessagePreviewView.this, resourcesProvider).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.QuoteMaxError), LocaleController.getString(R.string.QuoteMaxErrorMessage)).show();
+        }
+
+        private MessageObject getEditableForwardMessage() {
+            if (messagePreviewParams == null || messagePreviewParams.forwardMessages == null) {
+                return null;
+            }
+            ArrayList<MessageObject> selected = new ArrayList<>();
+            messagePreviewParams.forwardMessages.getSelectedMessages(selected);
+            if (selected.isEmpty()) {
+                selected.addAll(messagePreviewParams.forwardMessages.messages);
+            }
+            return ForwardTextEdit.getEditableMessage(selected);
+        }
+
+        private void updateEditForwardTextButtonVisibility() {
+            if (editForwardTextButton != null) {
+                editForwardTextButton.setVisibility(getEditableForwardMessage() != null ? View.VISIBLE : View.GONE);
+            }
+        }
+
+        private void applyEditedForwardTextToPreview(MessageObject editableMessage) {
+            if (messages == null || messages.previewMessages == null || editableMessage == null) {
+                return;
+            }
+            boolean hasEdited = messagePreviewParams != null && messagePreviewParams.hasEditedForwardText();
+            String displayText = hasEdited ? messagePreviewParams.editedForwardText : editableMessage.messageOwner.message;
+            ArrayList<TLRPC.MessageEntity> displayEntities = hasEdited ? messagePreviewParams.editedForwardEntities : editableMessage.messageOwner.entities;
+            for (int i = 0; i < messages.previewMessages.size(); i++) {
+                MessageObject previewMessage = messages.previewMessages.get(i);
+                if (previewMessage.getId() == editableMessage.getId()) {
+                    previewMessage.messageOwner.message = displayText;
+                    previewMessage.messageOwner.entities = displayEntities != null ? new ArrayList<>(displayEntities) : new ArrayList<>();
+                    if (ForwardTextEdit.isTextOnlyMessage(editableMessage)) {
+                        previewMessage.messageText = displayText != null ? displayText : "";
+                        previewMessage.textLayoutBlocks = null;
+                        previewMessage.applyNewText();
+                    } else {
+                        previewMessage.caption = null;
+                        previewMessage.generateCaption();
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void showForwardTextEditDialog(Context context, MessageObject editableMessage) {
+            if (context == null || editableMessage == null || messagePreviewParams == null) {
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, resourcesProvider);
+            builder.setTitle(LocaleController.getString(R.string.AccDescrForwardTextEdit));
+            builder.setMessage(LocaleController.getString(R.string.ForwardTextCopyNotice));
+
+            FrameLayout container = new FrameLayout(context);
+            final EditTextBoldCursor editText = new EditTextBoldCursor(context);
+            editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            editText.setTextColor(getThemedColor(Theme.key_dialogTextBlack));
+            editText.setHintTextColor(getThemedColor(Theme.key_windowBackgroundWhiteHintText));
+            editText.setLineColors(
+                getThemedColor(Theme.key_windowBackgroundWhiteInputField),
+                getThemedColor(Theme.key_windowBackgroundWhiteInputFieldActivated),
+                getThemedColor(Theme.key_text_RedRegular)
+            );
+            editText.setCursorColor(getThemedColor(Theme.key_windowBackgroundWhiteInputFieldActivated));
+            editText.setCursorSize(dp(20));
+            editText.setCursorWidth(1.5f);
+            editText.setSingleLine(false);
+            editText.setMaxLines(10);
+            editText.setGravity(Gravity.TOP | (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT));
+
+            CharSequence initialText = messagePreviewParams.hasEditedForwardText()
+                    ? messagePreviewParams.editedForwardText
+                    : ForwardTextEdit.getForwardText(editableMessage);
+            if (!TextUtils.isEmpty(initialText)) {
+                editText.setText(initialText);
+                editText.setSelection(editText.length());
+            } else {
+                editText.setHint(LocaleController.getString(R.string.Caption));
+            }
+            container.addView(editText, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP, 24, 4, 24, 8));
+            builder.setView(container);
+
+            builder.setPositiveButton(LocaleController.getString(R.string.Save), null);
+            builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+            if (messagePreviewParams.hasEditedForwardText()) {
+                builder.setNeutralButton(LocaleController.getString(R.string.Reset), (dialog, which) -> {
+                    messagePreviewParams.setEditedForwardText(0, null, null);
+                    applyEditedForwardTextToPreview(editableMessage);
+                    updateMessages();
+                    updateSubtitle(true);
+                });
+            }
+
+            AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(d -> {
+                View positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                if (positiveButton != null) {
+                    positiveButton.setOnClickListener(v -> {
+                        Editable editable = editText.getText();
+                        String newText = editable != null ? editable.toString() : "";
+                        if (ForwardTextEdit.isTextOnlyMessage(editableMessage) && newText.trim().isEmpty()) {
+                            AndroidUtilities.shakeView(editText);
+                            BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                            return;
+                        }
+                        if (!ForwardTextEdit.hasForwardTextChanged(newText, editableMessage)) {
+                            messagePreviewParams.setEditedForwardText(0, null, null);
+                        } else {
+                            ArrayList<TLRPC.MessageEntity> entities = editable != null
+                                    ? MediaDataController.getInstance(currentAccount).getEntities(new CharSequence[]{editable}, true)
+                                    : null;
+                            messagePreviewParams.setEditedForwardText(editableMessage.getId(), newText, entities);
+                            messagePreviewParams.hideForwardSendersName = true;
+                            returnSendersNames = false;
+                            if (forwardSendersNameButton != null) {
+                                forwardSendersNameButton.setState(true, true);
+                            }
+                            if (forwardCaptionButton != null && !newText.isEmpty()) {
+                                messagePreviewParams.hideCaption = false;
+                                forwardCaptionButton.setState(false, true);
+                            }
+                        }
+                        applyEditedForwardTextToPreview(editableMessage);
+                        updateMessages();
+                        updateSubtitle(true);
+                        dialog.dismiss();
+                    });
+                }
+                editText.requestFocus();
+                AndroidUtilities.showKeyboard(editText);
+            });
+            dialog.show();
         }
 
         public void bind() {
