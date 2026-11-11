@@ -772,7 +772,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
 
         dropDown = new TextView(context);
         dropDown.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        dropDown.setGravity(Gravity.LEFT);
+        dropDown.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         dropDown.setSingleLine(true);
         dropDown.setLines(1);
         dropDown.setMaxLines(1);
