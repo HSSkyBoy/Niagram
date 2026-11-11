@@ -70,6 +70,12 @@ public class StarRatingView extends View implements Theme.Colorable {
     private boolean isVisibleInternal;
     private boolean isVisibleExternal;
 
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        super.setOnClickListener(l);
+        setClickable(isVisible);
+    }
+
     public void setVisibility(boolean isVisible) {
         isVisibleExternal = isVisible;
         checkVisibility();
@@ -81,6 +87,7 @@ public class StarRatingView extends View implements Theme.Colorable {
 
         setEnabled(isVisible);
         setClickable(isVisible);
+        super.setVisibility(isVisible ? VISIBLE : GONE);
         invalidate();
     }
 

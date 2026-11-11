@@ -17254,7 +17254,15 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
     }
 
+    private BottomSheet starRatingBottomSheet;
+
     private void showStarRatingBottomSheet(View ignoreView) {
+        if (starRatingBottomSheet != null && starRatingBottomSheet.isShowing()) {
+            return;
+        }
+        if (top.nkbe.niagram.config.NyaConfig.INSTANCE.getHideStarsRating().Bool()) {
+            return;
+        }
         final Context context = getContext();
         final TLRPC.UserFull userFull = getUserInfo();
         if (userFull == null || userFull.stars_rating == null) {
@@ -17262,6 +17270,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
         BottomSheet.Builder b = new BottomSheet.Builder(getContext());
+        b.setOnPreDismissListener(dialog -> {
+            if (starRatingBottomSheet == dialog) {
+                starRatingBottomSheet = null;
+            }
+        });
         Runnable dismiss = b.getDismissRunnable();
 
         final LinearLayout linearLayout = new LinearLayout(context);
@@ -17423,7 +17436,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             linearLayout.addView(button, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48, 16, 10, 16, 8));
         }
         b.setCustomView(linearLayout);
-        b.show();
+        starRatingBottomSheet = b.show();
     }
 
     private static CharSequence createNewSpan(String str, int colorKey, Theme.ResourcesProvider resourcesProvider) {
