@@ -242,50 +242,54 @@ public final class ReactionLatencyHelper {
         synchronized (LOCK) {
             ensureLoaded();
             final UserEntry entry = entries.get(key(account, dialogId, userId));
-            if (entry == null || entry.samples.isEmpty()) {
-                return null;
-            }
-            final int streak = trailingFastStreak(entry);
-            final int sameEmojiStreak = trailingSameEmojiStreak(entry);
-            final String lastEmoji = entry.samples.get(entry.samples.size() - 1).emoji;
-            final int zeroCount = entry.zeroLatencyCount;
-            final int total = entry.samples.size();
-            int min = Integer.MAX_VALUE;
-            int sum = 0;
-            for (Sample s : entry.samples) {
-                if (s.latency < min) {
-                    min = s.latency;
-                }
-                sum += s.latency;
-            }
-            float avg = total > 0 ? (float) sum / total : 0f;
-
-            boolean suspected = false;
-            String reason = "";
-
-            if (zeroCount > 0) {
-                suspected = true;
-                reason = "0s 秒回 (" + zeroCount + "次)";
-            } else if (total >= 3 && avg <= 3.0f) {
-                suspected = true;
-                if (sameEmojiStreak >= 3 && !TextUtils.isEmpty(lastEmoji)) {
-                    reason = String.format(Locale.US, "均速 %.1fs · 連續 %d次 %s", avg, sameEmojiStreak, lastEmoji);
-                } else {
-                    reason = String.format(Locale.US, "均速 %.1fs (≤3s)", avg);
-                }
-            } else if (sameEmojiStreak >= 3 && (avg <= 5.0f || streak >= 2)) {
-                suspected = true;
-                reason = "連續 " + sameEmojiStreak + "次 " + lastEmoji;
-            } else if (streak >= SUSPECT_STREAK) {
-                suspected = true;
-                reason = "連續 " + streak + "次 ≤3s";
-            }
-
-            boolean confirmed = zeroCount >= 1 || (total >= 5 && avg <= 2.5f) || streak >= 5;
-
-            return new Info(streak, zeroCount, total, min == Integer.MAX_VALUE ? 0 : min, avg,
-                    sameEmojiStreak, lastEmoji, confirmed, suspected, reason, entry.samples);
+            return buildInfoLocked(entry);
         }
+    }
+
+    private static Info buildInfoLocked(UserEntry entry) {
+        if (entry == null || entry.samples.isEmpty()) {
+            return null;
+        }
+        final int streak = trailingFastStreak(entry);
+        final int sameEmojiStreak = trailingSameEmojiStreak(entry);
+        final String lastEmoji = entry.samples.get(entry.samples.size() - 1).emoji;
+        final int zeroCount = entry.zeroLatencyCount;
+        final int total = entry.samples.size();
+        int min = Integer.MAX_VALUE;
+        int sum = 0;
+        for (Sample s : entry.samples) {
+            if (s.latency < min) {
+                min = s.latency;
+            }
+            sum += s.latency;
+        }
+        float avg = total > 0 ? (float) sum / total : 0f;
+
+        boolean suspected = false;
+        String reason = "";
+
+        if (zeroCount > 0) {
+            suspected = true;
+            reason = "0s 秒回 (" + zeroCount + "次)";
+        } else if (total >= 3 && avg <= 3.0f) {
+            suspected = true;
+            if (sameEmojiStreak >= 3 && !TextUtils.isEmpty(lastEmoji)) {
+                reason = String.format(Locale.US, "均速 %.1fs · 連續 %d次 %s", avg, sameEmojiStreak, lastEmoji);
+            } else {
+                reason = String.format(Locale.US, "均速 %.1fs (≤3s)", avg);
+            }
+        } else if (sameEmojiStreak >= 3 && (avg <= 5.0f || streak >= 2)) {
+            suspected = true;
+            reason = "連續 " + sameEmojiStreak + "次 " + lastEmoji;
+        } else if (streak >= SUSPECT_STREAK) {
+            suspected = true;
+            reason = "連續 " + streak + "次 ≤3s";
+        }
+
+        boolean confirmed = zeroCount >= 1 || (total >= 5 && avg <= 2.5f) || streak >= 5;
+
+        return new Info(streak, zeroCount, total, min == Integer.MAX_VALUE ? 0 : min, avg,
+                sameEmojiStreak, lastEmoji, confirmed, suspected, reason, entry.samples);
     }
 
     public static List<MemberReactionStat> getGroupMembers(int account, long dialogId) {
@@ -301,7 +305,8 @@ public final class ReactionLatencyHelper {
                     final String userIdStr = e.getKey().substring(prefix.length());
                     try {
                         long uid = Long.parseLong(userIdStr);
-                        Info info = getInfo(account, dialogId, uid);
+                        // Avoid entries.get() while iterating an accessOrder LinkedHashMap.
+                        Info info = buildInfoLocked(e.getValue());
                         if (info != null && !info.samples.isEmpty()) {
                             list.add(new MemberReactionStat(uid, info));
                         }

@@ -47818,7 +47818,7 @@ public class ChatActivity extends BaseFragment implements
                 AlertUtil.showToast(e);
             }
         } else if (id == shortcuts_auto_reaction) {
-            if (currentChat != null) {
+            if (currentChat != null && getParentActivity() != null) {
                 new top.nkbe.niagram.ui.components.AutoReactionListBottomSheet(this, currentAccount, -currentChat.id, currentChat, getResourceProvider()).show();
             }
         } else if (id == shortcuts_administrators || id == shortcuts_permissions || id == shortcuts_members) {

@@ -150,8 +150,11 @@ public class AutoReactionListBottomSheet extends BottomSheet {
         public void onBindViewHolder(@NonNull Holder holder, int position) {
             ReactionLatencyHelper.MemberReactionStat stat = statsList.get(position);
             TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(stat.userId);
-            ((MemberCell) holder.itemView).bind(user, stat.info);
+            ((MemberCell) holder.itemView).bind(user, stat.userId, stat.info);
             holder.itemView.setOnClickListener(v -> {
+                if (fragment == null || fragment.getParentActivity() == null) {
+                    return;
+                }
                 new AutoReactionReportBottomSheet(fragment, currentAccount, dialogId, currentChat, user, stat.info, resourcesProvider, () -> reload()).show();
             });
         }
@@ -213,7 +216,7 @@ public class AutoReactionListBottomSheet extends BottomSheet {
             addView(badgeView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT));
         }
 
-        public void bind(TLRPC.User user, ReactionLatencyHelper.Info info) {
+        public void bind(TLRPC.User user, long userId, ReactionLatencyHelper.Info info) {
             AvatarDrawable avatarDrawable = new AvatarDrawable();
             if (user != null) {
                 avatarDrawable.setInfo(user);
@@ -222,7 +225,7 @@ public class AutoReactionListBottomSheet extends BottomSheet {
                 nameView.setText(Emoji.replaceEmoji(name, nameView.getPaint().getFontMetricsInt(), false));
             } else {
                 avatarView.setImageDrawable(avatarDrawable);
-                nameView.setText("ID: " + (info != null && !info.samples.isEmpty() ? info.samples.get(0).messageId : ""));
+                nameView.setText("ID: " + userId);
             }
 
             int total = info != null ? info.total : 0;
