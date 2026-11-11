@@ -283,8 +283,6 @@ public class ChatActivityEnterView extends FrameLayout implements
     private int emojiLeftDp;
     private int emojiRightDp;
     private int iosGapDp;
-    private int aiButtonGravity;
-    private int aiButtonRightMarginDp;
     private static final int IOS_LEFT_EDGE_MARGIN_DP = 0;
     private static final int CAPSULE_INSET_DP = 4;
     private static final int NO_ICON_TEXT_INSET_DP = 8;
@@ -3019,7 +3017,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         aiButton.setScaleType(ImageView.ScaleType.CENTER);
         ThemeBind.colorFilter(aiButton, Theme.key_glass_defaultIcon, resourcesProvider, PorterDuff.Mode.MULTIPLY);
         ThemeBind.selectorBackground(aiButton, Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP, dp(16)), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
-        textFieldContainer.addView(aiButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.TOP | Gravity.RIGHT, 0, 1, 0, 0));
+        textFieldContainer.addView(aiButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, 40, Gravity.TOP | Gravity.LEFT, 3, 2, 0, 0));
         aiButton.setContentDescription(getString(R.string.AIEditor));
         ScaleStateListAnimator.apply(aiButton);
         aiButton.setOnClickListener(v -> {
@@ -6844,14 +6842,10 @@ public class ChatActivityEnterView extends FrameLayout implements
     private void updateAiButtonPosition() {
         if (aiButton != null) {
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) aiButton.getLayoutParams();
-            if (lp != null) {
-                int rightMargin = shownRichButton ? dp(DEFAULT_HEIGHT) : 0;
-                if (lp.rightMargin != rightMargin || lp.gravity != (Gravity.TOP | Gravity.RIGHT)) {
-                    lp.gravity = Gravity.TOP | Gravity.RIGHT;
-                    lp.rightMargin = rightMargin;
-                    lp.leftMargin = 0;
-                    aiButton.setLayoutParams(lp);
-                }
+            if (lp != null && (lp.gravity != (Gravity.TOP | Gravity.LEFT) || lp.rightMargin != 0)) {
+                lp.gravity = Gravity.TOP | Gravity.LEFT;
+                lp.rightMargin = 0;
+                aiButton.setLayoutParams(lp);
             }
         }
     }
@@ -6901,7 +6895,9 @@ public class ChatActivityEnterView extends FrameLayout implements
                 aiHint.setMultilineText(true);
                 aiHint.setText(getString(R.string.AIEditorHint));
                 setHintGlass(aiHint);
-                aiHint.setJointPx(1f, -(aiButton.getWidth() / 2f + (shownRichButton ? dp(DEFAULT_HEIGHT) : 0)));
+                int leftMargin = ((MarginLayoutParams) aiButton.getLayoutParams()).leftMargin;
+                float buttonCenterOffset = (aiButton.getWidth() > 0 ? aiButton.getWidth() : dp(DEFAULT_HEIGHT)) / 2f;
+                aiHint.setJointPx(0f, leftMargin + buttonCenterOffset + dp(4));
                 addView(aiHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 200, Gravity.TOP, 0, -200 + 4, 0, 0));
                 aiHint.setOnHiddenListener(() -> removeView(thisHint));
                 aiHint.setDuration(4000L);
@@ -6924,7 +6920,6 @@ public class ChatActivityEnterView extends FrameLayout implements
 
         if (shownRichButton == show) return;
         shownRichButton = show;
-        updateAiButtonPosition();
         if (!show) {
             richButton.setClickable(false);
             richButton.setEnabled(false);
@@ -15690,6 +15685,15 @@ public class ChatActivityEnterView extends FrameLayout implements
     int botCommandLastPosition = -1;
     int botCommandLastTop;
 
+    private void setLeftTopButtonsMargin(int marginPx) {
+        if (deleteRichDraftButton != null) {
+            ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = marginPx;
+        }
+        if (aiButton != null) {
+            ((MarginLayoutParams) aiButton.getLayoutParams()).leftMargin = marginPx;
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int wasHeight = textFieldContainer.getMeasuredHeight();
@@ -15698,15 +15702,16 @@ public class ChatActivityEnterView extends FrameLayout implements
             if (botCommandsMenuButton != null && botCommandsMenuButton.getVisibility() == VISIBLE) {
                 botCommandsMenuButton.measure(widthMeasureSpec, heightMeasureSpec);
             }
+            if (aiButton != null) {
+                ((MarginLayoutParams) aiButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
+            }
             updateFieldLeftIos();
         } else if (botCommandsMenuButton != null && botCommandsMenuButton.getTag() != null) {
             botCommandsMenuButton.measure(widthMeasureSpec, heightMeasureSpec);
             if (isIosInputAppearance()) {
                 int cursorDp = IOS_LEFT_EDGE_MARGIN_DP + DEFAULT_HEIGHT + iosGapDp + CAPSULE_INSET_DP;
                 ((MarginLayoutParams) emojiButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
-                if (deleteRichDraftButton != null) {
-                    ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
-                }
+                setLeftTopButtonsMargin(dp(IOS_LEFT_EDGE_MARGIN_DP));
                 ((MarginLayoutParams) botCommandsMenuButton.getLayoutParams()).leftMargin = dp(cursorDp);
                 cursorDp += Math.round(botCommandsMenuButton.getMeasuredWidth() / AndroidUtilities.density)
                         + (isCompactInputSize() ? COMPACT_TEXT_INSET_DP : NO_ICON_TEXT_INSET_DP);
@@ -15719,9 +15724,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             } else {
                 ((MarginLayoutParams) botCommandsMenuButton.getLayoutParams()).leftMargin = dp(8);
                 ((MarginLayoutParams) emojiButton.getLayoutParams()).leftMargin = dp(10) + botCommandsMenuButton.getMeasuredWidth();
-                if (deleteRichDraftButton != null) {
-                    ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = dp(10) + botCommandsMenuButton.getMeasuredWidth();
-                }
+                setLeftTopButtonsMargin(dp(10) + botCommandsMenuButton.getMeasuredWidth());
                 if (messageEditText != null) {
                     ((MarginLayoutParams) messageEditText.getLayoutParams()).leftMargin = dp(57) + botCommandsMenuButton.getMeasuredWidth();
                 }
@@ -15737,9 +15740,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 ((MarginLayoutParams) emojiButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
                 ((MarginLayoutParams) senderSelectView.getLayoutParams()).leftMargin = dp(cursorDp);
                 cursorDp += SENDER_SELECT_WIDTH_DP + iosGapDp;
-                if (deleteRichDraftButton != null) {
-                    ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
-                }
+                setLeftTopButtonsMargin(dp(IOS_LEFT_EDGE_MARGIN_DP));
                 if (messageEditText != null) {
                     ((MarginLayoutParams) messageEditText.getLayoutParams()).leftMargin = dp(cursorDp);
                 }
@@ -15748,9 +15749,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
             } else {
                 ((MarginLayoutParams) emojiButton.getLayoutParams()).leftMargin = dp(7) + width;
-                if (deleteRichDraftButton != null) {
-                    ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = dp(7) + width;
-                }
+                setLeftTopButtonsMargin(dp(7) + width);
                 if (messageEditText != null) {
                     ((MarginLayoutParams) messageEditText.getLayoutParams()).leftMargin = dp(54) + width;
                 }
@@ -15761,9 +15760,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         } else if (isIosInputAppearance()) {
             int cursorDp = IOS_LEFT_EDGE_MARGIN_DP + DEFAULT_HEIGHT + iosGapDp + CAPSULE_INSET_DP;
             ((MarginLayoutParams) emojiButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
-            if (deleteRichDraftButton != null) {
-                ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = dp(IOS_LEFT_EDGE_MARGIN_DP);
-            }
+            setLeftTopButtonsMargin(dp(IOS_LEFT_EDGE_MARGIN_DP));
             if (messageEditText != null) {
                 ((MarginLayoutParams) messageEditText.getLayoutParams()).leftMargin = dp(cursorDp + NO_ICON_TEXT_INSET_DP);
             }
@@ -15772,9 +15769,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             }
         } else {
             ((MarginLayoutParams) emojiButton.getLayoutParams()).leftMargin = dp(3);
-            if (deleteRichDraftButton != null) {
-                ((MarginLayoutParams) deleteRichDraftButton.getLayoutParams()).leftMargin = dp(3);
-            }
+            setLeftTopButtonsMargin(dp(3));
             if (messageEditText != null) {
                 ((MarginLayoutParams) messageEditText.getLayoutParams()).leftMargin = dp(50);
             }
@@ -15810,14 +15805,23 @@ public class ChatActivityEnterView extends FrameLayout implements
                     if (view.getVisibility() != VISIBLE) continue;
                     if (!shown) {
                         view.animate().cancel();
+                        view.setAlpha(0.0f);
+                        view.setScaleX(0.6f);
+                        view.setScaleY(0.6f);
+                        view.setClickable(false);
+                        view.setEnabled(false);
                         view.setVisibility(GONE);
                         continue;
                     }
                     view.animate().cancel();
                     view.setTranslationY(view.getTranslationY() + delta);
                     view.animate()
+                        .alpha(1.0f)
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
                         .translationY(0)
                         .setInterpolator(CubicBezierInterpolator.EASE_OUT_QUINT).setDuration(250)
+                        .withEndAction(null)
                         .start();
                 }
                 if (aiHint != null) {
@@ -17455,8 +17459,6 @@ public class ChatActivityEnterView extends FrameLayout implements
         fieldRightDp = isIosButtonPlacement() ? (DEFAULT_HEIGHT + iosGapDp * 2) : (isChat ? 50 : 2);
         emojiLeftDp = isIosButtonPlacement() ? 0 : 2;
         emojiRightDp = isIosButtonPlacement() ? iosGapDp : 0;
-        aiButtonGravity = isIosButtonPlacement() ? (Gravity.TOP | Gravity.RIGHT) : (Gravity.TOP | Gravity.LEFT);
-        aiButtonRightMarginDp = isIosButtonPlacement() ? (DEFAULT_HEIGHT + iosGapDp) : 0;
 
         if (attachButton != null) {
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) attachButton.getLayoutParams();
