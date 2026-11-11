@@ -12915,7 +12915,7 @@ public class ChatActivity extends BaseFragment implements
                 if (!forceScrollToFirst) {
                     forceNextPinnedMessageId = -forceNextPinnedMessageId;
                 }
-                scrollToMessageId(currentPinned, 0, true, 0, true, forceNextPinnedMessageId);
+                scrollToMessageId(currentPinned, getPinnedJumpReturnMessageId(), true, 0, true, forceNextPinnedMessageId);
                 updateMessagesVisiblePart(false);
             }
         });
@@ -13177,6 +13177,34 @@ public class ChatActivity extends BaseFragment implements
         }
     }
 
+    // Return the bottom-most visible message so page-down can return to the reading position
+    // after jumping to a pinned message, or 0 when already at the newest messages.
+    private int getPinnedJumpReturnMessageId() {
+        if (chatLayoutManager == null || chatAdapter == null || chatAdapter.isFiltered || isSecretChat()) {
+            return 0;
+        }
+        final int first = chatLayoutManager.findFirstVisibleItemPosition();
+        final int last = chatLayoutManager.findLastVisibleItemPosition();
+        if (first == RecyclerView.NO_POSITION || forwardEndReached[0] && first <= chatAdapter.messagesStartRow) {
+            return 0;
+        }
+        final ArrayList<MessageObject> messages = chatAdapter.getMessages();
+        for (int i = first; i <= last; i++) {
+            if (i < chatAdapter.messagesStartRow || i >= chatAdapter.messagesEndRow) {
+                continue;
+            }
+            final int index = i - chatAdapter.messagesStartRow;
+            if (index >= messages.size()) {
+                break;
+            }
+            final MessageObject messageObject = messages.get(index);
+            if (messageObject.getId() > 0 && !messageObject.isSponsored() && messageObject.getDialogId() == dialog_id) {
+                return messageObject.getId();
+            }
+        }
+        return 0;
+    }
+
     private void openPinnedMessagesList(boolean preview) {
         if (getParentActivity() == null || parentLayout == null || parentLayout.getLastFragment() != this || pinnedMessageIds.isEmpty()) {
             return;
@@ -13214,7 +13242,7 @@ public class ChatActivity extends BaseFragment implements
         fragment.chatActivityDelegate = new ChatActivityDelegate() {
             @Override
             public void openReplyMessage(int mid) {
-                scrollToMessageId(mid, 0, true, 0, true, 0);
+                scrollToMessageId(mid, getPinnedJumpReturnMessageId(), true, 0, true, 0);
             }
 
             @Override
