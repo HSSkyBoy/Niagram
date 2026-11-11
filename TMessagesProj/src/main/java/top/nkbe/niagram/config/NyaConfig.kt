@@ -1752,6 +1752,24 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val hideMessageTime =
+        addConfig(
+            "HideMessageTime",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideMessageSentCheck =
+        addConfig(
+            "HideMessageSentCheck",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideMessageSendStatus =
+        addConfig(
+            "HideMessageSendStatus",
+            ConfigItem.configTypeBool,
+            false
+        )
     val hideAvatarTtlBadge =
         addConfig(
             "HideAvatarTtlBadge",

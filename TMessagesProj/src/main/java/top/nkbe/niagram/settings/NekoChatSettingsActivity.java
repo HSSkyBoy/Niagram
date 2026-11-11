@@ -141,6 +141,12 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
     private final AbstractConfigCell hideBotInfoRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideBotInfo(), getString(R.string.HideBotInfoNotice)));
     private final AbstractConfigCell hideBotInfoMediaRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideBotInfoMedia(), getString(R.string.HideBotInfoMediaNotice)));
     private final AbstractConfigCell hideFloatingDateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideFloatingDate()));
+    private final AbstractConfigCell hideMessageTimeRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getHideMessageTime()));
+    private final AbstractConfigCell hideMessageStatusToggleRow = cellGroup.appendCell(new ConfigCellTextCheck2("HideMessageStatusGroup", getString(R.string.HideMessageStatusGroup), new ArrayList<>() {{
+        add(new ConfigCellCheckBox(NyaConfig.INSTANCE.getHideMessageSentCheck()));
+        add(new ConfigCellCheckBox(NyaConfig.INSTANCE.getHideMessageSendStatus()));
+    }}, null));
+    ArrayList<ConfigCellCheckBox> hideMessageStatusRows = ((ConfigCellTextCheck2) hideMessageStatusToggleRow).getCheckBox();
     private final AbstractConfigCell emojiSetsRow = cellGroup.appendCell(new ConfigCellCustom("EmojiSets", ConfigCellCustom.CUSTOM_ITEM_EmojiSet, true));
     private final AbstractConfigCell premiumElementsToggleRow = cellGroup.appendCell(new ConfigCellTextCheck2("PremiumElements", getString(R.string.PremiumElements), new ArrayList<>() {{
         add(new ConfigCellCheckBox(NyaConfig.INSTANCE.getPremiumItemEmojiStatus()));
@@ -753,6 +759,10 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
         }
         toggleRowIndex = cellGroup.rows.indexOf(disableSwipeToNextRow);
         if (position > toggleRowIndex && position <= toggleRowIndex + disableSwipeToNextRows.size()) {
+            listAdapter.notifyItemChanged(toggleRowIndex);
+        }
+        toggleRowIndex = cellGroup.rows.indexOf(hideMessageStatusToggleRow);
+        if (position > toggleRowIndex && position <= toggleRowIndex + hideMessageStatusRows.size()) {
             listAdapter.notifyItemChanged(toggleRowIndex);
         }
     }

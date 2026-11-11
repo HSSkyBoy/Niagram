@@ -889,6 +889,10 @@
     <string name="HideChatHeaderVerifiedBadge">隐藏聊天标题栏的认证标志</string>
     <string name="HideChatHeaderConnectionState">隐藏聊天标题栏的连接状态</string>
     <string name="HideFloatingDate">隐藏悬浮日期</string>
+    <string name="HideMessageTime">隐藏消息时间戳</string>
+    <string name="HideMessageStatusGroup">隐藏消息发送状态</string>
+    <string name="HideMessageSentCheck">隐藏消息已发送图标</string>
+    <string name="HideMessageSendStatus">隐藏消息发送状态图标</string>
     <string name="HideAvatarTtlBadge">隐藏头像上的自动删除计时标志</string>
     <string name="HideFeaturedStickersAndEmoji">隐藏推荐贴纸与表情</string>
     <string name="HideFeaturedStickersAndEmojiNotice">在选择器中不展示热门推荐的贴纸包与表情包。</string>
