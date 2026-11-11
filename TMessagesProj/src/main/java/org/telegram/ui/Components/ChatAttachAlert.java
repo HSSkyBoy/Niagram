@@ -2234,7 +2234,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
             }
         };
         actionBar.alwaysApplyColorFilterToBackButton();
-        actionBar.setForcedMenuWidth(dp(46));
+        actionBar.setForcedMenuWidth(dp(44));
         // actionBar.setBackgroundColor(getThemedColor(Theme.key_dialogBackground));
         actionBar.setBackButtonDrawable(new BackDrawable(false));
         ThemeBind.actionBarItemsColor(actionBar, Theme.key_dialogTextBlack, resourcesProvider, false);

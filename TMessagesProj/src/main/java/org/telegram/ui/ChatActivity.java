@@ -5215,12 +5215,12 @@ public class ChatActivity extends BaseFragment implements
                 avatarContainer.setActionBar(actionBar);
             } else if (chatMode == MODE_WELCOME_MESSAGES) {
                 actionBar.setChatAvatarContainer(avatarContainer);
-                actionBar.setForcedMenuWidth(dp(46));
+                actionBar.setForcedMenuWidth(dp(44));
                 actionBar.doNotDrawGlassMenu = true;
                 avatarContainer.setActionBar(actionBar);
             } else if (isComments) {
                 actionBar.setChatAvatarContainer(avatarContainer);
-                actionBar.setForcedMenuMinWidth(dp(46));
+                actionBar.setForcedMenuMinWidth(dp(44));
                 avatarContainer.setActionBar(actionBar);
             }
         }
