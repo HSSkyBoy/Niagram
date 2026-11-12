@@ -126,21 +126,40 @@ public class TextCheckCell2 extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = MeasureSpec.getSize(widthMeasureSpec);
         if (isMultiline) {
-            super.onMeasure(MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
         } else {
-            super.onMeasure(MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(dp(valueTextView.getVisibility() == VISIBLE ? 64 : 50) + (needDivider ? 1 : 0), MeasureSpec.EXACTLY));
+            super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(dp(valueTextView.getVisibility() == VISIBLE ? 64 : 50) + (needDivider ? 1 : 0), MeasureSpec.EXACTLY));
+        }
+        if (collapseViewContainer != null && collapseViewContainer.getVisibility() != GONE) {
+            int collapseWidth = collapseViewContainer.getMeasuredWidth() + dp(16);
+            int reservedRight = dp(76) + collapseWidth;
+            int maxTextWidth = width - dp(LocaleController.isRTL ? 64 : 21) - reservedRight;
+            if (maxTextWidth < 0) maxTextWidth = 0;
+            if (textView.getMeasuredWidth() > maxTextWidth) {
+                textView.measure(MeasureSpec.makeMeasureSpec(maxTextWidth, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(textView.getMeasuredHeight(), MeasureSpec.EXACTLY));
+            }
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (collapseViewContainer != null) {
+        if (collapseViewContainer != null && collapseViewContainer.getVisibility() != GONE) {
+            int maxRight = getMeasuredWidth() - dp(76) - collapseViewContainer.getMeasuredWidth();
             if (LocaleController.isRTL) {
-                collapseViewContainer.setTranslationX(textView.getLeft() - collapseViewContainer.getMeasuredWidth() - dp(8));
+                int targetX = textView.getLeft() - collapseViewContainer.getMeasuredWidth() - dp(8);
+                if (targetX < dp(76)) {
+                    targetX = dp(76);
+                }
+                collapseViewContainer.setTranslationX(targetX);
             } else {
-                collapseViewContainer.setTranslationX(textView.getRight() + dp(8));
+                int targetX = textView.getRight() + dp(8);
+                if (targetX > maxRight) {
+                    targetX = maxRight;
+                }
+                collapseViewContainer.setTranslationX(targetX);
             }
         }
     }
