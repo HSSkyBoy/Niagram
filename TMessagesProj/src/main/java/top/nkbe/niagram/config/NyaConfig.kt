@@ -499,7 +499,7 @@ object NyaConfig {
         addConfig(
             "PushServiceType",
             ConfigItem.configTypeInt,
-            2
+            1
         )
     val pushServiceTypeInAppDialog =
         addConfig(
