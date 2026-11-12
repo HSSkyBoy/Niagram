@@ -1706,7 +1706,7 @@ public class ActionBarMenuItem extends FrameLayout {
             searchFieldCaption.setSingleLine(true);
             searchFieldCaption.setEllipsize(TextUtils.TruncateAt.END);
             searchFieldCaption.setVisibility(GONE);
-            searchFieldCaption.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
+            searchFieldCaption.setGravity((LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.CENTER_VERTICAL);
 
             searchField = new EditTextBoldCursor(getContext()) {
 
@@ -1758,6 +1758,7 @@ public class ActionBarMenuItem extends FrameLayout {
             ThemeBind.hintTextColor(searchField, Theme.key_actionBarDefaultSearchPlaceholder, resourcesProvider);
             ThemeBind.textColor(searchField, Theme.key_actionBarDefaultSearch, resourcesProvider);
             searchField.setSingleLine(true);
+            searchField.setGravity(Gravity.CENTER_VERTICAL);
             searchField.setBackgroundResource(0);
             searchField.setPadding(0, 0, 0, 0);
             int inputType = searchField.getInputType() | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
@@ -1837,13 +1838,13 @@ public class ActionBarMenuItem extends FrameLayout {
             searchFilterLayout.setOrientation(LinearLayout.HORIZONTAL);
             searchFilterLayout.setVisibility(View.VISIBLE);
             if (!LocaleController.isRTL) {
-                searchContainer.addView(searchFieldCaption, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 36, Gravity.CENTER_VERTICAL | Gravity.LEFT, 0, 5.5f, 0, 0));
+                searchContainer.addView(searchFieldCaption, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 36, Gravity.CENTER_VERTICAL | Gravity.LEFT, 0, 0, 0, 0));
                 searchContainer.addView(searchField, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 36, Gravity.CENTER_VERTICAL, 6, 0, wrapSearchInScrollView ? 0 : 48, 0));
                 searchContainer.addView(searchFilterLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 32, Gravity.CENTER_VERTICAL, 0, 0, 48, 0));
             } else {
                 searchContainer.addView(searchFilterLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 32, Gravity.CENTER_VERTICAL, 0, 0, 48, 0));
                 searchContainer.addView(searchField, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 36, Gravity.CENTER_VERTICAL, 0, 0, wrapSearchInScrollView ? 0 : 48, 0));
-                searchContainer.addView(searchFieldCaption, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 36, Gravity.CENTER_VERTICAL | Gravity.RIGHT, 0, 5.5f, 48, 0));
+                searchContainer.addView(searchFieldCaption, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 36, Gravity.CENTER_VERTICAL | Gravity.RIGHT, 0, 0, 48, 0));
             }
             searchFilterLayout.setClipChildren(false);
 

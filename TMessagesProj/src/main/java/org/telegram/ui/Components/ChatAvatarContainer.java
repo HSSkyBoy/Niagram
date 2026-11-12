@@ -392,7 +392,7 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
         // titleTextView.setRightDrawableOutside(true);
         titleTextView.setRightDrawableOutside(!isCentered());
         titleTextView.setScrollNonFitText(isCentered());
-        titleTextView.setPadding(0, dp(6), 0, dp(12));
+        titleTextView.setPadding(0, dp(6), 0, dp(6));
         addView(titleTextView);
 
         if (useAnimatedSubtitle()) {
