@@ -68,11 +68,6 @@ object NyaConfig {
     const val MARKDOWN_PARSER_TELEGRAM = 0
     const val MARKDOWN_PARSER_NEKO = 1
 
-    const val DRAWER_BACKGROUND_DEFAULT = 0
-    const val DRAWER_BACKGROUND_AVATAR = 1
-    const val DRAWER_BACKGROUND_BIG_AVATAR = 2
-    const val DRAWER_BACKGROUND_WALLPAPER = 3
-
     const val DNS_TYPE_DEFAULT = 0
     const val DNS_TYPE_CLOUDFLARE = 1
     const val DNS_TYPE_GOOGLE = 2
@@ -1958,13 +1953,13 @@ object NyaConfig {
             ConfigItem.configTypeBool,
             false
         )
-    val hideDrawerNightMode =
+    val hideMenuNightMode =
         addConfig(
             "HideDrawerNightMode",
             ConfigItem.configTypeBool,
             false
         )
-    val hideDrawerProxy =
+    val hideMenuProxy =
         addConfig(
             "HideDrawerProxy",
             ConfigItem.configTypeBool,
