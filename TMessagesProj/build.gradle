@@ -127,6 +127,11 @@ android {
         }
     }
 
+    // IWidgetEngine: the widget engine's isolated process (WidgetEngineService).
+    buildFeatures {
+        aidl true
+    }
+
     defaultConfig {
         versionName verName
         versionCode verCode
