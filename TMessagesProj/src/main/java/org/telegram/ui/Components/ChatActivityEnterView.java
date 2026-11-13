@@ -6574,9 +6574,9 @@ public class ChatActivityEnterView extends FrameLayout implements
         updateFieldHint(false);
         messageEditText.setSingleLine(false);
         messageEditText.setMaxLines(6);
-        messageEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        updateFieldTextSize();
         messageEditText.setGravity(Gravity.BOTTOM);
-        messageEditText.setPadding(0, dp(7), 0, dp(7));
+        messageEditText.setPadding(0, dp(9), 0, dp(10));
         messageEditText.setBackgroundDrawable(null);
         ThemeBind.textColor(messageEditText, Theme.key_chat_messagePanelText, resourcesProvider);
         ThemeBind.linkTextColor(messageEditText, Theme.key_chat_messageLinkOut, resourcesProvider);
@@ -6585,16 +6585,16 @@ public class ChatActivityEnterView extends FrameLayout implements
         ThemeBind.hintTextColor(messageEditText, Theme.key_chat_messagePanelHint, resourcesProvider);
         ThemeBind.cursorColor(messageEditText, Theme.key_chat_messagePanelCursor, resourcesProvider);
         ThemeBind.editHandlesColor(messageEditText, Theme.key_chat_TextSelectionCursor, resourcesProvider);
-        messageEditTextContainer.addView(messageEditText, 1, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 52, 0, isChat ? 50 : 2, 0));
+        messageEditTextContainer.addView(messageEditText, 1, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 52, 0, isChat ? 50 : 2, 1.5f));
 
         richDraftPreview = new RichMessageLayout.PreviewView(getContext(), currentAccount, resourcesProvider);
         richDraftPreview.setAllowActions(false);
         richDraftPreview.setMaxHeight(dp(150));
         richDraftPreview.setMinHeight(dp(DEFAULT_HEIGHT + DEFAULT_HEIGHT));
         richDraftPreview.setVisibility(View.GONE);
-        richDraftPreview.setPadding(dp(8), dp(7), dp(8), dp(7));
+        richDraftPreview.setPadding(dp(8), dp(9), dp(8), dp(10));
         richDraftPreview.setOnClickListener(v -> openRichEditor());
-        messageEditTextContainer.addView(richDraftPreview, 2, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 52 - 8, 0, (isChat ? 50 : 2) - 8, 0));
+        messageEditTextContainer.addView(richDraftPreview, 2, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 52 - 8, 0, (isChat ? 50 : 2) - 8, 1.5f));
         messageEditText.setOnKeyListener(new OnKeyListener() {
 
             @Override
@@ -9662,7 +9662,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         slowModeButton.setVisibility(visible ? VISIBLE : GONE);
         int padding = visible ? dp(slowModeButton.isPremiumMode ? 26 : 16) : 0;
         if (messageEditText != null && messageEditText.getPaddingRight() != padding) {
-            messageEditText.setPadding(0, dp(7), padding, dp(7));
+            messageEditText.setPadding(0, dp(9), padding, dp(10));
         }
     }
 
@@ -17178,7 +17178,7 @@ public class ChatActivityEnterView extends FrameLayout implements
     public void updateFieldTextSize() {
         if (messageEditText != null) {
             int customSize = top.nkbe.niagram.config.NyaConfig.INSTANCE.getInputFieldTextSize().Int();
-            float size = customSize > 0 ? customSize : SharedConfig.fontSize;
+            float size = customSize > 0 ? customSize : 18;
             messageEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size);
             messageEditText.setCursorSize(dp(size + 2));
             android.graphics.Typeface regularTf = top.nkbe.niagram.helpers.TypefaceHelper.getRegularTypeface();

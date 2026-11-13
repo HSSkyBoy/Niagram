@@ -316,7 +316,7 @@ class NekoFontSettingsActivity : BaseFragment() {
             return if (configured in startFontSize..endFontSize) {
                 configured
             } else {
-                SharedConfig.fontSize
+                18
             }
         }
     }
