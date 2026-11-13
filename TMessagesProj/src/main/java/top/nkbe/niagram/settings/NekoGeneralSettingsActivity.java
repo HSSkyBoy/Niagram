@@ -24,10 +24,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
+import org.telegram.messenger.NotificationsService;
 import org.telegram.messenger.PushListenerController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
@@ -240,9 +242,10 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
             getString(R.string.DecorationNone),
     }, null));
     private final AbstractConfigCell notificationIconRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NyaConfig.INSTANCE.getNotificationIcon(), new String[]{
-            getString(R.string.MapPreviewProviderTelegram),
-            getString(R.string.NiagramX),
-            getString(R.string.NekoX)
+            getString(R.string.NotificationIconTelegram),
+            getString(R.string.NotificationIconNiagram),
+            getString(R.string.NotificationIconNeko),
+            getString(R.string.NotificationIconColorful)
     }, null));
     private final AbstractConfigCell tabletModeRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NyaConfig.tabletMode, new String[]{
             getString(R.string.TabletModeDefault),
@@ -340,6 +343,7 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
             if (key.equals(NyaConfig.actionBarDecoration.getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else if (key.equals(NyaConfig.INSTANCE.getNotificationIcon().getKey())) {
+                NotificationsService.updateNotification(getParentActivity() != null ? getParentActivity() : ApplicationLoader.applicationContext);
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else if (key.equals(NyaConfig.tabletMode.getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);

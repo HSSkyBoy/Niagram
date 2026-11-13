@@ -39,6 +39,10 @@
     <string name="SendAsEmoji">Send as emoji</string>
     <string name="CustomEditedMessage">Custom Edited Mark</string>
     <string name="NotificationIcon">Notification Icon</string>
+    <string name="NotificationIconTelegram">Telegram</string>
+    <string name="NotificationIconNiagram">Niagram</string>
+    <string name="NotificationIconNeko">Neko</string>
+    <string name="NotificationIconColorful">Colorful</string>
     <string name="Official">Official</string>
     <string name="ShowOnlineStatus">Show Online Status</string>
     <string name="ShowOnlineStatusNotice">Show the online status of other people next to their profile photo in groups.</string>

@@ -67,7 +67,7 @@ public class FilesMigrationService extends Service {
         Notification notification = new Notification.Builder(this, NotificationsController.OTHER_NOTIFICATIONS_CHANNEL)
                 .setContentTitle(LocaleController.getString(R.string.MigratingFiles))
                 .setAutoCancel(false)
-                .setSmallIcon(R.drawable.notification)
+                .setSmallIcon(NotificationsController.getNotificationIconResId())
                 .build();
 
         isRunning = true;
@@ -205,7 +205,7 @@ public class FilesMigrationService extends Service {
                 Notification notification = new Notification.Builder(FilesMigrationService.this, NotificationsController.OTHER_NOTIFICATIONS_CHANNEL)
                         .setContentTitle(LocaleController.getString(R.string.MigratingFiles))
                         .setContentText(String.format("%s/%s", currentCount, totalFilesCount))
-                        .setSmallIcon(R.drawable.notification)
+                        .setSmallIcon(NotificationsController.getNotificationIconResId())
                         .setAutoCancel(false)
                         .setProgress(totalFilesCount, currentCount, false)
                         .build();

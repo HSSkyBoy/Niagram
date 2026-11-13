@@ -39,6 +39,10 @@
     <string name="SendAsEmoji">以 Emoji 发送</string>
     <string name="CustomEditedMessage">自定义已编辑消息标记</string>
     <string name="NotificationIcon">通知图标样式</string>
+    <string name="NotificationIconTelegram">Telegram</string>
+    <string name="NotificationIconNiagram">Niagram</string>
+    <string name="NotificationIconNeko">Neko</string>
+    <string name="NotificationIconColorful">缤纷</string>
     <string name="Official">官方</string>
     <string name="ShowOnlineStatus">显示用户在线状态</string>
     <string name="ShowOnlineStatusNotice">在群组中于用户头像旁显示其在线状态。</string>

@@ -410,7 +410,7 @@ public class NotificationsController extends BaseController implements Notificat
                 PendingIntent contentIntent = PendingIntent.getActivity(ApplicationLoader.applicationContext,
                         currentAccount, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(ApplicationLoader.applicationContext, channelId)
-                        .setSmallIcon(R.drawable.notification)
+                        .setSmallIcon(getNotificationIconResId())
                         .setContentTitle(LocaleController.getString(R.string.AppName))
                         .setContentText(message)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
@@ -6421,18 +6421,20 @@ public class NotificationsController extends BaseController implements Notificat
         return dialogsNotificationsFacade;
     }
 
-    private int getNotificationIconResId() {
+    public static int getNotificationIconResId() {
         int notificationIconConfigValue = NyaConfig.INSTANCE.getNotificationIcon().Int();
         switch (notificationIconConfigValue) {
             case 0:
                 return R.drawable.notification;
             case 1:
-                return R.drawable.niagramx_notification;
+                return R.drawable.notification_niagram;
             case 2:
                 return R.drawable.neko_notification;
+            case 3:
+                return R.drawable.notification_colorful;
         }
 
-        return R.drawable.notification;
+        return R.drawable.notification_niagram;
     }
 
     public void loadTopicsNotificationsExceptions(long dialogId, Consumer<HashSet<Integer>> consumer) {

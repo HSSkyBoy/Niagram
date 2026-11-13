@@ -46,7 +46,7 @@ public class NotificationsService extends Service {
 //                    .setContentIntent(explainPendingIntent)
                     .setShowWhen(false)
                     .setOngoing(true)
-                    .setSmallIcon(R.drawable.neko_notification)
+                    .setSmallIcon(NotificationsController.getNotificationIconResId())
                     .setContentText(LocaleController.getString(R.string.NiagramXPushService))
                     .build();
             try {
@@ -94,6 +94,27 @@ public class NotificationsService extends Service {
             } catch (Exception ex) {
                 // 辣鷄miui 就你事最多.jpg
             }
+        }
+    }
+
+    public static void updateNotification(Context context) {
+        if (context == null || NyaConfig.INSTANCE.getPushServiceType().Int() != 0 || !NyaConfig.INSTANCE.getPushServiceTypeInAppDialog().Bool()) {
+            return;
+        }
+        try {
+            String CHANNEL_ID = "push_service_channel";
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager == null) {
+                return;
+            }
+            Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setShowWhen(false)
+                    .setOngoing(true)
+                    .setSmallIcon(NotificationsController.getNotificationIconResId())
+                    .setContentText(LocaleController.getString(R.string.NiagramXPushService))
+                    .build();
+            notificationManager.notify(9999, notification);
+        } catch (Throwable ignore) {
         }
     }
 }

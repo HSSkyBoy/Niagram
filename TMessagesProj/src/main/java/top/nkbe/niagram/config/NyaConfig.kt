@@ -310,7 +310,7 @@ object NyaConfig {
         addConfig(
             "NotificationIcon",
             ConfigItem.configTypeInt,
-            1 // 0: Telegram; 1: Niagram; 2: NekoX
+            1 // 0: Telegram; 1: Niagram; 2: Neko; 3: Colorful
         )
     val notificationIconNagramRemoved =
         addConfig(
@@ -2041,7 +2041,7 @@ object NyaConfig {
             }
             notificationIconNagramRemoved.setConfigBool(true)
         }
-        if (notificationIcon.Int() !in 0..2) {
+        if (notificationIcon.Int() !in 0..3) {
             notificationIcon.setConfigInt(1)
         }
         if (!getPreferences().contains(idDcType.key) && !getPreferences().getBoolean(
