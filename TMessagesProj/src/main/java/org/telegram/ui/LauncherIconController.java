@@ -55,7 +55,8 @@ public class LauncherIconController {
     }
 
     public enum LauncherIcon {
-        DEFAULT("DefaultIcon", R.drawable.icon_9_launcher_background, R.drawable.icon_9_launcher_foreground, R.string.AppIconNekoColorful, R.mipmap.icon_9_launcher),
+        DEFAULT("DefaultIcon", R.drawable.icon_15_launcher_background, R.drawable.icon_15_launcher_foreground, R.string.AppIconDefault, R.mipmap.icon_15_launcher),
+        NEKO_COLORFUL("NekoColorfulIcon", R.mipmap.icon_9_launcher_background, R.mipmap.icon_9_launcher_foreground, R.string.AppIconNekoColorful, R.mipmap.icon_9_launcher),
         NEKO("NekoIcon", R.mipmap.icon_7_launcher_background, R.mipmap.icon_7_launcher_foreground, R.string.AppIconNeko, R.mipmap.icon_7_launcher),
         NEKO_DARK("NekoDarkIcon", R.mipmap.icon_2_background_sa, R.mipmap.icon_8_launcher_foreground, R.string.AppIconNekoDark, R.mipmap.icon_8_launcher),
         MUSHEEN("MusheenIcon", R.color.ic_launcher_background, R.mipmap.icon_10_launcher_foreground, R.string.AppIconMusheen, R.mipmap.icon_10_launcher),

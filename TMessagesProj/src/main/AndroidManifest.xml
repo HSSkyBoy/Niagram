@@ -109,6 +109,23 @@
             android:enabled="true"
             android:name="org.telegram.messenger.DefaultIcon"
             android:targetActivity="org.telegram.ui.LaunchActivity"
+            android:icon="@mipmap/icon_15_launcher"
+            android:roundIcon="@mipmap/icon_15_launcher_round"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+        </activity-alias>
+
+        <activity-alias
+            android:theme="@style/Theme.TMessages.Start"
+            android:enabled="false"
+            android:name="org.telegram.messenger.NekoColorfulIcon"
+            android:targetActivity="org.telegram.ui.LaunchActivity"
             android:icon="@mipmap/icon_9_launcher"
             android:roundIcon="@mipmap/icon_9_launcher_round"
             android:exported="true">
