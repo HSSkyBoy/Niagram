@@ -11882,6 +11882,19 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         return niagramVerifiedType >= top.nkbe.niagram.helpers.NiagramVerifiedHelper.TYPE_NIAGRAM_OFFICIAL;
     }
 
+    // a theme change repaints the badge with the theme's colors: put the Niagram/Nagram badge colors back
+    private void reapplyNiagramVerifiedColors() {
+        if (!isNiagramCustomVerified()) {
+            return;
+        }
+        if (verifiedDrawable != null) {
+            verifiedDrawable.setColorFilter(AndroidUtilities.getOffsetColor(getProfileVerifiedBgColor(0), getThemedColor(Theme.key_player_actionBarTitle), mediaHeaderAnimationProgress, 1.0f), PorterDuff.Mode.MULTIPLY);
+        }
+        if (verifiedCheckDrawable != null) {
+            verifiedCheckDrawable.setColorFilter(AndroidUtilities.getOffsetColor(getProfileVerifiedCheckColor(0), getThemedColor(Theme.key_windowBackgroundWhite), mediaHeaderAnimationProgress, 1.0f), PorterDuff.Mode.MULTIPLY);
+        }
+    }
+
     private int getProfileVerifiedBgColor(int fallback) {
         return top.nkbe.niagram.helpers.NiagramVerifiedHelper.getBadgeBackgroundColor(niagramVerifiedType, fallback);
     }
@@ -16123,11 +16136,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 
         if (mediaHeaderVisible) {
-            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedCheckDrawable }, null, Theme.key_player_actionBarTitle));
-            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedDrawable }, null, Theme.key_windowBackgroundWhite));
+            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedCheckDrawable }, this::reapplyNiagramVerifiedColors, Theme.key_player_actionBarTitle));
+            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedDrawable }, this::reapplyNiagramVerifiedColors, Theme.key_windowBackgroundWhite));
         } else {
-            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedCheckDrawable }, null, Theme.key_profile_verifiedCheck));
-            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedDrawable }, null, Theme.key_profile_verifiedBackground));
+            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedCheckDrawable }, this::reapplyNiagramVerifiedColors, Theme.key_profile_verifiedCheck));
+            arrayList.add(new ThemeDescription(nameTextView, 0, null, null, new Drawable[] { verifiedDrawable }, this::reapplyNiagramVerifiedColors, Theme.key_profile_verifiedBackground));
         }
 
         return arrayList;

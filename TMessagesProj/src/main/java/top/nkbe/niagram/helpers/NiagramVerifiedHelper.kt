@@ -62,7 +62,7 @@ object NiagramVerifiedHelper {
         if (!NyaConfig.verifySelf.Bool()) return false
         for (a in 0 until UserConfig.MAX_ACCOUNT_COUNT) {
             val userConfig = UserConfig.getInstance(a)
-            if (userConfig != null && userConfig.isClientActivated && userConfig.clientUserId == userId) {
+            if (userConfig != null && userConfig.clientUserId == userId && userConfig.isClientActivated) {
                 return true
             }
         }
