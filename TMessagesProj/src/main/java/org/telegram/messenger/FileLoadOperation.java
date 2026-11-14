@@ -2465,7 +2465,9 @@ public class FileLoadOperation {
             }
 
             int flags = (isForceRequest ? ConnectionsManager.RequestFlagForceDownload : 0);
-            if (useDownloadByteBudget) {
+            // The native byte budget is capped at 2MB for non-premium accounts, which would throttle the enhanced
+            // loader, so only opt in when it is off; boosted modes use the count-based native scheduling.
+            if (useDownloadByteBudget && NyaConfig.enhancedFileLoader.Int() == NyaConfig.ENHANCED_LOADER_OFF) {
                 flags |= ConnectionsManager.RequestFlagDownloadByteBudget;
                 if (totalBytesCount < 20 * 1024) {
                     flags |= ConnectionsManager.RequestFlagSmallDownload;
