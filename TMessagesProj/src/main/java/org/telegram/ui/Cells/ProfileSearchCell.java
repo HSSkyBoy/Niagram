@@ -447,7 +447,7 @@ public class ProfileSearchCell extends BaseCell implements NotificationCenter.No
             updateStatus(false, null, null, false);
         } else if (chat != null) {
             dialog_id = -chat.id;
-            drawCheck = chat.verified;
+            drawCheck = chat.verifiedExtended();
             if (chat.monoforum) {
                 TLRPC.Chat mfChat = MessagesController.getInstance(currentAccount).getChat(chat.linked_monoforum_id);
                 if (mfChat != null) {
@@ -468,7 +468,7 @@ public class ProfileSearchCell extends BaseCell implements NotificationCenter.No
                 nameLeft = dp(11);
             }
             nameLockTop = dp(21);
-            drawCheck = user.verified;
+            drawCheck = user.verifiedExtended();
             drawPremium = !savedMessages && MessagesController.getInstance(currentAccount).isPremiumUser(user);
             updateStatus(drawCheck, user, null, false);
         } else if (contact != null) {
@@ -888,7 +888,7 @@ public class ProfileSearchCell extends BaseCell implements NotificationCenter.No
                 }
             }
             if (!continueUpdate && (mask & MessagesController.UPDATE_MASK_EMOJI_STATUS) != 0 && (user != null || chat != null)) {
-                updateStatus(user != null ? user.verified : chat.verified, user, chat, true);
+                updateStatus(user != null ? user.verifiedExtended() : chat.verifiedExtended(), user, chat, true);
             }
             if (!continueUpdate && ((mask & MessagesController.UPDATE_MASK_NAME) != 0 && user != null) || (mask & MessagesController.UPDATE_MASK_CHAT_NAME) != 0 && chat != null) {
                 String newName;

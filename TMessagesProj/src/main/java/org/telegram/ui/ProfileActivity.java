@@ -420,6 +420,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable botVerificationDrawable;
     private Drawable verifiedCheckDrawable;
     private CrossfadeDrawable verifiedCrossfadeDrawable;
+    private int niagramVerifiedType = top.nkbe.niagram.helpers.NiagramVerifiedHelper.TYPE_NONE;
     private CrossfadeDrawable premiumCrossfadeDrawable;
     private ScamDrawable scamDrawable;
     private UndoView undoView;
@@ -8248,12 +8249,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
             if (verifiedDrawable != null) {
                 color1 = peerColor != null ? Theme.adaptHSV(ColorUtils.blendARGB(peerColor.getColor2(), peerColor.hasColor6(Theme.isCurrentThemeDark()) ? peerColor.getColor5() : peerColor.getColor3(), .4f), +.1f, Theme.isCurrentThemeDark() ? -.1f : -.08f) : getThemedColor(Theme.key_profile_verifiedBackground);
+                color1 = getProfileVerifiedBgColor(color1);
                 color2 = getThemedColor(Theme.key_player_actionBarTitle);
                 verifiedDrawable.setColorFilter(AndroidUtilities.getOffsetColor(color1, color2, value, 1.0f), PorterDuff.Mode.MULTIPLY);
             }
 
             if (verifiedCheckDrawable != null) {
-                color1 = peerColor != null ? Color.WHITE : dontApplyPeerColor(getThemedColor(Theme.key_profile_verifiedCheck));
+                color1 = getProfileVerifiedCheckColor(peerColor != null ? Color.WHITE : dontApplyPeerColor(getThemedColor(Theme.key_profile_verifiedCheck)));
                 color2 = getThemedColor(Theme.key_windowBackgroundWhite);
                 verifiedCheckDrawable.setColorFilter(AndroidUtilities.getOffsetColor(color1, color2, value, 1.0f), PorterDuff.Mode.MULTIPLY);
             }
@@ -11766,12 +11768,34 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         return lockIconDrawable;
     }
 
+    private boolean isNiagramCustomVerified() {
+        return niagramVerifiedType >= top.nkbe.niagram.helpers.NiagramVerifiedHelper.TYPE_NIAGRAM_OFFICIAL;
+    }
+
+    private int getProfileVerifiedBgColor(int fallback) {
+        return top.nkbe.niagram.helpers.NiagramVerifiedHelper.getBadgeBackgroundColor(niagramVerifiedType, fallback);
+    }
+
+    private int getProfileVerifiedCheckColor(int fallback) {
+        return isNiagramCustomVerified() ? top.nkbe.niagram.helpers.NiagramVerifiedHelper.COLOR_CHECK_WHITE : fallback;
+    }
+
+    private String getProfileVerifiedDescription() {
+        if (niagramVerifiedType == top.nkbe.niagram.helpers.NiagramVerifiedHelper.TYPE_NIAGRAM_OFFICIAL) {
+            return LocaleController.getString(R.string.NiagramVerifiedOfficial);
+        } else if (niagramVerifiedType == top.nkbe.niagram.helpers.NiagramVerifiedHelper.TYPE_NAGRAM_DEV) {
+            return LocaleController.getString(R.string.NagramVerifiedDev);
+        }
+        return LocaleController.getString(R.string.AccDescrVerified);
+    }
+
     private Drawable getVerifiedCrossfadeDrawable() {
         if (verifiedCrossfadeDrawable == null) {
             verifiedDrawable = Theme.profile_verifiedDrawable.getConstantState().newDrawable().mutate();
             verifiedCheckDrawable = Theme.profile_verifiedCheckDrawable.getConstantState().newDrawable().mutate();
-            if (peerColor != null) {
-                int color = Theme.adaptHSV(peerColor.hasColor6(Theme.isCurrentThemeDark()) ? peerColor.getColor5() : peerColor.getColor3(), +.1f, Theme.isCurrentThemeDark() ? -.1f : -.08f);
+            if (peerColor != null || isNiagramCustomVerified()) {
+                int color = peerColor != null ? Theme.adaptHSV(peerColor.hasColor6(Theme.isCurrentThemeDark()) ? peerColor.getColor5() : peerColor.getColor3(), +.1f, Theme.isCurrentThemeDark() ? -.1f : -.08f) : getThemedColor(Theme.key_profile_verifiedBackground);
+                color = getProfileVerifiedBgColor(color);
                 verifiedDrawable.setColorFilter(AndroidUtilities.getOffsetColor(color, getThemedColor(Theme.key_player_actionBarTitle), mediaHeaderAnimationProgress, 1.0f), PorterDuff.Mode.MULTIPLY);
                 color = Color.WHITE;
                 verifiedCheckDrawable.setColorFilter(AndroidUtilities.getOffsetColor(color, getThemedColor(Theme.key_windowBackgroundWhite), mediaHeaderAnimationProgress, 1.0f), PorterDuff.Mode.MULTIPLY);
@@ -12108,9 +12132,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (user.scam || user.fake) {
                     nameTextView.setRightDrawable2(getScamDrawable(user.scam ? 0 : 1));
                     nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.ScamMessage);
-                } else if (user.verified) {
+                } else if (user.verifiedExtended()) {
+                    niagramVerifiedType = user.getVerifiedType();
                     nameTextView.setRightDrawable2(getVerifiedCrossfadeDrawable());
-                    nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.AccDescrVerified);
+                    nameTextViewRightDrawable2ContentDescription = getProfileVerifiedDescription();
                 } else {
                     nameTextView.setRightDrawable2(null);
                     nameTextViewRightDrawable2ContentDescription = null;
@@ -12373,9 +12398,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (chat.scam || chat.fake) {
                     nameTextView.setRightDrawable2(getScamDrawable(chat.scam ? 0 : 1));
                     nameTextViewRightDrawableContentDescription = LocaleController.getString(R.string.ScamMessage);
-                } else if (chat.verified) {
+                } else if (chat.verifiedExtended()) {
+                    niagramVerifiedType = chat.getVerifiedType();
                     nameTextView.setRightDrawable2(getVerifiedCrossfadeDrawable());
-                    nameTextViewRightDrawableContentDescription = LocaleController.getString(R.string.AccDescrVerified);
+                    nameTextViewRightDrawableContentDescription = getProfileVerifiedDescription();
                 } else {
                     nameTextView.setRightDrawable2(null);
                     nameTextViewRightDrawableContentDescription = null;
@@ -12525,12 +12551,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             actionBar.setItemsBackgroundColor(ColorUtils.blendARGB(peerColor != null ? Theme.ACTION_BAR_WHITE_SELECTOR_COLOR : peerColor != null ? 0x20ffffff : getThemedColor(Theme.key_avatar_actionBarSelectorBlue), getThemedColor(Theme.key_actionBarActionModeDefaultSelector), mediaHeaderAnimationProgress), false);
         }
         if (verifiedDrawable != null) {
-            final int color1 = peerColor != null ? Theme.adaptHSV(ColorUtils.blendARGB(peerColor.getColor2(), peerColor.hasColor6(Theme.isCurrentThemeDark()) ? peerColor.getColor5() : peerColor.getColor3(), .4f), +.1f, Theme.isCurrentThemeDark() ? -.1f : -.08f) : getThemedColor(Theme.key_profile_verifiedBackground);
+            final int color1 = getProfileVerifiedBgColor(peerColor != null ? Theme.adaptHSV(ColorUtils.blendARGB(peerColor.getColor2(), peerColor.hasColor6(Theme.isCurrentThemeDark()) ? peerColor.getColor5() : peerColor.getColor3(), .4f), +.1f, Theme.isCurrentThemeDark() ? -.1f : -.08f) : getThemedColor(Theme.key_profile_verifiedBackground));
             final int color2 = getThemedColor(Theme.key_player_actionBarTitle);
             verifiedDrawable.setColorFilter(AndroidUtilities.getOffsetColor(color1, color2, mediaHeaderAnimationProgress, 1.0f), PorterDuff.Mode.MULTIPLY);
         }
         if (verifiedCheckDrawable != null) {
-            final int color1 = peerColor != null ? Color.WHITE : dontApplyPeerColor(getThemedColor(Theme.key_profile_verifiedCheck));
+            final int color1 = getProfileVerifiedCheckColor(peerColor != null ? Color.WHITE : dontApplyPeerColor(getThemedColor(Theme.key_profile_verifiedCheck)));
             final int color2 = getThemedColor(Theme.key_windowBackgroundWhite);
             verifiedCheckDrawable.setColorFilter(AndroidUtilities.getOffsetColor(color1, color2, mediaHeaderAnimationProgress, 1.0f), PorterDuff.Mode.MULTIPLY);
         }
