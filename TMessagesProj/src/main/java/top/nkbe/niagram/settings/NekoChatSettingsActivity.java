@@ -175,6 +175,7 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
     private final AbstractConfigCell customEditedMessageRow = cellGroup.appendCell(new ConfigCellTextInput(null, NyaConfig.INSTANCE.getCustomEditedMessage(), "", null));
     private final AbstractConfigCell dateOfForwardMsgRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getDateOfForwardedMsg()));
     private final AbstractConfigCell showForwardCountRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowForwardCount()));
+    private final AbstractConfigCell showVoteCountBeforeVoteRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowVoteCountBeforeVote()));
     private final AbstractConfigCell showFullAboutRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowFullAbout()));
     private final AbstractConfigCell showGroupMemberJoinDateRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getShowGroupMemberJoinDate(), getString(R.string.ShowGroupMemberJoinDateNotice)));
     private final AbstractConfigCell autoReactionDetectRow = cellGroup.appendCell(new ConfigCellTextCheck(NyaConfig.INSTANCE.getAutoReactionDetect(), getString(R.string.AutoReactionDetectNotice)));

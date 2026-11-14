@@ -529,6 +529,7 @@
     <string name="TranslatorMinimized">La barre de traduction a été réduite pour cette discussion.</string>
     <string name="UseDeletedIcon">Afficher une icône à la place de « supprimé »</string>
     <string name="ShowEditedIcon">Afficher une icône à la place de « modifié »</string>
+    <string name="ShowVoteCountBeforeVote">Afficher le nombre de votes avant le vote</string>
     <string name="SilentMessageByDefault">Envoyer sans son</string>
     <string name="FolderNameAsTitle">Utiliser le nom du dossier comme titre</string>
     <string name="SaveDeletedMessageForBotUser">Conserver les messages des bots</string>

@@ -206,6 +206,7 @@
     <string name="TranslatorMinimized">이 채팅에서 번역기 바가 최소화되었습니다.</string>
     <string name="UseDeletedIcon">\"삭제됨\" 대신 아이콘 표시</string>
     <string name="ShowEditedIcon">\"수정됨\" 대신 아이콘 표시</string>
+    <string name="ShowVoteCountBeforeVote">투표 전에 투표 수 표시</string>
     <string name="SilentMessageByDefault">소리 없이 보내기</string>
     <string name="FolderNameAsTitle">폴더 이름을 제목으로 사용</string>
     <string name="SaveDeletedMessageForBotUser">봇 메시지 저장</string>

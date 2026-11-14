@@ -278,6 +278,7 @@
     <string name="TranslatorMinimized">Translator bar has been minimized for this chat.</string>
     <string name="UseDeletedIcon">Show Icon Instead of \"deleted\"</string>
     <string name="ShowEditedIcon">Show icon instead of \"edited\"</string>
+    <string name="ShowVoteCountBeforeVote">Show vote count before voting</string>
     <string name="SilentMessageByDefault">Send without Sound</string>
     <string name="FolderNameAsTitle">Use Folder Name as Title</string>
     <string name="SaveDeletedMessageForBotUser">Save Bot Messages</string>

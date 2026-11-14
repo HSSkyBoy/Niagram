@@ -214,6 +214,7 @@
     <string name="TranslatorMinimized">Панель переводчика для этого чата была свёрнута.</string>
     <string name="UseDeletedIcon">Показывать значок вместо «удалено»</string>
     <string name="ShowEditedIcon">Показывать значок вместо «изменено»</string>
+    <string name="ShowVoteCountBeforeVote">Показывать количество голосов перед голосованием</string>
     <string name="SilentMessageByDefault">Отправлять без звука</string>
     <string name="FolderNameAsTitle">Название папки в качестве заголовка</string>
     <string name="SaveDeletedMessageForBotUser">Сохранять сообщения ботов</string>

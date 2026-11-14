@@ -265,6 +265,7 @@
     <string name="TranslatorMinimized">已为此聊天收起翻译栏。</string>
     <string name="UseDeletedIcon">使用图标代替“已删除”标记</string>
     <string name="ShowEditedIcon">使用图标代替“已编辑”标记</string>
+    <string name="ShowVoteCountBeforeVote">投票前显示票数</string>
     <string name="SilentMessageByDefault">默认静音发送</string>
     <string name="FolderNameAsTitle">使用文件夹名称作为标题</string>
     <string name="SaveDeletedMessageForBotUser">保存机器人消息</string>

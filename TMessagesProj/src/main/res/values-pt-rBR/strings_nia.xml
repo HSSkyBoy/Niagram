@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">A barra de tradução foi minimizada para este chat.</string>
     <string name="UseDeletedIcon">Mostrar ícone em vez de \"apagada\"</string>
     <string name="ShowEditedIcon">Mostrar ícone em vez de \"editada\"</string>
+    <string name="ShowVoteCountBeforeVote">Mostrar contagem de votos antes de votar</string>
     <string name="SilentMessageByDefault">Enviar sem som</string>
     <string name="FolderNameAsTitle">Usar nome da pasta como título</string>
     <string name="SaveDeletedMessageForBotUser">Salvar mensagens do bot</string>

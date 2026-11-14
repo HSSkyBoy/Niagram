@@ -1249,6 +1249,12 @@ object NyaConfig {
         )
     @JvmField
     val useEditedIcon = showEditedIcon
+    val showVoteCountBeforeVote =
+        addConfig(
+            "ShowVoteCountBeforeVote",
+            ConfigItem.configTypeBool,
+            false
+        )
     val saveToChatSubfolder =
         addConfig(
             "SaveToChatSubfolder",

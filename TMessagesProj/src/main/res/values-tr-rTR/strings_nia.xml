@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">Çevirmen çubuğu bu sohbet için küçültüldü.</string>
     <string name="UseDeletedIcon">\"silindi\" Yerine Simge Göster</string>
     <string name="ShowEditedIcon">\"düzenlendi\" Yerine Simge Göster</string>
+    <string name="ShowVoteCountBeforeVote">Oy vermeden önce oy sayısını göster</string>
     <string name="SilentMessageByDefault">Sessiz Gönder</string>
     <string name="FolderNameAsTitle">Klasör Adını Başlık Olarak Kullan</string>
     <string name="SaveDeletedMessageForBotUser">Bot Mesajlarını Kaydet</string>

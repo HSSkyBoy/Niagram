@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">Die Übersetzungsleiste wurde für diesen Chat minimiert.</string>
     <string name="UseDeletedIcon">Symbol statt „gelöscht“ anzeigen</string>
     <string name="ShowEditedIcon">Symbol statt „bearbeitet“ anzeigen</string>
+    <string name="ShowVoteCountBeforeVote">Stimmenanzahl vor der Abstimmung anzeigen</string>
     <string name="SilentMessageByDefault">Ohne Ton senden</string>
     <string name="FolderNameAsTitle">Ordnernamen als Titel verwenden</string>
     <string name="SaveDeletedMessageForBotUser">Bot-Nachrichten speichern</string>

@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">Bilah penerjemah telah diperkecil untuk obrolan ini.</string>
     <string name="UseDeletedIcon">Tampilkan Ikon Alih-alih \"dihapus\"</string>
     <string name="ShowEditedIcon">Tampilkan Ikon Alih-alih \"disunting\"</string>
+    <string name="ShowVoteCountBeforeVote">Tampilkan jumlah suara sebelum memilih</string>
     <string name="SilentMessageByDefault">Kirim tanpa Suara</string>
     <string name="FolderNameAsTitle">Gunakan Nama Folder sebagai Judul</string>
     <string name="SaveDeletedMessageForBotUser">Simpan Pesan Bot</string>

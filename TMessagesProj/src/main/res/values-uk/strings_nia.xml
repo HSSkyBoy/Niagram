@@ -205,6 +205,7 @@
     <string name="TranslatorMinimized">Для цього чату згорнуто панель перекладу.</string>
     <string name="UseDeletedIcon">Показати значок замість \"видалено\"</string>
     <string name="ShowEditedIcon">Показати значок замість \"відредаговано\"</string>
+    <string name="ShowVoteCountBeforeVote">Показувати кількість голосів перед голосуванням</string>
     <string name="SilentMessageByDefault">Надсилати без звуку</string>
     <string name="FolderNameAsTitle">Використовувати ім\'я теки як заголовок</string>
     <string name="SaveDeletedMessageForBotUser">Зберегти повідомлення бота</string>

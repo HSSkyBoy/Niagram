@@ -214,6 +214,7 @@
     <string name="TranslatorMinimized">このチャットでは、翻訳ツールバーが最小化されました。</string>
     <string name="UseDeletedIcon">「削除済み」の代わりにアイコンを表示</string>
     <string name="ShowEditedIcon">「編集あり」の代わりにアイコンを表示</string>
+    <string name="ShowVoteCountBeforeVote">投票前に投票数を表示</string>
     <string name="SilentMessageByDefault">デフォルトでミュートメッセージを送信</string>
     <string name="FolderNameAsTitle">フォルダ名をタイトルとして使用</string>
     <string name="SaveDeletedMessageForBotUser">ボットメッセージを保存</string>

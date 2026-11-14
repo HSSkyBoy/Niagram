@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">تم تصغير شريط الترجمة لهذه الدردشة.</string>
     <string name="UseDeletedIcon">إظهار أيقونة بدلًا من «محذوفة»</string>
     <string name="ShowEditedIcon">إظهار أيقونة بدلًا من «مُعدَّلة»</string>
+    <string name="ShowVoteCountBeforeVote">إظهار عدد الأصوات قبل التصويت</string>
     <string name="SilentMessageByDefault">الإرسال بدون صوت</string>
     <string name="FolderNameAsTitle">استخدام اسم المجلد كعنوان</string>
     <string name="SaveDeletedMessageForBotUser">حفظ رسائل البوتات</string>

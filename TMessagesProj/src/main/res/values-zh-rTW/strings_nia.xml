@@ -264,6 +264,7 @@
     <string name="TranslatorMinimized">已為此聊天收起翻譯列。</string>
     <string name="UseDeletedIcon">使用圖示代替「已刪除」標記</string>
     <string name="ShowEditedIcon">使用圖示代替「已編輯」標記</string>
+    <string name="ShowVoteCountBeforeVote">投票前顯示票數</string>
     <string name="SilentMessageByDefault">預設無聲傳送</string>
     <string name="FolderNameAsTitle">使用資料夾名稱作為標題</string>
     <string name="SaveDeletedMessageForBotUser">儲存機器人訊息</string>

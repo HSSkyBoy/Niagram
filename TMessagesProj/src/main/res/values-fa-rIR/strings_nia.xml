@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">نوار ترجمه برای این گفتگو کوچک شد.</string>
     <string name="UseDeletedIcon">نمایش نماد به جای \"حذف شده\"</string>
     <string name="ShowEditedIcon">نمایش نماد به جای \"ویرایش شده\"</string>
+    <string name="ShowVoteCountBeforeVote">نمایش تعداد آرا قبل از رأی دادن</string>
     <string name="SilentMessageByDefault">ارسال بی‌صدا به طور پیش‌فرض</string>
     <string name="FolderNameAsTitle">نمایش نام پوشه به عنوان عنوان</string>
     <string name="SaveDeletedMessageForBotUser">ذخیره پیام‌های ربات</string>

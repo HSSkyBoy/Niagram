@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">De vertaalbalk is geminimaliseerd voor deze chat.</string>
     <string name="UseDeletedIcon">Pictogram tonen in plaats van \"verwijderd\"</string>
     <string name="ShowEditedIcon">Pictogram tonen in plaats van \"bewerkt\"</string>
+    <string name="ShowVoteCountBeforeVote">Toon aantal stemmen voor het stemmen</string>
     <string name="SilentMessageByDefault">Zonder geluid versturen</string>
     <string name="FolderNameAsTitle">Mapnaam als titel gebruiken</string>
     <string name="SaveDeletedMessageForBotUser">Botberichten bewaren</string>

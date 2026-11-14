@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">Thanh dịch thuật đã được thu nhỏ cho cuộc trò chuyện này.</string>
     <string name="UseDeletedIcon">Hiển thị biểu tượng thay vì \"đã xóa\"</string>
     <string name="ShowEditedIcon">Hiển thị biểu tượng thay vì \"đã chỉnh sửa\"</string>
+    <string name="ShowVoteCountBeforeVote">Hiển thị số phiếu trước khi bình chọn</string>
     <string name="SilentMessageByDefault">Gửi không âm thanh</string>
     <string name="FolderNameAsTitle">Sử dụng tên thư mục làm tiêu đề</string>
     <string name="SaveDeletedMessageForBotUser">Lưu tin nhắn của Bot</string>

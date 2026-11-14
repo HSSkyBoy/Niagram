@@ -240,6 +240,7 @@
     <string name="TranslatorMinimized">Pasek tłumacza został zminimalizowany dla tego czatu.</string>
     <string name="UseDeletedIcon">Pokaż ikonę zamiast „usunięto”</string>
     <string name="ShowEditedIcon">Pokaż ikonę zamiast „edytowano”</string>
+    <string name="ShowVoteCountBeforeVote">Pokaż licznik głosów przed głosowaniem</string>
     <string name="SilentMessageByDefault">Wyślij bez dźwięku</string>
     <string name="FolderNameAsTitle">Użyj nazwy folderu jako tytułu</string>
     <string name="SaveDeletedMessageForBotUser">Zapisz wiadomości bota</string>
