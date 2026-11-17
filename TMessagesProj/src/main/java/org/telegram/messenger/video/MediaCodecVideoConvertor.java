@@ -560,7 +560,7 @@ public class MediaCodecVideoConvertor {
 
                             if (audioIndex >= 0) {
                                 MediaFormat audioFormat = extractor.getTrackFormat(audioIndex);
-                                copyAudioBuffer = Math.abs(volume - 1f) < 0.001f && (convertVideoParams.soundInfos.isEmpty() && audioFormat.getString(MediaFormat.KEY_MIME).equals(MediaController.AUDIO_MIME_TYPE) || audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/mpeg"));
+                                copyAudioBuffer = Math.abs(volume - 1f) < 0.001f && (convertVideoParams.soundInfos.isEmpty() && audioFormat.getString(MediaFormat.KEY_MIME).equals(MediaController.AUDIO_MIME_TYPE) && isAacLcOrUnknown(audioFormat) || audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/mpeg"));
 
                                 if (audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/unknown")) {
                                     audioIndex = -1;
@@ -1090,6 +1090,22 @@ public class MediaCodecVideoConvertor {
 
     private boolean isMediatekAvcEncoder(MediaCodec encoder) {
         return encoder.getName().equals("c2.mtk.avc.encoder");
+    }
+
+    // Copied AAC samples get an AAC-LC AudioSpecificConfig from Track, so only LC can be passed through;
+    // HE-AAC / xHE-AAC (USAC) copied as-is produce an undecodable, silent audio track.
+    private static boolean isAacLcOrUnknown(MediaFormat format) {
+        ByteBuffer csd = format.getByteBuffer("csd-0");
+        if (csd == null || csd.remaining() < 2) {
+            return true;
+        }
+        int b0 = csd.get(csd.position()) & 0xFF;
+        int b1 = csd.get(csd.position() + 1) & 0xFF;
+        int objectType = b0 >> 3;
+        if (objectType == 31) {
+            objectType = 32 + (((b0 & 0x07) << 3) | (b1 >> 5));
+        }
+        return objectType == 2;
     }
 
     // Reads the source and feeds the decoder on its own thread: extractor reads and queueing input
