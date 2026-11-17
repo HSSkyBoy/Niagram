@@ -28,6 +28,7 @@
     <string name="AppIconNeon">Neon</string>
     <string name="AppIconMaterial">Material</string>
     <string name="AppIconForkGram">ForkGram</string>
+    <string name="AppNameTelegram" translatable="false">Telegram</string>
     <string name="InputMessageId">Enter Message ID</string>
     <string name="ToTheMessage">Go To</string>
     <string name="ZalgoFilter">Filter \"Zalgo\" Symbols</string>

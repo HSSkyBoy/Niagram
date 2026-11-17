@@ -66,6 +66,7 @@ public class LauncherIconController {
         MATERIAL("MaterialIcon", R.mipmap.icon_14_launcher_background, R.mipmap.icon_14_launcher_foreground, R.string.AppIconMaterial, R.mipmap.icon_14_launcher),
         FORKGRAM("ForkGramIcon", R.mipmap.ic_launcher_fork, 0, R.string.AppIconForkGram, R.mipmap.ic_launcher_fork),
         TELEGRAM("TelegramIcon", R.drawable.icon_background_sa, R.mipmap.icon_foreground_sa, R.string.AppIconTelegramOriginal, R.mipmap.ic_launcher_dr),
+        TELEGRAM_NAMED("TelegramNamedIcon", R.drawable.icon_background_sa, R.mipmap.icon_foreground_sa, R.string.AppNameTelegram, R.mipmap.ic_launcher_dr),
         VINTAGE("VintageIcon", R.drawable.icon_6_background_sa, R.mipmap.icon_6_foreground_sa, R.string.AppIconVintage, R.mipmap.icon_6_launcher),
         AQUA("AquaIcon", R.drawable.icon_4_background_sa, R.mipmap.icon_foreground_sa, R.string.AppIconAqua, R.mipmap.icon_4_launcher),
         PREMIUM("PremiumIcon", R.drawable.icon_3_background_sa, R.mipmap.icon_3_foreground_sa, R.string.AppIconPremium, true, R.mipmap.icon_3_launcher),

@@ -295,6 +295,24 @@
         <activity-alias
             android:theme="@style/Theme.TMessages.Start"
             android:enabled="false"
+            android:name="org.telegram.messenger.TelegramNamedIcon"
+            android:targetActivity="org.telegram.ui.LaunchActivity"
+            android:label="@string/AppNameTelegram"
+            android:icon="@mipmap/ic_launcher_dr"
+            android:roundIcon="@mipmap/ic_launcher_dr_round"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+        </activity-alias>
+
+        <activity-alias
+            android:theme="@style/Theme.TMessages.Start"
+            android:enabled="false"
             android:name="org.telegram.messenger.VintageIcon"
             android:targetActivity="org.telegram.ui.LaunchActivity"
             android:icon="@mipmap/icon_6_launcher"
