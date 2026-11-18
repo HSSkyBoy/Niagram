@@ -31,6 +31,7 @@ import org.telegram.messenger.browser.Browser;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.LayoutHelper;
 
@@ -46,6 +47,7 @@ import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -249,12 +251,17 @@ public class TranscribeHelper {
         var context = fragment.getParentActivity();
         var builder = new AlertDialog.Builder(context, resourcesProvider);
         builder.setTitle(getString(R.string.TranscribeProviderOpenAI));
+        var audioTranscriptionsMode = new TextCheckCell(context, 23, true, resourcesProvider);
+        audioTranscriptionsMode.setTextAndCheck(getString(R.string.OpenAiUseAudioTranscriptions),
+                NyaConfig.INSTANCE.getTranscribeProviderOpenAiUseTranscriptions().Bool(), false);
         builder.setMessage(AndroidUtilities.replaceSingleTag(getString(R.string.OpenAiApiCredentialsDialog),
                 -1,
                 AndroidUtilities.REPLACING_TAG_TYPE_LINKBOLD,
                 () -> {
                     fragment.dismissCurrentDialog();
-                    Browser.openUrl(context, "https://ai.google.dev/gemini-api/docs/openai#audio-understanding");
+                    Browser.openUrl(context, audioTranscriptionsMode.isChecked()
+                            ? "https://developers.openai.com/api/docs/guides/speech-to-text"
+                            : "https://ai.google.dev/gemini-api/docs/openai#audio-understanding");
                 },
                 resourcesProvider));
         builder.setCustomViewOffset(0);
@@ -266,11 +273,20 @@ public class TranscribeHelper {
                 context,
                 resourcesProvider,
                 NyaConfig.INSTANCE.getTranscribeProviderOpenAiApiBase().String(),
-                getString(R.string.OpenAiApiBaseUrlHint),
+                getString(NyaConfig.INSTANCE.getTranscribeProviderOpenAiUseTranscriptions().Bool()
+                        ? R.string.OpenAiTranscriptionsApiBaseUrlHint : R.string.OpenAiApiBaseUrlHint),
                 EditorInfo.IME_ACTION_NEXT,
                 true
         );
         ll.addView(editTextApiBase, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 24, 0, 24, 0));
+
+        audioTranscriptionsMode.setOnClickListener(v -> {
+            boolean enabled = !audioTranscriptionsMode.isChecked();
+            audioTranscriptionsMode.setChecked(enabled);
+            editTextApiBase.setHintText(getString(enabled
+                    ? R.string.OpenAiTranscriptionsApiBaseUrlHint : R.string.OpenAiApiBaseUrlHint));
+        });
+        ll.addView(audioTranscriptionsMode, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
 
         var editTextModel = createAndSetupEditText(
                 context,
@@ -319,6 +335,7 @@ public class TranscribeHelper {
                 NyaConfig.INSTANCE.getTranscribeProviderOpenAiModel().setConfigString(model == null ? "" : model.toString());
                 NyaConfig.INSTANCE.getTranscribeProviderOpenAiApiKey().setConfigString(apiKey == null ? "" : apiKey.toString());
                 NyaConfig.INSTANCE.getTranscribeProviderOpenAiPrompt().setConfigString(prompt == null ? "" : prompt.toString());
+                NyaConfig.INSTANCE.getTranscribeProviderOpenAiUseTranscriptions().setConfigBool(audioTranscriptionsMode.isChecked());
                 dialog.dismiss();
             });
         }
@@ -545,6 +562,7 @@ public class TranscribeHelper {
         String model = NyaConfig.INSTANCE.getTranscribeProviderOpenAiModel().String();
         String apiKey = NyaConfig.INSTANCE.getTranscribeProviderOpenAiApiKey().String();
         String customPrompt = NyaConfig.INSTANCE.getTranscribeProviderOpenAiPrompt().String();
+        boolean useAudioTranscriptions = NyaConfig.INSTANCE.getTranscribeProviderOpenAiUseTranscriptions().Bool();
 
         if (TextUtils.isEmpty(apiBaseUrl) || TextUtils.isEmpty(model) || TextUtils.isEmpty(apiKey)) {
             callback.accept(null, new Exception(getString(R.string.OpenAiCredentialsNotSet)));
@@ -552,11 +570,11 @@ public class TranscribeHelper {
         }
 
         final String finalPrompt = TextUtils.isEmpty(customPrompt) ? OPENAI_COMPATIBLE_DEFAULT_PROMPT : customPrompt;
-        final String endpointUrl = apiBaseUrl.trim().replaceAll("(/chat/completions)?/*$", "") + "/chat/completions";
+        final String endpointUrl = apiBaseUrl.trim().replaceAll("(/chat/completions|/audio/transcriptions)?/*$", "")
+                + (useAudioTranscriptions ? "/audio/transcriptions" : "/chat/completions");
 
         executorService.submit(() -> {
             String audioPathToUse;
-            String audioFormatForApi = "wav"; // mp3 or wav
 
             try {
                 if (video) {
@@ -575,51 +593,79 @@ public class TranscribeHelper {
                 if (!audioFile.exists()) {
                     throw new IOException("Audio file not found: " + audioPathToUse);
                 }
-                byte[] audioBytes = Files.readAllBytes(audioFile.toPath());
-                String base64Audio = Base64.encodeToString(audioBytes, Base64.NO_WRAP);
 
-                List<String> modalities = null;
-                if (model.toLowerCase().startsWith("gpt")) {
-                    modalities = Collections.singletonList("text");
+                RequestBody requestBody;
+                if (useAudioTranscriptions) {
+                    MultipartBody.Builder form = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("model", model)
+                            .addFormDataPart("file", audioFile.getName(), RequestBody.create(audioFile,
+                                    MediaType.get(video ? "audio/mp4" : "audio/ogg")));
+                    if (!TextUtils.isEmpty(customPrompt)) {
+                        form.addFormDataPart("prompt", customPrompt);
+                    }
+                    requestBody = form.build();
+                } else {
+                    byte[] audioBytes = Files.readAllBytes(audioFile.toPath());
+                    String base64Audio = Base64.encodeToString(audioBytes, Base64.NO_WRAP);
+                    String audioFormatForApi = "wav"; // mp3 or wav
+
+                    List<String> modalities = null;
+                    if (model.toLowerCase().startsWith("gpt")) {
+                        modalities = Collections.singletonList("text");
+                    }
+                    OpenAiChatRequest.Message userMessage = getUserMessage(base64Audio, audioFormatForApi, finalPrompt);
+                    OpenAiChatRequest openAiRequest = new OpenAiChatRequest(model, modalities, Collections.singletonList(userMessage));
+                    requestBody = RequestBody.create(gson.toJson(openAiRequest), HttpClient.MEDIA_TYPE_JSON);
                 }
 
-                OpenAiChatRequest.Message userMessage = getUserMessage(base64Audio, audioFormatForApi, finalPrompt);
-                OpenAiChatRequest openAiRequest = new OpenAiChatRequest(model, modalities, Collections.singletonList(userMessage));
-                String jsonRequest = gson.toJson(openAiRequest);
-
                 OkHttpClient client = getOkHttpClient();
-                RequestBody requestBody = RequestBody.create(jsonRequest, HttpClient.MEDIA_TYPE_JSON);
-                Request request = new Request.Builder()
+                Request.Builder requestBuilder = new Request.Builder()
                         .url(endpointUrl)
                         .header("Authorization", "Bearer " + apiKey)
-                        .header("Content-Type", "application/json")
-                        .post(requestBody)
-                        .build();
+                        .post(requestBody);
+                if (!useAudioTranscriptions) {
+                    requestBuilder.header("Content-Type", "application/json");
+                }
+                Request request = requestBuilder.build();
 
                 try (Response response = client.newCall(request).execute()) {
                     String responseBody = response.body().string();
                     if (!response.isSuccessful()) {
+                        String errorMessage = null;
                         try {
                             OpenAiErrorResponse errorResponse = gson.fromJson(responseBody, OpenAiErrorResponse.class);
                             if (errorResponse != null && errorResponse.error != null && !TextUtils.isEmpty(errorResponse.error.message)) {
-                                throw new IOException("OpenAI API request failed: " + response.code() + " " + response.message() + " - " + errorResponse.error.message);
+                                errorMessage = errorResponse.error.message;
                             }
                         } catch (Exception ignored) {}
+                        if (errorMessage != null) {
+                            throw new IOException("OpenAI API request failed: " + response.code() + " " + response.message() + " - " + errorMessage);
+                        }
                         throw new IOException("OpenAI API request failed: " + response.code() + " " + response.message() + "\nBody: " + responseBody);
                     }
 
-                    OpenAiChatResponse openAiResponse = gson.fromJson(responseBody, OpenAiChatResponse.class);
-                    if (openAiResponse != null && openAiResponse.choices != null && !openAiResponse.choices.isEmpty()) {
-                        OpenAiChatResponse.Choice firstChoice = openAiResponse.choices.get(0);
-                        if (firstChoice.message != null && !TextUtils.isEmpty(firstChoice.message.content)) {
-                            callback.accept(firstChoice.message.content.trim(), null);
+                    if (useAudioTranscriptions) {
+                        AudioTranscriptionsResponse transcription = gson.fromJson(responseBody, AudioTranscriptionsResponse.class);
+                        if (transcription != null && !TextUtils.isEmpty(transcription.text) && !transcription.text.trim().isEmpty()) {
+                            callback.accept(transcription.text.trim(), null);
                         } else {
-                            callback.accept(null, new Exception("OpenAI response structure invalid (no message content). Finish Reason: " + firstChoice.finishReason));
+                            callback.accept(null, new IOException("OpenAI transcription response has no text"));
                         }
-                    } else if (openAiResponse != null && openAiResponse.error != null) {
-                        callback.accept(null, new Exception("OpenAI API Error: " + openAiResponse.error.message));
                     } else {
-                        callback.accept(null, new Exception("Invalid or empty response from OpenAI API: " + responseBody));
+                        OpenAiChatResponse openAiResponse = gson.fromJson(responseBody, OpenAiChatResponse.class);
+                        if (openAiResponse != null && openAiResponse.choices != null && !openAiResponse.choices.isEmpty()) {
+                            OpenAiChatResponse.Choice firstChoice = openAiResponse.choices.get(0);
+                            if (firstChoice.message != null && !TextUtils.isEmpty(firstChoice.message.content)) {
+                                callback.accept(firstChoice.message.content.trim(), null);
+                            } else {
+                                callback.accept(null, new Exception("OpenAI response structure invalid (no message content). Finish Reason: " + firstChoice.finishReason));
+                            }
+                        } else if (openAiResponse != null && openAiResponse.error != null) {
+                            callback.accept(null, new Exception("OpenAI API Error: " + openAiResponse.error.message));
+                        } else {
+                            callback.accept(null, new Exception("Invalid or empty response from OpenAI API: " + responseBody));
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -884,6 +930,12 @@ public class TranscribeHelper {
             @Expose
             public String content;
         }
+    }
+
+    private static class AudioTranscriptionsResponse {
+        @SerializedName("text")
+        @Expose
+        public String text;
     }
 
     private static class OpenAiErrorResponse {
