@@ -270,20 +270,21 @@ public final class ReactionLatencyHelper {
 
         if (zeroCount > 0) {
             suspected = true;
-            reason = "0s 秒回 (" + zeroCount + "次)";
+            reason = LocaleController.formatString(R.string.AutoReactionReasonZero, zeroCount);
         } else if (total >= 3 && avg <= 3.0f) {
             suspected = true;
+            String avgStr = String.format(Locale.US, "%.1f", avg);
             if (sameEmojiStreak >= 3 && !TextUtils.isEmpty(lastEmoji)) {
-                reason = String.format(Locale.US, "均速 %.1fs · 連續 %d次 %s", avg, sameEmojiStreak, lastEmoji);
+                reason = LocaleController.formatString(R.string.AutoReactionReasonAvgEmojiStreak, avgStr, sameEmojiStreak, lastEmoji);
             } else {
-                reason = String.format(Locale.US, "均速 %.1fs (≤3s)", avg);
+                reason = LocaleController.formatString(R.string.AutoReactionReasonAvgFast, avgStr);
             }
         } else if (sameEmojiStreak >= 3 && (avg <= 5.0f || streak >= 2)) {
             suspected = true;
-            reason = "連續 " + sameEmojiStreak + "次 " + lastEmoji;
+            reason = LocaleController.formatString(R.string.AutoReactionReasonEmojiStreak, sameEmojiStreak, lastEmoji);
         } else if (streak >= SUSPECT_STREAK) {
             suspected = true;
-            reason = "連續 " + streak + "次 ≤3s";
+            reason = LocaleController.formatString(R.string.AutoReactionReasonFastStreak, streak);
         }
 
         boolean confirmed = zeroCount >= 1 || (total >= 5 && avg <= 2.5f) || streak >= 5;

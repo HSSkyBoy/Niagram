@@ -230,7 +230,8 @@ public class AutoReactionListBottomSheet extends BottomSheet {
 
             int total = info != null ? info.total : 0;
             float avg = info != null ? info.avgLatency : 0f;
-            descView.setText(String.format(java.util.Locale.US, "%d 次反應 · 均速 %.1fs", total, avg));
+            String avgStr = String.format(java.util.Locale.US, "%.1f", avg);
+            descView.setText(LocaleController.formatString(R.string.AutoReactionMemberSummary, total, avgStr));
 
             if (info != null && info.suspected) {
                 badgeView.setText(info.reason);

@@ -66,6 +66,12 @@
     <string name="AutoReactionBanMember">封禁成员</string>
     <string name="AutoReactionBanConfirm">确定要封禁「%1$s」并移出本群吗？</string>
     <string name="AutoReactionMemberCount">共记录 %1$d 位成员</string>
+    <string name="AutoReactionMemberSummary">%1$d 次反应 · 均速 %2$ss</string>
+    <string name="AutoReactionReasonZero">0s 秒回 (%1$d次)</string>
+    <string name="AutoReactionReasonAvgEmojiStreak">均速 %1$ss · 连续 %2$d次 %3$s</string>
+    <string name="AutoReactionReasonAvgFast">均速 %1$ss (≤3s)</string>
+    <string name="AutoReactionReasonEmojiStreak">连续 %1$d次 %2$s</string>
+    <string name="AutoReactionReasonFastStreak">连续 %1$d次 ≤3s</string>
     <string name="TypeMessageHintUseGroupName">使用群组名称作为输入框提示</string>
     <string name="HideBotButtonInInputField">隐藏输入框中的机器人按钮</string>
     <string name="ShowSendAsUnderMessageHint">在输入提示下方显示发送身份</string>

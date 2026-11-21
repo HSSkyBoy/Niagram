@@ -67,6 +67,12 @@
     <string name="AutoReactionBanMember">Ban Member</string>
     <string name="AutoReactionBanConfirm">Are you sure you want to ban and remove %1$s from the group?</string>
     <string name="AutoReactionMemberCount">%1$d members recorded</string>
+    <string name="AutoReactionMemberSummary">%1$d reactions · avg %2$ss</string>
+    <string name="AutoReactionReasonZero">0s instant (%1$dx)</string>
+    <string name="AutoReactionReasonAvgEmojiStreak">Avg %1$ss · %2$dx %3$s</string>
+    <string name="AutoReactionReasonAvgFast">Avg %1$ss (≤3s)</string>
+    <string name="AutoReactionReasonEmojiStreak">%1$dx streak %2$s</string>
+    <string name="AutoReactionReasonFastStreak">%1$dx streak ≤3s</string>
     <string name="TypeMessageHintUseGroupName">Use Group Name as Hint Text</string>
     <string name="HideBotButtonInInputField">Hide Bot Button in Input Field</string>
     <string name="ShowSendAsUnderMessageHint">Show Sender Under Message Hint</string>
