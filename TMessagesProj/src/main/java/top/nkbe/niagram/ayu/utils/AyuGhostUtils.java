@@ -157,6 +157,14 @@ public class AyuGhostUtils {
             }
         }
 
+        // Disable view increment in Ghost Mode instead of blocking the request, so views/forwards/replies still refresh
+        if (!NyaConfig.sendReadMessagePackets.Bool() && object instanceof TLRPC.TL_messages_getMessagesViews obj && obj.increment) {
+            if (!AyuState.getAllowReadPacket() && !readExcluded) {
+                FileLog.d("GhostMode: Disabling view increment on getMessagesViews request.");
+                obj.increment = false;
+            }
+        }
+
         // Block read receipts if disabled
         if (!NyaConfig.sendReadMessagePackets.Bool() && (isReadMessageRequest(object))) {
             if (!AyuState.getAllowReadPacket() && !readExcluded) {
@@ -295,8 +303,7 @@ public class AyuGhostUtils {
                 object instanceof TLRPC.TL_messages_readDiscussion ||
                 object instanceof TLRPC.TL_messages_readMessageContents ||
                 object instanceof TLRPC.TL_channels_readMessageContents ||
-                object instanceof TLRPC.TL_channels_readHistory ||
-                object instanceof TLRPC.TL_messages_getMessagesViews obj && obj.increment;
+                object instanceof TLRPC.TL_channels_readHistory;
     }
 
     private static boolean isReadStoriesRequest(TLObject object) {
