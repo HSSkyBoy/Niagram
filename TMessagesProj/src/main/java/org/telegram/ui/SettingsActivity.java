@@ -718,14 +718,32 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
 
     /** The list does not stop with the avatar half hidden: it scrolls on to the shown or the hidden avatar. */
     private void snapAvatarHide() {
-        if (avatarGooey == null || searchItem != null && searchItem.isSearchFieldVisible2() || avatarHideShown <= 0 || avatarHideShown >= 1) {
+        if (avatarGooey == null || listView == null || searchItem != null && searchItem.isSearchFieldVisible2() || avatarHideShown <= 0 || avatarHideShown >= 1) {
             return;
         }
+        final int dy;
         if (avatarHideShown >= 0.5f) {
-            listView.smoothScrollBy(0, (int) -(avatarShownY - avatarListY), CubicBezierInterpolator.EASE_OUT_QUINT);
+            dy = (int) -(avatarShownY - avatarListY);
         } else {
-            listView.smoothScrollBy(0, (int) Math.ceil(avatarListY - avatarHiddenY), CubicBezierInterpolator.EASE_OUT_QUINT);
+            dy = (int) Math.ceil(avatarListY - avatarHiddenY);
         }
+        if (dy == 0 || !listView.canScrollVertically(dy)) {
+            return;
+        }
+        if (dy > 0) {
+            RecyclerView.Adapter<?> adapter = listView.getAdapter();
+            RecyclerView.LayoutManager lm = listView.getLayoutManager();
+            if (adapter != null && lm != null && adapter.getItemCount() > 0) {
+                View lastView = lm.findViewByPosition(adapter.getItemCount() - 1);
+                if (lastView != null) {
+                    int remainingDown = lm.getDecoratedBottom(lastView) - (listView.getHeight() - listView.getPaddingBottom());
+                    if (remainingDown < dy) {
+                        return;
+                    }
+                }
+            }
+        }
+        listView.smoothScrollBy(0, dy, CubicBezierInterpolator.EASE_OUT_QUINT);
     }
 
     /** Top of the list item holding {@code view}, in the list. */
