@@ -410,6 +410,13 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else if (key.equals(NyaConfig.webProxyMode.getKey())) {
                 checkWebProxyRows();
+                top.nkbe.niagram.utils.WebProxyManager.onProxyConfigChanged();
+            } else if (key.equals(NyaConfig.webProxyType.getKey())
+                    || key.equals(NyaConfig.webProxyHost.getKey())
+                    || key.equals(NyaConfig.webProxyPort.getKey())
+                    || key.equals(NyaConfig.webProxyUsername.getKey())
+                    || key.equals(NyaConfig.webProxyPassword.getKey())) {
+                top.nkbe.niagram.utils.WebProxyManager.onProxyConfigChanged();
             } else if (key.equals(NyaConfig.typeface.getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else if (key.equals(NyaConfig.INSTANCE.getDisableDialogsFloatingButton().getKey())) {

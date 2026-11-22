@@ -4,13 +4,17 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 object HttpClient {
 
     @JvmField
     val MEDIA_TYPE_JSON: MediaType = "application/json; charset=utf-8".toMediaType()
 
+    private val initialized = AtomicBoolean(false)
+
     val instance: OkHttpClient by lazy {
+        initialized.set(true)
         OkHttpClient.Builder()
             .proxySelector(WebProxyManager.createDynamicProxySelector())
             .proxyAuthenticator(WebProxyManager.okHttpProxyAuthenticator)
@@ -37,5 +41,12 @@ object HttpClient {
             .writeTimeout(0, TimeUnit.SECONDS)
             .callTimeout(60, TimeUnit.SECONDS)
             .build()
+    }
+
+    @JvmStatic
+    fun evictAll() {
+        if (initialized.get()) {
+            instance.connectionPool.evictAll()
+        }
     }
 }

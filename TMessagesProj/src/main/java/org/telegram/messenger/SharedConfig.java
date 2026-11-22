@@ -1533,6 +1533,7 @@ public class SharedConfig {
 
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
         preferences.edit().putBoolean("proxy_enabled", enable).apply();
+        top.nkbe.niagram.utils.WebProxyManager.onProxyConfigChanged();
 
         ProxyInfo finalInfo = currentProxy;
         boolean finalEnable = enable;

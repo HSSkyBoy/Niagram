@@ -2,11 +2,11 @@ package top.nkbe.niagram.utils
 
 import okhttp3.Authenticator as OkHttpAuthenticator
 import okhttp3.Credentials
-import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import org.telegram.messenger.FileLog
 import org.telegram.messenger.SharedConfig
+import org.telegram.utils.proxy.ProxySettings
 import top.nkbe.niagram.config.NyaConfig
 import java.io.IOException
 import java.net.Authenticator as JavaAuthenticator
@@ -20,6 +20,7 @@ import java.net.URI
 object WebProxyManager {
 
     private val javaAuthInstalled = java.util.concurrent.atomic.AtomicBoolean(false)
+    private val systemProxySelector: ProxySelector? = ProxySelector.getDefault()
 
     init {
         ensureJavaAuthenticator()
@@ -51,8 +52,7 @@ object WebProxyManager {
             NyaConfig.WEB_PROXY_MODE_FOLLOW_TELEGRAM -> {
                 if (SharedConfig.isProxyEnabled() && SharedConfig.currentProxy != null) {
                     val info = SharedConfig.currentProxy
-                    // SOCKS5 proxies have empty secret; MTProto proxies have non-empty secret.
-                    if (info.secret.isNullOrEmpty() && !info.address.isNullOrEmpty() && info.port > 0) {
+                    if (info.settings.type == ProxySettings.Type.SOCKS5 && !info.address.isNullOrEmpty() && info.port in 1..65535) {
                         try {
                             Proxy(Proxy.Type.SOCKS, InetSocketAddress(info.address, info.port))
                         } catch (e: Throwable) {
@@ -60,7 +60,7 @@ object WebProxyManager {
                             Proxy.NO_PROXY
                         }
                     } else {
-                        // MTProto proxy cannot handle arbitrary HTTP/HTTPS traffic
+                        // MTProto / Web proxy cannot handle arbitrary HTTP/HTTPS traffic
                         Proxy.NO_PROXY
                     }
                 } else {
@@ -96,7 +96,7 @@ object WebProxyManager {
             NyaConfig.WEB_PROXY_MODE_FOLLOW_TELEGRAM -> {
                 if (SharedConfig.isProxyEnabled() && SharedConfig.currentProxy != null) {
                     val info = SharedConfig.currentProxy
-                    if (info.secret.isNullOrEmpty() && !info.username.isNullOrEmpty()) {
+                    if (info.settings.type == ProxySettings.Type.SOCKS5 && !info.username.isNullOrEmpty()) {
                         Pair(info.username ?: "", info.password ?: "")
                     } else {
                         null
@@ -119,16 +119,44 @@ object WebProxyManager {
     }
 
     @JvmStatic
+    fun onProxyConfigChanged() {
+        HttpClient.evictAll()
+    }
+
+    @JvmStatic
     fun createDynamicProxySelector(): ProxySelector {
         ensureJavaAuthenticator()
         return object : ProxySelector() {
             override fun select(uri: URI?): List<Proxy> {
+                val mode = NyaConfig.webProxyMode.Int()
+                if (mode == NyaConfig.WEB_PROXY_MODE_DIRECT) {
+                    return listOf(Proxy.NO_PROXY)
+                }
                 val proxy = getEffectiveProxy()
-                return listOf(proxy)
+                if (proxy != Proxy.NO_PROXY) {
+                    return listOf(proxy)
+                }
+                if (mode == NyaConfig.WEB_PROXY_MODE_FOLLOW_TELEGRAM && uri != null) {
+                    val systemProxies = try {
+                        systemProxySelector?.select(uri)
+                    } catch (_: Throwable) {
+                        null
+                    }
+                    if (!systemProxies.isNullOrEmpty()) {
+                        return systemProxies
+                    }
+                }
+                return listOf(Proxy.NO_PROXY)
             }
 
             override fun connectFailed(uri: URI?, sa: SocketAddress?, ioe: IOException?) {
                 FileLog.e("WebProxyManager: proxy connection failed for URI: $uri, target: $sa", ioe)
+                if (getEffectiveProxy() == Proxy.NO_PROXY) {
+                    try {
+                        systemProxySelector?.connectFailed(uri, sa, ioe)
+                    } catch (_: Throwable) {
+                    }
+                }
             }
         }
     }
