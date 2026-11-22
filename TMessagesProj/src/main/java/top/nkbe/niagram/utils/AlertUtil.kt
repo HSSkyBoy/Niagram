@@ -138,7 +138,14 @@ object AlertUtil {
     }
 
     @JvmStatic
-    fun showTransFailedDialog(ctx: Context, noRetry: Boolean, message: String, retryRunnable: Runnable) = AndroidUtilities.runOnUIThread {
+    @JvmOverloads
+    fun showTransFailedDialog(
+        ctx: Context,
+        noRetry: Boolean,
+        message: String,
+        providerChangedRunnable: Runnable? = null,
+        retryRunnable: Runnable
+    ) = AndroidUtilities.runOnUIThread {
         ctx.setTheme(R.style.Theme_TMessages)
         val reference = AtomicReference<AlertDialog>()
 
@@ -166,7 +173,7 @@ object AlertUtil {
             popup.setItems(itemNames.toTypedArray()) { index, _ ->
                 reference.get().dismiss()
                 NyaConfig.translationProvider.setConfigInt(providers[index].providerConstant)
-                retryRunnable.run()
+                (providerChangedRunnable ?: retryRunnable).run()
             }
             popup.show()
         }
