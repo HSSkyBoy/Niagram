@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.FileLog;
@@ -61,7 +62,7 @@ public class TranscribeHelper {
     public static final int TRANSCRIBE_WORKERSAI = 2;
     public static final int TRANSCRIBE_GEMINI = 3;
     public static final int TRANSCRIBE_OPENAI = 4;
-    private static final String GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + getString(R.string.LlmModelNameDefault) + ":generateContent?key=%s";
+    private static final String GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + getString(R.string.LlmModelNameDefault) + ":generateContent";
     private static final String GEMINI_PROMPT = """
     Your task is to create a detailed, verbatim transcription of the provided audio, formatted like closed captions for the hard of hearing. Follow these instructions strictly:
 
@@ -328,6 +329,33 @@ public class TranscribeHelper {
         return HttpClient.INSTANCE.getTranscribeInstance();
     }
 
+    // For a video, extracts the audio track to a temporary file next to it, which is deleted once read.
+    private static byte[] readAudioBytes(String path, boolean video) throws IOException {
+        File source = new File(path);
+        File extracted = null;
+        if (video) {
+            extracted = new File(path + ".m4a");
+            try {
+                extractAudio(path, extracted.getAbsolutePath());
+            } catch (IOException e) {
+                FileLog.e(e);
+            }
+            if (extracted.exists()) {
+                source = extracted;
+            }
+        }
+        try {
+            if (!source.exists()) {
+                throw new IOException("Audio file not found: " + source.getAbsolutePath());
+            }
+            return Files.readAllBytes(source.toPath());
+        } finally {
+            if (extracted != null && extracted.exists() && !extracted.delete()) {
+                FileLog.d("Failed to delete extracted audio: " + extracted.getAbsolutePath());
+            }
+        }
+    }
+
     private static void extractAudio(String inputFilePath, String outputFilePath) throws IOException {
         var extractor = new MediaExtractor();
         extractor.setDataSource(inputFilePath);
@@ -411,22 +439,9 @@ public class TranscribeHelper {
             return;
         }
         executorService.submit(() -> {
-            String audioPath;
-            if (video) {
-                var audioFile = new File(path + ".m4a");
-                try {
-                    extractAudio(path, audioFile.getAbsolutePath());
-                } catch (IOException e) {
-                    FileLog.e(e);
-                }
-                audioPath = audioFile.exists() ? audioFile.getAbsolutePath() : path;
-            } else {
-                audioPath = path;
-            }
-
             byte[] audioBytes;
             try {
-                audioBytes = Files.readAllBytes(new File(audioPath).toPath());
+                audioBytes = readAudioBytes(path, video);
             } catch (IOException e) {
                 callback.accept(null, e);
                 return;
@@ -456,36 +471,20 @@ public class TranscribeHelper {
     }
 
     private static void requestGeminiAi(String path, boolean video, BiConsumer<String, Exception> callback) {
-        String apiKey = NyaConfig.INSTANCE.getTranscribeProviderGeminiApiKey().String();
-        if (TextUtils.isEmpty(apiKey)) {
-            apiKey = NyaConfig.INSTANCE.getLlmProviderGeminiKey().String().split(",")[0].trim();
+        List<String> apiKeys = splitApiKeys(NyaConfig.INSTANCE.getTranscribeProviderGeminiApiKey().String());
+        if (apiKeys.isEmpty()) {
+            apiKeys = splitApiKeys(NyaConfig.INSTANCE.getLlmProviderGeminiKey().String());
         }
-        if (TextUtils.isEmpty(apiKey)) {
+        if (apiKeys.isEmpty()) {
             callback.accept(null, new Exception(getString(R.string.GeminiApiKeyNotSet)));
             return;
         }
         String customPrompt = NyaConfig.INSTANCE.getTranscribeProviderGeminiPrompt().String();
-        final String finalApiKey = apiKey;
+        final List<String> finalApiKeys = apiKeys;
         final String finalPrompt = customPrompt.isEmpty() ? GEMINI_PROMPT : customPrompt;
         executorService.submit(() -> {
-            String audioPath;
             try {
-                if (video) {
-                    var audioFile = new File(path + ".m4a");
-                    try {
-                        extractAudio(path, audioFile.getAbsolutePath());
-                    } catch (IOException e) {
-                        FileLog.e(e);
-                    }
-                    audioPath = audioFile.exists() ? audioFile.getAbsolutePath() : path;
-                } else {
-                    audioPath = path;
-                }
-                File audioFile = new File(audioPath);
-                if (!audioFile.exists()) {
-                    throw new IOException("Audio file not found: " + audioPath);
-                }
-                byte[] audioBytes = Files.readAllBytes(audioFile.toPath());
+                byte[] audioBytes = readAudioBytes(path, video);
                 String base64Audio = Base64.encodeToString(audioBytes, Base64.NO_WRAP);
                 GeminiRequest.InlineData inlineData = new GeminiRequest.InlineData(video ? "audio/m4a" : "audio/ogg", base64Audio);
                 GeminiRequest.Part audioPart = new GeminiRequest.Part(null, inlineData);
@@ -494,50 +493,109 @@ public class TranscribeHelper {
                 GeminiRequest geminiRequest = new GeminiRequest(List.of(content));
                 String jsonRequest = gson.toJson(geminiRequest);
 
-                OkHttpClient client = getOkHttpClient();
                 RequestBody requestBody = RequestBody.create(jsonRequest, HttpClient.MEDIA_TYPE_JSON);
-                Request request = new Request.Builder()
-                        .url(String.format(GEMINI_API_ENDPOINT, finalApiKey))
-                        .post(requestBody)
-                        .build();
-                try (Response response = client.newCall(request).execute()) {
-                    String responseBody = response.body().string();
-                    if (!response.isSuccessful()) {
-                        throw new IOException("Gemini API request failed: " + response.code() + " " + response.message() + "\nBody: " + responseBody);
-                    }
-                    GeminiResponse geminiResponse = gson.fromJson(responseBody, GeminiResponse.class);
-                    if (geminiResponse != null && geminiResponse.candidates != null && !geminiResponse.candidates.isEmpty()) {
-                        GeminiResponse.Candidate firstCandidate = geminiResponse.candidates.get(0);
-                        if (firstCandidate.content != null && firstCandidate.content.parts != null && !firstCandidate.content.parts.isEmpty()) {
-                            String transcribedText = firstCandidate.content.parts.stream()
-                                    .filter(part -> !TextUtils.isEmpty(part.text))
-                                    .map(part -> part.text)
-                                    .findFirst()
-                                    .orElse(null);
-                            if (transcribedText != null) {
-                                callback.accept(transcribedText.trim(), null);
-                            } else {
-                                String finishReason = firstCandidate.finishReason;
-                                List<GeminiResponse.SafetyRating> safetyRatings = firstCandidate.safetyRatings;
-                                String errorMsg = "Gemini response did not contain text.";
-                                if (finishReason != null) errorMsg += " Finish reason: " + finishReason;
-                                if (safetyRatings != null) errorMsg += " Safety Ratings: " + safetyRatings;
-                                callback.accept(null, new Exception(errorMsg));
-                            }
+                String responseBody = executeGeminiRequest(getOkHttpClient(), requestBody, finalApiKeys);
+                GeminiResponse geminiResponse = gson.fromJson(responseBody, GeminiResponse.class);
+                if (geminiResponse != null && geminiResponse.candidates != null && !geminiResponse.candidates.isEmpty()) {
+                    GeminiResponse.Candidate firstCandidate = geminiResponse.candidates.get(0);
+                    if (firstCandidate.content != null && firstCandidate.content.parts != null && !firstCandidate.content.parts.isEmpty()) {
+                        String transcribedText = firstCandidate.content.parts.stream()
+                                .filter(part -> !TextUtils.isEmpty(part.text))
+                                .map(part -> part.text)
+                                .findFirst()
+                                .orElse(null);
+                        if (transcribedText != null) {
+                            callback.accept(transcribedText.trim(), null);
                         } else {
-                            callback.accept(null, new Exception("Gemini response structure invalid (no content parts). Finish Reason: " + firstCandidate.finishReason));
+                            String finishReason = firstCandidate.finishReason;
+                            List<GeminiResponse.SafetyRating> safetyRatings = firstCandidate.safetyRatings;
+                            String errorMsg = "Gemini response did not contain text.";
+                            if (finishReason != null) errorMsg += " Finish reason: " + finishReason;
+                            if (safetyRatings != null) errorMsg += " Safety Ratings: " + safetyRatings;
+                            callback.accept(null, new Exception(errorMsg));
                         }
-                    } else if (geminiResponse != null && geminiResponse.promptFeedback != null) {
-                        callback.accept(null, new Exception("Gemini prompt feedback: " + geminiResponse.promptFeedback));
                     } else {
-                        callback.accept(null, new Exception("Invalid or empty response from Gemini API: " + responseBody));
+                        callback.accept(null, new Exception("Gemini response structure invalid (no content parts). Finish Reason: " + firstCandidate.finishReason));
                     }
+                } else if (geminiResponse != null && geminiResponse.promptFeedback != null) {
+                    callback.accept(null, new Exception("Gemini prompt feedback: " + geminiResponse.promptFeedback));
+                } else {
+                    callback.accept(null, new Exception("Invalid or empty response from Gemini API: " + responseBody));
                 }
             } catch (Exception e) {
                 FileLog.e("Gemini transcription error", e);
                 callback.accept(null, e);
             }
         });
+    }
+
+    private static List<String> splitApiKeys(String raw) {
+        List<String> keys = new ArrayList<>();
+        if (TextUtils.isEmpty(raw)) {
+            return keys;
+        }
+        for (String key : raw.split(",")) {
+            key = key.trim();
+            if (!key.isEmpty() && !keys.contains(key)) {
+                keys.add(key);
+            }
+        }
+        return keys;
+    }
+
+    // Tries each key in turn, moving on when one is rejected (401/403) or rate limited (429), as LLMTranslator does.
+    private static String executeGeminiRequest(OkHttpClient client, RequestBody requestBody, List<String> apiKeys) throws IOException {
+        int code = 0;
+        String body = null;
+        for (int attempt = 0; attempt < apiKeys.size(); attempt++) {
+            Request request = new Request.Builder()
+                    .url(GEMINI_API_ENDPOINT)
+                    .header("x-goog-api-key", apiKeys.get(attempt))
+                    .post(requestBody)
+                    .build();
+            try (Response response = client.newCall(request).execute()) {
+                code = response.code();
+                body = response.body().string();
+            }
+            if (code >= 200 && code < 300) {
+                return body;
+            }
+            boolean canFailover = (code == 401 || code == 403 || code == 429) && attempt + 1 < apiKeys.size();
+            if (!canFailover) {
+                break;
+            }
+            FileLog.d("Gemini transcription key " + (attempt + 1) + "/" + apiKeys.size() + " failed with HTTP " + code + ", trying next key");
+        }
+        throw new IOException(formatGeminiError(code, body));
+    }
+
+    private static String formatGeminiError(int code, String body) {
+        String message = null;
+        String status = null;
+        if (!TextUtils.isEmpty(body)) {
+            try {
+                JSONObject error = new JSONObject(body).optJSONObject("error");
+                if (error != null) {
+                    message = error.optString("message", null);
+                    status = error.optString("status", null);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        if (TextUtils.isEmpty(message)) {
+            message = TextUtils.isEmpty(body) ? getString(R.string.UnknownError) : body;
+        }
+        String lower = (message + " " + status).toLowerCase(java.util.Locale.ROOT);
+        String hint = null;
+        if (lower.contains("location is not supported") || lower.contains("failed_precondition")) {
+            hint = getString(R.string.LlmErrorLocationUnsupported);
+        } else if (code == 401 || code == 403) {
+            hint = getString(R.string.LlmErrorUnauthorized);
+        } else if (code == 404) {
+            hint = getString(R.string.LlmErrorModelNotFound);
+        }
+        String detail = "HTTP " + code + ": " + message;
+        return hint != null ? hint + "\n\n" + detail : detail;
     }
 
     private static void requestOpenAiCompatible(String path, boolean video, BiConsumer<String, Exception> callback) {
@@ -555,27 +613,10 @@ public class TranscribeHelper {
         final String endpointUrl = apiBaseUrl.trim().replaceAll("(/chat/completions)?/*$", "") + "/chat/completions";
 
         executorService.submit(() -> {
-            String audioPathToUse;
             String audioFormatForApi = "wav"; // mp3 or wav
 
             try {
-                if (video) {
-                    var audioFile = new File(path + ".m4a");
-                    try {
-                        extractAudio(path, audioFile.getAbsolutePath());
-                    } catch (IOException e) {
-                        FileLog.e("OpenAI Compatible: Audio extraction failed", e);
-                    }
-                    audioPathToUse = audioFile.exists() ? audioFile.getAbsolutePath() : path;
-                } else {
-                    audioPathToUse = path;
-                }
-
-                File audioFile = new File(audioPathToUse);
-                if (!audioFile.exists()) {
-                    throw new IOException("Audio file not found: " + audioPathToUse);
-                }
-                byte[] audioBytes = Files.readAllBytes(audioFile.toPath());
+                byte[] audioBytes = readAudioBytes(path, video);
                 String base64Audio = Base64.encodeToString(audioBytes, Base64.NO_WRAP);
 
                 List<String> modalities = null;
