@@ -106,9 +106,9 @@ internal object LlmTransport {
         val withOptionalParameters = !optionalParametersDisabledModels.contains(key)
         return try {
             val response = request.execute(withOptionalParameters)
-            if (!response.isSuccess && response.httpCode == 400 && withOptionalParameters) {
+            if (!response.isSuccess && response.httpCode == 400 && withOptionalParameters && shouldRetryWithoutOptionalParameters(response.error)) {
                 optionalParametersDisabledModels.add(key)
-                FileLog.d("HTTP 400 with optional parameters, retrying without them for model: ")
+                FileLog.d("HTTP 400 with optional parameters, retrying without them for model: $model")
                 request.execute(false)
             } else {
                 response
@@ -116,6 +116,28 @@ internal object LlmTransport {
         } catch (e: Exception) {
             error(e.toString())
         }
+    }
+
+    private fun shouldRetryWithoutOptionalParameters(error: String?): Boolean {
+        if (error.isNullOrBlank()) {
+            return true
+        }
+        val lower = error.lowercase(Locale.ROOT)
+        val nonParameterMarkers = listOf(
+            "location is not supported",
+            "failed_precondition",
+            "permission_denied",
+            "api key",
+            "api_key",
+            "invalid_api_key",
+            "unauthorized",
+            "quota",
+            "billing",
+            "insufficient",
+            "model_not_found",
+            "does not exist"
+        )
+        return nonParameterMarkers.none { lower.contains(it) }
     }
 
     @JvmStatic

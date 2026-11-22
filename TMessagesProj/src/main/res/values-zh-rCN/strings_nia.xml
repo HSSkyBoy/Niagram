@@ -492,6 +492,9 @@
     <string name="SIMCard">SIM 卡</string>
     <string name="DeviceAccount">设备</string>
     <string name="ApiKeyNotSet">API 密钥未配置。</string>
+    <string name="LlmErrorLocationUnsupported">提示：当前网络出口 IP 地区不支持此 API（如 Gemini 限制部分地区或广播 IP）。请切换代理节点、调整分流规则或在常规设置中配置 Web / HTTP 代理后重试。</string>
+    <string name="LlmErrorUnauthorized">提示：请检查 API 密钥是否有效或具有该模型的调用权限。</string>
+    <string name="LlmErrorModelNotFound">提示：当前接口未找到所选模型，请检查模型名称设置。</string>
     <string name="SaveLocalLastSeen">保存最后上线时间</string>
     <string name="CopyVideoFrame">复制帧</string>
     <string name="SetLocalName">设置备注</string>

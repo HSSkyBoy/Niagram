@@ -491,6 +491,9 @@
     <string name="SIMCard">SIM 卡</string>
     <string name="DeviceAccount">裝置</string>
     <string name="ApiKeyNotSet">尚未設定 API 金鑰。</string>
+    <string name="LlmErrorLocationUnsupported">提示：目前網路出口 IP 地區不支援此 API（如 Gemini 限制部分地區或廣播 IP）。請切換代理節點、調整分流規則或在一般設定中設定 Web / HTTP 代理後重試。</string>
+    <string name="LlmErrorUnauthorized">提示：請檢查 API 金鑰是否有效或具備此模型的存取權限。</string>
+    <string name="LlmErrorModelNotFound">提示：目前端點找不到所選模型，請檢查模型名稱設定。</string>
     <string name="SaveLocalLastSeen">儲存最後上線時間</string>
     <string name="CopyVideoFrame">複製影格</string>
     <string name="SetLocalName">設定備註</string>

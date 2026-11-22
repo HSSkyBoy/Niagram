@@ -507,6 +507,9 @@
     <string name="SIMCard">SIM Card</string>
     <string name="DeviceAccount">Device</string>
     <string name="ApiKeyNotSet">API Key is not configured.</string>
+    <string name="LlmErrorLocationUnsupported">Hint: Your current exit IP region is not supported by this API. Try switching your proxy node or configuring Web / HTTP Proxy in General Settings.</string>
+    <string name="LlmErrorUnauthorized">Hint: Check whether your API key is valid and has permission for this model.</string>
+    <string name="LlmErrorModelNotFound">Hint: The selected model name was not found on this endpoint. Please check the model setting.</string>
     <string name="SaveLocalLastSeen">Save Last Seen Date</string>
     <string name="CopyVideoFrame">Copy Frame</string>
     <string name="SetLocalName">Set Local Name</string>

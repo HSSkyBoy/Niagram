@@ -13,7 +13,7 @@ object OpenAICompatClient {
 
     @JvmStatic
     fun fetchModels(baseUrl: String?, apiKey: String?): LlmResponse<List<String>> {
-        val credentials = LlmTransport.prepareCredentials(baseUrl, apiKey)
+        val credentials = resolveCredentials(baseUrl, apiKey)
         if (credentials.isInvalid) {
             return LlmTransport.error(credentials.error)
         }
@@ -61,7 +61,7 @@ object OpenAICompatClient {
         temperature: Float?,
         client: OkHttpClient
     ): LlmResponse<String> {
-        val credentials = LlmTransport.prepareCredentials(baseUrl, apiKey)
+        val credentials = resolveCredentials(baseUrl, apiKey)
         if (credentials.isInvalid) {
             return LlmTransport.error(credentials.error)
         }
@@ -194,6 +194,21 @@ object OpenAICompatClient {
                 }
             }
         }
+    }
+
+    private fun resolveCredentials(baseUrl: String?, apiKey: String?): LlmTransport.Credentials {
+        val credentials = LlmTransport.prepareCredentials(baseUrl, apiKey)
+        if (credentials.isInvalid) {
+            return credentials
+        }
+        val normalizedBaseUrl = credentials.baseUrl
+        if (isGeminiModelsEndpoint(normalizedBaseUrl)) {
+            val lower = normalizedBaseUrl.lowercase(Locale.ROOT)
+            if (!lower.endsWith("/openai") && !lower.contains("/openai/")) {
+                return credentials.copy(baseUrl = "$normalizedBaseUrl/openai")
+            }
+        }
+        return credentials
     }
 
     private fun isGeminiModelsEndpoint(baseUrl: String?): Boolean {
