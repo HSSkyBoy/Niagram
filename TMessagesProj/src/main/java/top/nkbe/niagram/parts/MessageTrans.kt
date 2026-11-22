@@ -3,6 +3,7 @@ package top.nkbe.niagram.parts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -444,41 +445,30 @@ private suspend fun ChatActivity.translatePoll(
     provider: Int,
     failures: TranslationFailures,
 ): Boolean {
-    val poll = (msg.messageOwner.media as TLRPC.TL_messageMediaPoll).poll
+    val media = msg.messageOwner.media as TLRPC.TL_messageMediaPoll
+    val poll = media.poll
+    val solution = media.results?.solution?.takeIf { it.isNotEmpty() }
 
-    // Translate question
-    val translatedQuestion = runCatching {
-        Translator.translate(target, poll.question.text, provider)
+    // Question, answers and solution are independent requests: run them together.
+    return runCatching {
+        coroutineScope {
+            val question = async { Translator.translate(target, poll.question.text, provider) }
+            val answers = poll.answers.map { answer ->
+                async { Translator.translate(target, answer.text.text, provider) }
+            }
+            val translatedSolution = solution?.let { async { Translator.translate(target, it, provider) } }
+
+            poll.translatedQuestion = question.await()
+            answers.awaitAll().forEachIndexed { index, translated ->
+                poll.answers[index].translatedText = translated
+            }
+            translatedSolution?.let { media.results.translatedSolution = it.await() }
+        }
+        true
     }.getOrElse { e ->
         failures.add(translateController, msg, e)
-        return false
+        false
     }
-    poll.translatedQuestion = translatedQuestion
-
-    // Translate answers
-    for (answer in poll.answers) {
-        val translatedAnswer = runCatching {
-            Translator.translate(target, answer.text.text, provider)
-        }.getOrElse { e ->
-            failures.add(translateController, msg, e)
-            return false
-        }
-        answer.translatedText = translatedAnswer
-    }
-
-    // Translate solution / explanation (if present)
-    val media = msg.messageOwner.media as TLRPC.TL_messageMediaPoll
-    if (media.results != null && !media.results.solution.isNullOrEmpty()) {
-        val translatedSolution = runCatching {
-            Translator.translate(target, media.results.solution, provider)
-        }.getOrElse { e ->
-            failures.add(translateController, msg, e)
-            return false
-        }
-        media.results.translatedSolution = translatedSolution
-    }
-
-    return true
 }
 
 private suspend fun ChatActivity.translateMessageContent(

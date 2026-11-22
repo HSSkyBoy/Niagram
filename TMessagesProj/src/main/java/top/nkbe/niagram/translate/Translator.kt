@@ -3,6 +3,9 @@ package top.nkbe.niagram.translate
 import android.text.TextUtils
 import android.view.View
 import androidx.core.content.edit
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
@@ -211,23 +214,26 @@ interface Translator {
                 runCatching {
                     val effectiveProvider = getBulkTranslateProvider(NyaConfig.translationProvider.Int())
                     val translatedPoll = TranslateController.PollText()
-                    if (query.question != null) {
-                        translatedPoll.question = translateBase(
-                            to, query.question.text, ArrayList(), effectiveProvider
-                        )
-                    }
-                    for (answer in query.answers) {
-                        val translatedAnswer = TLRPC.TL_pollAnswer()
-                        translatedAnswer.text = translateBase(
-                            to, answer.text.text, ArrayList(), effectiveProvider
-                        )
-                        translatedAnswer.option = answer.option
-                        translatedPoll.answers.add(translatedAnswer)
-                    }
-                    if (query.solution != null) {
-                        translatedPoll.solution = translateBase(
-                            to, query.solution.text, ArrayList(), effectiveProvider
-                        )
+                    // Question, answers and solution are independent requests: run them together.
+                    coroutineScope {
+                        val question = query.question?.let {
+                            async { translateBase(to, it.text, ArrayList(), effectiveProvider) }
+                        }
+                        val answers = query.answers.map { answer ->
+                            async { translateBase(to, answer.text.text, ArrayList(), effectiveProvider) }
+                        }
+                        val solution = query.solution?.let {
+                            async { translateBase(to, it.text, ArrayList(), effectiveProvider) }
+                        }
+
+                        question?.let { translatedPoll.question = it.await() }
+                        answers.awaitAll().forEachIndexed { index, text ->
+                            val translatedAnswer = TLRPC.TL_pollAnswer()
+                            translatedAnswer.text = text
+                            translatedAnswer.option = query.answers[index].option
+                            translatedPoll.answers.add(translatedAnswer)
+                        }
+                        solution?.let { translatedPoll.solution = it.await() }
                     }
 
                     AndroidUtilities.runOnUIThread { translateCallBack.onSuccess(translatedPoll) }
