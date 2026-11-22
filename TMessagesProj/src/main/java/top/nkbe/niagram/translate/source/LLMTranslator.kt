@@ -2,6 +2,8 @@ package top.nkbe.niagram.translate.source
 
 import kotlinx.coroutines.ThreadContextElement
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -71,6 +73,11 @@ object LLMTranslator : Translator {
     private var currentProvider = -1
     private var cachedKeyString: String? = null
 
+    // Caps in-flight LLM requests (auto-translate launches one coroutine per message); scales with the key count.
+    private const val REQUESTS_PER_KEY = 2
+    private const val MAX_CONCURRENT_REQUESTS = 8
+    private var requestPermits = Semaphore(REQUESTS_PER_KEY)
+
     private fun updateApiKeysLocked() {
         val llmProvider = NyaConfig.llmProviderPreset.Int()
         val keyConfig = LlmConfig.getApiKeyConfigItem(llmProvider)
@@ -88,6 +95,12 @@ object LLMTranslator : Translator {
         cachedKeyString = key
         currentProvider = llmProvider
         apiKeyIndex.set(0)
+        requestPermits = Semaphore((apiKeys.size * REQUESTS_PER_KEY).coerceIn(REQUESTS_PER_KEY, MAX_CONCURRENT_REQUESTS))
+    }
+
+    private fun getRequestPermits(): Semaphore = synchronized(apiKeyLock) {
+        updateApiKeysLocked()
+        requestPermits
     }
 
     private fun getApiKeysSnapshot(): Pair<List<String>, Int> = synchronized(apiKeyLock) {
@@ -174,7 +187,7 @@ object LLMTranslator : Translator {
     }
 
     @Throws(IOException::class, RateLimitException::class, UnsupportedOperationException::class, RetryableLlmException::class)
-    private fun doLLMTranslate(to: String, query: String): String {
+    private suspend fun doLLMTranslate(to: String, query: String): String {
         val llmProviderPreset = NyaConfig.llmProviderPreset.Int()
         val model = LlmConfig.getEffectiveModelName(llmProviderPreset)
         val rawContext = currentTranslationContext()
@@ -226,34 +239,36 @@ object LLMTranslator : Translator {
 
         val useGeminiNative = LlmConfig.isGeminiNative(llmProviderPreset)
         var lastResponse: top.nkbe.niagram.llm.net.LlmResponse<String>? = null
-        for (attempt in keys.indices) {
-            val apiKey = keys[(startIndex + attempt) % keys.size]
-            val apiKeyForLog = apiKey.takeLast(2)
-            FileLog.d("createPost: Bearer $apiKeyForLog")
+        getRequestPermits().withPermit {
+            for (attempt in keys.indices) {
+                val apiKey = keys[(startIndex + attempt) % keys.size]
+                val apiKeyForLog = apiKey.takeLast(2)
+                FileLog.d("createPost: Bearer $apiKeyForLog")
 
-            val response = if (useGeminiNative) {
-                GeminiNativeClient.generateContent(llmProviderPreset, apiUrl, apiKey, model, messages)
-            } else {
-                OpenAICompatClient.chatCompletions(llmProviderPreset, apiUrl, apiKey, model, messages)
-            }
-            lastResponse = response
+                val response = if (useGeminiNative) {
+                    GeminiNativeClient.generateContent(llmProviderPreset, apiUrl, apiKey, model, messages)
+                } else {
+                    OpenAICompatClient.chatCompletions(llmProviderPreset, apiUrl, apiKey, model, messages)
+                }
+                lastResponse = response
 
-            if (response.isSuccess) {
-                val rawResult = response.data()
-                    ?.takeIf { it.isNotEmpty() }
-                    ?: throw IOException("LLM API returned empty content")
-                val cleanedResult = cleanTranslationResult(rawResult)
-                TranslationCache.put(query, to, model, rawContext, cleanedResult)
-                return cleanedResult
-            }
+                if (response.isSuccess) {
+                    val rawResult = response.data()
+                        ?.takeIf { it.isNotEmpty() }
+                        ?: throw IOException("LLM API returned empty content")
+                    val cleanedResult = cleanTranslationResult(rawResult)
+                    TranslationCache.put(query, to, model, rawContext, cleanedResult)
+                    return cleanedResult
+                }
 
-            val code = response.httpCode()
-            val canFailoverKey = (code == 401 || code == 403 || code == 429) && attempt + 1 < keys.size
-            if (canFailoverKey) {
-                FileLog.d("LLM API key attempt ${attempt + 1}/${keys.size} failed with HTTP $code, failing over to next key")
-                continue
+                val code = response.httpCode()
+                val canFailoverKey = (code == 401 || code == 403 || code == 429) && attempt + 1 < keys.size
+                if (canFailoverKey) {
+                    FileLog.d("LLM API key attempt ${attempt + 1}/${keys.size} failed with HTTP $code, failing over to next key")
+                    continue
+                }
+                break
             }
-            break
         }
 
         val failed = lastResponse ?: throw IOException(getString(R.string.UnknownError))
