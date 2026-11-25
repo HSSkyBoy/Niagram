@@ -380,7 +380,7 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
     @Override
     public ArrayList<ThemeDescription> getThemeDescriptions() {
         ArrayList<ThemeDescription> themeDescriptions = new ArrayList<>();
-        themeDescriptions.add(new ThemeDescription(listView, ThemeDescription.FLAG_CELLBACKGROUNDCOLOR, new Class[]{EmptyCell.class, TextSettingsCell.class, TextCheckCell.class, HeaderCell.class, TextDetailSettingsCell.class, NotificationsCheckCell.class}, null, null, null, Theme.key_windowBackgroundWhite));
+        themeDescriptions.add(new ThemeDescription(listView, ThemeDescription.FLAG_CELLBACKGROUNDCOLOR, new Class[]{EmptyCell.class, TextSettingsCell.class, TextCheckCell.class, TextDetailSettingsCell.class, NotificationsCheckCell.class}, null, null, null, Theme.key_windowBackgroundWhite));
         themeDescriptions.add(new ThemeDescription(fragmentView, ThemeDescription.FLAG_BACKGROUND, null, null, null, null, Theme.key_windowBackgroundGray));
 
         themeDescriptions.add(new ThemeDescription(actionBar, ThemeDescription.FLAG_BACKGROUND, null, null, null, null, Theme.key_avatar_backgroundActionBarBlue));
@@ -410,7 +410,7 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
         themeDescriptions.add(new ThemeDescription(listView, 0, new Class[]{TextCheckCell.class}, new String[]{"checkBox"}, null, null, null, Theme.key_switchTrack));
         themeDescriptions.add(new ThemeDescription(listView, 0, new Class[]{TextCheckCell.class}, new String[]{"checkBox"}, null, null, null, Theme.key_switchTrackChecked));
 
-        themeDescriptions.add(new ThemeDescription(listView, 0, new Class[]{HeaderCell.class}, new String[]{"textView"}, null, null, null, Theme.key_windowBackgroundWhiteBlueHeader));
+        themeDescriptions.add(new ThemeDescription(listView, 0, new Class[]{HeaderCell.class}, new String[]{"textView"}, null, null, null, Theme.key_windowBackgroundWhiteGrayText));
 
         themeDescriptions.add(new ThemeDescription(listView, 0, new Class[]{TextDetailSettingsCell.class}, new String[]{"textView"}, null, null, null, Theme.key_windowBackgroundWhiteBlackText));
         themeDescriptions.add(new ThemeDescription(listView, 0, new Class[]{TextDetailSettingsCell.class}, new String[]{"valueTextView"}, null, null, null, Theme.key_windowBackgroundWhiteGrayText2));
@@ -500,7 +500,7 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
                 case CellGroup.ITEM_TYPE_DIVIDER -> new ShadowSectionCell(mContext);
                 case CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL -> new TextSettingsCell(mContext);
                 case CellGroup.ITEM_TYPE_TEXT_CHECK -> new TextCheckCell(mContext);
-                case CellGroup.ITEM_TYPE_HEADER -> new HeaderCell(mContext);
+                case CellGroup.ITEM_TYPE_HEADER -> new HeaderCell(mContext).asSectionTitle();
                 case CellGroup.ITEM_TYPE_TEXT_DETAIL -> new TextDetailSettingsCell(mContext);
                 case CellGroup.ITEM_TYPE_TEXT -> new TextInfoPrivacyCell(mContext);
                 case CellGroup.ITEM_TYPE_TEXT_CHECK_ICON -> new TextCell(mContext);
