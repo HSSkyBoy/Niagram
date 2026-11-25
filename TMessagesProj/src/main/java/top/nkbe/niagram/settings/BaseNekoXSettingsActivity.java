@@ -121,7 +121,7 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
         tooltip = new UndoView(context);
         frameLayout.addView(tooltip, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM | Gravity.LEFT, 8, 0, 8, 8));
 
-        listView.setSections(true);
+        listView.setSections(dp(16), dp(24), true);
         actionBar.setAdaptiveBackground(listView);
         return fragmentView;
     }
