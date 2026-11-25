@@ -364,6 +364,8 @@
     <string name="TranscribeProviderOpenAI">相容 OpenAI 的 API</string>
     <string name="OpenAiApiCredentialsDialog">設定 OpenAI 相容的 API。您可以參考此 **文件**。\n</string>
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
+    <string name="OpenAiUseAudioTranscriptions">使用音訊轉錄 API</string>
+    <string name="OpenAiTranscriptionsApiBaseUrlHint">API URL ([…]/audio/transcriptions)</string>
     <string name="OpenAiCredentialsNotSet">尚未設定 API 憑證。</string>
     <string name="AppIconTelegramOriginal">官方預設</string>
     <string name="BurnTtlMessage">銷毀</string>

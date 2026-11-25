@@ -1453,6 +1453,12 @@ object NyaConfig {
             ConfigItem.configTypeString,
             ""
         )
+    val transcribeProviderOpenAiUseTranscriptions =
+        addConfig(
+            "TranscribeProviderOpenAiUseTranscriptions",
+            ConfigItem.configTypeBool,
+            false
+        )
     val showReplyInPrivate =
         addConfig(
             "ReplyInPrivate",

@@ -379,6 +379,8 @@
     <string name="TranscribeProviderOpenAI">OpenAI-Compatible API</string>
     <string name="OpenAiApiCredentialsDialog">Configure OpenAI-compatible API. You can refer to this **documentation**.\n</string>
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
+    <string name="OpenAiUseAudioTranscriptions">Use Audio Transcriptions API</string>
+    <string name="OpenAiTranscriptionsApiBaseUrlHint">API URL ([…]/audio/transcriptions)</string>
     <string name="OpenAiCredentialsNotSet">API credentials are not configured.</string>
     <string name="AppIconTelegramOriginal">Original</string>
     <string name="BurnTtlMessage">Burn</string>

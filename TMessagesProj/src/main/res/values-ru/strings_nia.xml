@@ -308,6 +308,8 @@
     <string name="TranscribeProviderOpenAI">OpenAI-совместимый API</string>
     <string name="OpenAiApiCredentialsDialog">Настройте API, совместимый с OpenAI. Вы можете обратиться к этой **документации**.\n</string>
     <string name="OpenAiApiBaseUrlHint">API URL ([…]/chat/completions)</string>
+    <string name="OpenAiUseAudioTranscriptions">Использовать Audio Transcriptions API</string>
+    <string name="OpenAiTranscriptionsApiBaseUrlHint">API URL ([…]/audio/transcriptions)</string>
     <string name="OpenAiCredentialsNotSet">Учётные данные API не настроены.</string>
     <string name="AppIconTelegramOriginal">Оригинальная</string>
     <string name="BurnTtlMessage">Уничтожить</string>
