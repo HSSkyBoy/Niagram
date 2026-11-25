@@ -20,6 +20,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.Components.RecyclerListView;
 
 import java.util.ArrayList;
 
@@ -103,6 +104,19 @@ public class HeaderCell extends LinearLayout {
         if (!text2) textView2.setVisibility(View.GONE);
 
         ViewCompat.setAccessibilityHeading(this, true);
+    }
+
+    // Small title above a card, following NPatch (COUI): 12sp medium in the secondary text color,
+    // outside the card, aligned with the card's row text (16dp card margin + 21dp row inset).
+    public HeaderCell asSectionTitle() {
+        setTag(RecyclerListView.TAG_NOT_SECTION);
+        setPadding(AndroidUtilities.dp(37), AndroidUtilities.dp(12), AndroidUtilities.dp(37), AndroidUtilities.dp(8));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        textView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+        textView.setMinHeight(AndroidUtilities.dp(16));
+        textView.setTextColor(getThemedColor(Theme.key_windowBackgroundWhiteGrayText));
+        textView.setTag(Theme.key_windowBackgroundWhiteGrayText);
+        return this;
     }
 
     // NekoX: BottomSheet BigTitle, move big title from constructor to here
