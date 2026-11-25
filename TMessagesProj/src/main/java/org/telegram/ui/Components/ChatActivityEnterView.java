@@ -5665,7 +5665,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             sendPopupWindow.dimBehind();
             sendButton.invalidate();
             try {
-                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
             } catch (Exception ignore) {}
 
             return true;
@@ -5910,7 +5910,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         messageSendPreview.show();
 
         try {
-            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
         } catch (Exception ignore) {}
 
         return false;
