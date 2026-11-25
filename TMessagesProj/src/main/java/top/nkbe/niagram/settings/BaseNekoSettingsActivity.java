@@ -143,7 +143,7 @@ public abstract class BaseNekoSettingsActivity extends BaseFragment {
             return false;
         });
 
-        listView.setSections(true);
+        listView.setSections(dp(16), dp(24), true);
         actionBar.setAdaptiveBackground(listView);
         return fragmentView;
     }
