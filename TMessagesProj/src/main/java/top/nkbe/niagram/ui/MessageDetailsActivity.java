@@ -393,6 +393,7 @@ public class MessageDetailsActivity extends BaseFragment implements Notification
         listView = new RecyclerListView(context);
         listView.setVerticalScrollBarEnabled(false);
         listView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        listView.setSections(AndroidUtilities.dp(16), AndroidUtilities.dp(24), true);
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener((view, position, x, y) -> {
@@ -1319,11 +1320,9 @@ public class MessageDetailsActivity extends BaseFragment implements Notification
                     break;
                 case 2:
                     view = new TextDetailSettingsCell(mContext);
-                    view.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
                     break;
                 case 3:
                     view = new TextSettingsCell(mContext);
-                    view.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
                     break;
             }
             // noinspection ConstantConditions

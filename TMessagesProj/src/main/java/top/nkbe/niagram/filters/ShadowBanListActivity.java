@@ -1146,7 +1146,6 @@ public class ShadowBanListActivity extends BaseFragment {
                     break;
                 default:
                     ManageChatUserCell defaultCell = new ManageChatUserCell(context, 7, 6, true);
-                    defaultCell.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite, getResourceProvider()));
                     view = defaultCell;
                     break;
             }
