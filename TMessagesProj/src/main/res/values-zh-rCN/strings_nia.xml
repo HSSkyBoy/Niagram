@@ -438,6 +438,10 @@
     <string name="WebProxyPort">端口</string>
     <string name="WebProxyUsername">用户名（可选）</string>
     <string name="WebProxyPassword">密码（可选）</string>
+    <string name="WebProxyTest">测试 Web 代理连通性</string>
+    <string name="WebProxyTesting">正在测试代理连通性…</string>
+    <string name="WebProxyTestSuccess">代理连接成功 (%1$dms)</string>
+    <string name="WebProxyTestFailed">代理连接失败：%1$s</string>
     <string name="PinnedReactions">置顶表情回应</string>
     <string name="PinnedReactions_Status_Chats">在聊天中启用置顶表情回应</string>
     <string name="PinnedReactions_Status_Channels">在频道中启用置顶表情回应</string>

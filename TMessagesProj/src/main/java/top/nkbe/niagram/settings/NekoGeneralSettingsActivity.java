@@ -173,6 +173,7 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
     private final AbstractConfigCell webProxyPortRow = cellGroup.appendCell(new ConfigCellTextInput2(getString(R.string.WebProxyPort), NyaConfig.webProxyPort, "7890", null));
     private final AbstractConfigCell webProxyUserRow = cellGroup.appendCell(new ConfigCellTextInput2(getString(R.string.WebProxyUsername), NyaConfig.webProxyUsername, "", null));
     private final AbstractConfigCell webProxyPassRow = cellGroup.appendCell(new ConfigCellTextInput2(getString(R.string.WebProxyPassword), NyaConfig.webProxyPassword, "", null));
+    private final AbstractConfigCell webProxyTestRow = cellGroup.appendCell(new ConfigCellText("WebProxyTest", this::testWebProxy));
     private final AbstractConfigCell dividerConnection = cellGroup.appendCell(new ConfigCellDivider());
 
 
@@ -325,6 +326,76 @@ public class NekoGeneralSettingsActivity extends BaseNekoXSettingsActivity {
         checkMainTabsRows();
         checkQuickScheduleRows();
         addRowsToMap(cellGroup);
+    }
+
+    private void testWebProxy() {
+        Context context = getParentActivity();
+        if (context == null) return;
+        top.nkbe.niagram.utils.WebProxyManager.onProxyConfigChanged();
+
+        org.telegram.ui.ActionBar.AlertDialog progressDialog = new org.telegram.ui.ActionBar.AlertDialog(context, org.telegram.ui.ActionBar.AlertDialog.ALERT_TYPE_SPINNER);
+        progressDialog.setMessage(getString(R.string.WebProxyTesting));
+        progressDialog.setCanceledOnTouchOutside(false);
+        showDialog(progressDialog);
+
+        org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
+            long start = System.currentTimeMillis();
+            String ip = null;
+            String loc = null;
+            String errorMsg = null;
+            try {
+                okhttp3.OkHttpClient client = top.nkbe.niagram.utils.HttpClient.INSTANCE.getInstance().newBuilder()
+                        .callTimeout(12, java.util.concurrent.TimeUnit.SECONDS)
+                        .build();
+                okhttp3.Request req = new okhttp3.Request.Builder()
+                        .url("https://www.cloudflare.com/cdn-cgi/trace")
+                        .get()
+                        .build();
+                try (okhttp3.Response resp = client.newCall(req).execute()) {
+                    String body = resp.body() != null ? resp.body().string() : "";
+                    if (!resp.isSuccessful()) {
+                        errorMsg = "HTTP " + resp.code();
+                    } else {
+                        for (String line : body.split("\n")) {
+                            if (line.startsWith("ip=")) {
+                                ip = line.substring(3).trim();
+                            } else if (line.startsWith("loc=")) {
+                                loc = line.substring(4).trim();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+            }
+
+            final long elapsed = System.currentTimeMillis() - start;
+            final String finalIp = ip;
+            final String finalLoc = loc;
+            final String finalError = errorMsg;
+
+            AndroidUtilities.runOnUIThread(() -> {
+                try {
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                } catch (Exception ignored) {
+                }
+                if (getParentActivity() == null) return;
+                if (finalError != null) {
+                    org.telegram.ui.Components.BulletinFactory.of(this).createSimpleBulletin(R.raw.error, org.telegram.messenger.LocaleController.formatString(R.string.WebProxyTestFailed, finalError)).show();
+                } else {
+                    StringBuilder msg = new StringBuilder(org.telegram.messenger.LocaleController.formatString(R.string.WebProxyTestSuccess, (int) elapsed));
+                    if (finalIp != null && !finalIp.isEmpty()) {
+                        msg.append("\nIP: ").append(finalIp);
+                        if (finalLoc != null && !finalLoc.isEmpty()) {
+                            msg.append(" (").append(finalLoc).append(")");
+                        }
+                    }
+                    org.telegram.ui.Components.BulletinFactory.of(this).createSimpleBulletin(R.raw.contact_check, msg.toString()).show();
+                }
+            });
+        });
     }
 
     @SuppressLint({"NewApi", "NotifyDataSetChanged", "UseCompatLoadingForDrawables"})

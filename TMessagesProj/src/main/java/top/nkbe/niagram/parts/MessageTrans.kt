@@ -28,6 +28,7 @@ import top.nkbe.niagram.translate.source.LLMTranslator
 import top.nkbe.niagram.utils.AlertUtil
 import top.nkbe.niagram.utils.AppScope
 import top.nkbe.niagram.config.NyaConfig
+import top.nkbe.niagram.llm.LlmConfig
 import java.util.Locale
 import java.util.WeakHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -276,8 +277,8 @@ fun ChatActivity.translateMessages(
         notificationCenter.postNotificationName(NotificationCenter.messageTranslating, msg)
     }
 
-    // Perform translations concurrently
-    val dispatcher = Dispatchers.IO.limitedParallelism(5)
+    // Perform translations concurrently with cached adaptive dispatchers
+    val dispatcher = getBatchTranslationDispatcher(provider)
     val failures = TranslationFailures()
 
     AppScope.io.launch {
@@ -753,6 +754,24 @@ private fun clearTranslated(
     MessagesStorage.getInstance(currentAccount).updateMessageCustomParams(
         messageObject.dialogId, messageObject.messageOwner
     )
+}
+
+private val llmBatchDispatcher2 by lazy { Dispatchers.IO.limitedParallelism(2) }
+private val llmBatchDispatcher4 by lazy { Dispatchers.IO.limitedParallelism(4) }
+private val defaultBatchDispatcher5 by lazy { Dispatchers.IO.limitedParallelism(5) }
+
+private fun getBatchTranslationDispatcher(provider: Int): kotlinx.coroutines.CoroutineDispatcher {
+    val effectiveProvider = provider.takeIf { it != 0 } ?: NyaConfig.translationProvider.Int()
+    if (effectiveProvider != Translator.providerLLMTranslator) {
+        return defaultBatchDispatcher5
+    }
+    val rawKeys = LlmConfig.getApiKeyConfigItem(NyaConfig.llmProviderPreset.Int()).String()
+    val keyCount = rawKeys?.split(",")?.count { it.trim().isNotEmpty() } ?: 0
+    return when {
+        keyCount >= 3 -> defaultBatchDispatcher5
+        keyCount == 2 -> llmBatchDispatcher4
+        else -> llmBatchDispatcher2
+    }
 }
 
 private fun shouldUseLlmContext(provider: Int): Boolean {

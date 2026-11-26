@@ -437,6 +437,10 @@
     <string name="WebProxyPort">連接埠</string>
     <string name="WebProxyUsername">使用者名稱 (選填)</string>
     <string name="WebProxyPassword">密碼 (選填)</string>
+    <string name="WebProxyTest">測試 Web 代理連通性</string>
+    <string name="WebProxyTesting">正在測試代理連通性…</string>
+    <string name="WebProxyTestSuccess">代理連線成功 (%1$dms)</string>
+    <string name="WebProxyTestFailed">代理連線失敗：%1$s</string>
     <string name="PinnedReactions">置頂表情回應</string>
     <string name="PinnedReactions_Status_Chats">在聊天中啟用置頂表情回應</string>
     <string name="PinnedReactions_Status_Channels">在頻道中啟用置頂表情回應</string>

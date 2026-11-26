@@ -453,6 +453,10 @@
     <string name="WebProxyPort">Proxy Port</string>
     <string name="WebProxyUsername">Username (Optional)</string>
     <string name="WebProxyPassword">Password (Optional)</string>
+    <string name="WebProxyTest">Test Web Proxy</string>
+    <string name="WebProxyTesting">Testing proxy connection…</string>
+    <string name="WebProxyTestSuccess">Proxy connection succeeded (%1$dms)</string>
+    <string name="WebProxyTestFailed">Proxy connection failed: %1$s</string>
     <string name="PinnedReactions">Pinned Reactions</string>
     <string name="PinnedReactions_Status_Chats">Enable Pinned Reactions in Chats</string>
     <string name="PinnedReactions_Status_Channels">Enable Pinned Reactions in Channels</string>
