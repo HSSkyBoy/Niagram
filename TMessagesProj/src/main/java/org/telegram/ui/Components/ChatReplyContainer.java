@@ -121,23 +121,25 @@ public class ChatReplyContainer extends FrameLayout {
             icon.setScaleType(ImageView.ScaleType.CENTER);
             addView(icon, LayoutHelper.createFrame(52, 46, Gravity.TOP | Gravity.LEFT));
 
+            final int horizontalGravity = LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT;
+
             name = new SimpleTextView(context);
             name.setTextSize(14);
             name.setTypeface(AndroidUtilities.bold());
-            name.setGravity(Gravity.CENTER_VERTICAL);
+            name.setGravity(Gravity.CENTER_VERTICAL | horizontalGravity);
             addView(name, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 18, Gravity.TOP | Gravity.LEFT, 52, 5, 0, 0));
 
             obj = new SimpleTextView(context);
             obj.setTextSize(14);
             NotificationCenter.listenEmojiLoading(obj);
-            obj.setGravity(Gravity.CENTER_VERTICAL);
+            obj.setGravity(Gravity.CENTER_VERTICAL | horizontalGravity);
             addView(obj, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 18, Gravity.TOP | Gravity.LEFT, 52, 23, 0, 0));
 
             objHint = new SimpleTextView(context);
             objHint.setTextSize(14);
             objHint.setText(LocaleController.getString(R.string.TapForForwardingOptions));
             objHint.setAlpha(0f);
-            objHint.setGravity(Gravity.CENTER_VERTICAL);
+            objHint.setGravity(Gravity.CENTER_VERTICAL | horizontalGravity);
             addView(objHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 18, Gravity.TOP | Gravity.LEFT, 52, 23, 0, 0));
 
             SpoilerEffect replySpoilerEffect = new SpoilerEffect();

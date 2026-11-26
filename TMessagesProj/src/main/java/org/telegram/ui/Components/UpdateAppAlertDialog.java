@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.widget.NestedScrollView;
 
@@ -30,6 +31,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SvgHelper;
+import org.telegram.messenger.browser.Browser;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
@@ -302,18 +304,60 @@ public class UpdateAppAlertDialog extends BottomSheet {
 
         BottomSheetCell doneButton = new BottomSheetCell(context, false);
         doneButton.setText(LocaleController.formatString("AppUpdateDownloadNow", R.string.AppUpdateDownloadNow), false);
+        final boolean[] downloading = new boolean[]{false};
         doneButton.background.setOnClickListener(v -> {
+            if (downloading[0]) {
+                return;
+            }
             if (!TextUtils.isEmpty(appUpdate.url)) {
+                android.app.Activity activity = AndroidUtilities.findActivity(getContext());
+                File cached = ApkDownloader.getDestFile(appUpdate.url);
+                if (cached.exists() && ApkDownloader.verifyApkSignature(ApplicationLoader.applicationContext, cached)
+                        && ApplicationLoader.applicationLoaderInstance.openApkInstall(activity, cached)) {
+                    dismiss();
+                    return;
+                }
+                downloading[0] = true;
+                doneButton.background.setEnabled(false);
+                doneButton.setText(LocaleController.getString(R.string.Downloading) + " 0%", true);
                 ApkDownloader.download(appUpdate.url, new ApkDownloader.Callback() {
                     @Override
+                    public void onProgress(float progress) {
+                        if (!isShowing()) return;
+                        int pct = Math.max(0, Math.min(100, Math.round(progress * 100)));
+                        doneButton.setText(LocaleController.getString(R.string.Downloading) + " " + pct + "%", false);
+                    }
+
+                    @Override
                     public void onSuccess(File file) {
-                        ApplicationLoader.applicationLoaderInstance.openApkInstall(AndroidUtilities.findActivity(getContext()), file);
+                        downloading[0] = false;
+                        android.app.Activity targetActivity = AndroidUtilities.findActivity(getContext());
+                        if (!ApplicationLoader.applicationLoaderInstance.openApkInstall(targetActivity, file)) {
+                            Browser.openUrl(getContext(), appUpdate.url);
+                        }
+                        if (isShowing()) {
+                            dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        downloading[0] = false;
+                        if (isShowing()) {
+                            doneButton.background.setEnabled(true);
+                            doneButton.setText(LocaleController.formatString("AppUpdateDownloadNow", R.string.AppUpdateDownloadNow), true);
+                        }
+                        String err = !TextUtils.isEmpty(message) ? message : LocaleController.getString(R.string.ErrorOccurred);
+                        Toast.makeText(getContext(), err, Toast.LENGTH_LONG).show();
+                        Browser.openUrl(getContext(), appUpdate.url);
                     }
                 });
             } else if (appUpdate.document != null) {
                 FileLoader.getInstance(accountNum).loadFile(appUpdate.document, "update", FileLoader.PRIORITY_NORMAL, 1);
+                dismiss();
+            } else {
+                dismiss();
             }
-            dismiss();
         });
         container.addView(doneButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 50, Gravity.LEFT | Gravity.BOTTOM, 0, 0, 0, 50));
 

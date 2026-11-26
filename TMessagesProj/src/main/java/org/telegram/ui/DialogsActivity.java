@@ -3572,6 +3572,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             actionBar.setCastShadows(false);
             actionBar.setClipContent(true);
         //}
+        actionBar.setOnLongClickListener(v -> {
+            if (NyaConfig.hideAllTab.Bool() && filterTabsView != null && filterTabsView.getDefaultTabId() != filterTabsView.getCurrentTabId()) {
+                filterTabsView.toggleAllTabs(true);
+                filterTabsView.selectDefaultTab();
+                return true;
+            }
+            return false;
+        });
         actionBar.setTitleActionRunnable(() -> {
             if (initialDialogsType != DIALOGS_TYPE_WIDGET) {
                 hideFloatingButton(false);
