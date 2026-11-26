@@ -151,7 +151,6 @@ import androidx.media3.common.Format;
 import androidx.media3.exoplayer.analytics.AnalyticsListener;
 import androidx.media3.exoplayer.video.VideoFrameMetadataListener;
 import androidx.media3.common.VideoSize;
-import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -5996,14 +5995,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 }
             }
         };
-        boolean castAvailable = true;
-        try {
-            castItemButton.setRouteSelector(CastContext.getSharedInstance(activityContext).getMergedSelector());
-        } catch (Exception e) {
-            FileLog.e(e);
-            castAvailable = false;
-        }
-        castItemButton.setVisibility(View.INVISIBLE);
+        boolean castAvailable = false;
+        castItemButton.setVisibility(View.GONE);
         if (castAvailable) {
             castItem = videoItem.addSubItem(gallery_menu_chromecast, R.drawable.menu_video_chromecast, getString(R.string.VideoPlayerChromecast));
             castItem.setEnabledByColor(false, 0xFFFFFFFF, 0xFF73B4EC);

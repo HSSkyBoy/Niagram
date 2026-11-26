@@ -26,7 +26,6 @@
 -keep class org.telegram.messenger.camera.* { *; }
 -keep class org.telegram.messenger.secretmedia.* { *; }
 -keep class org.telegram.messenger.support.* { *; }
--keep class org.telegram.messenger.support.* { *; }
 -keep class org.telegram.messenger.time.* { *; }
 -keep class org.telegram.messenger.video.* { *; }
 -keep class org.telegram.messenger.voip.* { *; }
@@ -39,7 +38,6 @@
 -keep class com.google.android.exoplayer2.decoder.SimpleDecoderOutputBuffer { *; }
 -keep class org.telegram.ui.ActionBar.* { *; }
 -keep class org.telegram.ui.Stories.recorder.FfmpegAudioWaveformLoader { *; }
--keep class androidx.mediarouter.app.MediaRouteButton { *; }
 -keep class org.telegram.messenger.AnimatedFileDrawableStream { <methods>; }
 -keep class org.telegram.SQLite.SQLiteException { <methods>; }
 -keep class * extends org.telegram.ui.Components.UItem$UItemFactory { public <init>(...); }
@@ -101,11 +99,6 @@
 -keep class org.telegram.utils.twidget.WidgetSandboxBackend { *; }
 # The isolated engine process's backend (WidgetEngineService): the same JNI callbacks.
 -keep class org.telegram.utils.twidget.WidgetEngineBackend { *; }
-
-# Huawei Services
--keep class com.huawei.hianalytics.**{ *; }
--keep class com.huawei.updatesdk.**{ *; }
--keep class com.huawei.hms.**{ *; }
 
 # Constructors accessed via reflection in DefaultDownloaderFactory
 -dontnote com.google.android.exoplayer2.source.dash.offline.DashDownloader
@@ -214,10 +207,6 @@
 -keepclassmembers class androidx.recyclerview.widget.RecyclerView {
     public void suppressLayout(boolean);
     public boolean isLayoutSuppressed();
-}
-
--keepclassmembers class org.telegram.ui.** {
-    public <init>(...);
 }
 
 -keep class org.slf4j.** { *; }

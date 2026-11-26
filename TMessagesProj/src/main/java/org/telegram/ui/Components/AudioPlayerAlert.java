@@ -68,7 +68,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.media3.common.C;
-import com.google.android.gms.cast.framework.CastContext;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -1206,14 +1205,8 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
                 }
             }
         };
-        castAvailable = true;
-        try {
-            castItemButton.setRouteSelector(CastContext.getSharedInstance(context).getMergedSelector());
-        } catch (Exception e) {
-            FileLog.e(e);
-            castAvailable = false;
-        }
-        castItemButton.setVisibility(View.INVISIBLE);
+        castAvailable = false;
+        castItemButton.setVisibility(View.GONE);
         if (optionsIcon != null) {
             optionsIcon.setCasting(CastSync.isActive(), true);
         }
